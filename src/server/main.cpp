@@ -23,6 +23,9 @@
 #include <iostream>
 #include <stdexcept>
 
+/**
+ * Main function for the dedicated server.
+ */
 int main()
 try {
 	std::cout << ProgramInfo::name << " " << ProgramInfo::version << " in server mode." << std::endl;

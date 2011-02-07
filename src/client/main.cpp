@@ -23,6 +23,9 @@
 #include <iostream>
 #include <stdexcept>
 
+/**
+ * Main function for the game client.
+ */
 int main()
 try {
 	std::cout << ProgramInfo::name << " " << ProgramInfo::version << " in client mode." << std::endl;
