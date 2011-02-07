@@ -19,16 +19,36 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "ProgramInfo.hpp"
 #include <iostream>
 #include <stdexcept>
+
+#include <SFML/Graphics.hpp>
+
+#include "ProgramInfo.hpp"
+
+#include "menu/MainMenuHandler.hpp"
+#include "game/GameHandler.hpp"
 
 /**
  * Main function for the game client.
  */
 int main()
 try {
-	std::cout << ProgramInfo::name << " " << ProgramInfo::version << " in client mode." << std::endl;
+	std::string title = ProgramInfo::name + " " + ProgramInfo::version + " (client mode)";
+	sf::RenderWindow window(sf::VideoMode(800, 600), title);
+
+	MainMenuHandler menu;
+
+	while (window.IsOpened()) {
+		menu.run(window);
+		if (!window.IsOpened()) {
+			break;
+		}
+		if (GameHandler::instance.get()) {
+			GameHandler::instance->run(window);
+		}
+	}
+
 	return 0;
 } catch (std::exception& e) {
 	std::cerr << "Fatal exception: " << e.what() << std::endl;
