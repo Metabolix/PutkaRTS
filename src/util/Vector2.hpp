@@ -46,28 +46,28 @@ struct Vector2 {
 	static Type inf(Type dir) {
 		return Type(Scalar<U1>::inf(dir.x), Scalar<U1>::inf(dir.y));
 	}
-	static Type inf_pp() { return Type(Scalar<U1>::inf_p(), Scalar<U1>::inf_p()); }
-	static Type inf_pn() { return Type(Scalar<U1>::inf_p(), Scalar<U1>::inf_n()); }
-	static Type inf_np() { return Type(Scalar<U1>::inf_n(), Scalar<U1>::inf_p()); }
-	static Type inf_nn() { return Type(Scalar<U1>::inf_n(), Scalar<U1>::inf_n()); }
-	static Type inf() { return inf_pp(); }
+	static Type infPP() { return Type(Scalar<U1>::infP(), Scalar<U1>::infP()); }
+	static Type infPN() { return Type(Scalar<U1>::infP(), Scalar<U1>::infN()); }
+	static Type infNP() { return Type(Scalar<U1>::infN(), Scalar<U1>::infP()); }
+	static Type infNN() { return Type(Scalar<U1>::infN(), Scalar<U1>::infN()); }
+	static Type inf() { return infPP(); }
 
 	// Allow usage in conditions
 	typedef bool (Type::*BoolDummyType)();
 	operator BoolDummyType () const {
-		return (x || y) ? (BoolDummyType) &Type::is_zero : 0;
+		return (x || y) ? (BoolDummyType) &Type::isZero : 0;
 	}
 	bool operator ! () const { return !x && !y; }
 
 	// Checks for special cases
-	bool is_nan() const {
-		return x.is_nan() || y.is_nan();
+	bool isNaN() const {
+		return x.isNaN() || y.isNaN();
 	}
-	bool is_inf() const {
-		return x.is_inf() || y.is_inf();
+	bool isInf() const {
+		return x.isInf() || y.isInf();
 	}
-	bool is_zero() const {
-		return x.is_zero() && y.is_zero();
+	bool isZero() const {
+		return x.isZero() && y.isZero();
 	}
 
 	// Strip unit
