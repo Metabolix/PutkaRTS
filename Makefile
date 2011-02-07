@@ -21,33 +21,38 @@ clean_deps:
 	rm -f $(DEPS)
 
 # Hack for mkdir differences (Windows / Linux).
-# On Windows, echo "1" produces literally "1", while on Linux it produces 1.
+# On Windows, echo '1' produces literally '1', while on Linux it produces 1.
 ifeq "$(shell echo '1')" "1"
-%.mkdir:
-	@mkdir -p $(dir $@)
+mkdir = $(shell mkdir -p $(1))
 else
-%.mkdir:
-	@mkdir $(subst /,\,$@)
-	@rmdir $(subst /,\,$@)
+mkdir = $(shell mkdir $(subst /,\,$(1)/dummy.mkdir) && rmdir $(subst /,\,$(1)/dummy.mkdir))
 endif
 
 # Build rules for binaries.
 $(SERVERBIN): $(patsubst src/%,build/%.o,$(SERVERSRC))
 $(CLIENTBIN): $(patsubst src/%,build/%.o,$(CLIENTSRC))
 
-$(SERVERBIN) $(CLIENTBIN): bin/dummy.mkdir
+$(CLIENTBIN):
 	@echo [LINK] $@
-	@$(CXX) $(CXXFLAGS) -o $@ $(filter %.o,$^) $(LIBS)
+	@$(call mkdir,$(dir $@))
+	@$(CXX) $(CXXFLAGS) -o $@ $(filter %.o,$^) $(CLIENTLIBS)
+
+$(SERVERBIN):
+	@echo [LINK] $@
+	@$(call mkdir,$(dir $@))
+	@$(CXX) $(CXXFLAGS) -o $@ $(filter %.o,$^) $(SERVERLIBS)
 
 # Include dependencies; generation rules are below.
 -include $(DEP)
 
 # Dependency generation.
-build/%.dep: src/% build/%.mkdir
+build/%.dep: src/%
 	@echo [DEPS] $<
+	@$(call mkdir,$(dir $@))
 	@$(CXX) $(CXXFLAGS) -MM $< -MF $@ -MT $@
 
 # Compilation
-build/%.o: src/% build/%.dep build/%.mkdir
+build/%.o: src/% build/%.dep
 	@echo [CXX] $<
+	@$(call mkdir,$(dir $@))
 	@$(CXX) $(CXXFLAGS) $< -c -o $@
