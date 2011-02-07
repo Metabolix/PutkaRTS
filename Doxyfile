@@ -1,0 +1,31 @@
+# Doxyfile 1.7.3
+
+DOXYFILE_ENCODING      = UTF-8
+PROJECT_NAME           = PutkaRTS
+
+# The PROJECT_NUMBER tag can be used to enter a project or revision number.
+# This could be handy for archiving the generated documentation or
+# if some version control system is used.
+
+PROJECT_NUMBER         =
+
+EXTRACT_ALL            = YES
+EXTRACT_PRIVATE        = YES
+EXTRACT_STATIC         = YES
+EXTRACT_LOCAL_CLASSES  = YES
+
+INPUT                  = src
+INPUT_ENCODING         = UTF-8
+FILE_PATTERNS          = *.cpp *.hpp
+RECURSIVE              = YES
+EXCLUDE                =
+
+SOURCE_BROWSER         = YES
+INLINE_SOURCES         = NO
+STRIP_CODE_COMMENTS    = YES
+
+GENERATE_HTML          = YES
+HTML_OUTPUT            = html
+HTML_FILE_EXTENSION    = .html
+HTML_DYNAMIC_SECTIONS  = YES
+GENERATE_LATEX         = NO

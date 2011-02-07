@@ -20,6 +20,10 @@ clean:
 clean_deps:
 	rm -f $(DEPS)
 
+# Documentation build with Doxygen
+html: Doxyfile $(SRC)
+	doxygen
+
 # Hack for mkdir differences (Windows / Linux).
 # On Windows, echo '1' produces literally '1', while on Linux it produces 1.
 ifeq "$(shell echo '1')" "1"
