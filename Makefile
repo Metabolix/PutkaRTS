@@ -16,9 +16,11 @@ all: client server
 client: $(CLIENTBIN)
 server: $(SERVERBIN)
 clean:
-	rm -rf build $(CLIENTBIN) $(SERVERBIN)
+	rm -rf build html $(CLIENTBIN) $(SERVERBIN)
 clean_deps:
 	rm -f $(DEPS)
+clean_html:
+	rm -rf html
 
 # Documentation build with Doxygen
 html: Doxyfile $(SRC)
