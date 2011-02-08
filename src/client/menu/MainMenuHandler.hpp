@@ -19,6 +19,9 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef _MAINMENUHANDLER_HPP
+#define _MAINMENUHANDLER_HPP
+
 #include <SFML/Graphics.hpp>
 
 class MainMenuHandler {
@@ -26,3 +29,5 @@ class MainMenuHandler {
 public:
 	void run(sf::RenderWindow& window);
 };
+
+#endif
