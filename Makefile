@@ -1,13 +1,14 @@
 CXXFLAGS := -Isrc -O -g -std=c++98 -Wall -pedantic
 
-SRC := $(wildcard src/*.cpp) $(wildcard src/*/*.cpp) $(wildcard src/*/*/*.cpp)
-DEP := $(patsubst src/%,build/%.dep,$(SRC))
+FILES_CPP := $(wildcard src/*.cpp) $(wildcard src/*/*.cpp) $(wildcard src/*/*/*.cpp) $(wildcard src/*/*/*/*.cpp)
+FILES_HPP := $(wildcard src/*.hpp) $(wildcard src/*/*.hpp) $(wildcard src/*/*/*.hpp) $(wildcard src/*/*/*/*.hpp)
+FILES_DEP := $(patsubst src/%,build/%.dep,$(FILES_CPP))
 
-SERVERSRC := $(filter-out src/client/%,$(SRC))
+SERVERSRC := $(filter-out src/client/%,$(FILES_CPP))
 SERVERBIN := bin/PutkaRTSd
 SERVERLIBS := -lsfml-system -lsfml-network
 
-CLIENTSRC := $(filter-out src/server/%,$(SRC))
+CLIENTSRC := $(filter-out src/server/%,$(FILES_CPP))
 CLIENTBIN := bin/PutkaRTS
 CLIENTLIBS := $(SERVERLIBS) -lsfml-window -lsfml-graphics -lsfml-audio
 
@@ -18,12 +19,12 @@ server: $(SERVERBIN)
 clean:
 	rm -rf build html $(CLIENTBIN) $(SERVERBIN)
 clean_deps:
-	rm -f $(DEPS)
+	rm -f $(FILES_DEP)
 clean_html:
 	rm -rf html
 
 # Documentation build with Doxygen
-html: Doxyfile $(SRC)
+html: Doxyfile $(FILES_CPP) $(FILES_HPP)
 	doxygen
 
 # Hack for mkdir differences (Windows / Linux).
@@ -49,11 +50,11 @@ $(SERVERBIN):
 	@$(CXX) $(CXXFLAGS) -o $@ $(filter %.o,$^) $(SERVERLIBS)
 
 # Include dependencies; generation rules are below.
--include $(DEP)
+-include $(FILES_DEP)
 
 # Dependency generation.
 build/%.dep: src/%
-	@echo [DEPS] $<
+	@echo [DEPEND] $<
 	@$(call mkdir,$(dir $@))
 	@$(CXX) $(CXXFLAGS) -MM $< -MF $@ -MT $@
 
