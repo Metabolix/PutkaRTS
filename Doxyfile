@@ -18,7 +18,7 @@ INPUT                  = src
 INPUT_ENCODING         = UTF-8
 FILE_PATTERNS          = *.cpp *.hpp
 RECURSIVE              = YES
-EXCLUDE                =
+EXCLUDE                = src/util/SIUnit.hpp
 
 SOURCE_BROWSER         = YES
 INLINE_SOURCES         = NO
