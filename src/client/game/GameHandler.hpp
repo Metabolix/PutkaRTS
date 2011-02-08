@@ -19,6 +19,9 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef _GAMEHANDLER_HPP
+#define _GAMEHANDLER_HPP
+
 #include "GameConnection.hpp"
 
 #include <memory>
@@ -48,3 +51,5 @@ public:
 	 */
 	void run(sf::RenderWindow& window);
 };
+
+#endif
