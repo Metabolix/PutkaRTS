@@ -36,16 +36,21 @@ void MainMenuHandler::startGame() {
 void MainMenuHandler::run(sf::RenderWindow& window) {
 	GameHandler::instance.reset();
 	sf::Clock clock;
-	while (clock.GetElapsedTime() < 3) {
+	while (window.IsOpened()) {
 		sf::Event e;
 		while (window.GetEvent(e)) {
+			if (e.Type == sf::Event::Closed) {
+				window.Close();
+				return;
+			}
+
 			if (e.Type == sf::Event::MouseButtonPressed) {
 				startGame();
 				return;
 			}
 		}
 		std::ostringstream ost;
-		ost << "This is the menu.\nClick to enter game,\notherwise the program quits.\n" << (3 - clock.GetElapsedTime());
+		ost << "This is the menu.\nClick to enter game.";
 		window.Clear();
 		window.Draw(sf::String(ost.str()));
 		window.Display();
