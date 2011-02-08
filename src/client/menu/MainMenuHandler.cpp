@@ -35,7 +35,7 @@ void MainMenuHandler::startGame() {
 
 void MainMenuHandler::run(sf::RenderWindow& window) {
 	GameHandler::instance.reset();
-	sf::Clock clock;
+
 	while (window.IsOpened()) {
 		sf::Event e;
 		while (window.GetEvent(e)) {
@@ -56,5 +56,4 @@ void MainMenuHandler::run(sf::RenderWindow& window) {
 		window.Display();
 		sf::Sleep(0.1f);
 	}
-	window.Close();
 }
