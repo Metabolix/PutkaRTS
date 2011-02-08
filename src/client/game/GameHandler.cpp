@@ -32,19 +32,24 @@ GameHandler::GameHandler(std::auto_ptr<GameConnection> connection_):
 
 void GameHandler::run(sf::RenderWindow& window) {
 	sf::Clock clock;
-	while (clock.GetElapsedTime() < 3) {
+	while (window.IsOpened()) {
 		sf::Event e;
 		while (window.GetEvent(e)) {
+			if (e.Type == sf::Event::Closed) {
+				window.Close();
+				return;
+			}
+
 			if (e.Type == sf::Event::MouseButtonPressed) {
 				return;
 			}
 		}
 		std::ostringstream ost;
-		ost << "This is the game mode.\nClick to return to menu,\notherwise the program quits.\n" << (3 - clock.GetElapsedTime());
+		ost << "This is the game mode.\nClick to return to menu.";
 		window.Clear();
 		window.Draw(sf::String(ost.str()));
 		window.Display();
-		sf::Sleep(0.1);
+		sf::Sleep(0.1f);
 	}
 	window.Close();
 }
