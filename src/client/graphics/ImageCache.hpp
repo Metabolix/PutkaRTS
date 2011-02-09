@@ -1,5 +1,5 @@
 /*
- * Main menu class definition.
+ * Image caching system.
  *
  * Copyright 2011 Lauri Kenttä
  *
@@ -19,29 +19,33 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MAINMENUHANDLER_HPP
-#define _MAINMENUHANDLER_HPP
+#ifndef _IMAGECACHE_HPP
+#define _IMAGECACHE_HPP
 
 #include <SFML/Graphics.hpp>
+#include <string>
+#include <map>
 
 /**
- * Main class for the game menu.
+ * Class for loading and automatically caching images.
  */
-class MainMenuHandler {
-	/** The view to use for rendering. */
-	sf::View view;
-
-	/**
-	 * Start a new game.
-	 */
-	void startGame();
+class ImageCache {
+	/** List of currently loaded images; the bool is not used. */
+	std::map<std::string, bool> loaded;
 public:
 	/**
-	 * Run the menu until it quits or a game starts.
+	 * Load an image or fetch it from cache.
 	 *
-	 * @param window The window to use for input and rendering.
+	 * @param file Image file name.
+	 * @return reference to the image.
+	 * @throw std::runtime_error Thrown if the image can't be loaded.
 	 */
-	void run(sf::RenderWindow& window);
+	const sf::Image& get(const std::string& file);
+
+	/**
+	 * Destructor; free images in this cache.
+	 */
+	~ImageCache();
 };
 
 #endif

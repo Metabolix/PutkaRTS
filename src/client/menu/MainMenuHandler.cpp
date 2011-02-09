@@ -24,8 +24,10 @@
 #include "client/game/LocalGameConnection.hpp"
 #include "game/Game.hpp"
 
-#include <sstream>
+#include "client/graphics/ImageCache.hpp"
+
 #include <memory>
+#include <algorithm>
 
 void MainMenuHandler::startGame() {
 	std::auto_ptr<Game> game(new Game());
@@ -34,7 +36,24 @@ void MainMenuHandler::startGame() {
 }
 
 void MainMenuHandler::run(sf::RenderWindow& window) {
+	ImageCache mainMenuImages;
+	const sf::Image& logoImage = mainMenuImages.get("data/graphics/logo.png");
+
+	// Entering main menu, no game should be running.
 	GameHandler::instance.reset();
+
+	// Make view that is as close to 640x480 as possible and centered.
+	view = window.GetDefaultView();
+	view.Zoom(std::min(view.GetRect().GetWidth() / 640, view.GetRect().GetWidth() / 480));
+	view.SetCenter(view.GetHalfSize());
+	window.SetView(view);
+
+	// Position at the top of the window.
+	sf::Sprite logoSprite(logoImage);
+	logoSprite.SetCenter(logoImage.GetWidth() / 2, 0);
+	logoSprite.SetPosition(window.GetView().GetRect().GetWidth() / 2, 1);
+
+	window.SetFramerateLimit(30);
 
 	while (window.IsOpened()) {
 		sf::Event e;
@@ -49,11 +68,10 @@ void MainMenuHandler::run(sf::RenderWindow& window) {
 				return;
 			}
 		}
-		std::ostringstream ost;
-		ost << "This is the menu.\nClick to enter game.";
-		window.Clear();
-		window.Draw(sf::String(ost.str()));
+
+		window.Clear(sf::Color(0xcc, 0x66, 0x33));
+		window.Draw(logoSprite);
+		window.Draw(sf::String("Menu; click to start game."));
 		window.Display();
-		sf::Sleep(0.1f);
 	}
 }
