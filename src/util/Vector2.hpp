@@ -19,8 +19,8 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _VECTOR2_HPP
-#define _VECTOR2_HPP
+#ifndef PUTKARTS_Vector2_HPP
+#define PUTKARTS_Vector2_HPP
 
 #include "SIUnit.hpp"
 #include "Scalar.hpp"

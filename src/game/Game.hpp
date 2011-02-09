@@ -19,8 +19,8 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _GAME_HPP
-#define _GAME_HPP
+#ifndef PUTKARTS_Game_HPP
+#define PUTKARTS_Game_HPP
 
 #include "util/Scalar.hpp"
 #include "Message.hpp"

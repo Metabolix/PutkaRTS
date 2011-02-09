@@ -19,8 +19,8 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _LOCALGAMECONNECTION_HPP
-#define _LOCALGAMECONNECTION_HPP
+#ifndef PUTKARTS_LocalGameConnection_HPP
+#define PUTKARTS_LocalGameConnection_HPP
 
 #include <string>
 

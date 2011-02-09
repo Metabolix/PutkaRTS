@@ -19,8 +19,8 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _IMAGECACHE_HPP
-#define _IMAGECACHE_HPP
+#ifndef PUTKARTS_ImageCache_HPP
+#define PUTKARTS_ImageCache_HPP
 
 #include <SFML/Graphics.hpp>
 #include <string>

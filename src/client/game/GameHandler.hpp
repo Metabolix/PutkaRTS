@@ -19,8 +19,8 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _GAMEHANDLER_HPP
-#define _GAMEHANDLER_HPP
+#ifndef PUTKARTS_GameHandler_HPP
+#define PUTKARTS_GameHandler_HPP
 
 #include "GameConnection.hpp"
 
