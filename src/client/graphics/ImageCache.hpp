@@ -26,10 +26,25 @@
 #include <string>
 #include <map>
 
+/**
+ * Class for loading and automatically caching images.
+ */
 class ImageCache {
+	/** List of currently loaded images; the bool is not used. */
 	std::map<std::string, bool> loaded;
 public:
-	const sf::Image& get(const std::string& str);
+	/**
+	 * Load an image or fetch it from cache.
+	 *
+	 * @param file Image file name.
+	 * @return reference to the image.
+	 * @throw std::runtime_error Thrown if the image can't be loaded.
+	 */
+	const sf::Image& get(const std::string& file);
+
+	/**
+	 * Destructor; free images in this cache.
+	 */
 	~ImageCache();
 };
 

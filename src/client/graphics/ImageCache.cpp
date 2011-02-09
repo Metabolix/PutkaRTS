@@ -27,11 +27,15 @@
 #include <string>
 #include <map>
 
+/**
+ * Structure to hold an image and its reference count.
+ */
 struct ImageCacheNode {
 	sf::Image image;
 	int references;
 };
 
+/** All the images that are currently loaded, listed by file name. */
 static std::map<std::string, ImageCacheNode> images;
 
 const sf::Image& ImageCache::get(const std::string& file) {
