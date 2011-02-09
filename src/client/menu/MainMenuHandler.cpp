@@ -49,11 +49,9 @@ void MainMenuHandler::run(sf::RenderWindow& window) {
 				return;
 			}
 		}
-		std::ostringstream ost;
-		ost << "This is the menu.\nClick to enter game.";
+
 		window.Clear();
-		window.Draw(sf::String(ost.str()));
+		window.Draw(sf::String("Menu; click to start game."));
 		window.Display();
-		sf::Sleep(0.1f);
 	}
 }
