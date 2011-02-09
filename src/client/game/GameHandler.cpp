@@ -31,6 +31,11 @@ GameHandler::GameHandler(std::auto_ptr<GameConnection> connection_):
 }
 
 void GameHandler::run(sf::RenderWindow& window) {
+	view = window.GetDefaultView();
+	window.SetView(view);
+
+	window.SetFramerateLimit(0);
+
 	sf::Clock clock;
 	while (window.IsOpened()) {
 		sf::Event e;

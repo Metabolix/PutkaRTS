@@ -31,6 +31,9 @@
  * Class for the client-side game GUI.
  */
 class GameHandler {
+	/** The view to use for rendering. */
+	sf::View view;
+
 	/** The game connection to use. */
 	std::auto_ptr<GameConnection> connection;
 public:
