@@ -20,7 +20,7 @@
  */
 
 #include "GameHandler.hpp"
-#include <sstream>
+
 #include <memory>
 
 std::auto_ptr<GameHandler> GameHandler::instance;
@@ -36,7 +36,6 @@ void GameHandler::run(sf::RenderWindow& window) {
 
 	window.SetFramerateLimit(0);
 
-	sf::Clock clock;
 	while (window.IsOpened()) {
 		sf::Event e;
 		while (window.GetEvent(e)) {
@@ -49,12 +48,10 @@ void GameHandler::run(sf::RenderWindow& window) {
 				return;
 			}
 		}
-		std::ostringstream ost;
-		ost << "This is the game mode.\nClick to return to menu.";
+
 		window.Clear();
-		window.Draw(sf::String(ost.str()));
+		window.Draw(sf::String("Game; click to return to menu."));
 		window.Display();
 		sf::Sleep(0.1f);
 	}
-	window.Close();
 }
