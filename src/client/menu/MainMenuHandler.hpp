@@ -24,12 +24,23 @@
 
 #include <SFML/Graphics.hpp>
 
+/**
+ * Main class for the game menu.
+ */
 class MainMenuHandler {
 	/** The view to use for rendering. */
 	sf::View view;
 
+	/**
+	 * Start a new game.
+	 */
 	void startGame();
 public:
+	/**
+	 * Run the menu until it quits or a game starts.
+	 *
+	 * @param window The window to use for input and rendering.
+	 */
 	void run(sf::RenderWindow& window);
 };
 
