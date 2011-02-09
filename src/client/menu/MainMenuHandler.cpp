@@ -24,7 +24,6 @@
 #include "client/game/LocalGameConnection.hpp"
 #include "game/Game.hpp"
 
-#include <sstream>
 #include <memory>
 
 void MainMenuHandler::startGame() {
@@ -34,7 +33,16 @@ void MainMenuHandler::startGame() {
 }
 
 void MainMenuHandler::run(sf::RenderWindow& window) {
+	// Entering main menu, no game should be running.
 	GameHandler::instance.reset();
+
+	// Make view that is as close to 640x480 as possible and centered.
+	view = window.GetDefaultView();
+	view.Zoom(std::min(view.GetRect().GetWidth() / 640, view.GetRect().GetWidth() / 480));
+	view.SetCenter(view.GetHalfSize());
+	window.SetView(view);
+
+	window.SetFramerateLimit(30);
 
 	while (window.IsOpened()) {
 		sf::Event e;

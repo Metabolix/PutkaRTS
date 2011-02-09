@@ -25,6 +25,9 @@
 #include <SFML/Graphics.hpp>
 
 class MainMenuHandler {
+	/** The view to use for rendering. */
+	sf::View view;
+
 	void startGame();
 public:
 	void run(sf::RenderWindow& window);
