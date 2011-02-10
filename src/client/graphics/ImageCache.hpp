@@ -34,6 +34,15 @@ class ImageCache {
 	std::map<std::string, bool> loaded;
 public:
 	/**
+	 * Fetch an image from the cache.
+	 *
+	 * @param id Image identifier.
+	 * @return reference to the image.
+	 * @throw std::runtime_error Thrown if the image is not loaded.
+	 */
+	const sf::Image& get(const std::string& id) const;
+
+	/**
 	 * Load an image or fetch it from cache.
 	 *
 	 * @param file Image file name.

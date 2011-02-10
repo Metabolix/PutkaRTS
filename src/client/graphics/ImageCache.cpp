@@ -55,6 +55,13 @@ const sf::Image& ImageCache::get(const std::string& file) {
 	return images[file].image;
 }
 
+const sf::Image& ImageCache::get(const std::string& id) const {
+	if (loaded.find(id) == loaded.end()) {
+		throw std::runtime_error("ImageCache does not contain '" + id + "'!");
+	}
+	return images[loaded.find(id)->second].image;
+}
+
 void ImageCache::clear() {
 	for (std::map<std::string, bool>::iterator i = loaded.begin(); i != loaded.end(); ++i) {
 		images[i->first].references--;
