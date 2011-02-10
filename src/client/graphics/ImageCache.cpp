@@ -55,11 +55,24 @@ const sf::Image& ImageCache::get(const std::string& file) {
 	return images[file].image;
 }
 
-ImageCache::~ImageCache() {
+void ImageCache::clear() {
 	for (std::map<std::string, bool>::iterator i = loaded.begin(); i != loaded.end(); ++i) {
 		images[i->first].references--;
 		if (!images[i->first].references) {
 			images.erase(i->first);
 		}
 	}
+	loaded.clear();
+}
+
+ImageCache& ImageCache::operator = (const ImageCache& other) {
+	if (this == &other) {
+		return *this;
+	}
+	clear();
+	loaded = other.loaded;
+	for (std::map<std::string, bool>::iterator i = loaded.begin(); i != loaded.end(); ++i) {
+		images[i->first].references++;
+	}
+	return *this;
 }

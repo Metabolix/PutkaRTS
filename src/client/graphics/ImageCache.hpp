@@ -43,9 +43,39 @@ public:
 	const sf::Image& get(const std::string& file);
 
 	/**
+	 * Free images in this cache.
+	 */
+	void clear();
+
+	/**
+	 * Assignment operator; update image reference counts.
+	 *
+	 * @param other The other cache.
+	 * @return Reference to self.
+	 */
+	ImageCache& operator = (const ImageCache& other);
+
+	/**
+	 * Default constructor.
+	 */
+	ImageCache() {
+	}
+
+	/**
+	 * Copy constructor; reuse assignment operator here.
+	 *
+	 * @param other The other cache.
+	 */
+	ImageCache(const ImageCache& other) {
+		*this = other;
+	}
+
+	/**
 	 * Destructor; free images in this cache.
 	 */
-	~ImageCache();
+	~ImageCache() {
+		clear();
+	}
 };
 
 #endif
