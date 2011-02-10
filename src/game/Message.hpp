@@ -19,8 +19,8 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MESSAGE_HPP
-#define _MESSAGE_HPP
+#ifndef PUTKARTS_Message_HPP
+#define PUTKARTS_Message_HPP
 
 #include "util/Scalar.hpp"
 

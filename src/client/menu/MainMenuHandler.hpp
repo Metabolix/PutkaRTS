@@ -19,8 +19,8 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MAINMENUHANDLER_HPP
-#define _MAINMENUHANDLER_HPP
+#ifndef PUTKARTS_MainMenuHandler_HPP
+#define PUTKARTS_MainMenuHandler_HPP
 
 #include <SFML/Graphics.hpp>
 

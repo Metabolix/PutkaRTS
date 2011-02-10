@@ -19,8 +19,8 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _SCALAR_HPP
-#define _SCALAR_HPP
+#ifndef PUTKARTS_Scalar_HPP
+#define PUTKARTS_Scalar_HPP
 
 #include "SIUnit.hpp"
 

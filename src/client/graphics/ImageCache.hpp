@@ -19,8 +19,8 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _IMAGECACHE_HPP
-#define _IMAGECACHE_HPP
+#ifndef PUTKARTS_ImageCache_HPP
+#define PUTKARTS_ImageCache_HPP
 
 #include <SFML/Graphics.hpp>
 #include <string>
@@ -30,22 +30,77 @@
  * Class for loading and automatically caching images.
  */
 class ImageCache {
-	/** List of currently loaded images; the bool is not used. */
-	std::map<std::string, bool> loaded;
+	/** Type of the map used to keep track of loaded files. */
+	typedef std::map<std::string, std::string> FileMap;
+
+	/** List of currently loaded images and their file names. */
+	FileMap loaded;
 public:
+	/**
+	 * Fetch an image from the cache.
+	 *
+	 * @param id Image identifier.
+	 * @return reference to the image.
+	 * @throw std::runtime_error Thrown if the image is not loaded.
+	 */
+	const sf::Image& get(const std::string& id) const;
+
 	/**
 	 * Load an image or fetch it from cache.
 	 *
+	 * If there is an image with the given id, it will be returned.
+	 * Otherwise the parameter will be used as a filename.
+	 *
+	 * @param fileOrId Image identifier or file name.
+	 * @return reference to the image.
+	 * @throw std::runtime_error Thrown if the image can't be loaded or if another image is already assigned to this name.
+	 */
+	const sf::Image& get(const std::string& fileOrId);
+
+	/**
+	 * Load an image or fetch it from cache.
+	 *
+	 * @param id An identifier for the image.
 	 * @param file Image file name.
 	 * @return reference to the image.
-	 * @throw std::runtime_error Thrown if the image can't be loaded.
+	 * @throw std::runtime_error Thrown if the image can't be loaded or if another image is already assigned to this name.
 	 */
-	const sf::Image& get(const std::string& file);
+	const sf::Image& get(const std::string& id, const std::string& file);
+
+	/**
+	 * Free images in this cache.
+	 */
+	void clear();
+
+	/**
+	 * Assignment operator; update image reference counts.
+	 *
+	 * @param other The other cache.
+	 * @return Reference to self.
+	 */
+	ImageCache& operator = (const ImageCache& other);
+
+	/**
+	 * Default constructor.
+	 */
+	ImageCache() {
+	}
+
+	/**
+	 * Copy constructor; reuse assignment operator here.
+	 *
+	 * @param other The other cache.
+	 */
+	ImageCache(const ImageCache& other) {
+		*this = other;
+	}
 
 	/**
 	 * Destructor; free images in this cache.
 	 */
-	~ImageCache();
+	~ImageCache() {
+		clear();
+	}
 };
 
 #endif

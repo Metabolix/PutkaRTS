@@ -19,8 +19,8 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _REMOTEGAMECONNECTION_HPP
-#define _REMOTEGAMECONNECTION_HPP
+#ifndef PUTKARTS_RemoteGameConnection_HPP
+#define PUTKARTS_RemoteGameConnection_HPP
 
 #include <string>
 

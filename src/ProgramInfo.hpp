@@ -19,8 +19,8 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _PROGRAMINFO_HPP
-#define _PROGRAMINFO_HPP
+#ifndef PUTKARTS_ProgramInfo_HPP
+#define PUTKARTS_ProgramInfo_HPP
 
 #include <string>
 

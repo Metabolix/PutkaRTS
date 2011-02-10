@@ -19,8 +19,8 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _SIUNIT_HPP
-#define _SIUNIT_HPP
+#ifndef PUTKARTS_SIUnit_HPP
+#define PUTKARTS_SIUnit_HPP
 
 namespace SIUnit {
 	// Define Unit template.
