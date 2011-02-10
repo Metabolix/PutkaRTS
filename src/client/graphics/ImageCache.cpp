@@ -38,7 +38,14 @@ struct ImageCacheNode {
 /** All the images that are currently loaded, listed by file name. */
 static std::map<std::string, ImageCacheNode> images;
 
-const sf::Image& ImageCache::get(const std::string& file) {
+const sf::Image& ImageCache::get(const std::string& id, const std::string& file) {
+	if (loaded.find(id) != loaded.end()) {
+		if (loaded.find(id)->second != file) {
+			throw std::runtime_error("ImageCache already contains '" + id + "' (loaded from " + loaded.find(id)->second + "), can't load " + file + "!");
+		}
+		return images[file].image;
+	}
+
 	if (images.find(file) == images.end()) {
 		images[file].references = 0;
 		if (!images[file].image.LoadFromFile(file)) {
@@ -47,12 +54,18 @@ const sf::Image& ImageCache::get(const std::string& file) {
 		}
 	}
 
-	if (!loaded[file]) {
-		loaded[file] = true;
-		++images[file].references;
-	}
+	loaded[id] = file;
+	images[file].references += 1;
 
 	return images[file].image;
+}
+
+const sf::Image& ImageCache::get(const std::string& fileOrId) {
+	if (loaded.find(fileOrId) != loaded.end()) {
+		const ImageCache& tmp = *this;
+		return tmp.get(fileOrId);
+	}
+	return get(fileOrId, fileOrId);
 }
 
 const sf::Image& ImageCache::get(const std::string& id) const {
@@ -63,10 +76,10 @@ const sf::Image& ImageCache::get(const std::string& id) const {
 }
 
 void ImageCache::clear() {
-	for (std::map<std::string, bool>::iterator i = loaded.begin(); i != loaded.end(); ++i) {
-		images[i->first].references--;
-		if (!images[i->first].references) {
-			images.erase(i->first);
+	for (FileMap::iterator i = loaded.begin(); i != loaded.end(); ++i) {
+		images[i->second].references -= 1;
+		if (!images[i->second].references) {
+			images.erase(i->second);
 		}
 	}
 	loaded.clear();
@@ -78,8 +91,8 @@ ImageCache& ImageCache::operator = (const ImageCache& other) {
 	}
 	clear();
 	loaded = other.loaded;
-	for (std::map<std::string, bool>::iterator i = loaded.begin(); i != loaded.end(); ++i) {
-		images[i->first].references++;
+	for (FileMap::iterator i = loaded.begin(); i != loaded.end(); ++i) {
+		images[i->second].references += 1;
 	}
 	return *this;
 }

@@ -30,8 +30,11 @@
  * Class for loading and automatically caching images.
  */
 class ImageCache {
-	/** List of currently loaded images; the bool is not used. */
-	std::map<std::string, bool> loaded;
+	/** Type of the map used to keep track of loaded files. */
+	typedef std::map<std::string, std::string> FileMap;
+
+	/** List of currently loaded images and their file names. */
+	FileMap loaded;
 public:
 	/**
 	 * Fetch an image from the cache.
@@ -45,11 +48,24 @@ public:
 	/**
 	 * Load an image or fetch it from cache.
 	 *
+	 * If there is an image with the given id, it will be returned.
+	 * Otherwise the parameter will be used as a filename.
+	 *
+	 * @param fileOrId Image identifier or file name.
+	 * @return reference to the image.
+	 * @throw std::runtime_error Thrown if the image can't be loaded or if another image is already assigned to this name.
+	 */
+	const sf::Image& get(const std::string& fileOrId);
+
+	/**
+	 * Load an image or fetch it from cache.
+	 *
+	 * @param id An identifier for the image.
 	 * @param file Image file name.
 	 * @return reference to the image.
-	 * @throw std::runtime_error Thrown if the image can't be loaded.
+	 * @throw std::runtime_error Thrown if the image can't be loaded or if another image is already assigned to this name.
 	 */
-	const sf::Image& get(const std::string& file);
+	const sf::Image& get(const std::string& id, const std::string& file);
 
 	/**
 	 * Free images in this cache.
