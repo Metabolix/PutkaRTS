@@ -31,9 +31,11 @@
  */
 template <typename T>
 class Array2D {
+public:
 	/** Size type. */
 	typedef typename std::vector<T>::size_type SizeType;
 
+private:
 	/** Array size in x direction. */
 	SizeType sizeX;
 
