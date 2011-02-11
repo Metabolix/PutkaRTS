@@ -1,0 +1,23 @@
+INSTALL
+
+DEPENDENCIES:
+This project uses these libraries:
+	SFML 1.6
+	Boost
+
+DEPENDENCIES UNDER Mac OS X:
+In 64-bit version dependencies are:
+	SFML 1.6 64-bit version
+	OpenAL framework from SFML 1.6 32-bit version package
+
+In 32-bit version dependencies are:
+	SFML 1.6 32-bit version
+
+BUILDING UNDER UNIX/Mac OS X:
+In most cases you can compile PutkaRTS only by typing command 'make'.
+This will check dependencies and compile if everything is right.
+
+If you are missing dependencies you can download them from SFML-lib's webpages or just using your package manager.
+
+BUILDING UNDER WINDOWS:
+The same goes for Windows if you have MinGW installed and configured properly.

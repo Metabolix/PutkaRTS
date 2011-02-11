@@ -12,6 +12,21 @@ CLIENTSRC := $(filter-out src/server/%,$(FILES_CPP))
 CLIENTBIN := bin/PutkaRTS
 CLIENTLIBS := $(SERVERLIBS) -lsfml-window -lsfml-graphics -lsfml-audio
 
+# Hack for OS differences.
+# On Windows, echo '1' produces literally '1' instead of 1.
+ifeq "$(shell echo '1')" "'1'"
+  # Windows needs a hack for mkdir
+  mkdir = $(shell mkdir $(subst /,\,$(1)/dummy.mkdir) && rmdir $(subst /,\,$(1)/dummy.mkdir))
+else
+  # Linux and Mac OS X have better mkdir
+  mkdir = $(shell mkdir -p $(1))
+  # Mac OS X needs different libraries
+  ifeq "$(shell uname -s)" "Darwin"
+    SERVERLIBS := $(patsubst -l%,-framework %,$(SERVERLIBS))
+    CLIENTLIBS := $(patsubst -l%,-framework %,$(CLIENTLIBS))
+  endif
+endif
+
 # Abstract build rules.
 all: client server
 client: $(CLIENTBIN)
@@ -26,14 +41,6 @@ clean_html:
 # Documentation build with Doxygen
 html: Doxyfile $(FILES_CPP) $(FILES_HPP)
 	doxygen
-
-# Hack for mkdir differences (Windows / Linux).
-# On Windows, echo '1' produces literally '1', while on Linux it produces 1.
-ifeq "$(shell echo '1')" "1"
-mkdir = $(shell mkdir -p $(1))
-else
-mkdir = $(shell mkdir $(subst /,\,$(1)/dummy.mkdir) && rmdir $(subst /,\,$(1)/dummy.mkdir))
-endif
 
 # Build rules for binaries.
 $(SERVERBIN): $(patsubst src/%,build/%.o,$(SERVERSRC))
