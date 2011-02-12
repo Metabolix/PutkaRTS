@@ -39,7 +39,7 @@ void GameHandler::run(sf::RenderWindow& window) {
 	while (window.IsOpened()) {
 		sf::Event e;
 		while (window.GetEvent(e)) {
-			if (e.Type == sf::Event::Closed) {
+			if (e.Type == sf::Event::Closed || (e.Type == sf::Event::KeyPressed && e.Key.Code == sf::Key::Escape)) {
 				window.Close();
 				return;
 			}
