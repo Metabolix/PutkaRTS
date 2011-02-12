@@ -28,6 +28,7 @@
 #include <boost/algorithm/string.hpp>
  
 void Map::load(const std::string& filename) {
+try {
 	std::ifstream file(filename.c_str());
 	if (!file) {
 		throw std::runtime_error(filename + " could not be opened!");
@@ -35,7 +36,7 @@ void Map::load(const std::string& filename) {
 
 	bool emptyLine = false;
 	std::vector<std::string> mapArray;
-	while (file && !emptyLine) {
+	while (file.good() && !emptyLine) {
 		std::string line;
 		if (!getline(file, line)) {
 			break;
@@ -45,36 +46,43 @@ void Map::load(const std::string& filename) {
 			emptyLine = true;
 			break;
 		}
+		if (mapArray.size() && line.length() != mapArray[0].length()) {
+			throw std::runtime_error(filename + " has invalid format (width is not constant)!");
+		}
 		mapArray.push_back(line);
 	}
 
 	if (!emptyLine) {
-		throw std::runtime_error(filename + " contains invalid format (no newline)!");
+		throw std::runtime_error(filename + " has invalid format (no newline)!");
 	}
 
-	while (file) {
+	while (file.good()) {
 		char tile;
 		TileInfo info;
-		file >> tile >> info.groundTile >> info.waterTile >> info.texturePath;
-		tileConfig[tile] = info;
+		if (!(file >> tile >> info.groundTile >> info.waterTile >> info.texturePath) && !file.eof()) {
+			throw std::runtime_error(filename + " has invalid format (definition section malformed)!");
+		}
+		tileInfoMap[tile] = info;
 	}
 
-	if (mapArray.size() == 0 || mapArray[0].size() == 0) {
-		throw std::runtime_error(filename + " contains invalid format (invalid (zero) dimensions)!");
+	if (mapArray.size() == 0) {
+		throw std::runtime_error(filename + " has invalid format (zero dimensions)!");
 	}
 
 	tileMap.resize(mapArray[0].length(), mapArray.size());
 
 	for (size_t y = 0; y < mapArray.size(); ++y) {
-		if (mapArray[y].length() != mapArray[0].length()) {
-			throw std::runtime_error(filename + " contains invalid format (width is not constant)!");
-		}
 		for (size_t x = 0; x < mapArray[y].length(); ++x) {
 			char current = mapArray[y][x];
-			if (tileConfig.find(current) == tileConfig.end()) {
-				throw std::runtime_error(filename + " contains invalid format (tile " + current + " used but not defined)!");
+			if (tileInfoMap.find(current) == tileInfoMap.end()) {
+				throw std::runtime_error(filename + " has invalid format (tile " + current + " used but not defined)!");
 			}
 			tileMap(x, y) = current;
 		}
 	}
+} catch (...) {
+	tileMap.resize(0, 0);
+	tileInfoMap.clear();
+	throw;
+}
 }

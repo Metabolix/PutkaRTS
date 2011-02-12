@@ -39,20 +39,36 @@ struct TileInfo {
  */
 class Map {
 	/**
-	 * Map in array of tiles
+	 * Map in array of tiles.
 	 */
 	Array2D<char> tileMap;
 
 	/**
-	 * Store each tile's info
+	 * Store each tile's info.
 	 */
-	std::map<char, TileInfo> tileConfig;
+	std::map<char, TileInfo> tileInfoMap;
 public:
+	/**
+	 * Default constructor.
+	 */
+	Map() {
+		// Nothing here.
+	}
+
+	/**
+	 * Constructor with the filename.
+	 * 
+	 * @param filename Map's filename.
+	 */
+	Map(const std::string& filename) {
+		load(filename);
+	}
+
 	/**
 	 * Load a map structure from a file
 	 * 
-	 * @param filename Map's filename
-	 * @throw std::runtime_error Thrown if the map can't be loaded
+	 * @param filename Map's filename.
+	 * @throw std::runtime_error Thrown if the map can't be loaded.
 	 */
 	void load(const std::string& filename);
 
@@ -71,14 +87,11 @@ public:
 	}
 
 	/**
-	 * Get TileInfo at location (x, y)
+	 * Get TileInfo at location (x, y).
 	 */
 	const TileInfo& operator() (Array2D<char>::SizeType x, Array2D<char>::SizeType y) const {
 		std::map<char, TileInfo>::const_iterator it;
-		it = tileConfig.find(tileMap(x, y));
-		if (it == tileConfig.end()) {
-			throw std::runtime_error("Missing tileInfo for tile " + tileMap(x, y) + std::string("!"));
-		}
+		it = tileInfoMap.find(tileMap(x, y));
 		return it->second;
 	}
 };
