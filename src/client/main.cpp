@@ -65,7 +65,11 @@ try {
 			GameHandler::instance->run(window);
 		}
 	}
-	conf.save();
+	try {
+		conf.save();
+	} catch (std::runtime_error& e) {
+		std::cerr << e.what() << std::endl;
+	}
 
 	return 0;
 } catch (std::exception& e) {
