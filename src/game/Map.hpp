@@ -75,7 +75,10 @@ public:
 	 */
 	const TileInfo& operator() (Array2D<char>::SizeType x, Array2D<char>::SizeType y) const {
 		std::map<char, TileInfo>::const_iterator it;
-		it = tileConfig.find(tileMap(x,y));
+		it = tileConfig.find(tileMap(x, y));
+		if (it == tileConfig.end()) {
+			throw std::runtime_error("Missing tileInfo for tile " + tileMap(x, y) + std::string("!"));
+		}
 		return it->second;
 	}
 };
