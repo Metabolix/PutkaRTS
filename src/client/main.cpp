@@ -25,6 +25,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "ProgramInfo.hpp"
+#include "util/Configuration.hpp"
 
 #include "menu/MainMenuHandler.hpp"
 #include "game/GameHandler.hpp"
@@ -34,8 +35,24 @@
  */
 int main()
 try {
+	// TODO: try different local paths for different operating systems.
+	Configuration conf("local/client.conf");
+
+	sf::VideoMode mode = sf::VideoMode(
+		conf.getInt("window.size.x", 800),
+		conf.getInt("window.size.y", 600)
+	);
+	unsigned long style = sf::Style::Close;
+
+	if (conf.getBool("window.fullscreen", false)) {
+		style = sf::Style::Fullscreen;
+		if (!mode.IsValid()) {
+			mode = sf::VideoMode::GetDesktopMode();
+		}
+	}
+
 	std::string title = ProgramInfo::name + " " + ProgramInfo::version + " (client mode)";
-	sf::RenderWindow window(sf::VideoMode(800, 600), title);
+	sf::RenderWindow window(mode, title, style);
 
 	MainMenuHandler menu;
 
@@ -48,6 +65,7 @@ try {
 			GameHandler::instance->run(window);
 		}
 	}
+	conf.save();
 
 	return 0;
 } catch (std::exception& e) {
