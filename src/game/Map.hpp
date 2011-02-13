@@ -27,17 +27,18 @@
 #include "util/Array2D.hpp"
 
 /**
- * Struct for tile's information
- */
-struct TileInfo {
-	bool groundTile, waterTile;
-	std::string texturePath;
-};
-
-/**
  * This class describes the map format
  */
 class Map {
+public:
+	/**
+	 * Struct for tile's information
+	 */
+	struct TileInfo {
+		bool groundTile, waterTile;
+		std::string texturePath;
+	};
+private:
 	/**
 	 * Map in array of tiles.
 	 */
@@ -90,9 +91,7 @@ public:
 	 * Get TileInfo at location (x, y).
 	 */
 	const TileInfo& operator() (Array2D<char>::SizeType x, Array2D<char>::SizeType y) const {
-		std::map<char, TileInfo>::const_iterator it;
-		it = tileInfoMap.find(tileMap(x, y));
-		return it->second;
+		return tileInfoMap.find(tileMap(x, y))->second;
 	}
 };
 

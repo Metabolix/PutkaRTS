@@ -27,7 +27,7 @@
 #include <fstream>
 #include <boost/algorithm/string.hpp>
  
-void Map::load(const std::string& filename) {
+void Map::load(const std::string& filename)
 try {
 	std::ifstream file(filename.c_str());
 	if (!file) {
@@ -56,10 +56,10 @@ try {
 		throw std::runtime_error(filename + " has invalid format (no newline)!");
 	}
 
-	while (file.good()) {
+	while (file >> std::ws && !file.eof()) {
 		char tile;
 		TileInfo info;
-		if (!(file >> tile >> info.groundTile >> info.waterTile >> info.texturePath) && !file.eof()) {
+		if (!(file >> tile >> info.groundTile >> info.waterTile >> info.texturePath)) {
 			throw std::runtime_error(filename + " has invalid format (definition section malformed)!");
 		}
 		tileInfoMap[tile] = info;
@@ -84,5 +84,4 @@ try {
 	tileMap.resize(0, 0);
 	tileInfoMap.clear();
 	throw;
-}
 }
