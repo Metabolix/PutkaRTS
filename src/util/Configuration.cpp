@@ -16,7 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with PutkaRTS. If not, see <http://www.gnu.org/licenses/>.
+ * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include <iostream>
@@ -36,23 +36,13 @@ Configuration::Configuration(const std::string& filepath_):
 	load(filepath);
 }
 
-bool Configuration::load(const std::string& filepath_) {
+void Configuration::load(std::istream& stream) {
 	// Clear possible earlier configuration.
 	configuration.clear();
 
-	// Open the configuration file.
-	std::ifstream file((filepath_).c_str());
-	if (!file) {
-		std::cerr << "Failed to load configuration: " << filepath << " not found." << std::endl;
-		return false;
-	}
-
-	// Save filepath.
-	filepath = filepath_;
-
 	// Read all keys and values.
 	std::string line;
-	while (getline(file, line)) {
+	while (getline(stream, line)) {
 		// Skip all lines starting with '#'
 		if (line.empty() || line[0] == '#') {
 			continue;
@@ -61,7 +51,7 @@ bool Configuration::load(const std::string& filepath_) {
 		// Find separator '='.
 		std::string::size_type position = line.find('=');
 		if (position == std::string::npos) {
-			std::cerr << "Illegal line in configuration file: " << line << std::endl;
+			std::cerr << "Illegal configuration line: \"" << line << "\"" << std::endl;
 			continue;
 		}
 
@@ -70,18 +60,40 @@ bool Configuration::load(const std::string& filepath_) {
 		std::string value = boost::trim_copy(line.substr(position + 1));
 
 		if (!key.empty() && key[0] != '#') {
-			// Add them to datastructure.
+			// Add them to data structure.
 			configuration.insert(std::make_pair(key, value));
 		} else {
-			std::cerr << "Illegal line in configuration file: " << line << std::endl;
+			std::cerr << "Illegal configuration line: \"" << line << "\"" << std::endl;
 		}
 	}
+}
+
+bool Configuration::load(const std::string& filepath_) {
+	// Open the configuration file.
+	std::ifstream file(filepath_.c_str());
+	if (!file) {
+		std::cerr << "Failed to open configuration file: \"" << filepath << "\"" << std::endl;
+		return false;
+	}
+
+	// Save filepath.
+	filepath = filepath_;
+
+	// Parse data.
+	load(file);
 
 	return true;
 }
 
-void Configuration::save() const {
-	save(filepath);
+bool Configuration::load() {
+	return load(filepath);
+}
+
+void Configuration::save(std::ostream& stream) const {
+	// Write configuration to the stream.
+	for (std::map<std::string, std::string>::const_iterator iter = configuration.begin(); iter != configuration.end(); ++iter) {
+		stream << iter->first << " = " << iter->second << std::endl;
+	}
 }
 
 void Configuration::save(const std::string& filepath_) const {
@@ -92,9 +104,11 @@ void Configuration::save(const std::string& filepath_) const {
 	}
 
 	// Write configuration to the file.
-	for (std::map<std::string, std::string>::const_iterator iter = configuration.begin(); iter != configuration.end(); ++iter) {
-		file << iter->first << " = " << iter->second << std::endl;
-	}
+	save(file);
+}
+
+void Configuration::save() const {
+	save(filepath);
 }
 
 bool Configuration::getBool(const std::string& key, bool defaultValue) const {
@@ -115,7 +129,7 @@ std::string Configuration::getString(const std::string& key, const std::string& 
 		throw std::logic_error("Configuration::getValue: Illegal key: \"" + key + "\"");
 	}
 
-	// If the key exist.
+	// If the key exists.
 	if (configuration.find(key) != configuration.end()) {
 		// Return it's value.
 		return configuration.find(key)->second;
@@ -142,6 +156,10 @@ void Configuration::setString(const std::string& key, const std::string& value) 
 
 void Configuration::remove(const std::string& key) {
 	configuration.erase(key);
+}
+
+void Configuration::clear() {
+	configuration.clear();
 }
 
 template <typename T>

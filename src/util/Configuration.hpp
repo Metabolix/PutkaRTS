@@ -16,7 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with PutkaRTS. If not, see <http://www.gnu.org/licenses/>.
+ * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef PUTKARTS_Configuration_HPP
@@ -34,16 +34,16 @@
  * ...
  */
 class Configuration {
-	/** Datastructure for users and configuration */
+	/** Data structure for configuration. */
 	std::map<std::string, std::string> configuration;
 
-	/** Path of the configuration file */
+	/** Path of the configuration file. */
 	std::string filepath;
 
 	/**
 	 * Returns the value of configuration key.
 	 *
-	 * @param key The configuration key
+	 * @param key The configuration key.
 	 * @param defaultValue Default value.
 	 * @return Value of configuration key. If key is not found, return value is defaultValue.
 	 * @throw std::logic_error Thrown if key is illegal (empty, starts with '#' or has whitespace around it).
@@ -73,7 +73,14 @@ public:
 	 *
 	 * @param filepath Path of the configuration file.
 	 */
-	Configuration(const std::string& filepath_);
+	Configuration(const std::string& filepath);
+
+	/**
+	 * Loads the configuration from stream.
+	 *
+	 * @param stream Stream to read configuration.
+	 */
+	 void load(std::istream& stream);
 
 	/**
 	 * Loads the configuration from file.
@@ -81,24 +88,37 @@ public:
 	 * @param filepath Path of the configuration file.
 	 * @return Whether the loading succeeded.
 	 */
-	bool load(const std::string& filepath_);
+	bool load(const std::string& filepath);
 
 	/**
-	 * Saves the configuration to the file they were loaded from.
+	 * Loads the configuration from the file it was last loaded from.
 	 *
+	 * @return Whether the loading succeeded.
+	 */
+	bool load();
+
+	/**
+	 * Saves the configuration to a stream.
+	 *
+	 * @param stream The stream to save the configuration.
 	 * @throw std::runtime_error Thrown if failed to open the file.
 	 */
-	void save() const;
+	void save(std::ostream& stream) const;
 
 	/**
 	 * Saves the configuration to a spesicif file.
 	 *
-	 * If method fails to open file, it throws runtime_error.
-	 *
-	 * @param filename Name of the file to save the configuration.
+	 * @param filepath Name of the file to save the configuration.
 	 * @throw std::runtime_error Thrown if opening file fails.
 	 */
-	void save(const std::string& filepath_) const;
+	void save(const std::string& filepath) const;
+
+	/**
+	 * Saves the configuration to the file it was loaded from.
+	 *
+	 * @throw std::runtime_error Thrown if failed to open the file.
+	 */
+	void save() const;
 
 	/**
 	 * Returns the bool value of configuration key.
@@ -179,9 +199,14 @@ public:
 	/**
 	 * Removes the key from configuration.
 	 *
-	 * @param key key to remove.
+	 * @param key Key to remove.
 	 */
 	void remove(const std::string& key);
+
+	/**
+	 * Clears configuration.
+	 */
+	 void clear();
 };
 
 #endif
