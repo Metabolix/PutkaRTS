@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #include "Map.hpp"
 
 #include <stdexcept>
@@ -26,7 +26,7 @@
 #include <map>
 #include <fstream>
 #include <boost/algorithm/string.hpp>
- 
+
 void Map::load(const std::string& filename)
 try {
 	std::ifstream file(filename.c_str());
@@ -52,6 +52,10 @@ try {
 		mapArray.push_back(line);
 	}
 
+	if (mapArray.empty()) {
+		throw std::runtime_error(filename + " has invalid format (zero dimensions)!");
+	}
+
 	if (!emptyLine) {
 		throw std::runtime_error(filename + " has invalid format (no newline)!");
 	}
@@ -59,14 +63,10 @@ try {
 	while (file >> std::ws && !file.eof()) {
 		char tile;
 		TileInfo info;
-		if (!(file >> tile >> info.groundTile >> info.waterTile >> info.texturePath)) {
+		if (!(file >> tile >> info.ground >> info.water >> info.texturePath)) {
 			throw std::runtime_error(filename + " has invalid format (definition section malformed)!");
 		}
 		tileInfoMap[tile] = info;
-	}
-
-	if (mapArray.size() == 0) {
-		throw std::runtime_error(filename + " has invalid format (zero dimensions)!");
 	}
 
 	tileMap.resize(mapArray[0].length(), mapArray.size());
@@ -81,7 +81,7 @@ try {
 		}
 	}
 } catch (...) {
-	tileMap.resize(0, 0);
+	tileMap.clear();
 	tileInfoMap.clear();
 	throw;
 }

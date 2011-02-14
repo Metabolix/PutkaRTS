@@ -35,7 +35,7 @@ public:
 	 * Struct for tile's information
 	 */
 	struct TileInfo {
-		bool groundTile, waterTile;
+		bool ground, water;
 		std::string texturePath;
 	};
 private:
@@ -58,7 +58,7 @@ public:
 
 	/**
 	 * Constructor with the filename.
-	 * 
+	 *
 	 * @param filename Map's filename.
 	 */
 	Map(const std::string& filename) {
@@ -67,7 +67,7 @@ public:
 
 	/**
 	 * Load a map structure from a file
-	 * 
+	 *
 	 * @param filename Map's filename.
 	 * @throw std::runtime_error Thrown if the map can't be loaded.
 	 */
