@@ -59,6 +59,15 @@ public:
 	}
 
 	/**
+	 * Clear the array (resize to 0x0).
+	 */
+	void clear() {
+		data.clear();
+		sizeX = 0;
+		sizeY = 0;
+	}
+
+	/**
 	 * Clear and resize to the given size.
 	 *
 	 * @param newSizeX The new size in x direction.
@@ -66,10 +75,7 @@ public:
 	 * @param value The value to use for initializing the new array.
 	 */
 	void resize(SizeType newSizeX = 0, SizeType newSizeY = 0, const T& value = T()) {
-		data.clear();
-		sizeX = 0;
-		sizeY = 0;
-
+		clear();
 		data.resize(newSizeX * newSizeY, value);
 		sizeX = newSizeX;
 		sizeY = newSizeY;

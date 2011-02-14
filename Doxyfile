@@ -29,3 +29,7 @@ HTML_OUTPUT            = html
 HTML_FILE_EXTENSION    = .html
 HTML_DYNAMIC_SECTIONS  = YES
 GENERATE_LATEX         = NO
+
+HAVE_DOT               = YES
+UML_LOOK               = YES
+DOT_MULTI_TARGETS      = YES
