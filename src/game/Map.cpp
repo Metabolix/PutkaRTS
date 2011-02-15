@@ -34,16 +34,14 @@ try {
 		throw std::runtime_error(filename + " could not be opened!");
 	}
 
-	bool emptyLine = false;
 	std::vector<std::string> mapArray;
-	while (file.good() && !emptyLine) {
+	while (file.good()) {
 		std::string line;
 		if (!getline(file, line)) {
 			break;
 		}
 		boost::trim(line);
 		if (line.empty()) {
-			emptyLine = true;
 			break;
 		}
 		if (mapArray.size() && line.length() != mapArray[0].length()) {
@@ -52,12 +50,12 @@ try {
 		mapArray.push_back(line);
 	}
 
-	if (mapArray.empty()) {
-		throw std::runtime_error(filename + " has invalid format (zero dimensions)!");
+	if (file.bad()) {
+		throw std::runtime_error(filename + " has invalid format (no newline)!");
 	}
 
-	if (!emptyLine) {
-		throw std::runtime_error(filename + " has invalid format (no newline)!");
+	if (mapArray.empty()) {
+		throw std::runtime_error(filename + " has invalid format (zero dimensions)!");
 	}
 
 	while (file >> std::ws && !file.eof()) {

@@ -32,6 +32,11 @@
 class Map {
 public:
 	/**
+	 * Type of size used in public methods
+	 */
+	typedef Array2D<char>::SizeType SizeType;
+
+	/**
 	 * Struct for tile's information
 	 */
 	struct TileInfo {
@@ -76,21 +81,21 @@ public:
 	/**
 	 * Get x size.
 	 */
-	Array2D<char>::SizeType getSizeX() const {
+	SizeType getSizeX() const {
 		return tileMap.getSizeX();
 	}
 
 	/**
 	 * Get y size.
 	 */
-	Array2D<char>::SizeType getSizeY() const {
+	SizeType getSizeY() const {
 		return tileMap.getSizeY();
 	}
 
 	/**
 	 * Get TileInfo at location (x, y).
 	 */
-	const TileInfo& operator() (Array2D<char>::SizeType x, Array2D<char>::SizeType y) const {
+	const TileInfo& operator() (SizeType x, SizeType y) const {
 		return tileInfoMap.find(tileMap(x, y))->second;
 	}
 };
