@@ -6,7 +6,7 @@ FILES_DEP := $(patsubst src/%,build/%.dep,$(FILES_CPP))
 
 SERVERSRC := $(filter-out src/client/%,$(FILES_CPP))
 SERVERBIN := bin/PutkaRTSd
-SERVERLIBS := -lsfml-system -lsfml-network
+SERVERLIBS := -lsfml-system -lsfml-network -lboost_filesystem
 
 CLIENTSRC := $(filter-out src/server/%,$(FILES_CPP))
 CLIENTBIN := bin/PutkaRTS
