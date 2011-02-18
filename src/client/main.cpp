@@ -25,6 +25,8 @@
 #include <SFML/Graphics.hpp>
 
 #include "ProgramInfo.hpp"
+
+#include "util/Path.hpp"
 #include "util/Configuration.hpp"
 
 #include "menu/MainMenuHandler.hpp"
@@ -33,10 +35,11 @@
 /**
  * Main function for the game client.
  */
-int main()
+int main(int argc, char **argv)
 try {
-	// TODO: try different local paths for different operating systems.
-	Configuration conf("local/client.conf");
+	Path::init(argc ? argv[0] : "./bin/unknown.exe");
+
+	Configuration conf(Path::getConfigPath("client.conf"));
 
 	sf::VideoMode mode = sf::VideoMode(
 		conf.getInt("window.size.x", 800),
