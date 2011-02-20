@@ -19,8 +19,8 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PUTKARTS_GUI_Object_H
-#define PUTKARTS_GUI_Object_H
+#ifndef PUTKARTS_GUI_Object_HPP
+#define PUTKARTS_GUI_Object_HPP
 
 #include <SFML/Graphics.hpp>
 
@@ -48,7 +48,7 @@ namespace GUI {
 		}
 
 		/**
-		 * Draw the GUI object (pure virtual).
+		 * Draw the GUI object.
 		 *
 		 * @param window The window to draw to.
 		 */

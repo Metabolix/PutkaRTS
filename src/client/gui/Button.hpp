@@ -49,18 +49,21 @@ namespace GUI {
 		 * @param width Width of the button.
 		 * @param height Height of the button.
 		 */
-		Button(const std::string& text, float x, float y) {
+		Button(const std::string& text, float x, float y, float width, float height) {
 			label = sf::String(text);
 			label.SetPosition(x, y);
-			label.SetSize(24);
+
+			position = label.GetRect();
+
+			float scaleX = width / position.GetWidth();
+			float scaleY = height / position.GetHeight();
+
+			label.SetScale(scaleX, scaleY);
 
 			position = label.GetRect();
 
 			/* Create the drawable background-rectangle. */
 			rectangle = sf::Shape::Rectangle(0, 0, position.GetWidth(), position.GetHeight(), sf::Color(0x55, 0x44, 0x33), 4, sf::Color::Black);
-		}
-
-		virtual ~Button() {
 		}
 
 		/**

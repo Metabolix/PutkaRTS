@@ -22,13 +22,15 @@
 #include "Button.hpp"
 
 bool GUI::Button::handleEvent(const sf::Event& e, const sf::RenderWindow& window) {
-	if (e.Type == sf::Event::MouseButtonPressed && e.MouseButton.Button == sf::Mouse::Left) {
-		sf::Vector2f mouse(window.ConverCoords(e.MouseButton.X, e.MouseButton.Y));
+	if (e.Type != sf::Event::MouseButtonPressed || e.MouseButton.Button != sf::Mouse::Left) {
+		return false;
+	}
 
-		if (position.Contains(mouse.x, mouse.y)) {
-			// Handle click.
-			return true;
-		}
+	sf::Vector2f mouse(window.ConvertCoords(e.MouseButton.X, e.MouseButton.Y));
+
+	if (position.Contains(mouse.x, mouse.y)) {
+		// TODO: Handle click.
+		return true;
 	}
 
 	return false;
