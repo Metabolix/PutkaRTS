@@ -44,6 +44,11 @@ public:
 		bool ground, water;
 		std::string texture;
 	};
+
+	/**
+	 * Map type for storing the TileInfo structures.
+	 */
+	typedef std::map<char, TileInfo> TileInfoMap;
 private:
 	/**
 	 * Store the map directory name, e.g. "maps/somemap".
@@ -58,7 +63,7 @@ private:
 	/**
 	 * Store each tile's info.
 	 */
-	std::map<char, TileInfo> tileInfoMap;
+	TileInfoMap tileInfoMap;
 public:
 	/**
 	 * Default constructor.
@@ -110,6 +115,13 @@ public:
 	 */
 	const TileInfo& operator() (SizeType x, SizeType y) const {
 		return tileInfoMap.find(tileMap(x, y))->second;
+	}
+
+	/**
+	 * Get the tile info map.
+	 */
+	const TileInfoMap& getTileInfoMap() const {
+		return tileInfoMap;
 	}
 };
 
