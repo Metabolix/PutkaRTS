@@ -2,6 +2,7 @@
  * Map loading system.
  *
  * Copyright 2011 Leo Lehikoinen
+ * Copyright 2011 Lauri Kenttä
  *
  * This file is part of PutkaRTS.
  *
@@ -19,6 +20,8 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "util/Path.hpp"
+
 #include "Map.hpp"
 
 #include <stdexcept>
@@ -27,8 +30,11 @@
 #include <fstream>
 #include <boost/algorithm/string.hpp>
 
-void Map::load(const std::string& filename)
+void Map::load(const std::string& directory_)
 try {
+	directory = directory_;
+	std::string filename = Path::findDataPath(directory, "data.txt");
+
 	std::ifstream file(filename.c_str());
 	if (!file) {
 		throw std::runtime_error(filename + " could not be opened!");
@@ -61,7 +67,7 @@ try {
 	while (file >> std::ws && !file.eof()) {
 		char tile;
 		TileInfo info;
-		if (!(file >> tile >> info.ground >> info.water >> info.texturePath)) {
+		if (!(file >> tile >> info.ground >> info.water >> info.texture)) {
 			throw std::runtime_error(filename + " has invalid format (definition section malformed)!");
 		}
 		tileInfoMap[tile] = info;

@@ -2,6 +2,7 @@
  * Map class definition.
  *
  * Copyright 2011 Leo Lehikoinen
+ * Copyright 2011 Lauri Kenttä
  *
  * This file is part of PutkaRTS.
  *
@@ -41,9 +42,14 @@ public:
 	 */
 	struct TileInfo {
 		bool ground, water;
-		std::string texturePath;
+		std::string texture;
 	};
 private:
+	/**
+	 * Store the map directory name, e.g. "maps/somemap".
+	 */
+	std::string directory;
+
 	/**
 	 * Map in array of tiles.
 	 */
@@ -62,21 +68,28 @@ public:
 	}
 
 	/**
-	 * Constructor with the filename.
+	 * Constructor that also loads the map.
 	 *
-	 * @param filename Map's filename.
+	 * @param directory Map's directory.
 	 */
-	Map(const std::string& filename) {
-		load(filename);
+	Map(const std::string& directory) {
+		load(directory);
 	}
 
 	/**
-	 * Load a map structure from a file
+	 * Load a map from a directory.
 	 *
-	 * @param filename Map's filename.
+	 * @param directory Map's directory.
 	 * @throw std::runtime_error Thrown if the map can't be loaded.
 	 */
-	void load(const std::string& filename);
+	void load(const std::string& directory);
+
+	/**
+	 * Get the map directory; necessary for loading tiles, for example.
+	 */
+	const std::string& getDirectory() const {
+		return directory;
+	}
 
 	/**
 	 * Get x size.
