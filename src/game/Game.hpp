@@ -24,6 +24,9 @@
 
 #include "util/Scalar.hpp"
 #include "Message.hpp"
+#include "Map.hpp"
+
+#include <memory>
 
 /**
  * The root of all game logic.
@@ -35,11 +38,30 @@ class Game {
 	/** Keep track of game time. */
 	Scalar<SIUnit::Time> clock;
 
+	/** The map on which the game is played. */
+	std::auto_ptr<Map> map;
+
 	/**
 	 * Run the game one step forward.
 	 */
 	void runStep();
 public:
+	/**
+	 * Constructor.
+	 *
+	 * @param map The map.
+	 */
+	Game(std::auto_ptr<Map> map);
+
+	/**
+	 * Run the game up to the given time.
+	 *
+	 * @param time The time.
+	 */
+	const Map& getMap() const {
+		return *map;
+	}
+
 	/**
 	 * Run the game up to the given time.
 	 *

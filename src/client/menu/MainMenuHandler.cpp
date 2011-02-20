@@ -30,7 +30,8 @@
 #include <algorithm>
 
 void MainMenuHandler::startGame() {
-	std::auto_ptr<Game> game(new Game());
+	std::auto_ptr<Map> map(new Map("maps/testmap"));
+	std::auto_ptr<Game> game(new Game(map));
 	std::auto_ptr<GameConnection> connection(new LocalGameConnection(game));
 	GameHandler::instance.reset(new GameHandler(connection));
 }

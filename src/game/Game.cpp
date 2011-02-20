@@ -21,7 +21,16 @@
 
 #include "Game.hpp"
 
+#include <stdexcept>
+
 const Scalar<SIUnit::Time> Game::stepTime = 1 / 30;
+
+Game::Game(std::auto_ptr<Map> map_):
+	map(map_) {
+	if (!map.get()) {
+		throw std::logic_error("Game::Game: Map is NULL!");
+	}
+}
 
 void Game::runUntil(Scalar<SIUnit::Time> time) {
 	while (clock + stepTime < time) {
