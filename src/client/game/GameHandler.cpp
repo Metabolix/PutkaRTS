@@ -19,7 +19,12 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "util/Path.hpp"
+
 #include "GameHandler.hpp"
+#include "game/Map.hpp"
+
+#include <SFML/Graphics.hpp>
 
 #include <memory>
 
@@ -30,11 +35,41 @@ GameHandler::GameHandler(std::auto_ptr<GameConnection> connection_):
 	instance.reset(this);
 }
 
+void GameHandler::loadMapData() {
+	const Map& map = connection->getGame().getMap();
+	const Map::TileInfoMap& tileInfoMap = map.getTileInfoMap();
+
+	for (Map::TileInfoMap::const_iterator i = tileInfoMap.begin(); i != tileInfoMap.end(); ++i) {
+		const Map::TileInfo& info = i->second;
+		images.get(info.texture, Path::findDataPath(map.getDirectory(), "", info.texture));
+	}
+}
+
+void GameHandler::drawGame(sf::RenderWindow& window) const {
+	const Map& map = connection->getGame().getMap();
+
+	// TODO: Implement scrolling and draw only the part that fits the screen!
+	// TODO: Check what parts the player can see!
+	for (Map::SizeType y = 0; y < map.getSizeY(); ++y) {
+		for (Map::SizeType x = 0; x < map.getSizeX(); ++x) {
+			sf::Sprite sprite(images.get(map(x, y).texture));
+			const int tileSize = 32;
+			sprite.Resize(tileSize, tileSize);
+			sprite.SetPosition(x * tileSize, y * tileSize);
+			window.Draw(sprite);
+		}
+	}
+
+	// TODO: Draw the objects as well!
+}
+
 void GameHandler::run(sf::RenderWindow& window) {
 	view = window.GetDefaultView();
 	window.SetView(view);
 
 	window.SetFramerateLimit(0);
+
+	loadMapData();
 
 	while (window.IsOpened()) {
 		sf::Event e;
@@ -50,7 +85,12 @@ void GameHandler::run(sf::RenderWindow& window) {
 		}
 
 		window.Clear();
+
+		drawGame(window);
+
+		// TODO: Draw the user interface!
 		window.Draw(sf::String("Game; click to return to menu."));
+
 		window.Display();
 		sf::Sleep(0.1f);
 	}

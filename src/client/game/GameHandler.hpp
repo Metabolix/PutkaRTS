@@ -27,12 +27,17 @@
 #include <memory>
 #include <SFML/Graphics.hpp>
 
+#include "client/graphics/ImageCache.hpp"
+
 /**
  * Class for the client-side game GUI.
  */
 class GameHandler {
 	/** The view to use for rendering. */
 	sf::View view;
+
+	/** All images needed for rendering. */
+	ImageCache images;
 
 	/** The game connection to use. */
 	std::auto_ptr<GameConnection> connection;
@@ -46,6 +51,16 @@ public:
 	 * @param connection The game connection to use.
 	 */
 	GameHandler(std::auto_ptr<GameConnection> connection);
+
+	/**
+	 * Load map graphics etc.
+	 */
+	void loadMapData();
+
+	/**
+	 * Draw the map and the units.
+	 */
+	void drawGame(sf::RenderWindow& window) const;
 
 	/**
 	 * Run the game until it ends.
