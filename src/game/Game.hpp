@@ -54,7 +54,7 @@ public:
 	Game(std::auto_ptr<Map> map);
 
 	/**
-	 * Run the game up to the given time.
+	 * Get the map.
 	 */
 	const Map& getMap() const {
 		return *map;
