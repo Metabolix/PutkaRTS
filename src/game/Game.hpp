@@ -55,8 +55,6 @@ public:
 
 	/**
 	 * Run the game up to the given time.
-	 *
-	 * @param time The time.
 	 */
 	const Map& getMap() const {
 		return *map;
