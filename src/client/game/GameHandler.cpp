@@ -29,6 +29,7 @@
 
 #include <memory>
 #include <algorithm>
+#include <cmath>
 
 std::auto_ptr<GameHandler> GameHandler::instance;
 
@@ -54,9 +55,9 @@ void GameHandler::drawGame(sf::RenderWindow& window) const {
 	window.SetView(gameView);
 
 	//calculate which tiles are on the screen.
-	Map::SizeType beginY = std::max<Map::SizeType>(0, gameView.GetRect().Top / tileSize);
+	Map::SizeType beginY = std::max(0, (int)gameView.GetRect().Top / tileSize);
 	Map::SizeType endY = std::min<Map::SizeType>(map.getSizeY(), std::ceil(gameView.GetRect().Bottom / tileSize));
-	Map::SizeType beginX = std::max<Map::SizeType>(0, gameView.GetRect().Left / tileSize);
+	Map::SizeType beginX = std::max(0, (int)gameView.GetRect().Left / tileSize);
 	Map::SizeType endX = std::min<Map::SizeType>(map.getSizeX(), std::ceil(gameView.GetRect().Right / tileSize));
 
 	// TODO: Check what parts the player can see!
@@ -81,7 +82,7 @@ void GameHandler::run(sf::RenderWindow& window) {
 	gameView = window.GetView();
 	gameView.SetCenter(gameView.GetHalfSize());
 
-	window.SetFramerateLimit(0);
+	window.SetFramerateLimit(60);
 
 	loadMapData();
 
@@ -98,24 +99,7 @@ void GameHandler::run(sf::RenderWindow& window) {
 			}
 		}
 
-		const sf::Input & input = window.GetInput();
-
-		// scroll map with arrow keys
-		if (input.IsKeyDown(sf::Key::Right)) {
-			gameView.Move(5, 0);
-		} else if (input.IsKeyDown(sf::Key::Left)) {
-			gameView.Move(-5, 0);
-		}
-		if (input.IsKeyDown(sf::Key::Down)) {
-			gameView.Move(0, 5);
-		} else if (input.IsKeyDown(sf::Key::Up)) {
-			gameView.Move(0,-5);
-		}
-		if (input.IsKeyDown(sf::Key::PageDown)) {
-			gameView.Zoom(1.02f);
-		} else if (input.IsKeyDown(sf::Key::PageUp)) {
-			gameView.Zoom(1.00f / 1.02f);
-		}
+		handleScrolling(window);
 
 		window.Clear();
 
@@ -125,6 +109,33 @@ void GameHandler::run(sf::RenderWindow& window) {
 		window.Draw(sf::String("Game; click to return to menu."));
 
 		window.Display();
-		sf::Sleep(0.025f);
 	}
+}
+
+void GameHandler::handleScrolling(sf::RenderWindow& window) {
+	float time = window.GetFrameTime();
+	const sf::Input & input = window.GetInput();
+
+	float scrollSpeed = 400.0f;
+	float zoomSpeed = 2.0f;
+
+	// scroll map with arrow keys
+	if (input.IsKeyDown(sf::Key::Right)) {
+		gameView.Move(scrollSpeed * time, 0);
+	} else if (input.IsKeyDown(sf::Key::Left)) {
+		gameView.Move(-scrollSpeed * time, 0);
+	}
+	if (input.IsKeyDown(sf::Key::Down)) {
+		gameView.Move(0, scrollSpeed * time);
+	} else if (input.IsKeyDown(sf::Key::Up)) {
+		gameView.Move(0,-scrollSpeed * time);
+	}
+	//zoom with pgUp and pgDown
+	if (input.IsKeyDown(sf::Key::PageDown)) {
+		gameView.Zoom(pow(zoomSpeed, time));
+	} else if (input.IsKeyDown(sf::Key::PageUp)) {
+		gameView.Zoom(1.00f / pow(zoomSpeed, time));
+	}
+
+	//TODO: Scrolling with mouse.
 }

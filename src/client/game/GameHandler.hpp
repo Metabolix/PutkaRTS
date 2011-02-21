@@ -72,6 +72,13 @@ public:
 	 * @param window The window to use for input and rendering.
 	 */
 	void run(sf::RenderWindow& window);
+
+	/**
+	 * Handle map scrolling calculations.
+	 *
+	 * @param window The window to use for input and rendering.
+	 */
+	void handleScrolling(sf::RenderWindow& window);
 };
 
 #endif
