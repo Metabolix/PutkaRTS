@@ -2,6 +2,7 @@
  * Client-side game handler class implementation.
  *
  * Copyright 2011 Lauri Kenttä
+ * Copyright 2011 Mika Katajamäki
  *
  * This file is part of PutkaRTS.
  *
@@ -27,6 +28,7 @@
 #include <SFML/Graphics.hpp>
 
 #include <memory>
+#include <algorithm>
 
 std::auto_ptr<GameHandler> GameHandler::instance;
 
@@ -47,25 +49,37 @@ void GameHandler::loadMapData() {
 
 void GameHandler::drawGame(sf::RenderWindow& window) const {
 	const Map& map = connection->getGame().getMap();
+	const int tileSize = 32;
 
-	// TODO: Implement scrolling and draw only the part that fits the screen!
+	window.SetView(gameView);
+
+	//calculate which tiles are on the screen.
+	Map::SizeType beginY = std::max(0 , (int)(gameView.GetRect().Top / tileSize));
+	Map::SizeType endY = std::min((int)map.getSizeY(), (int)((gameView.GetRect().Bottom) / tileSize) + 1);
+	Map::SizeType beginX = std::max(0, (int)(gameView.GetRect().Left / tileSize));
+	Map::SizeType endX = std::min((int)map.getSizeX(), (int)((gameView.GetRect().Right) / tileSize) + 1);
+
 	// TODO: Check what parts the player can see!
-	for (Map::SizeType y = 0; y < map.getSizeY(); ++y) {
-		for (Map::SizeType x = 0; x < map.getSizeX(); ++x) {
+	for (Map::SizeType y = beginY; y < endY; ++y) {
+		for (Map::SizeType x = beginX; x < endX; ++x) {
 			sf::Sprite sprite(images.get(map(x, y).texture));
-			const int tileSize = 32;
 			sprite.Resize(tileSize, tileSize);
-			sprite.SetPosition(x * tileSize, y * tileSize);
+			sprite.SetPosition((int)x * tileSize,  (int)y * tileSize);
 			window.Draw(sprite);
 		}
 	}
 
 	// TODO: Draw the objects as well!
+
+	window.SetView(view);
 }
 
 void GameHandler::run(sf::RenderWindow& window) {
 	view = window.GetDefaultView();
 	window.SetView(view);
+
+	gameView = window.GetView();
+	gameView.SetCenter(gameView.GetHalfSize());
 
 	window.SetFramerateLimit(0);
 
@@ -84,6 +98,25 @@ void GameHandler::run(sf::RenderWindow& window) {
 			}
 		}
 
+		const sf::Input & input = window.GetInput();
+
+		// scroll map with arrow keys
+		if (input.IsKeyDown(sf::Key::Right)) {
+			gameView.Move(5, 0);
+		} else if (input.IsKeyDown(sf::Key::Left)) {
+			gameView.Move(-5, 0);
+		}
+		if (input.IsKeyDown(sf::Key::Down)) {
+			gameView.Move(0, 5);
+		} else if (input.IsKeyDown(sf::Key::Up)) {
+			gameView.Move(0,-5);
+		}
+		if (input.IsKeyDown(sf::Key::PageDown)) {
+			gameView.Zoom(1.02f);
+		} else if (input.IsKeyDown(sf::Key::PageUp)) {
+			gameView.Zoom(1.00f / 1.02f);
+		}
+
 		window.Clear();
 
 		drawGame(window);
@@ -92,6 +125,6 @@ void GameHandler::run(sf::RenderWindow& window) {
 		window.Draw(sf::String("Game; click to return to menu."));
 
 		window.Display();
-		sf::Sleep(0.1f);
+		sf::Sleep(0.025f);
 	}
 }

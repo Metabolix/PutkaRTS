@@ -2,6 +2,7 @@
  * Client-side game handler class definition.
  *
  * Copyright 2011 Lauri Kenttä
+ * Copyright 2011 Mika Katajamäki
  *
  * This file is part of PutkaRTS.
  *
@@ -41,6 +42,9 @@ class GameHandler {
 
 	/** The game connection to use. */
 	std::auto_ptr<GameConnection> connection;
+
+	/** Camera position and zoom */
+	sf::View gameView;
 public:
 	/** The current GameHandler instance; there should always be only one. */
 	static std::auto_ptr<GameHandler> instance;
