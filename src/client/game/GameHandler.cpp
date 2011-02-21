@@ -54,17 +54,17 @@ void GameHandler::drawGame(sf::RenderWindow& window) const {
 	window.SetView(gameView);
 
 	//calculate which tiles are on the screen.
-	Map::SizeType beginY = std::max(0 , (int)(gameView.GetRect().Top / tileSize));
-	Map::SizeType endY = std::min((int)map.getSizeY(), (int)((gameView.GetRect().Bottom) / tileSize) + 1);
-	Map::SizeType beginX = std::max(0, (int)(gameView.GetRect().Left / tileSize));
-	Map::SizeType endX = std::min((int)map.getSizeX(), (int)((gameView.GetRect().Right) / tileSize) + 1);
+	Map::SizeType beginY = std::max<Map::SizeType>(0, gameView.GetRect().Top / tileSize);
+	Map::SizeType endY = std::min<Map::SizeType>(map.getSizeY(), gameView.GetRect().Bottom / tileSize + 1);
+	Map::SizeType beginX = std::max<Map::SizeType>(0, gameView.GetRect().Left / tileSize);
+	Map::SizeType endX = std::min<Map::SizeType>(map.getSizeX(), gameView.GetRect().Right / tileSize + 1);
 
 	// TODO: Check what parts the player can see!
 	for (Map::SizeType y = beginY; y < endY; ++y) {
 		for (Map::SizeType x = beginX; x < endX; ++x) {
 			sf::Sprite sprite(images.get(map(x, y).texture));
 			sprite.Resize(tileSize, tileSize);
-			sprite.SetPosition((int)x * tileSize,  (int)y * tileSize);
+			sprite.SetPosition(x * tileSize, y * tileSize);
 			window.Draw(sprite);
 		}
 	}
