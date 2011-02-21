@@ -55,10 +55,10 @@ void GameHandler::drawGame(sf::RenderWindow& window) const {
 	window.SetView(gameView);
 
 	//calculate which tiles are on the screen.
-	Map::SizeType beginY = std::max(0, (int)gameView.GetRect().Top / tileSize);
-	Map::SizeType endY = std::min<Map::SizeType>(map.getSizeY(), std::ceil(gameView.GetRect().Bottom / tileSize));
-	Map::SizeType beginX = std::max(0, (int)gameView.GetRect().Left / tileSize);
-	Map::SizeType endX = std::min<Map::SizeType>(map.getSizeX(), std::ceil(gameView.GetRect().Right / tileSize));
+	Map::SizeType beginY = std::max<int>(0, gameView.GetRect().Top / tileSize);
+	Map::SizeType endY = std::min<int>(map.getSizeY(), std::max<int>(0, std::ceil(gameView.GetRect().Bottom / tileSize)));
+	Map::SizeType beginX = std::max<int>(0, gameView.GetRect().Left / tileSize);
+	Map::SizeType endX = std::min<int>(map.getSizeX(), std::max<int>(0, std::ceil(gameView.GetRect().Right / tileSize)));
 
 	// TODO: Check what parts the player can see!
 	for (Map::SizeType y = beginY; y < endY; ++y) {
