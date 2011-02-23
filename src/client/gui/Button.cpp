@@ -29,7 +29,7 @@ bool GUI::Button::handleEvent(const sf::Event& e, const sf::RenderWindow& window
 	sf::Vector2f mouse(window.ConvertCoords(e.MouseButton.X, e.MouseButton.Y));
 
 	if (position.Contains(mouse.x, mouse.y)) {
-		// TODO: Handle click.
+		action();
 		return true;
 	}
 

@@ -24,11 +24,18 @@
 
 #include "Object.hpp"
 
+#include <boost/function.hpp>
+
 namespace GUI {
 	/**
 	 * Class for the button GUI object.
 	 */
 	class Button: public Object {
+	public:
+		/** Callback function type. */
+		typedef boost::function<void()> CallbackType;
+
+	private:
 		/**
 		 * Label for the button.
 		 */
@@ -38,6 +45,11 @@ namespace GUI {
 		 * Drawable rectangle.
 		 */
 		sf::Shape rectangle;
+
+		/**
+		 * Callback function for the button.
+		 */
+		CallbackType action;
 
 	public:
 		/**
@@ -49,7 +61,8 @@ namespace GUI {
 		 * @param width Width of the button.
 		 * @param height Height of the button.
 		 */
-		Button(const std::string& text, float x, float y, float width, float height) {
+		Button(const std::string& text, float x, float y, float width, float height, CallbackType callback):
+			action(callback) {
 			label = sf::String(text);
 			label.SetPosition(x, y);
 
