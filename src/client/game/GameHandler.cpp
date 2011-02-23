@@ -138,7 +138,7 @@ void GameHandler::handleScrolling(sf::RenderWindow& window) {
 	} else if (input.IsKeyDown(sf::Key::Up)) {
 		gameView.Move(0,-scrollSpeed * time);
 	}
-	//zoom with pgUp and pgDown
+	// zoom with pgUp and pgDown
 	if (input.IsKeyDown(sf::Key::PageDown)) {
 		float zoomAmount = pow(zoomSpeed, time);
 		gameView.Zoom(zoomAmount);
@@ -149,7 +149,7 @@ void GameHandler::handleScrolling(sf::RenderWindow& window) {
 		scrollSpeed *= zoomAmount;
 	}
 
-	//mouse scrolling
+	// mouse scrolling
 	int threshold = 5;
 
 	if (input.GetMouseX() < threshold) {
@@ -163,7 +163,7 @@ void GameHandler::handleScrolling(sf::RenderWindow& window) {
 		gameView.Move(0, scrollSpeed * time);
 	}
 
-	//drag with right mouse
+	// drag with right mouse
 	static bool mouseDrag = false;
 	static sf::Vector2f dragOrigin;
 
@@ -180,7 +180,7 @@ void GameHandler::handleScrolling(sf::RenderWindow& window) {
 		mouseDrag = false;
 	}
 
-	//boundaries
+	// boundaries
 	sf::Vector2f viewCenter = gameView.GetCenter();
 	const Map& map = connection->getGame().getMap();
 	viewCenter.x = std::max<float>(0.0f, std::min<float>(viewCenter.x, map.getSizeX() * tileSize));
