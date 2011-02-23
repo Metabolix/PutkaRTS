@@ -45,7 +45,7 @@ void MainMenuHandler::run(sf::RenderWindow& window) {
 
 	// Make view that is as close to 640x480 as possible and centered.
 	view = window.GetDefaultView();
-	view.Zoom(std::min(view.GetRect().GetWidth() / 640, view.GetRect().GetWidth() / 480));
+	view.Zoom(std::min(view.GetRect().GetWidth() / 640, view.GetRect().GetHeight() / 480));
 	view.SetCenter(view.GetHalfSize());
 	window.SetView(view);
 
