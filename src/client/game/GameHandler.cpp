@@ -81,7 +81,12 @@ void GameHandler::run(sf::RenderWindow& window) {
 	window.SetView(view);
 
 	gameView = window.GetView();
-	gameView.SetCenter(gameView.GetHalfSize());
+	gameView.SetCenter(
+		sf::Vector2f(
+			connection->getGame().getMap().getSizeX() * tileSize / 2,
+			connection->getGame().getMap().getSizeY() * tileSize / 2
+		)
+	);
 
 	window.SetFramerateLimit(60);
 
