@@ -26,8 +26,12 @@
 
 #include "client/graphics/ImageCache.hpp"
 
+#include "client/gui/Button.hpp"
+#include "client/gui/Container.hpp"
+
 #include <memory>
 #include <algorithm>
+#include <boost/bind.hpp>
 
 void MainMenuHandler::startGame() {
 	std::auto_ptr<Map> map(new Map("maps/testmap"));
@@ -50,30 +54,33 @@ void MainMenuHandler::run(sf::RenderWindow& window) {
 	view.SetCenter(view.GetHalfSize());
 	window.SetView(view);
 
+	window.SetFramerateLimit(30);
+
 	// Position at the top of the window.
 	sf::Sprite logoSprite(logoImage);
 	logoSprite.SetCenter(logoImage.GetWidth() / 2, 0);
 	logoSprite.SetPosition(window.GetView().GetRect().GetWidth() / 2, 1);
 
-	window.SetFramerateLimit(30);
+	// Build the main menu GUI.
+	GUI::Container gui;
+	gui.insert(boost::shared_ptr<GUI::Object>(new GUI::Button("New game", 200, 100, 240, 50, boost::bind(&MainMenuHandler::startGame, this))));
+	gui.insert(boost::shared_ptr<GUI::Object>(new GUI::Button("Exit", 250, 170, 140, 50, boost::bind(&sf::RenderWindow::Close, boost::ref(window)))));
 
 	menuClosed = false;
 	while (window.IsOpened() && !menuClosed) {
 		sf::Event e;
 		if (window.GetEvent(e)) {
-			if (e.Type == sf::Event::Closed || (e.Type == sf::Event::KeyPressed && e.Key.Code == sf::Key::Escape)) {
-				window.Close();
+			if (gui.handleEvent(e, window)) {
 				continue;
 			}
-
-			if (e.Type == sf::Event::MouseButtonPressed) {
-				startGame();
+			if (e.Type == sf::Event::Closed || (e.Type == sf::Event::KeyPressed && e.Key.Code == sf::Key::Escape)) {
+				window.Close();
 				continue;
 			}
 		} else {
 			window.Clear(sf::Color(0xcc, 0x66, 0x33));
 			window.Draw(logoSprite);
-			window.Draw(sf::String("Menu; click to start game."));
+			gui.draw(window);
 			window.Display();
 		}
 	}
