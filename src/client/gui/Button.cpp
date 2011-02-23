@@ -21,6 +21,23 @@
 
 #include "Button.hpp"
 
+GUI::Button::Button(const std::string& text, float x, float y, float width, float height, CallbackType callback):
+	action(callback) {
+	label = sf::String(text);
+	label.SetPosition(x, y);
+
+	position = label.GetRect();
+
+	float scale = std::min(width / position.GetWidth(), height / position.GetHeight());
+
+	label.SetScale(scale, scale);
+
+	position = label.GetRect();
+
+	/* Create the drawable background-rectangle. */
+	rectangle = sf::Shape::Rectangle(0, 0, position.GetWidth(), position.GetHeight(), sf::Color(0x55, 0x44, 0x33), 4, sf::Color::Black);
+}
+
 bool GUI::Button::handleEvent(const sf::Event& e, const sf::RenderWindow& window) {
 	if (e.Type != sf::Event::MouseButtonPressed || e.MouseButton.Button != sf::Mouse::Left) {
 		return false;
