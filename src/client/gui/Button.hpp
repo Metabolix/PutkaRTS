@@ -55,10 +55,9 @@ namespace GUI {
 
 			position = label.GetRect();
 
-			float scaleX = width / position.GetWidth();
-			float scaleY = height / position.GetHeight();
+			float scale = std::min(width / position.GetWidth(), height / position.GetHeight());
 
-			label.SetScale(scaleX, scaleY);
+			label.SetScale(scale, scale);
 
 			position = label.GetRect();
 
