@@ -33,6 +33,8 @@
 
 std::auto_ptr<GameHandler> GameHandler::instance;
 
+const int GameHandler::tileSize = 32;
+
 GameHandler::GameHandler(std::auto_ptr<GameConnection> connection_):
 	connection(connection_) {
 	instance.reset(this);
@@ -50,7 +52,6 @@ void GameHandler::loadMapData() {
 
 void GameHandler::drawGame(sf::RenderWindow& window) const {
 	const Map& map = connection->getGame().getMap();
-	const int tileSize = 32;
 
 	window.SetView(gameView);
 

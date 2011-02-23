@@ -45,6 +45,9 @@ class GameHandler {
 
 	/** Camera position and zoom */
 	sf::View gameView;
+
+	/** Size of one map tile */
+	static const int tileSize;
 public:
 	/** The current GameHandler instance; there should always be only one. */
 	static std::auto_ptr<GameHandler> instance;
