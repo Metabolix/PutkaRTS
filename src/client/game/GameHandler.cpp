@@ -95,7 +95,9 @@ void GameHandler::run(sf::RenderWindow& window) {
 			}
 
 			if (e.Type == sf::Event::MouseButtonPressed) {
-				return;
+				if (e.MouseButton.Button == sf::Mouse::Left) {
+					return;
+				}
 			}
 		}
 
@@ -137,5 +139,34 @@ void GameHandler::handleScrolling(sf::RenderWindow& window) {
 		gameView.Zoom(1.00f / pow(zoomSpeed, time));
 	}
 
-	//TODO: Scrolling with mouse.
+	//mouse scrolling
+	int threshold = 5;
+
+	if (input.GetMouseX() < threshold) {
+		gameView.Move(-scrollSpeed * time, 0);
+	} else if (input.GetMouseX() > window.GetWidth() - threshold) {
+		gameView.Move(scrollSpeed * time, 0);
+	}
+	if (input.GetMouseY() < threshold) {
+		gameView.Move(0, -scrollSpeed * time);
+	} else if (input.GetMouseY() > window.GetHeight() - threshold) {
+		gameView.Move(0, scrollSpeed * time);
+	}
+
+	//drag with right mouse
+	static bool mouseDrag = false;
+	static sf::Vector2f oldMousePos;
+
+	if (input.IsMouseButtonDown(sf::Mouse::Right)) {
+		sf::Vector2f mousePos = window.ConvertCoords(input.GetMouseX(), input.GetMouseY(), &gameView);
+
+		if (mouseDrag) {
+			gameView.Move(oldMousePos.x - mousePos.x, oldMousePos.y - mousePos.y);
+		}
+
+		oldMousePos = window.ConvertCoords(input.GetMouseX(), input.GetMouseY(), &gameView);
+		mouseDrag = true;
+	} else {
+		mouseDrag = false;
+	}
 }
