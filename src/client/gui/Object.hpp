@@ -33,7 +33,30 @@ namespace GUI {
 		sf::FloatRect position;
 
 	public:
+		/**
+		 * Default constructor.
+		 */
+		Object() {
+		}
+
+		/**
+		 * Virtual destructor to allow polymorphism.
+		 */
 		virtual ~Object() {
+		}
+
+		/**
+		 * Constructor with position parameters.
+		 */
+		Object(float x, float y, float width, float height):
+			position(x, y, x + width, y + height) {
+		}
+
+		/**
+		 * Constructor with a prefilled position rectangle.
+		 */
+		Object(sf::FloatRect position_):
+			position(position_) {
 		}
 
 		/**
