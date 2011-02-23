@@ -31,6 +31,9 @@ class MainMenuHandler {
 	/** The view to use for rendering. */
 	sf::View view;
 
+	/** Used to break the main loop from within member functions. */
+	bool menuClosed;
+
 	/**
 	 * Start a new game.
 	 */
