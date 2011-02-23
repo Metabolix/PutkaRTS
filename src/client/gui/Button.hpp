@@ -42,11 +42,6 @@ namespace GUI {
 		sf::String label;
 
 		/**
-		 * Drawable rectangle.
-		 */
-		sf::Shape rectangle;
-
-		/**
 		 * Callback function for the button.
 		 */
 		CallbackType action;

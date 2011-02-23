@@ -22,20 +22,11 @@
 #include "Button.hpp"
 
 GUI::Button::Button(const std::string& text, float x, float y, float width, float height, CallbackType callback):
+	Object(x, y, width, height),
+	label(text),
 	action(callback) {
-	label = sf::String(text);
-	label.SetPosition(x, y);
-
-	position = label.GetRect();
-
-	float scale = std::min(width / position.GetWidth(), height / position.GetHeight());
-
-	label.SetScale(scale, scale);
-
-	position = label.GetRect();
-
-	/* Create the drawable background-rectangle. */
-	rectangle = sf::Shape::Rectangle(0, 0, position.GetWidth(), position.GetHeight(), sf::Color(0x55, 0x44, 0x33), 4, sf::Color::Black);
+	sf::FloatRect labelRect(label.GetRect());
+	label.SetCenter((labelRect.Right - labelRect.Left) / 2, (labelRect.Bottom - labelRect.Top) / 2);
 }
 
 bool GUI::Button::handleEvent(const sf::Event& e, const sf::RenderWindow& window) {
@@ -57,14 +48,18 @@ void GUI::Button::draw(sf::RenderWindow& window) {
 	const sf::Input& input(window.GetInput());
 	sf::Vector2f mouse(window.ConvertCoords(input.GetMouseX(), input.GetMouseY()));
 
-	label.SetPosition(position.Left, position.Top);
-	rectangle.SetPosition(position.Left, position.Top);
-	rectangle.SetColor(sf::Color(0x55, 0x44, 0x33));
+	sf::FloatRect labelRect(label.GetRect());
+	label.SetPosition((position.Right + position.Left) / 2, (position.Bottom + position.Top) / 2);
+
+	float scale = std::min(position.GetWidth() / labelRect.GetWidth(), position.GetHeight() / labelRect.GetHeight()) * 7 / 10;
+	label.Scale(scale, scale);
+
+	sf::Color background(0x55, 0x44, 0x33);
 
 	if (position.Contains(mouse.x, mouse.y)) {
-		rectangle.SetColor(sf::Color(0xaa, 0x77, 0x44));
+		background = sf::Color(0xcc, 0x99, 0x66);
 	}
 
-	window.Draw(rectangle);
+	window.Draw(sf::Shape::Rectangle(position.Left, position.Top, position.Right, position.Bottom, background, 4, sf::Color::Black));
 	window.Draw(label);
 }
