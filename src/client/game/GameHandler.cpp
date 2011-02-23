@@ -174,4 +174,11 @@ void GameHandler::handleScrolling(sf::RenderWindow& window) {
 	} else {
 		mouseDrag = false;
 	}
+
+	//boundaries
+	sf::Vector2f viewCenter = gameView.GetCenter();
+	const Map& map = connection->getGame().getMap();
+	viewCenter.x = std::max<float>(0.0f, std::min<float>(viewCenter.x, map.getSizeX() * tileSize));
+	viewCenter.y = std::max<float>(0.0f, std::min<float>(viewCenter.y, map.getSizeY() * tileSize));
+	gameView.SetCenter(viewCenter);
 }
