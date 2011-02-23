@@ -159,16 +159,16 @@ void GameHandler::handleScrolling(sf::RenderWindow& window) {
 
 	//drag with right mouse
 	static bool mouseDrag = false;
-	static sf::Vector2f oldMousePos;
+	static sf::Vector2f dragOrigin;
 
 	if (input.IsMouseButtonDown(sf::Mouse::Right)) {
-		sf::Vector2f mousePos = window.ConvertCoords(input.GetMouseX(), input.GetMouseY(), &gameView);
-
 		if (mouseDrag) {
-			gameView.Move(oldMousePos.x - mousePos.x, oldMousePos.y - mousePos.y);
+			gameView.Move(input.GetMouseX() - dragOrigin.x, input.GetMouseY() - dragOrigin.y);
+		} else {
+			dragOrigin = sf::Vector2f(input.GetMouseX(), input.GetMouseY());
 		}
 
-		oldMousePos = window.ConvertCoords(input.GetMouseX(), input.GetMouseY(), &gameView);
+		window.SetCursorPosition(dragOrigin.x, dragOrigin.y);
 		mouseDrag = true;
 	} else {
 		mouseDrag = false;
