@@ -64,6 +64,7 @@ namespace GUI {
 		 * This version passes the event to each child object until one returns true.
 		 *
 		 * @param window The window of the event.
+		 * @param event The event to handle.
 		 * @return true, if one of the children handled the event. Otherwise false.
 		 */
 		virtual bool handleEvent(const sf::Event& event, const sf::RenderWindow& window);
