@@ -118,8 +118,8 @@ void GameHandler::handleScrolling(sf::RenderWindow& window) {
 	float time = window.GetFrameTime();
 	const sf::Input & input = window.GetInput();
 
-	float scrollSpeed = 400.0f;
-	float zoomSpeed = 2.0f;
+	static float scrollSpeed = 400.0f;
+	static float zoomSpeed = 2.0f;
 
 	// scroll map with arrow keys
 	if (input.IsKeyDown(sf::Key::Right)) {
@@ -134,9 +134,13 @@ void GameHandler::handleScrolling(sf::RenderWindow& window) {
 	}
 	//zoom with pgUp and pgDown
 	if (input.IsKeyDown(sf::Key::PageDown)) {
-		gameView.Zoom(pow(zoomSpeed, time));
+		float zoomAmount = pow(zoomSpeed, time);
+		gameView.Zoom(zoomAmount);
+		scrollSpeed *= 1.00f / zoomAmount;
 	} else if (input.IsKeyDown(sf::Key::PageUp)) {
-		gameView.Zoom(1.00f / pow(zoomSpeed, time));
+		float zoomAmount = pow(zoomSpeed, time);
+		gameView.Zoom(1.00f / zoomAmount);
+		scrollSpeed *= zoomAmount;
 	}
 
 	//mouse scrolling
