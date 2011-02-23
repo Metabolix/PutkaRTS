@@ -60,6 +60,7 @@ namespace GUI {
 		 * @param y Y coordinate of the button.
 		 * @param width Width of the button.
 		 * @param height Height of the button.
+		 * @param callback The action to take when clicked.
 		 */
 		Button(const std::string& text, float x, float y, float width, float height, CallbackType callback):
 			action(callback) {
