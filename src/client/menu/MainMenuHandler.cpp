@@ -34,6 +34,7 @@ void MainMenuHandler::startGame() {
 	std::auto_ptr<Game> game(new Game(map));
 	std::auto_ptr<GameConnection> connection(new LocalGameConnection(game));
 	GameHandler::instance.reset(new GameHandler(connection));
+	menuClosed = true;
 }
 
 void MainMenuHandler::run(sf::RenderWindow& window) {
@@ -56,23 +57,24 @@ void MainMenuHandler::run(sf::RenderWindow& window) {
 
 	window.SetFramerateLimit(30);
 
-	while (window.IsOpened()) {
+	menuClosed = false;
+	while (window.IsOpened() && !menuClosed) {
 		sf::Event e;
-		while (window.GetEvent(e)) {
+		if (window.GetEvent(e)) {
 			if (e.Type == sf::Event::Closed || (e.Type == sf::Event::KeyPressed && e.Key.Code == sf::Key::Escape)) {
 				window.Close();
-				return;
+				continue;
 			}
 
 			if (e.Type == sf::Event::MouseButtonPressed) {
 				startGame();
-				return;
+				continue;
 			}
+		} else {
+			window.Clear(sf::Color(0xcc, 0x66, 0x33));
+			window.Draw(logoSprite);
+			window.Draw(sf::String("Menu; click to start game."));
+			window.Display();
 		}
-
-		window.Clear(sf::Color(0xcc, 0x66, 0x33));
-		window.Draw(logoSprite);
-		window.Draw(sf::String("Menu; click to start game."));
-		window.Display();
 	}
 }
