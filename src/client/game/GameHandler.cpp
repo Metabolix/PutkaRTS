@@ -80,13 +80,7 @@ void GameHandler::run(sf::RenderWindow& window) {
 	view = window.GetDefaultView();
 	window.SetView(view);
 
-	gameView = window.GetView();
-	gameView.SetCenter(
-		sf::Vector2f(
-			connection->getGame().getMap().getSizeX() * tileSize / 2,
-			connection->getGame().getMap().getSizeY() * tileSize / 2
-		)
-	);
+	resetGameView(window);
 
 	window.SetFramerateLimit(60);
 
@@ -186,4 +180,14 @@ void GameHandler::handleScrolling(sf::RenderWindow& window) {
 	viewCenter.x = std::max<float>(0.0f, std::min<float>(viewCenter.x, map.getSizeX() * tileSize));
 	viewCenter.y = std::max<float>(0.0f, std::min<float>(viewCenter.y, map.getSizeY() * tileSize));
 	gameView.SetCenter(viewCenter);
+}
+
+void GameHandler::resetGameView(sf::RenderWindow& window) {
+	gameView = window.GetDefaultView();
+	gameView.SetCenter(
+		sf::Vector2f(
+			connection->getGame().getMap().getSizeX() * tileSize / 2,
+			connection->getGame().getMap().getSizeY() * tileSize / 2
+		)
+	);
 }

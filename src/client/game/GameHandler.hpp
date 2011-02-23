@@ -82,6 +82,13 @@ public:
 	 * @param window The window to use for input and rendering.
 	 */
 	void handleScrolling(sf::RenderWindow& window);
+
+	/**
+	 * Reset view used for map rendering
+	 *
+	 * @param window The window to use for view data.
+	 */
+	void resetGameView(sf::RenderWindow& window);
 };
 
 #endif
