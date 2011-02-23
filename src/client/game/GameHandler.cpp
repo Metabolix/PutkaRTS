@@ -174,6 +174,11 @@ void GameHandler::handleScrolling(sf::RenderWindow& window) {
 		mouseDrag = false;
 	}
 
+	//reset view with home key.
+	if (input.IsKeyDown(sf::Key::Home)) {
+		resetGameView(window);
+	}
+
 	// boundaries
 	sf::Vector2f viewCenter = gameView.GetCenter();
 	const Map& map = connection->getGame().getMap();
