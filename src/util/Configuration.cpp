@@ -72,7 +72,7 @@ bool Configuration::load(const std::string& filepath_) {
 	// Open the configuration file.
 	std::ifstream file(filepath_.c_str());
 	if (!file) {
-		std::cerr << "Failed to open configuration file: \"" << filepath << "\"" << std::endl;
+		std::cerr << "Failed to open configuration file: \"" << filepath_ << "\"" << std::endl;
 		return false;
 	}
 
