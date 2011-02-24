@@ -39,7 +39,7 @@ GameHandler::GameHandler(std::auto_ptr<GameConnection> connection_):
 	connection(connection_) {
 	instance.reset(this);
 
-	scrollSpeed = 400.0f;
+	scrollSpeed = 1.0f;
 	zoomSpeed = 2.0f;
 	mouseDrag = false;
 	reverseDrag = false;
@@ -123,40 +123,39 @@ void GameHandler::handleScrolling(sf::RenderWindow& window) {
 	float time = window.GetFrameTime();
 	const sf::Input & input = window.GetInput();
 
-	// scroll map with arrow keys
-	if (input.IsKeyDown(sf::Key::Right)) {
-		gameView.Move(scrollSpeed * time, 0);
-	} else if (input.IsKeyDown(sf::Key::Left)) {
-		gameView.Move(-scrollSpeed * time, 0);
-	}
-	if (input.IsKeyDown(sf::Key::Down)) {
-		gameView.Move(0, scrollSpeed * time);
-	} else if (input.IsKeyDown(sf::Key::Up)) {
-		gameView.Move(0,-scrollSpeed * time);
-	}
 	// zoom with pgUp and pgDown
 	if (input.IsKeyDown(sf::Key::PageDown)) {
-		float zoomAmount = pow(zoomSpeed, time);
-		gameView.Zoom(zoomAmount);
-		scrollSpeed *= 1.00f / zoomAmount;
+		gameView.Zoom(pow(zoomSpeed, time));
 	} else if (input.IsKeyDown(sf::Key::PageUp)) {
-		float zoomAmount = pow(zoomSpeed, time);
-		gameView.Zoom(1.00f / zoomAmount);
-		scrollSpeed *= zoomAmount;
+		gameView.Zoom(pow(zoomSpeed, -time));
+	}
+
+	float actualScrollSpeed = gameView.GetHalfSize().x * scrollSpeed;
+
+	// scroll map with arrow keys
+	if (input.IsKeyDown(sf::Key::Right)) {
+		gameView.Move(actualScrollSpeed * time, 0);
+	} else if (input.IsKeyDown(sf::Key::Left)) {
+		gameView.Move(-actualScrollSpeed * time, 0);
+	}
+	if (input.IsKeyDown(sf::Key::Down)) {
+		gameView.Move(0, actualScrollSpeed * time);
+	} else if (input.IsKeyDown(sf::Key::Up)) {
+		gameView.Move(0, -actualScrollSpeed * time);
 	}
 
 	// mouse scrolling
 	int threshold = 5;
 
 	if (input.GetMouseX() < threshold) {
-		gameView.Move(-scrollSpeed * time, 0);
+		gameView.Move(-actualScrollSpeed * time, 0);
 	} else if (input.GetMouseX() > window.GetWidth() - threshold) {
-		gameView.Move(scrollSpeed * time, 0);
+		gameView.Move(actualScrollSpeed * time, 0);
 	}
 	if (input.GetMouseY() < threshold) {
-		gameView.Move(0, -scrollSpeed * time);
+		gameView.Move(0, -actualScrollSpeed * time);
 	} else if (input.GetMouseY() > window.GetHeight() - threshold) {
-		gameView.Move(0, scrollSpeed * time);
+		gameView.Move(0, actualScrollSpeed * time);
 	}
 
 	// drag with right mouse
