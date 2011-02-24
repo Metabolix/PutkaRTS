@@ -122,6 +122,7 @@ void GameHandler::run(sf::RenderWindow& window) {
 void GameHandler::handleScrolling(sf::RenderWindow& window) {
 	float time = window.GetFrameTime();
 	const sf::Input & input = window.GetInput();
+	const Map& map = connection->getGame().getMap();
 
 	// zoom with pgUp and pgDown
 	if (input.IsKeyDown(sf::Key::PageDown)) {
@@ -130,7 +131,23 @@ void GameHandler::handleScrolling(sf::RenderWindow& window) {
 		gameView.Zoom(pow(zoomSpeed, -time));
 	}
 
-	float actualScrollSpeed = gameView.GetHalfSize().x * scrollSpeed;
+	// limit zoom level to at least 4 tiles or at most map size x2
+	sf::Vector2f halfSize = gameView.GetHalfSize();
+	if (halfSize.x < 2) {
+		halfSize *= 2 / halfSize.x;
+	}
+	if (halfSize.y < 2) {
+		halfSize *= 2 / halfSize.y;
+	}
+	if (halfSize.x > map.getSizeX()) {
+		halfSize *= map.getSizeX() / halfSize.x;
+	}
+	if (halfSize.y > map.getSizeY()) {
+		halfSize *= map.getSizeY() / halfSize.y;
+	}
+	gameView.SetHalfSize(halfSize);
+
+	float actualScrollSpeed = halfSize.x * scrollSpeed;
 
 	// scroll map with arrow keys
 	if (input.IsKeyDown(sf::Key::Right)) {
@@ -183,7 +200,6 @@ void GameHandler::handleScrolling(sf::RenderWindow& window) {
 
 	// boundaries
 	sf::Vector2f viewCenter = gameView.GetCenter();
-	const Map& map = connection->getGame().getMap();
 	viewCenter.x = std::max<float>(0.0f, std::min<float>(viewCenter.x, map.getSizeX()));
 	viewCenter.y = std::max<float>(0.0f, std::min<float>(viewCenter.y, map.getSizeY()));
 	gameView.SetCenter(viewCenter);
