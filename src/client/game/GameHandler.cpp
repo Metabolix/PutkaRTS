@@ -186,16 +186,19 @@ void GameHandler::handleScrolling(sf::RenderWindow& window) {
 	// drag with right mouse
 	if (input.IsMouseButtonDown(sf::Mouse::Right)) {
 		if (mouseDrag) {
+			sf::Vector2f mapDragOrigin = window.ConvertCoords(dragOrigin.x, dragOrigin.y, &gameView);
+			sf::Vector2f mapDragDestination = window.ConvertCoords(input.GetMouseX(), input.GetMouseY(), &gameView);
+			sf::Vector2f change(mapDragOrigin - mapDragDestination);
 			if (reverseDrag) {
-				gameView.Move(input.GetMouseX() - dragOrigin.x, input.GetMouseY() - dragOrigin.y);
-			} else {
-				gameView.Move(dragOrigin.x - input.GetMouseX(), dragOrigin.y - input.GetMouseY());
+				change = -change;
 			}
+			gameView.Move(change);
+		}
+		if (mouseDrag) {
+			window.SetCursorPosition(dragOrigin.x, dragOrigin.y);
 		} else {
 			dragOrigin = sf::Vector2f(input.GetMouseX(), input.GetMouseY());
 		}
-
-		window.SetCursorPosition(dragOrigin.x, dragOrigin.y);
 		mouseDrag = true;
 	} else {
 		mouseDrag = false;
