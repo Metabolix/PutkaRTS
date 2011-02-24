@@ -34,8 +34,8 @@
  * Class for the client-side game GUI.
  */
 class GameHandler {
-	/** The view to use for rendering. */
-	sf::View view;
+	/** The view used while rendering the GUI. */
+	sf::View guiView;
 
 	/** All images needed for rendering. */
 	ImageCache images;
@@ -63,6 +63,9 @@ class GameHandler {
 
 	/** Reverse drag direction */
 	bool reverseDrag;
+
+	/** Used to break the main loop from within member functions. */
+	bool gameClosed;
 public:
 	/** The current GameHandler instance; there should always be only one. */
 	static std::auto_ptr<GameHandler> instance;
@@ -81,8 +84,15 @@ public:
 
 	/**
 	 * Draw the map and the units.
+	 *
+	 * @param window The window to use for input and rendering.
 	 */
 	void drawGame(sf::RenderWindow& window) const;
+
+	/**
+	 * Exit the game.
+	 */
+	void exit();
 
 	/**
 	 * Run the game until it ends.

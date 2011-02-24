@@ -25,11 +25,15 @@
 #include "GameHandler.hpp"
 #include "game/Map.hpp"
 
+#include "client/gui/Button.hpp"
+#include "client/gui/Container.hpp"
+
 #include <SFML/Graphics.hpp>
 
 #include <memory>
 #include <algorithm>
 #include <cmath>
+#include <boost/bind.hpp>
 
 std::auto_ptr<GameHandler> GameHandler::instance;
 
@@ -58,8 +62,6 @@ void GameHandler::loadMapData() {
 void GameHandler::drawGame(sf::RenderWindow& window) const {
 	const Map& map = connection->getGame().getMap();
 
-	window.SetView(gameView);
-
 	//calculate which tiles are on the screen.
 	Map::SizeType beginY = std::max(0.0f, gameView.GetRect().Top);
 	Map::SizeType endY = std::min<Map::SizeType>(map.getSizeY(), std::max(0.0f, std::ceil(gameView.GetRect().Bottom)));
@@ -77,13 +79,14 @@ void GameHandler::drawGame(sf::RenderWindow& window) const {
 	}
 
 	// TODO: Draw the objects as well!
+}
 
-	window.SetView(view);
+void GameHandler::exit() {
+	gameClosed = true;
 }
 
 void GameHandler::run(sf::RenderWindow& window) {
-	view = window.GetDefaultView();
-	window.SetView(view);
+	guiView = window.GetDefaultView();
 
 	resetGameView(window, true);
 
@@ -91,31 +94,36 @@ void GameHandler::run(sf::RenderWindow& window) {
 
 	loadMapData();
 
-	while (window.IsOpened()) {
+	GUI::Container gui;
+	gui.insert(boost::shared_ptr<GUI::Object>(new GUI::Button("X", window.GetWidth() - 24, 0, 24, 24, boost::bind(&GameHandler::exit, this))));
+
+	gameClosed = false;
+	while (window.IsOpened() && !gameClosed) {
 		sf::Event e;
-		while (window.GetEvent(e)) {
-			if (e.Type == sf::Event::Closed || (e.Type == sf::Event::KeyPressed && e.Key.Code == sf::Key::Escape)) {
+		if (window.GetEvent(e)) {
+			if (e.Type == sf::Event::Closed) {
 				window.Close();
-				return;
+				break;
 			}
+			if (e.Type == sf::Event::KeyPressed && e.Key.Code == sf::Key::Escape) {
+				break;
+			}
+			if (gui.handleEvent(e, window)) {
+				continue;
+			}
+		} else {
+			handleScrolling(window);
 
-			if (e.Type == sf::Event::MouseButtonPressed) {
-				if (e.MouseButton.Button == sf::Mouse::Left) {
-					return;
-				}
-			}
+			window.Clear();
+
+			window.SetView(gameView);
+			drawGame(window);
+
+			window.SetView(guiView);
+			gui.draw(window);
+
+			window.Display();
 		}
-
-		handleScrolling(window);
-
-		window.Clear();
-
-		drawGame(window);
-
-		// TODO: Draw the user interface!
-		window.Draw(sf::String("Game; click to return to menu."));
-
-		window.Display();
 	}
 }
 
