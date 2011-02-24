@@ -21,12 +21,14 @@
 
 #include "Button.hpp"
 
+#include <algorithm>
+
 GUI::Button::Button(const std::string& text, float x, float y, float width, float height, CallbackType callback):
 	Object(x, y, width, height),
 	label(text),
 	action(callback) {
-	sf::FloatRect labelRect(label.GetRect());
-	label.SetCenter((labelRect.Right - labelRect.Left) / 2, (labelRect.Bottom - labelRect.Top) / 2);
+	static sf::String maxHeightString("|");
+	label.SetCenter(label.GetRect().GetWidth() / 2, maxHeightString.GetRect().GetHeight() / 2);
 }
 
 bool GUI::Button::handleEvent(const sf::Event& e, const sf::RenderWindow& window) {
@@ -45,13 +47,14 @@ bool GUI::Button::handleEvent(const sf::Event& e, const sf::RenderWindow& window
 }
 
 void GUI::Button::draw(sf::RenderWindow& window) {
+	const int bw = (std::min(position.GetWidth(), position.GetHeight()) < 40 ? 2 : 4); // Border width
 	const sf::Input& input(window.GetInput());
 	sf::Vector2f mouse(window.ConvertCoords(input.GetMouseX(), input.GetMouseY()));
 
 	sf::FloatRect labelRect(label.GetRect());
 	label.SetPosition((position.Right + position.Left) / 2, (position.Bottom + position.Top) / 2);
 
-	float scale = std::min(position.GetWidth() / labelRect.GetWidth(), position.GetHeight() / labelRect.GetHeight()) * 7 / 10;
+	float scale = std::min((position.GetWidth() - 2 * bw) / labelRect.GetWidth(), (position.GetHeight() - 2 * bw) / labelRect.GetHeight()) * 0.85f;
 	label.Scale(scale, scale);
 
 	sf::Color background(0x55, 0x44, 0x33);
@@ -60,6 +63,6 @@ void GUI::Button::draw(sf::RenderWindow& window) {
 		background = sf::Color(0xcc, 0x99, 0x66);
 	}
 
-	window.Draw(sf::Shape::Rectangle(position.Left, position.Top, position.Right, position.Bottom, background, 4, sf::Color::Black));
+	window.Draw(sf::Shape::Rectangle(position.Left + bw, position.Top + bw, position.Right - bw, position.Bottom - bw, background, bw, sf::Color::Black));
 	window.Draw(label);
 }
