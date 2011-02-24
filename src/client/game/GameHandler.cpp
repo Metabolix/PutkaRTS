@@ -166,12 +166,12 @@ void GameHandler::handleScrolling(sf::RenderWindow& window) {
 
 	if (input.GetMouseX() < threshold) {
 		gameView.Move(-actualScrollSpeed * time, 0);
-	} else if (input.GetMouseX() > window.GetWidth() - threshold) {
+	} else if (input.GetMouseX() > (int) window.GetWidth() - threshold) {
 		gameView.Move(actualScrollSpeed * time, 0);
 	}
 	if (input.GetMouseY() < threshold) {
 		gameView.Move(0, -actualScrollSpeed * time);
-	} else if (input.GetMouseY() > window.GetHeight() - threshold) {
+	} else if (input.GetMouseY() > (int) window.GetHeight() - threshold) {
 		gameView.Move(0, actualScrollSpeed * time);
 	}
 
