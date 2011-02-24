@@ -85,7 +85,7 @@ void GameHandler::run(sf::RenderWindow& window) {
 	view = window.GetDefaultView();
 	window.SetView(view);
 
-	resetGameView(window);
+	resetGameView(window, true);
 
 	window.SetFramerateLimit(60);
 
@@ -179,7 +179,7 @@ void GameHandler::handleScrolling(sf::RenderWindow& window) {
 
 	//reset view with home key.
 	if (input.IsKeyDown(sf::Key::Home)) {
-		resetGameView(window);
+		resetGameView(window, false);
 	}
 
 	// boundaries
@@ -190,10 +190,13 @@ void GameHandler::handleScrolling(sf::RenderWindow& window) {
 	gameView.SetCenter(viewCenter);
 }
 
-void GameHandler::resetGameView(sf::RenderWindow& window) {
+void GameHandler::resetGameView(sf::RenderWindow& window, bool resetLocation) {
+	sf::Vector2f location = gameView.GetCenter();
+	if (resetLocation) {
+		// TODO: Center at the player start position or something.
+		location.x = connection->getGame().getMap().getSizeX() * tileSize / 2;
+		location.y = connection->getGame().getMap().getSizeY() * tileSize / 2;
+	}
 	gameView = window.GetDefaultView();
-	gameView.SetCenter(
-		connection->getGame().getMap().getSizeX() * tileSize / 2,
-		connection->getGame().getMap().getSizeY() * tileSize / 2
-	);
+	gameView.SetCenter(location);
 }

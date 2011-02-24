@@ -102,8 +102,9 @@ public:
 	 * Reset view used for map rendering
 	 *
 	 * @param window The window to use for view data.
+	 * @param resetLocation Reset location as well, or reset only zoom?
 	 */
-	void resetGameView(sf::RenderWindow& window);
+	void resetGameView(sf::RenderWindow& window, bool resetLocation);
 };
 
 #endif
