@@ -20,6 +20,7 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "client/Client.hpp"
 #include "util/Path.hpp"
 
 #include "GameHandler.hpp"
@@ -40,13 +41,9 @@ std::auto_ptr<GameHandler> GameHandler::instance;
 const int GameHandler::tileSize = 32;
 
 GameHandler::GameHandler(std::auto_ptr<GameConnection> connection_):
-	connection(connection_) {
+	connection(connection_),
+	mouseDrag(false) {
 	instance.reset(this);
-
-	scrollSpeed = 1.0f;
-	zoomSpeed = 2.0f;
-	mouseDrag = false;
-	reverseDrag = false;
 }
 
 void GameHandler::loadMapData() {
@@ -132,11 +129,13 @@ void GameHandler::handleScrolling(sf::RenderWindow& window) {
 	const sf::Input & input = window.GetInput();
 	const Map& map = connection->getGame().getMap();
 
+	const float zoomSpeed = Client::config.getDouble("gameUI.zoomSpeed", 2);
+
 	// zoom with pgUp and pgDown
 	if (input.IsKeyDown(sf::Key::PageDown)) {
-		gameView.Zoom(pow(zoomSpeed, time));
+		gameView.Zoom(pow(2, zoomSpeed * time));
 	} else if (input.IsKeyDown(sf::Key::PageUp)) {
-		gameView.Zoom(pow(zoomSpeed, -time));
+		gameView.Zoom(pow(2, zoomSpeed * -time));
 	}
 
 	// limit zoom level to at least 4 tiles or at most map size x2
@@ -155,32 +154,34 @@ void GameHandler::handleScrolling(sf::RenderWindow& window) {
 	}
 	gameView.SetHalfSize(halfSize);
 
-	float actualScrollSpeed = halfSize.x * scrollSpeed;
+	const float keyboardScrollSpeed = 2 * halfSize.x * Client::config.getDouble("gameUI.keyboardScrollSpeed", 1);
+	const float borderScrollSpeed = 2 * halfSize.x * Client::config.getDouble("gameUI.borderScrollSpeed", 1);
+	const bool reverseDrag = Client::config.getBool("gameUI.reverseDrag", false);
 
 	// scroll map with arrow keys
 	if (input.IsKeyDown(sf::Key::Right)) {
-		gameView.Move(actualScrollSpeed * time, 0);
+		gameView.Move(keyboardScrollSpeed * time, 0);
 	} else if (input.IsKeyDown(sf::Key::Left)) {
-		gameView.Move(-actualScrollSpeed * time, 0);
+		gameView.Move(-keyboardScrollSpeed * time, 0);
 	}
 	if (input.IsKeyDown(sf::Key::Down)) {
-		gameView.Move(0, actualScrollSpeed * time);
+		gameView.Move(0, keyboardScrollSpeed * time);
 	} else if (input.IsKeyDown(sf::Key::Up)) {
-		gameView.Move(0, -actualScrollSpeed * time);
+		gameView.Move(0, -keyboardScrollSpeed * time);
 	}
 
 	// mouse scrolling
 	int threshold = 5;
 
 	if (input.GetMouseX() < threshold) {
-		gameView.Move(-actualScrollSpeed * time, 0);
+		gameView.Move(-borderScrollSpeed * time, 0);
 	} else if (input.GetMouseX() > (int) window.GetWidth() - threshold) {
-		gameView.Move(actualScrollSpeed * time, 0);
+		gameView.Move(borderScrollSpeed * time, 0);
 	}
 	if (input.GetMouseY() < threshold) {
-		gameView.Move(0, -actualScrollSpeed * time);
+		gameView.Move(0, -borderScrollSpeed * time);
 	} else if (input.GetMouseY() > (int) window.GetHeight() - threshold) {
-		gameView.Move(0, actualScrollSpeed * time);
+		gameView.Move(0, borderScrollSpeed * time);
 	}
 
 	// drag with right mouse

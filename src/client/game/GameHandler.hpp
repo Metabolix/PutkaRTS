@@ -49,20 +49,11 @@ class GameHandler {
 	/** Size of one map tile */
 	static const int tileSize;
 
-	/** Speed of map scrolling px / second*/
-	float scrollSpeed;
-
-	/** Speed of zooming */
-	float zoomSpeed;
-
 	/** Is map being dragged with mouse?*/
 	bool mouseDrag;
 
 	/** Window coordinates for drag origin*/
 	sf::Vector2f dragOrigin;
-
-	/** Reverse drag direction */
-	bool reverseDrag;
 
 	/** Used to break the main loop from within member functions. */
 	bool gameClosed;
