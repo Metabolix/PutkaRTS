@@ -25,9 +25,9 @@
 #include <SFML/Graphics.hpp>
 
 #include "ProgramInfo.hpp"
+#include "Client.hpp"
 
 #include "util/Path.hpp"
-#include "util/Configuration.hpp"
 
 #include "menu/MainMenuHandler.hpp"
 #include "game/GameHandler.hpp"
@@ -39,15 +39,16 @@ int main(int argc, char **argv)
 try {
 	Path::init(argc ? argv[0] : "./bin/unknown.exe");
 
-	Configuration conf(Path::getConfigPath("client.conf"));
+	std::string configPath = Path::getConfigPath("client.conf");
+	Client::config.load(configPath);
 
 	sf::VideoMode mode = sf::VideoMode(
-		conf.getInt("window.size.x", 800),
-		conf.getInt("window.size.y", 600)
+		Client::config.getInt("window.size.x", 800),
+		Client::config.getInt("window.size.y", 600)
 	);
 	unsigned long style = sf::Style::Close;
 
-	if (conf.getBool("window.fullscreen", false)) {
+	if (Client::config.getBool("window.fullscreen", false)) {
 		style = sf::Style::Fullscreen;
 		if (!mode.IsValid()) {
 			mode = sf::VideoMode::GetDesktopMode();
@@ -69,7 +70,7 @@ try {
 		}
 	}
 	try {
-		conf.save();
+		Client::config.save(configPath);
 	} catch (std::runtime_error& e) {
 		std::cerr << e.what() << std::endl;
 	}
