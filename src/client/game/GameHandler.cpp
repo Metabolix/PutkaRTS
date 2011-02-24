@@ -38,6 +38,11 @@ const int GameHandler::tileSize = 32;
 GameHandler::GameHandler(std::auto_ptr<GameConnection> connection_):
 	connection(connection_) {
 	instance.reset(this);
+
+	scrollSpeed = 400.0f;
+	zoomSpeed = 2.0f;
+	mouseDrag = false;
+	reverseDrag = false;
 }
 
 void GameHandler::loadMapData() {
@@ -118,9 +123,6 @@ void GameHandler::handleScrolling(sf::RenderWindow& window) {
 	float time = window.GetFrameTime();
 	const sf::Input & input = window.GetInput();
 
-	static float scrollSpeed = 400.0f;
-	static float zoomSpeed = 2.0f;
-
 	// scroll map with arrow keys
 	if (input.IsKeyDown(sf::Key::Right)) {
 		gameView.Move(scrollSpeed * time, 0);
@@ -158,12 +160,13 @@ void GameHandler::handleScrolling(sf::RenderWindow& window) {
 	}
 
 	// drag with right mouse
-	static bool mouseDrag = false;
-	static sf::Vector2f dragOrigin;
-
 	if (input.IsMouseButtonDown(sf::Mouse::Right)) {
 		if (mouseDrag) {
-			gameView.Move(input.GetMouseX() - dragOrigin.x, input.GetMouseY() - dragOrigin.y);
+			if (reverseDrag) {
+				gameView.Move(input.GetMouseX() - dragOrigin.x, input.GetMouseY() - dragOrigin.y);
+			} else {
+				gameView.Move(dragOrigin.x - input.GetMouseX(), dragOrigin.y - input.GetMouseY());
+			}
 		} else {
 			dragOrigin = sf::Vector2f(input.GetMouseX(), input.GetMouseY());
 		}
@@ -190,9 +193,7 @@ void GameHandler::handleScrolling(sf::RenderWindow& window) {
 void GameHandler::resetGameView(sf::RenderWindow& window) {
 	gameView = window.GetDefaultView();
 	gameView.SetCenter(
-		sf::Vector2f(
-			connection->getGame().getMap().getSizeX() * tileSize / 2,
-			connection->getGame().getMap().getSizeY() * tileSize / 2
-		)
+		connection->getGame().getMap().getSizeX() * tileSize / 2,
+		connection->getGame().getMap().getSizeY() * tileSize / 2
 	);
 }
