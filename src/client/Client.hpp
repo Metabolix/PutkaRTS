@@ -25,10 +25,10 @@
 #include "util/Configuration.hpp"
 
 /**
- * A
+ * Namespace for global variables in the client program.
  */
 namespace Client {
-	/** D */
+	/** Game client configuration. */
 	extern Configuration config;
 }
 
