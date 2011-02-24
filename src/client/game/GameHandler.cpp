@@ -61,17 +61,17 @@ void GameHandler::drawGame(sf::RenderWindow& window) const {
 	window.SetView(gameView);
 
 	//calculate which tiles are on the screen.
-	Map::SizeType beginY = std::max<int>(0, gameView.GetRect().Top / tileSize);
-	Map::SizeType endY = std::min<int>(map.getSizeY(), std::max<int>(0, std::ceil(gameView.GetRect().Bottom / tileSize)));
-	Map::SizeType beginX = std::max<int>(0, gameView.GetRect().Left / tileSize);
-	Map::SizeType endX = std::min<int>(map.getSizeX(), std::max<int>(0, std::ceil(gameView.GetRect().Right / tileSize)));
+	Map::SizeType beginY = std::max(0.0f, gameView.GetRect().Top);
+	Map::SizeType endY = std::min<Map::SizeType>(map.getSizeY(), std::max(0.0f, std::ceil(gameView.GetRect().Bottom)));
+	Map::SizeType beginX = std::max(0.0f, gameView.GetRect().Left);
+	Map::SizeType endX = std::min<Map::SizeType>(map.getSizeX(), std::max(0.0f, std::ceil(gameView.GetRect().Right)));
 
 	// TODO: Check what parts the player can see!
 	for (Map::SizeType y = beginY; y < endY; ++y) {
 		for (Map::SizeType x = beginX; x < endX; ++x) {
 			sf::Sprite sprite(images.get(map(x, y).texture));
-			sprite.Resize(tileSize, tileSize);
-			sprite.SetPosition(x * tileSize, y * tileSize);
+			sprite.Resize(1, 1);
+			sprite.SetPosition(x, y);
 			window.Draw(sprite);
 		}
 	}
@@ -184,8 +184,8 @@ void GameHandler::handleScrolling(sf::RenderWindow& window) {
 	// boundaries
 	sf::Vector2f viewCenter = gameView.GetCenter();
 	const Map& map = connection->getGame().getMap();
-	viewCenter.x = std::max<float>(0.0f, std::min<float>(viewCenter.x, map.getSizeX() * tileSize));
-	viewCenter.y = std::max<float>(0.0f, std::min<float>(viewCenter.y, map.getSizeY() * tileSize));
+	viewCenter.x = std::max<float>(0.0f, std::min<float>(viewCenter.x, map.getSizeX()));
+	viewCenter.y = std::max<float>(0.0f, std::min<float>(viewCenter.y, map.getSizeY()));
 	gameView.SetCenter(viewCenter);
 }
 
@@ -193,9 +193,10 @@ void GameHandler::resetGameView(sf::RenderWindow& window, bool resetLocation) {
 	sf::Vector2f location = gameView.GetCenter();
 	if (resetLocation) {
 		// TODO: Center at the player start position or something.
-		location.x = connection->getGame().getMap().getSizeX() * tileSize / 2;
-		location.y = connection->getGame().getMap().getSizeY() * tileSize / 2;
+		location.x = connection->getGame().getMap().getSizeX() / 2;
+		location.y = connection->getGame().getMap().getSizeY() / 2;
 	}
 	gameView = window.GetDefaultView();
 	gameView.SetCenter(location);
+	gameView.Zoom(tileSize);
 }
