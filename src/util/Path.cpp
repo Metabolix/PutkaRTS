@@ -64,7 +64,7 @@ try {
 		}
 	}
 	return boost::filesystem::create_directory(path);
-} catch (boost::filesystem::basic_filesystem_error<boost::filesystem::path>& e) {
+} catch (boost::filesystem::filesystem_error& e) {
 	return false;
 }
 
