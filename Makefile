@@ -25,6 +25,11 @@ else
     SERVERLIBS := $(patsubst -l%,-framework %,$(SERVERLIBS))
     CLIENTLIBS := $(patsubst -l%,-framework %,$(CLIENTLIBS))
   endif
+  # MinGW needs .exe suffices.
+  ifeq "$(findstring mingw,$(CXX))" "mingw"
+    SERVERBIN := $(SERVERBIN).exe
+    CLIENTBIN := $(CLIENTBIN).exe
+  endif
 endif
 
 # Abstract build rules.
