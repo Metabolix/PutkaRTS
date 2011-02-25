@@ -29,6 +29,8 @@
 #include "client/gui/Button.hpp"
 #include "client/gui/Container.hpp"
 
+#include "util/Path.hpp"
+
 #include <memory>
 #include <algorithm>
 #include <boost/bind.hpp>
@@ -43,7 +45,7 @@ void MainMenuHandler::startGame() {
 
 void MainMenuHandler::run(sf::RenderWindow& window) {
 	ImageCache mainMenuImages;
-	const sf::Image& logoImage = mainMenuImages.get("data/graphics/logo.png");
+	const sf::Image& logoImage = mainMenuImages.get(Path::findDataPath("graphics/logo.png"));
 
 	// Entering main menu, no game should be running.
 	GameHandler::instance.reset();
