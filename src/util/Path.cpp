@@ -53,9 +53,11 @@ namespace Path {
 static bool Path::mkdir(const boost::filesystem::path& path, bool recurse)
 try {
 	if (recurse) {
-		boost::filesystem::path parent = path.parent_path();
-		if (!boost::filesystem::exists(parent)) {
-			mkdir(parent, recurse);
+		if (path.has_parent_path()) {
+			boost::filesystem::path parent = path.parent_path();
+			if (!boost::filesystem::exists(parent)) {
+				mkdir(parent, recurse);
+			}
 		}
 		if (boost::filesystem::is_directory(path)) {
 			return true;
