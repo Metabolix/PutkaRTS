@@ -73,9 +73,51 @@ void Path::init(const std::string& argv0) {
 	}
 	boost::filesystem::current_path("..");
 
-	globalDataDir = (boost::filesystem::current_path() / "data").string();
-	localConfigDir = (boost::filesystem::current_path() / "local").string();
-	localDataDir = (boost::filesystem::current_path() / "local").string();
+	globalDataDir = boost::filesystem::current_path() / "data";
+	localConfigDir = boost::filesystem::current_path() / "local";
+	localDataDir = boost::filesystem::current_path() / "local";
+
+	// Override the global data dir with preprocessor.
+	#if defined(GLOBAL_DATA_DIR)
+		globalDataDir = GLOBAL_DATA_DIR;
+	#endif
+
+	#if !defined(USE_SYSTEM_PATHS)
+		// Do nothing; use the development paths above.
+	#elif defined(_WIN32)
+		// TODO: Implement Windows paths!
+	#else
+		// Others: try some environment variables.
+		const char *home = getenv("HOME");
+		const char *config = getenv("XDG_CONFIG_HOME");
+		const char *data = getenv("XDG_DATA_HOME");
+
+		if (!boost::filesystem::exists(home)) {
+			home = 0;
+		}
+		if (!boost::filesystem::exists(config)) {
+			config = 0;
+		}
+		if (!boost::filesystem::exists(data)) {
+			data = 0;
+		}
+
+		if (config) {
+			localConfigDir = config;
+			localConfigDir /= "PutkaRTS";
+		} else if (home) {
+			localConfigDir = home;
+			localConfigDir /= ".config/PutkaRTS";
+		}
+
+		if (data) {
+			localDataDir = data;
+			localDataDir /= "PutkaRTS";
+		} else if (home) {
+			localDataDir = home;
+			localDataDir /= ".local/share/PutkaRTS";
+		}
+	#endif
 
 	if (!boost::filesystem::exists(globalDataDir)) {
 		throw std::runtime_error("Could not find global data dir! Tried: " + globalDataDir.string());
