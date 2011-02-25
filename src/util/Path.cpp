@@ -19,6 +19,12 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#if defined(_WIN32)
+	#define UNICODE
+	#include <windows.h>
+	#include <shlobj.h>
+#endif
+
 #include "Path.hpp"
 
 #include <boost/filesystem.hpp>
@@ -85,7 +91,27 @@ void Path::init(const std::string& argv0) {
 	#if !defined(USE_SYSTEM_PATHS)
 		// Do nothing; use the development paths above.
 	#elif defined(_WIN32)
-		// TODO: Implement Windows paths!
+		// Windows: use Application Data for local stuff.
+
+		/* The program is not made for the UTF-16 used in Windows,
+		 * but to be nice, we'll use a small hack, as follows:
+		 *
+		 * The installation dir is like C:\Program Files\PutkaRTS.
+		 * The path is likely to contain only 8-bit characters ("ANSI codepage").
+		 * The user data dir is like C:\Users\Jørgen-äijä\Application Data.
+		 * The path may contain just anything, depending on the login name.
+		 *
+		 * So the trick is to chdir to Application Data here with
+		 * any Unicode characters and then use relative paths for
+		 * the local files. This way the rest of the program doesn't
+		 * need to care about UTF-16 at all.
+		 */
+		TCHAR w32ApplicationData[MAX_PATH];
+		if (SHGetFolderPath(0, CSIDL_APPDATA, 0, 0, w32ApplicationData) == S_OK) {
+			if (SetCurrentDirectory(w32ApplicationData)) {
+				localDataDir = localConfigDir = "PutkaRTS";
+			}
+		}
 	#else
 		// Others: try some environment variables.
 		const char *home = getenv("HOME");
