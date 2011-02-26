@@ -40,6 +40,9 @@ class Configuration {
 	/** Path of the configuration file. */
 	std::string filepath;
 
+	/** Remember whether the settings have changed since loading. */
+	mutable bool changed;
+
 	/**
 	 * Returns the value of configuration key.
 	 *

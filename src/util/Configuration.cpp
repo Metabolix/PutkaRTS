@@ -26,12 +26,15 @@
 #include <boost/algorithm/string.hpp>
 
 #include "Configuration.hpp"
+#include "util/Path.hpp"
 
-Configuration::Configuration() {
+Configuration::Configuration():
+	changed(false) {
 }
 
 Configuration::Configuration(const std::string& filepath_):
-	filepath(filepath_) {
+	filepath(filepath_),
+	changed(false) {
 	// Load default settings.
 	load(filepath);
 }
@@ -39,6 +42,7 @@ Configuration::Configuration(const std::string& filepath_):
 void Configuration::load(std::istream& stream) {
 	// Clear possible earlier configuration.
 	configuration.clear();
+	changed = false;
 
 	// Read all keys and values.
 	std::string line;
@@ -69,15 +73,19 @@ void Configuration::load(std::istream& stream) {
 }
 
 bool Configuration::load(const std::string& filepath_) {
+	// Clear possible earlier configuration.
+	configuration.clear();
+	changed = false;
+
+	// Save filepath.
+	filepath = filepath_;
+
 	// Open the configuration file.
 	std::ifstream file(filepath_.c_str());
 	if (!file) {
 		std::cerr << "Failed to open configuration file: \"" << filepath_ << "\"" << std::endl;
 		return false;
 	}
-
-	// Save filepath.
-	filepath = filepath_;
 
 	// Parse data.
 	load(file);
@@ -97,7 +105,13 @@ void Configuration::save(std::ostream& stream) const {
 }
 
 void Configuration::save(const std::string& filepath_) const {
+	// If the file exists, save only if changed; otherwise save if not empty.
+	if (Path::exists(filepath_) ? (!changed && filepath_ == filepath) : configuration.empty()) {
+		return;
+	}
+
 	// Open the configuration file.
+	Path::mkdirForFile(filepath_);
 	std::ofstream file(filepath_.c_str());
 	if (!file) {
 		throw std::runtime_error("Configuration::save: Failed to open configuration file: " + filepath_);
@@ -105,6 +119,11 @@ void Configuration::save(const std::string& filepath_) const {
 
 	// Write configuration to the file.
 	save(file);
+
+	// Clear the 'changed' flag if stored to same file.
+	if (filepath_ == filepath) {
+		changed = false;
+	}
 }
 
 void Configuration::save() const {
@@ -155,7 +174,9 @@ void Configuration::setString(const std::string& key, const std::string& value) 
 }
 
 void Configuration::remove(const std::string& key) {
-	configuration.erase(key);
+	if (configuration.erase(key)) {
+		changed = true;
+	}
 }
 
 void Configuration::clear() {
@@ -187,4 +208,6 @@ void Configuration::setValue(const std::string& key, T value) {
 	std::ostringstream stream;
 	stream << value;
 	configuration[key] = stream.str();
+
+	changed = true;
 }
