@@ -72,6 +72,19 @@ bool Path::mkdir(const std::string& path) {
 	return mkdir(boost::filesystem::path(path), true);
 }
 
+bool Path::mkdirForFile(const std::string& pathStr) {
+	boost::filesystem::path path(pathStr);
+	if (!path.has_parent_path()) {
+		// Assume that root paths and current path always exist.
+		return true;
+	}
+	return mkdir(path.parent_path(), true);
+}
+
+bool Path::exists(const std::string& path) {
+	return boost::filesystem::exists(path);
+}
+
 void Path::init(const std::string& argv0) {
 	// This works in the development environment:
 	// argv0 = root/bin/program; chdir to root; everything else is right here as well.

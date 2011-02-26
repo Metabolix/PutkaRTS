@@ -37,6 +37,24 @@ namespace Path {
 	extern bool mkdir(const std::string& path);
 
 	/**
+	 * Create the parent directory for a file.
+	 *
+	 * For example, for the path "config/my.conf" create directory "config".
+	 *
+	 * @param path The file name.
+	 * @return True if the directory exists or was created.
+	 */
+	extern bool mkdirForFile(const std::string& path);
+
+	/**
+	 * Check if a path exists.
+	 *
+	 * @param path The path.
+	 * @return True if the path exists.
+	 */
+	extern bool exists(const std::string& path);
+
+	/**
 	 * Initialize the data and configuration paths.
 	 *
 	 * @param argv0 The first command line argument (program name).
