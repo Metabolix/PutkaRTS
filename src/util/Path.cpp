@@ -166,7 +166,6 @@ void Path::init(const std::string& argv0) {
 }
 
 std::string Path::getConfigPath(const std::string& name) {
-	mkdir(localConfigDir, true);
 	return (localConfigDir / name).string();
 }
 
