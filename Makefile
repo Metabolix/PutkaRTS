@@ -1,4 +1,6 @@
-CXXFLAGS := -Isrc -O -g -std=c++98 -Wall -pedantic
+CXX := c++
+CXXFLAGS := -O -g -std=c++98 -Wall -pedantic
+INCLUDES := -Isrc
 
 FILES_CPP := $(wildcard src/*.cpp) $(wildcard src/*/*.cpp) $(wildcard src/*/*/*.cpp) $(wildcard src/*/*/*/*.cpp)
 FILES_HPP := $(wildcard src/*.hpp) $(wildcard src/*/*.hpp) $(wildcard src/*/*/*.hpp) $(wildcard src/*/*/*/*.hpp)
@@ -68,10 +70,10 @@ $(SERVERBIN):
 build/%.dep: src/%
 	@echo [DEPEND] $<
 	@$(call mkdir,$(dir $@))
-	@$(CXX) $(CXXFLAGS) -MM $< -MF $@ -MT $@
+	@$(CXX) $(CXXFLAGS) $(INCLUDES) -MM $< -MT $@ > $@
 
 # Compilation
 build/%.o: src/% build/%.dep
 	@echo [CXX] $<
 	@$(call mkdir,$(dir $@))
-	@$(CXX) $(CXXFLAGS) $< -c -o $@
+	@$(CXX) $(CXXFLAGS) $(INCLUDES) $< -c -o $@
