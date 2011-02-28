@@ -2,6 +2,9 @@ CXX := c++
 CXXFLAGS := -O -g -std=c++98 -Wall -pedantic
 INCLUDES := -Isrc
 
+PUTKARTS_VERSION :=
+CXX_VER = "-DPUTKARTS_VERSION=\"$(PUTKARTS_VERSION)\""
+
 FILES_CPP := $(wildcard src/*.cpp) $(wildcard src/*/*.cpp) $(wildcard src/*/*/*.cpp) $(wildcard src/*/*/*/*.cpp)
 FILES_HPP := $(wildcard src/*.hpp) $(wildcard src/*/*.hpp) $(wildcard src/*/*/*.hpp) $(wildcard src/*/*/*/*.hpp)
 FILES_DEP := $(patsubst src/%,build/%.dep,$(FILES_CPP))
@@ -19,9 +22,15 @@ CLIENTLIBS := $(SERVERLIBS) -lsfml-window -lsfml-graphics -lsfml-audio
 ifeq "$(shell echo '1')" "'1'"
   # Windows needs a hack for mkdir
   mkdir = $(shell mkdir $(subst /,\,$(1)/dummy.mkdir) && rmdir $(subst /,\,$(1)/dummy.mkdir))
+  # Get the version number from git; we must first check manually that git.exe exists
+  ifeq "$(findstring git,$(shell for %%i in (git.exe) do @echo.%%~$$PATH:i))" "git"
+    PUTKARTS_VERSION := $(strip $(shell git describe 2>NUL))
+  endif
 else
   # Linux and Mac OS X have better mkdir
   mkdir = $(shell mkdir -p $(1))
+  # Get the version number from git
+  PUTKARTS_VERSION := $(strip $(shell git describe 2>/dev/null))
   # Mac OS X needs different libraries
   ifeq "$(shell uname -s)" "Darwin"
     SERVERLIBS := $(patsubst -l%,-framework %,$(SERVERLIBS))
@@ -70,10 +79,13 @@ $(SERVERBIN):
 build/%.dep: src/%
 	@echo [DEPEND] $<
 	@$(call mkdir,$(dir $@))
-	@$(CXX) $(CXXFLAGS) $(INCLUDES) -MM $< -MT $@ > $@
+	@$(CXX) $(CXXFLAGS) $(INCLUDES) $(CXX_VER) -MM $< -MT $@ > $@
 
 # Compilation
 build/%.o: src/% build/%.dep
 	@echo [CXX] $<
 	@$(call mkdir,$(dir $@))
-	@$(CXX) $(CXXFLAGS) $(INCLUDES) $< -c -o $@
+	@$(CXX) $(CXXFLAGS) $(INCLUDES) $(CXX_VER) $< -c -o $@
+
+# Always regenerate program version string
+build/ProgramInfo.cpp.o: $(FILES_CPP) $(FILES_HPP)
