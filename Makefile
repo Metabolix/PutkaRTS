@@ -20,22 +20,26 @@ CLIENTLIBS := $(SERVERLIBS) -lsfml-window -lsfml-graphics -lsfml-audio
 # Hack for OS differences.
 # On Windows, echo '1' produces literally '1' instead of 1.
 ifeq "$(shell echo '1')" "'1'"
-  # Windows needs a hack for mkdir
   mkdir = $(shell mkdir $(subst /,\,$(1)/dummy.mkdir) && rmdir $(subst /,\,$(1)/dummy.mkdir))
+  rm_rf = $(foreach F,$(subst /,\,$(1)),$(shell rmdir /Q /S $(F) 2>NUL >NUL || del /Q /S $(F) 2>NUL >NUL)) $(1)
+
   # Get the version number from git; we must first check manually that git.exe exists
   ifeq "$(findstring git,$(shell for %%i in (git.exe) do @echo.%%~$$PATH:i))" "git"
     PUTKARTS_VERSION := $(strip $(shell git describe 2>NUL))
   endif
 else
-  # Linux and Mac OS X have better mkdir
   mkdir = $(shell mkdir -p $(1))
+  rm_rf = $(shell rm -rf $(1)) $(1)
+
   # Get the version number from git
   PUTKARTS_VERSION := $(strip $(shell git describe 2>/dev/null))
+
   # Mac OS X needs different libraries
   ifeq "$(shell uname -s)" "Darwin"
     SERVERLIBS := $(patsubst -l%,-framework %,$(SERVERLIBS))
     CLIENTLIBS := $(patsubst -l%,-framework %,$(CLIENTLIBS))
   endif
+
   # MinGW needs .exe suffices.
   ifeq "$(findstring mingw,$(CXX))" "mingw"
     SERVERBIN := $(SERVERBIN).exe
@@ -48,11 +52,11 @@ all: client server
 client: $(CLIENTBIN)
 server: $(SERVERBIN)
 clean:
-	rm -rf build html $(CLIENTBIN) $(SERVERBIN)
+	@echo [RM] $(call rm_rf,build html bin/PutkaRTS*)
 clean_deps:
-	rm -f $(FILES_DEP)
+	@echo [RM] $(call rm_rf,$(FILES_DEP))
 clean_html:
-	rm -rf html
+	@echo [RM] $(call rm_rf,html)
 
 # Documentation build with Doxygen
 html: Doxyfile $(FILES_CPP) $(FILES_HPP)
