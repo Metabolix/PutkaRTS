@@ -55,7 +55,7 @@ try {
 		}
 	}
 
-	std::string title = ProgramInfo::name + " " + ProgramInfo::version + " (client mode)";
+	std::string title = ProgramInfo::name + " client (version: " + ProgramInfo::version + ")";
 	sf::RenderWindow window(mode, title, style);
 
 	MainMenuHandler menu;

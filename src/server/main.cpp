@@ -28,7 +28,8 @@
  */
 int main()
 try {
-	std::cout << ProgramInfo::name << " " << ProgramInfo::version << " in server mode." << std::endl;
+	std::string title = ProgramInfo::name + " server (version: " + ProgramInfo::version + ")";
+	std::cout << title << std::endl;
 	return 0;
 } catch (std::exception& e) {
 	std::cerr << "Fatal exception: " << e.what() << std::endl;
