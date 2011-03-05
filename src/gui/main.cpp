@@ -1,5 +1,5 @@
 /*
- * The client program entry point.
+ * The GUI program entry point.
  *
  * Copyright 2011 Lauri Kenttä
  *
@@ -25,7 +25,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "ProgramInfo.hpp"
-#include "Client.hpp"
+#include "GUI.hpp"
 
 #include "util/Path.hpp"
 
@@ -33,29 +33,29 @@
 #include "game/GameHandler.hpp"
 
 /**
- * Main function for the game client.
+ * Main function for the game.
  */
 int main(int argc, char **argv)
 try {
 	Path::init(argc ? argv[0] : "./bin/unknown.exe");
 
-	std::string configPath = Path::getConfigPath("client.conf");
-	Client::config.load(configPath);
+	std::string configPath = Path::getConfigPath("gui.conf");
+	GUI::config.load(configPath);
 
 	sf::VideoMode mode = sf::VideoMode(
-		Client::config.getInt("window.size.x", 800),
-		Client::config.getInt("window.size.y", 600)
+		GUI::config.getInt("window.size.x", 800),
+		GUI::config.getInt("window.size.y", 600)
 	);
 	unsigned long style = sf::Style::Close;
 
-	if (Client::config.getBool("window.fullscreen", false)) {
+	if (GUI::config.getBool("window.fullscreen", false)) {
 		style = sf::Style::Fullscreen;
 		if (!mode.IsValid()) {
 			mode = sf::VideoMode::GetDesktopMode();
 		}
 	}
 
-	std::string title = ProgramInfo::name + " client (version: " + ProgramInfo::version + ")";
+	std::string title = ProgramInfo::name + " (version " + ProgramInfo::version + ", GUI)";
 	sf::RenderWindow window(mode, title, style);
 
 	MainMenuHandler menu;
@@ -70,7 +70,7 @@ try {
 		}
 	}
 	try {
-		Client::config.save(configPath);
+		GUI::config.save(configPath);
 	} catch (std::runtime_error& e) {
 		std::cerr << e.what() << std::endl;
 	}

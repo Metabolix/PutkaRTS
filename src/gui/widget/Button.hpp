@@ -1,5 +1,5 @@
 /*
- * GUI Button class definition.
+ * Button widget class definition.
  *
  * Copyright 2011 Jaakko Puntila
  *
@@ -19,18 +19,18 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PUTKARTS_GUI_Button_HPP
-#define PUTKARTS_GUI_Button_HPP
+#ifndef PUTKARTS_Widget_Button_HPP
+#define PUTKARTS_Widget_Button_HPP
 
-#include "Object.hpp"
+#include "Widget.hpp"
 
 #include <boost/function.hpp>
 
-namespace GUI {
+namespace Widget {
 	/**
-	 * Class for the button GUI object.
+	 * Class for the button widget.
 	 */
-	class Button: public Object {
+	class Button: public Widget {
 	public:
 		/** Callback function type. */
 		typedef boost::function<void()> CallbackType;

@@ -9,13 +9,13 @@ FILES_CPP := $(wildcard src/*.cpp) $(wildcard src/*/*.cpp) $(wildcard src/*/*/*.
 FILES_HPP := $(wildcard src/*.hpp) $(wildcard src/*/*.hpp) $(wildcard src/*/*/*.hpp) $(wildcard src/*/*/*/*.hpp)
 FILES_DEP := $(patsubst src/%,build/%.dep,$(FILES_CPP))
 
-SERVERSRC := $(filter-out src/client/%,$(FILES_CPP))
-SERVERBIN := bin/PutkaRTSd
-SERVERLIBS := -lsfml-system -lsfml-network -lboost_filesystem -lboost_system
+CLI_SRC := $(filter-out src/gui/%,$(FILES_CPP))
+CLI_BIN := bin/PutkaRTS-cli
+CLI_LIBS := -lsfml-system -lsfml-network -lboost_filesystem -lboost_system
 
-CLIENTSRC := $(filter-out src/server/%,$(FILES_CPP))
-CLIENTBIN := bin/PutkaRTS
-CLIENTLIBS := $(SERVERLIBS) -lsfml-window -lsfml-graphics -lsfml-audio
+GUI_SRC := $(filter-out src/cli/%,$(FILES_CPP))
+GUI_BIN := bin/PutkaRTS
+GUI_LIBS := $(CLI_LIBS) -lsfml-window -lsfml-graphics -lsfml-audio
 
 # Hack for OS differences.
 # On Windows, echo '1' produces literally '1' instead of 1.
@@ -36,21 +36,21 @@ else
 
   # Mac OS X needs different libraries
   ifeq "$(shell uname -s)" "Darwin"
-    SERVERLIBS := $(patsubst -l%,-framework %,$(SERVERLIBS))
-    CLIENTLIBS := $(patsubst -l%,-framework %,$(CLIENTLIBS))
+    CLI_LIBS := $(patsubst -l%,-framework %,$(CLI_LIBS))
+    GUI_LIBS := $(patsubst -l%,-framework %,$(GUI_LIBS))
   endif
 
   # MinGW needs .exe suffices.
   ifeq "$(findstring mingw,$(CXX))" "mingw"
-    SERVERBIN := $(SERVERBIN).exe
-    CLIENTBIN := $(CLIENTBIN).exe
+    CLI_BIN := $(CLI_BIN).exe
+    GUI_BIN := $(GUI_BIN).exe
   endif
 endif
 
 # Abstract build rules.
-all: client server
-client: $(CLIENTBIN)
-server: $(SERVERBIN)
+all: cli gui
+gui: $(GUI_BIN)
+cli: $(CLI_BIN)
 clean:
 	@echo [RM] $(call rm_rf,build html bin/PutkaRTS*)
 clean_deps:
@@ -63,18 +63,18 @@ html: Doxyfile $(FILES_CPP) $(FILES_HPP)
 	doxygen
 
 # Build rules for binaries.
-$(SERVERBIN): $(patsubst src/%,build/%.o,$(SERVERSRC))
-$(CLIENTBIN): $(patsubst src/%,build/%.o,$(CLIENTSRC))
+$(CLI_BIN): $(patsubst src/%,build/%.o,$(CLI_SRC))
+$(GUI_BIN): $(patsubst src/%,build/%.o,$(GUI_SRC))
 
-$(CLIENTBIN):
+$(GUI_BIN):
 	@echo [LINK] $@
 	@$(call mkdir,$(dir $@))
-	@$(CXX) $(CXXFLAGS) -o $@ $(filter %.o,$^) $(CLIENTLIBS)
+	@$(CXX) $(CXXFLAGS) -o $@ $(filter %.o,$^) $(GUI_LIBS)
 
-$(SERVERBIN):
+$(CLI_BIN):
 	@echo [LINK] $@
 	@$(call mkdir,$(dir $@))
-	@$(CXX) $(CXXFLAGS) -o $@ $(filter %.o,$^) $(SERVERLIBS)
+	@$(CXX) $(CXXFLAGS) -o $@ $(filter %.o,$^) $(CLI_LIBS)
 
 # Include dependencies; generation rules are below.
 -include $(FILES_DEP)

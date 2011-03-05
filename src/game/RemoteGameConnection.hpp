@@ -1,5 +1,5 @@
 /*
- * Class for local game "connection".
+ * Class for remote game connection.
  *
  * Copyright 2011 Lauri Kenttä
  *
@@ -19,42 +19,44 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PUTKARTS_LocalGameConnection_HPP
-#define PUTKARTS_LocalGameConnection_HPP
+#ifndef PUTKARTS_RemoteGameConnection_HPP
+#define PUTKARTS_RemoteGameConnection_HPP
 
 #include <string>
 
-#include "game/Message.hpp"
+#include "Message.hpp"
 #include "GameConnection.hpp"
 
 /**
- * Class for running local games.
+ * Class for participating in remote games.
  */
-class LocalGameConnection: public GameConnection {
-	/** The local clock. */
+class RemoteGameConnection: public GameConnection {
 	sf::Clock clock;
 public:
 	/**
 	 * Constructor.
 	 */
-	LocalGameConnection(std::auto_ptr<Game> game_):
+	RemoteGameConnection(std::auto_ptr<Game> game_):
 		GameConnection(game_) {
 	}
 
 	/**
-	 * Send a message describing a client action.
+	 * Send a message describing a player action.
 	 *
-	 * @param message The message to send; this implementation passes it straight to the current Game.
+	 * @param message The message to send.
 	 */
 	void sendMessage(const Message& message) {
-		game->handleMessage(message);
+		// TODO: send the message to the server!
 	}
 
 	/**
-	 * Run the game up to this moment.
+	 * Run the game up to this moment; this includes reading messages from the server.
 	 */
 	void runUntilNow() {
-		game->runUntil(clock.GetElapsedTime());
+		Message message;
+		// TODO: read messages from somewhere and feed them to Game::instance->addMessage(message)!
+		// TODO: do not run until message.time, that won't be smooth!
+		game->runUntil(message.timestamp);
 	}
 };
 

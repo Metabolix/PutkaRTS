@@ -20,14 +20,14 @@
  */
 
 #include "MainMenuHandler.hpp"
-#include "client/game/GameHandler.hpp"
-#include "client/game/LocalGameConnection.hpp"
+#include "gui/game/GameHandler.hpp"
+#include "game/LocalGameConnection.hpp"
 #include "game/Game.hpp"
 
-#include "client/graphics/ImageCache.hpp"
+#include "gui/graphics/ImageCache.hpp"
 
-#include "client/gui/Button.hpp"
-#include "client/gui/Container.hpp"
+#include "gui/widget/Button.hpp"
+#include "gui/widget/Container.hpp"
 
 #include "util/Path.hpp"
 
@@ -64,9 +64,9 @@ void MainMenuHandler::run(sf::RenderWindow& window) {
 	logoSprite.SetPosition(window.GetView().GetRect().GetWidth() / 2, 1);
 
 	// Build the main menu GUI.
-	GUI::Container gui;
-	gui.insert(boost::shared_ptr<GUI::Object>(new GUI::Button("New game", 200, 100, 240, 50, boost::bind(&MainMenuHandler::startGame, this))));
-	gui.insert(boost::shared_ptr<GUI::Object>(new GUI::Button("Exit", 250, 170, 140, 50, boost::bind(&sf::RenderWindow::Close, boost::ref(window)))));
+	Widget::Container gui;
+	gui.insert(boost::shared_ptr<Widget::Button>(new Widget::Button("New game", 200, 100, 240, 50, boost::bind(&MainMenuHandler::startGame, this))));
+	gui.insert(boost::shared_ptr<Widget::Button>(new Widget::Button("Exit", 250, 170, 140, 50, boost::bind(&sf::RenderWindow::Close, boost::ref(window)))));
 
 	menuClosed = false;
 	while (window.IsOpened() && !menuClosed) {

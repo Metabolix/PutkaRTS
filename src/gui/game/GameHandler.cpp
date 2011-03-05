@@ -1,5 +1,5 @@
 /*
- * Client-side game handler class implementation.
+ * GUI game handler class implementation.
  *
  * Copyright 2011 Lauri Kenttä
  * Copyright 2011 Mika Katajamäki
@@ -20,14 +20,14 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "client/Client.hpp"
+#include "gui/GUI.hpp"
 #include "util/Path.hpp"
 
 #include "GameHandler.hpp"
 #include "game/Map.hpp"
 
-#include "client/gui/Button.hpp"
-#include "client/gui/Container.hpp"
+#include "gui/widget/Button.hpp"
+#include "gui/widget/Container.hpp"
 
 #include <SFML/Graphics.hpp>
 
@@ -91,8 +91,8 @@ void GameHandler::run(sf::RenderWindow& window) {
 
 	loadMapData();
 
-	GUI::Container gui;
-	gui.insert(boost::shared_ptr<GUI::Object>(new GUI::Button("X", window.GetWidth() - 24, 0, 24, 24, boost::bind(&GameHandler::exit, this))));
+	Widget::Container gui;
+	gui.insert(boost::shared_ptr<Widget::Button>(new Widget::Button("X", window.GetWidth() - 24, 0, 24, 24, boost::bind(&GameHandler::exit, this))));
 
 	gameClosed = false;
 	while (window.IsOpened() && !gameClosed) {
@@ -129,7 +129,7 @@ void GameHandler::handleScrolling(sf::RenderWindow& window) {
 	const sf::Input & input = window.GetInput();
 	const Map& map = connection->getGame().getMap();
 
-	const float zoomSpeed = Client::config.getDouble("gameUI.zoomSpeed", 2);
+	const float zoomSpeed = GUI::config.getDouble("gameUI.zoomSpeed", 2);
 
 	// zoom with pgUp and pgDown
 	if (input.IsKeyDown(sf::Key::PageDown)) {
@@ -154,9 +154,9 @@ void GameHandler::handleScrolling(sf::RenderWindow& window) {
 	}
 	gameView.SetHalfSize(halfSize);
 
-	const float keyboardScrollSpeed = 2 * halfSize.x * Client::config.getDouble("gameUI.keyboardScrollSpeed", 1);
-	const float borderScrollSpeed = 2 * halfSize.x * Client::config.getDouble("gameUI.borderScrollSpeed", 1);
-	const bool reverseDrag = Client::config.getBool("gameUI.reverseDrag", false);
+	const float keyboardScrollSpeed = 2 * halfSize.x * GUI::config.getDouble("gameUI.keyboardScrollSpeed", 1);
+	const float borderScrollSpeed = 2 * halfSize.x * GUI::config.getDouble("gameUI.borderScrollSpeed", 1);
+	const bool reverseDrag = GUI::config.getBool("gameUI.reverseDrag", false);
 
 	// scroll map with arrow keys
 	if (input.IsKeyDown(sf::Key::Right)) {

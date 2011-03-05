@@ -1,5 +1,5 @@
 /*
- * Global variables for the client.
+ * Global variables for the GUI version of the game.
  *
  * Copyright 2011 Lauri Kenttä
  *
@@ -19,17 +19,6 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PUTKARTS_Client_HPP
-#define PUTKARTS_Client_HPP
+#include "GUI.hpp"
 
-#include "util/Configuration.hpp"
-
-/**
- * Namespace for global variables in the client program.
- */
-namespace Client {
-	/** Game client configuration. */
-	extern Configuration config;
-}
-
-#endif
+Configuration GUI::config;

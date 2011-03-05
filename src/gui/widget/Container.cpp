@@ -1,5 +1,5 @@
 /*
- * GUI Container class implementation.
+ * Widget container class implementation.
  *
  * Copyright 2011 Lauri Kenttä
  *
@@ -24,21 +24,21 @@
 #include <algorithm>
 #include <boost/bind.hpp>
 
-void GUI::Container::insert(boost::shared_ptr<Object> object) {
+void Widget::Container::insert(boost::shared_ptr<Widget> object) {
 	objects.push_back(object);
 }
 
-void GUI::Container::erase(boost::shared_ptr<Object> object) {
-	ObjectListType::iterator i = std::find(objects.begin(), objects.end(), object);
+void Widget::Container::erase(boost::shared_ptr<Widget> object) {
+	WidgetListType::iterator i = std::find(objects.begin(), objects.end(), object);
 	if (i != objects.end()) {
 		objects.erase(i);
 	}
 }
 
-void GUI::Container::draw(sf::RenderWindow& window) {
-	std::for_each(objects.begin(), objects.end(), boost::bind(&Object::draw, _1, boost::ref(window)));
+void Widget::Container::draw(sf::RenderWindow& window) {
+	std::for_each(objects.begin(), objects.end(), boost::bind(&Widget::draw, _1, boost::ref(window)));
 }
 
-bool GUI::Container::handleEvent(const sf::Event& event, const sf::RenderWindow& window) {
-	return std::find_if(objects.begin(), objects.end(), boost::bind(&Object::handleEvent, _1, boost::cref(event), boost::cref(window))) != objects.end();
+bool Widget::Container::handleEvent(const sf::Event& event, const sf::RenderWindow& window) {
+	return std::find_if(objects.begin(), objects.end(), boost::bind(&Widget::handleEvent, _1, boost::cref(event), boost::cref(window))) != objects.end();
 }

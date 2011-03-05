@@ -1,5 +1,5 @@
 /*
- * Client-side game handler class definition.
+ * GUI game handler class definition.
  *
  * Copyright 2011 Lauri Kenttä
  * Copyright 2011 Mika Katajamäki
@@ -23,15 +23,15 @@
 #ifndef PUTKARTS_GameHandler_HPP
 #define PUTKARTS_GameHandler_HPP
 
-#include "GameConnection.hpp"
+#include "game/GameConnection.hpp"
 
 #include <memory>
 #include <SFML/Graphics.hpp>
 
-#include "client/graphics/ImageCache.hpp"
+#include "gui/graphics/ImageCache.hpp"
 
 /**
- * Class for the client-side game GUI.
+ * Class for the game GUI.
  */
 class GameHandler {
 	/** The view used while rendering the GUI. */

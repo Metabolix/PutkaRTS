@@ -26,8 +26,8 @@
 #include <stdexcept>
 #include <memory>
 
-#include "game/Game.hpp"
-#include "game/Message.hpp"
+#include "Game.hpp"
+#include "Message.hpp"
 
 /**
  * Base class for local and remote game connections.
@@ -63,7 +63,7 @@ public:
 	}
 
 	/**
-	 * Send a message describing a client action.
+	 * Send a message describing a player action.
 	 *
 	 * @param message The message to send.
 	 */

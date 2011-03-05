@@ -1,5 +1,5 @@
 /*
- * Base GUI Object class definition.
+ * Base widget class definition.
  *
  * Copyright 2011 Jaakko Puntila
  *
@@ -19,13 +19,13 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PUTKARTS_GUI_Object_HPP
-#define PUTKARTS_GUI_Object_HPP
+#ifndef PUTKARTS_Widget_Widget_HPP
+#define PUTKARTS_Widget_Widget_HPP
 
 #include <SFML/Graphics.hpp>
 
-namespace GUI {
-	class Object {
+namespace Widget {
+	class Widget {
 	protected:
 		/**
 		 * Contains the position and dimensions of the object.
@@ -36,26 +36,26 @@ namespace GUI {
 		/**
 		 * Default constructor.
 		 */
-		Object() {
+		Widget() {
 		}
 
 		/**
 		 * Virtual destructor to allow polymorphism.
 		 */
-		virtual ~Object() {
+		virtual ~Widget() {
 		}
 
 		/**
 		 * Constructor with position parameters.
 		 */
-		Object(float x, float y, float width, float height):
+		Widget(float x, float y, float width, float height):
 			position(x, y, x + width, y + height) {
 		}
 
 		/**
 		 * Constructor with a prefilled position rectangle.
 		 */
-		Object(sf::FloatRect position_):
+		Widget(sf::FloatRect position_):
 			position(position_) {
 		}
 
@@ -71,7 +71,7 @@ namespace GUI {
 		}
 
 		/**
-		 * Draw the GUI object.
+		 * Draw the widget.
 		 *
 		 * @param window The window to draw to.
 		 */

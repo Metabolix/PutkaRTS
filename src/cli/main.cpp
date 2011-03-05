@@ -1,5 +1,5 @@
 /*
- * The server program entry point.
+ * The CLI program entry point.
  *
  * Copyright 2011 Lauri Kenttä
  *
@@ -24,11 +24,11 @@
 #include <stdexcept>
 
 /**
- * Main function for the dedicated server.
+ * Main function for the command-line interface.
  */
 int main()
 try {
-	std::string title = ProgramInfo::name + " server (version: " + ProgramInfo::version + ")";
+	std::string title = ProgramInfo::name + " (version " + ProgramInfo::version + ", CLI)";
 	std::cout << title << std::endl;
 	return 0;
 } catch (std::exception& e) {
