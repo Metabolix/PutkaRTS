@@ -3,8 +3,14 @@ of Finnish programmers as a hobby and as a means of learning C++, good
 coding practices, documentation, team work, and VCS usage.
 
 PutkaRTS is free software, released under the GNU GPL; see the file
-LICENSE for the details.
+LICENSE for the details. The GNU GPL is included in the file COPYING.
 
+The most recent source code is available on GitHub:
+https://github.com/Metabolix/PutkaRTS
+
+For instructions on building the source, see the file INSTALL.
+
+For a list of contributors, see the file AUTHORS.
 
 --
 Lauri Kenttä

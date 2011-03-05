@@ -1,11 +1,16 @@
-INSTALL
+1. DEPENDENCIES
 
-DEPENDENCIES:
-This project uses these libraries:
-	SFML 1.6
-	Boost
+This project uses the following libraries:
+	SFML 1.6  (http://www.sfml-dev.org/)
+	Boost     (http://www.boost.org/)
 
-DEPENDENCIES UNDER Mac OS X:
+On many Linux distributions, the dependencies can be installed using the
+default package manager. On other systems, it may be necessary to
+download and install them manually.
+
+
+1.1. DEPENDENCIES UNDER Mac OS X
+
 In 64-bit version dependencies are:
 	SFML 1.6 64-bit version
 	OpenAL framework from SFML 1.6 32-bit version package
@@ -13,11 +18,39 @@ In 64-bit version dependencies are:
 In 32-bit version dependencies are:
 	SFML 1.6 32-bit version
 
-BUILDING UNDER UNIX/Mac OS X:
-In most cases you can compile PutkaRTS only by typing command 'make'.
-This will check dependencies and compile if everything is right.
 
-If you are missing dependencies you can download them from SFML-lib's webpages or just using your package manager.
+2. BUILDING
 
-BUILDING UNDER WINDOWS:
-The same goes for Windows if you have MinGW installed and configured properly.
+The package contains a Makefile for GNU make. On systems that have
+a compatible make utility installed, the project can be built by
+typing the command 'make' on the command line in the PutkaRTS directory.
+If everything is fine, this will build two binaries:
+	bin/PutkaRTS (GUI client/server)
+	bin/PutkaRTSd (CLI server)
+
+If the make utility is missing, the project can be built manually by
+compiling the cpp files and linking them together as follows:
+	GUI client/server: link all but those in src/cli.
+	CLI server: link all but those in src/gui.
+
+Building with GNU make has been successfully tested on multiple Linux
+distributions (also cross-compiling for Win32 using MinGW), Mac OS X and
+Win32 (using MinGW).
+
+
+3. PACKAGING
+
+There are two preprocessor constants that affect src/util/Path.cpp.
+There is no configuration utility, so these must be set manually (either
+in the source file or with a compiler parameter like '-DPARAM="value"').
+Neither exists by default.
+
+#define USE_SYSTEM_PATHS
+This makes PutkaRTS use user's home dir for user data and settings. The
+directory is guessed using environment variables (first $XDG_CONFIG_HOME
+and $XDG_DATA_HOME, then just $HOME/.config and $HOME/.local/share). If
+not set, ../local is used (relative to the binary location).
+
+#define GLOBAL_DATA_DIR "/usr/share/PutkaRTS"
+This tells PutkaRTS where the global data files are located. If not set,
+../data is used (relative to the binary location).
