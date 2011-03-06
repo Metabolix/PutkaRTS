@@ -3,6 +3,7 @@
  *
  * Copyright 2011 Leo Lehikoinen
  * Copyright 2011 Lauri Kenttä
+ * Copyright 2011 Petri Österman
  *
  * This file is part of PutkaRTS.
  *
@@ -22,11 +23,11 @@
 
 #include "util/Path.hpp"
 
+#include "Game.hpp"
 #include "Map.hpp"
+#include "Object.hpp"
 
 #include <stdexcept>
-#include <string>
-#include <map>
 #include <fstream>
 #include <boost/algorithm/string.hpp>
 
@@ -88,4 +89,17 @@ try {
 	tileMap.clear();
 	tileInfoMap.clear();
 	throw;
+}
+
+void Map::createInitialObjects(Game& game) const {
+	// TODO: Create starting objects from map data.
+
+	// Create few objects and add them to game for testing.
+	std::string objectTypeName = "dummy";
+	Vector2<SIUnit::Position> pos(10, 10);
+	for (int i = 0; i < 3; ++i) {
+		boost::shared_ptr<World::Object> testObject(new World::Object(techTree->getObjectType(objectTypeName), pos));
+		game.insertObject(testObject);
+		pos += pos;
+	}
 }

@@ -26,12 +26,20 @@
 #include "Message.hpp"
 #include "Map.hpp"
 
+#include <map>
 #include <memory>
 
 /**
  * The root of all game logic.
  */
 class Game {
+public:
+	friend class Map;
+	friend class ObjectAction;
+
+	/** Object type for storing the game's objects. */
+	typedef std::map<unsigned int, boost::shared_ptr<World::Object> > ObjectContainerType;
+private:
 	/** Game step duration. */
 	static const Scalar<SIUnit::Time> stepTime;
 
@@ -40,6 +48,9 @@ class Game {
 
 	/** The map on which the game is played. */
 	std::auto_ptr<Map> map;
+
+	/** Objects in the game */
+	ObjectContainerType objects;
 
 	/**
 	 * Run the game one step forward.
@@ -61,6 +72,13 @@ public:
 	}
 
 	/**
+	 * Get objects.
+	 */
+	const ObjectContainerType& getObjects() const {
+		return objects;
+	}
+
+	/**
 	 * Run the game up to the given time.
 	 *
 	 * @param time The time.
@@ -73,6 +91,13 @@ public:
 	 * @param message The message; timestamp will be overridden!
 	 */
 	void handleMessage(const Message& message);
+protected:
+	/**
+	 * Add object to game.
+	 *
+	 * @param object Object to add.
+	 */
+	void insertObject(boost::shared_ptr<World::Object> object);
 };
 
 #endif

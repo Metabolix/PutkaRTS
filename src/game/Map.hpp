@@ -3,6 +3,7 @@
  *
  * Copyright 2011 Leo Lehikoinen
  * Copyright 2011 Lauri Kenttä
+ * Copyright 2011 Petri Österman
  *
  * This file is part of PutkaRTS.
  *
@@ -25,7 +26,12 @@
 
 #include <string>
 #include <map>
+#include <memory>
+
 #include "util/Array2D.hpp"
+#include "TechTree.hpp"
+
+class Game;
 
 /**
  * This class describes the map format
@@ -64,6 +70,11 @@ private:
 	 * Store each tile's info.
 	 */
 	TileInfoMap tileInfoMap;
+
+	/**
+	 * Map's tech tree.
+	 */
+	std::auto_ptr<World::TechTree> techTree;
 public:
 	/**
 	 * Default constructor.
@@ -79,6 +90,7 @@ public:
 	 */
 	Map(const std::string& directory) {
 		load(directory);
+		techTree = std::auto_ptr<World::TechTree>(new World::TechTree("dummy"));
 	}
 
 	/**
@@ -123,6 +135,20 @@ public:
 	const TileInfoMap& getTileInfoMap() const {
 		return tileInfoMap;
 	}
+
+	/**
+	 * Get map's tech tree.
+	 */
+	World::TechTree& getTechTree() const {
+		return *techTree;
+	}
+
+	/**
+	 * Create and add map's initial objects to game.
+	 *
+	 * @param game The game to add the objects.
+	 */
+	void createInitialObjects(Game& game) const;
 };
 
 #endif

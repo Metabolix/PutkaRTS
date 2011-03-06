@@ -30,12 +30,20 @@ Game::Game(std::auto_ptr<Map> map_):
 	if (!map.get()) {
 		throw std::logic_error("Game::Game: Map is NULL!");
 	}
+
+	map->createInitialObjects(*this);
 }
 
 void Game::runUntil(Scalar<SIUnit::Time> time) {
 	while (clock + stepTime < time) {
 		runStep();
 	}
+}
+
+void Game::insertObject(boost::shared_ptr<World::Object> object) {
+	//  FIXME: This might overflow in long games.
+	unsigned int id = objects.empty() ? 0 : objects.rbegin()->first;
+	objects.insert(std::make_pair(id + 1, object));
 }
 
 void Game::runStep() {
