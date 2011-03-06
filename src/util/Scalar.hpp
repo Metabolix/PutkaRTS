@@ -45,7 +45,7 @@ struct Scalar {
 	Scalar(Type const& t) : value(t.value) {}
 
 	// Accessing the raw value
-	T operator * () const {
+	double getDouble() const {
 		return value;
 	}
 
