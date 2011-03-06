@@ -22,6 +22,7 @@
 #ifndef PUTKARTS_Scalar_HPP
 #define PUTKARTS_Scalar_HPP
 
+#include "Math.hpp"
 #include "SIUnit.hpp"
 
 #include <cmath>
@@ -59,7 +60,7 @@ struct Scalar {
 		return dir.value < 0 ? infN() : infP();
 	}
 	static Type pi() {
-		return (T) 3.1415926535897932384626433832795028841971693993751;
+		return (T) Math::pi;
 	}
 
 	// Checks for special cases
