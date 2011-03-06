@@ -23,7 +23,7 @@
 
 #include <algorithm>
 
-Widget::Button::Button(const std::string& text, float x, float y, float width, float height, CallbackType callback):
+GUI::Widget::Button::Button(const std::string& text, float x, float y, float width, float height, CallbackType callback):
 	Widget(x, y, width, height),
 	label(text),
 	action(callback) {
@@ -31,7 +31,7 @@ Widget::Button::Button(const std::string& text, float x, float y, float width, f
 	label.SetCenter(label.GetRect().GetWidth() / 2, maxHeightString.GetRect().GetHeight() / 2);
 }
 
-bool Widget::Button::handleEvent(const sf::Event& e, const sf::RenderWindow& window) {
+bool GUI::Widget::Button::handleEvent(const sf::Event& e, const sf::RenderWindow& window) {
 	if (e.Type != sf::Event::MouseButtonPressed || e.MouseButton.Button != sf::Mouse::Left) {
 		return false;
 	}
@@ -46,7 +46,7 @@ bool Widget::Button::handleEvent(const sf::Event& e, const sf::RenderWindow& win
 	return false;
 }
 
-void Widget::Button::draw(sf::RenderWindow& window) {
+void GUI::Widget::Button::draw(sf::RenderWindow& window) {
 	const int bw = (std::min(position.GetWidth(), position.GetHeight()) < 40 ? 2 : 4); // Border width
 	const sf::Input& input(window.GetInput());
 	sf::Vector2f mouse(window.ConvertCoords(input.GetMouseX(), input.GetMouseY()));

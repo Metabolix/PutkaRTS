@@ -19,21 +19,23 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PUTKARTS_Widget_Button_HPP
-#define PUTKARTS_Widget_Button_HPP
+#ifndef PUTKARTS_GUI_Widget_Button_HPP
+#define PUTKARTS_GUI_Widget_Button_HPP
 
 #include "Widget.hpp"
 
 #include <boost/function.hpp>
 
-namespace Widget {
-	class Button;
+namespace GUI {
+	namespace Widget {
+		class Button;
+	}
 }
 
 /**
  * Class for the button widget.
  */
-class Widget::Button: public Widget {
+class GUI::Widget::Button: public Widget {
 public:
 	/** Callback function type. */
 	typedef boost::function<void()> CallbackType;

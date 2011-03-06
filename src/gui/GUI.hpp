@@ -25,7 +25,7 @@
 #include "util/Configuration.hpp"
 
 /**
- * Namespace for global variables in the graphical game program.
+ * Namespace for everything that is specific to the graphical program.
  */
 namespace GUI {
 	/** Configuration. */

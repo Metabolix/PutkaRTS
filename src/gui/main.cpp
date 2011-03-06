@@ -32,10 +32,21 @@
 #include "menu/MainMenuHandler.hpp"
 #include "game/GameHandler.hpp"
 
+namespace GUI {
+	int main(int argc, char **argv);
+}
+
 /**
- * Main function for the game.
+ * The main function needed for compiling.
  */
-int main(int argc, char **argv)
+int main(int argc, char **argv) {
+	return GUI::main(argc, argv);
+}
+
+/**
+ * Main function for the graphical program.
+ */
+int GUI::main(int argc, char **argv)
 try {
 	Path::init(argc ? argv[0] : "./bin/unknown.exe");
 

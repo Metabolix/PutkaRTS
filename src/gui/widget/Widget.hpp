@@ -19,16 +19,18 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PUTKARTS_Widget_Widget_HPP
-#define PUTKARTS_Widget_Widget_HPP
+#ifndef PUTKARTS_GUI_Widget_Widget_HPP
+#define PUTKARTS_GUI_Widget_Widget_HPP
 
 #include <SFML/Graphics.hpp>
 
-namespace Widget {
-	class Widget;
+namespace GUI {
+	namespace Widget {
+		class Widget;
+	}
 }
 
-class Widget::Widget {
+class GUI::Widget::Widget {
 protected:
 	/**
 	 * Contains the position and dimensions of the object.

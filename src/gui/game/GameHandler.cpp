@@ -36,17 +36,17 @@
 #include <cmath>
 #include <boost/bind.hpp>
 
-std::auto_ptr<GameHandler> GameHandler::instance;
+std::auto_ptr<GUI::GameHandler> GUI::GameHandler::instance;
 
-const int GameHandler::tileSize = 32;
+const int GUI::GameHandler::tileSize = 32;
 
-GameHandler::GameHandler(std::auto_ptr<GameConnection> connection_):
+GUI::GameHandler::GameHandler(std::auto_ptr<GameConnection> connection_):
 	connection(connection_),
 	mouseDrag(false) {
 	instance.reset(this);
 }
 
-void GameHandler::loadMapData() {
+void GUI::GameHandler::loadMapData() {
 	const Map& map = connection->getGame().getMap();
 	const Map::TileInfoMap& tileInfoMap = map.getTileInfoMap();
 
@@ -56,7 +56,7 @@ void GameHandler::loadMapData() {
 	}
 }
 
-void GameHandler::drawGame(sf::RenderWindow& window) const {
+void GUI::GameHandler::drawGame(sf::RenderWindow& window) const {
 	const Map& map = connection->getGame().getMap();
 
 	//calculate which tiles are on the screen.
@@ -78,11 +78,11 @@ void GameHandler::drawGame(sf::RenderWindow& window) const {
 	// TODO: Draw the objects as well!
 }
 
-void GameHandler::exit() {
+void GUI::GameHandler::exit() {
 	gameClosed = true;
 }
 
-void GameHandler::run(sf::RenderWindow& window) {
+void GUI::GameHandler::run(sf::RenderWindow& window) {
 	guiView = window.GetDefaultView();
 
 	resetGameView(window, true);
@@ -92,7 +92,7 @@ void GameHandler::run(sf::RenderWindow& window) {
 	loadMapData();
 
 	Widget::Container gui;
-	gui.insert(boost::shared_ptr<Widget::Button>(new Widget::Button("X", window.GetWidth() - 24, 0, 24, 24, boost::bind(&GameHandler::exit, this))));
+	gui.insert(boost::shared_ptr<Widget::Button>(new Widget::Button("X", window.GetWidth() - 24, 0, 24, 24, boost::bind(&GUI::GameHandler::exit, this))));
 
 	gameClosed = false;
 	while (window.IsOpened() && !gameClosed) {
@@ -124,7 +124,7 @@ void GameHandler::run(sf::RenderWindow& window) {
 	}
 }
 
-void GameHandler::handleScrolling(sf::RenderWindow& window) {
+void GUI::GameHandler::handleScrolling(sf::RenderWindow& window) {
 	float time = window.GetFrameTime();
 	const sf::Input & input = window.GetInput();
 	const Map& map = connection->getGame().getMap();
@@ -217,7 +217,7 @@ void GameHandler::handleScrolling(sf::RenderWindow& window) {
 	gameView.SetCenter(viewCenter);
 }
 
-void GameHandler::resetGameView(sf::RenderWindow& window, bool resetLocation) {
+void GUI::GameHandler::resetGameView(sf::RenderWindow& window, bool resetLocation) {
 	sf::Vector2f location = gameView.GetCenter();
 	if (resetLocation) {
 		// TODO: Center at the player start position or something.

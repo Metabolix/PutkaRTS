@@ -20,8 +20,8 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PUTKARTS_GameHandler_HPP
-#define PUTKARTS_GameHandler_HPP
+#ifndef PUTKARTS_GUI_GameHandler_HPP
+#define PUTKARTS_GUI_GameHandler_HPP
 
 #include "game/GameConnection.hpp"
 
@@ -30,10 +30,14 @@
 
 #include "gui/graphics/ImageCache.hpp"
 
+namespace GUI {
+	class GameHandler;
+}
+
 /**
  * Class for the game GUI.
  */
-class GameHandler {
+class GUI::GameHandler {
 	/** The view used while rendering the GUI. */
 	sf::View guiView;
 

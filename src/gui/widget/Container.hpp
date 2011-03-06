@@ -19,22 +19,24 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PUTKARTS_Widget_Container_HPP
-#define PUTKARTS_Widget_Container_HPP
+#ifndef PUTKARTS_GUI_Widget_Container_HPP
+#define PUTKARTS_GUI_Widget_Container_HPP
 
 #include "Widget.hpp"
 
 #include <list>
 #include <boost/shared_ptr.hpp>
 
-namespace Widget {
-	class Container;
+namespace GUI {
+	namespace Widget {
+		class Container;
+	}
 }
 
 /**
  * Base class for widget containers.
  */
-class Widget::Container: public Widget {
+class GUI::Widget::Container: public Widget {
 protected:
 	/** The list type to hold object pointers. */
 	typedef std::list<boost::shared_ptr<Widget> > WidgetListType;

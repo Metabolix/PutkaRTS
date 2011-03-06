@@ -24,21 +24,21 @@
 #include <algorithm>
 #include <boost/bind.hpp>
 
-void Widget::Container::insert(boost::shared_ptr<Widget> object) {
+void GUI::Widget::Container::insert(boost::shared_ptr<Widget> object) {
 	objects.push_back(object);
 }
 
-void Widget::Container::erase(boost::shared_ptr<Widget> object) {
+void GUI::Widget::Container::erase(boost::shared_ptr<Widget> object) {
 	WidgetListType::iterator i = std::find(objects.begin(), objects.end(), object);
 	if (i != objects.end()) {
 		objects.erase(i);
 	}
 }
 
-void Widget::Container::draw(sf::RenderWindow& window) {
+void GUI::Widget::Container::draw(sf::RenderWindow& window) {
 	std::for_each(objects.begin(), objects.end(), boost::bind(&Widget::draw, _1, boost::ref(window)));
 }
 
-bool Widget::Container::handleEvent(const sf::Event& event, const sf::RenderWindow& window) {
+bool GUI::Widget::Container::handleEvent(const sf::Event& event, const sf::RenderWindow& window) {
 	return std::find_if(objects.begin(), objects.end(), boost::bind(&Widget::handleEvent, _1, boost::cref(event), boost::cref(window))) != objects.end();
 }

@@ -35,7 +35,7 @@
 #include <algorithm>
 #include <boost/bind.hpp>
 
-void MainMenuHandler::startGame() {
+void GUI::MainMenuHandler::startGame() {
 	std::auto_ptr<Map> map(new Map("maps/testmap"));
 	std::auto_ptr<Game> game(new Game(map));
 	std::auto_ptr<GameConnection> connection(new LocalGameConnection(game));
@@ -43,7 +43,7 @@ void MainMenuHandler::startGame() {
 	menuClosed = true;
 }
 
-void MainMenuHandler::run(sf::RenderWindow& window) {
+void GUI::MainMenuHandler::run(sf::RenderWindow& window) {
 	ImageCache mainMenuImages;
 	const sf::Image& logoImage = mainMenuImages.get(Path::findDataPath("graphics/logo.png"));
 
@@ -65,7 +65,7 @@ void MainMenuHandler::run(sf::RenderWindow& window) {
 
 	// Build the main menu GUI.
 	Widget::Container gui;
-	gui.insert(boost::shared_ptr<Widget::Button>(new Widget::Button("New game", 200, 100, 240, 50, boost::bind(&MainMenuHandler::startGame, this))));
+	gui.insert(boost::shared_ptr<Widget::Button>(new Widget::Button("New game", 200, 100, 240, 50, boost::bind(&GUI::MainMenuHandler::startGame, this))));
 	gui.insert(boost::shared_ptr<Widget::Button>(new Widget::Button("Exit", 250, 170, 140, 50, boost::bind(&sf::RenderWindow::Close, boost::ref(window)))));
 
 	menuClosed = false;

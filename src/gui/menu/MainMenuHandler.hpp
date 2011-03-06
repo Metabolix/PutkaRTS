@@ -19,15 +19,19 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PUTKARTS_MainMenuHandler_HPP
-#define PUTKARTS_MainMenuHandler_HPP
+#ifndef PUTKARTS_GUI_MainMenuHandler_HPP
+#define PUTKARTS_GUI_MainMenuHandler_HPP
 
 #include <SFML/Graphics.hpp>
+
+namespace GUI {
+	class MainMenuHandler;
+}
 
 /**
  * Main class for the game menu.
  */
-class MainMenuHandler {
+class GUI::MainMenuHandler {
 	/** The view to use for rendering. */
 	sf::View view;
 

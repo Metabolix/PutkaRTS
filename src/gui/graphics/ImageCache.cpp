@@ -38,7 +38,7 @@ struct ImageCacheNode {
 /** All the images that are currently loaded, listed by file name. */
 static std::map<std::string, ImageCacheNode> images;
 
-const sf::Image& ImageCache::get(const std::string& id, const std::string& file) {
+const sf::Image& GUI::ImageCache::get(const std::string& id, const std::string& file) {
 	if (loaded.find(id) != loaded.end()) {
 		if (loaded.find(id)->second != file) {
 			throw std::runtime_error("ImageCache already contains '" + id + "' (loaded from " + loaded.find(id)->second + "), can't load " + file + "!");
@@ -60,7 +60,7 @@ const sf::Image& ImageCache::get(const std::string& id, const std::string& file)
 	return images[file].image;
 }
 
-const sf::Image& ImageCache::get(const std::string& fileOrId) {
+const sf::Image& GUI::ImageCache::get(const std::string& fileOrId) {
 	if (loaded.find(fileOrId) != loaded.end()) {
 		const ImageCache& tmp = *this;
 		return tmp.get(fileOrId);
@@ -68,14 +68,14 @@ const sf::Image& ImageCache::get(const std::string& fileOrId) {
 	return get(fileOrId, fileOrId);
 }
 
-const sf::Image& ImageCache::get(const std::string& id) const {
+const sf::Image& GUI::ImageCache::get(const std::string& id) const {
 	if (loaded.find(id) == loaded.end()) {
 		throw std::runtime_error("ImageCache does not contain '" + id + "'!");
 	}
 	return images[loaded.find(id)->second].image;
 }
 
-void ImageCache::clear() {
+void GUI::ImageCache::clear() {
 	for (FileMap::iterator i = loaded.begin(); i != loaded.end(); ++i) {
 		images[i->second].references -= 1;
 		if (!images[i->second].references) {
@@ -85,7 +85,7 @@ void ImageCache::clear() {
 	loaded.clear();
 }
 
-ImageCache& ImageCache::operator = (const ImageCache& other) {
+GUI::ImageCache& GUI::ImageCache::operator = (const ImageCache& other) {
 	if (this == &other) {
 		return *this;
 	}

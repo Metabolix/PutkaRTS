@@ -19,17 +19,21 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PUTKARTS_ImageCache_HPP
-#define PUTKARTS_ImageCache_HPP
+#ifndef PUTKARTS_GUI_ImageCache_HPP
+#define PUTKARTS_GUI_ImageCache_HPP
 
 #include <SFML/Graphics.hpp>
 #include <string>
 #include <map>
 
+namespace GUI {
+	class ImageCache;
+}
+
 /**
  * Class for loading and automatically caching images.
  */
-class ImageCache {
+class GUI::ImageCache {
 	/** Type of the map used to keep track of loaded files. */
 	typedef std::map<std::string, std::string> FileMap;
 
