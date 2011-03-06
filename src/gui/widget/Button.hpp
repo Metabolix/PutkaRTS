@@ -27,54 +27,56 @@
 #include <boost/function.hpp>
 
 namespace Widget {
-	/**
-	 * Class for the button widget.
-	 */
-	class Button: public Widget {
-	public:
-		/** Callback function type. */
-		typedef boost::function<void()> CallbackType;
-
-	private:
-		/**
-		 * Label for the button.
-		 */
-		sf::String label;
-
-		/**
-		 * Callback function for the button.
-		 */
-		CallbackType action;
-
-	public:
-		/**
-		 * Create a button with label and position.
-		 *
-		 * @param text Text is rendered on the button.
-		 * @param x X coordinate of the button.
-		 * @param y Y coordinate of the button.
-		 * @param width Width of the button.
-		 * @param height Height of the button.
-		 * @param callback The action to take when clicked.
-		 */
-		Button(const std::string& text, float x, float y, float width, float height, CallbackType callback);
-
-		/**
-		 * Handle events, namely mouse clicks.
-		 *
-		 * @param e The event.
-		 * @param window The window of the event.
-		 * @return True, if this button handled the event.
-		 */
-		virtual bool handleEvent(const sf::Event& e, const sf::RenderWindow& window);
-
-		/**
-		 * Draw the button.
-		 *
-		 * @param window The render window.
-		 */
-		virtual void draw(sf::RenderWindow& window);
-	};
+	class Button;
 }
+
+/**
+ * Class for the button widget.
+ */
+class Widget::Button: public Widget {
+public:
+	/** Callback function type. */
+	typedef boost::function<void()> CallbackType;
+
+private:
+	/**
+	 * Label for the button.
+	 */
+	sf::String label;
+
+	/**
+	 * Callback function for the button.
+	 */
+	CallbackType action;
+
+public:
+	/**
+	 * Create a button with label and position.
+	 *
+	 * @param text Text is rendered on the button.
+	 * @param x X coordinate of the button.
+	 * @param y Y coordinate of the button.
+	 * @param width Width of the button.
+	 * @param height Height of the button.
+	 * @param callback The action to take when clicked.
+	 */
+	Button(const std::string& text, float x, float y, float width, float height, CallbackType callback);
+
+	/**
+	 * Handle events, namely mouse clicks.
+	 *
+	 * @param e The event.
+	 * @param window The window of the event.
+	 * @return True, if this button handled the event.
+	 */
+	virtual bool handleEvent(const sf::Event& e, const sf::RenderWindow& window);
+
+	/**
+	 * Draw the button.
+	 *
+	 * @param window The render window.
+	 */
+	virtual void draw(sf::RenderWindow& window);
+};
 
 #endif

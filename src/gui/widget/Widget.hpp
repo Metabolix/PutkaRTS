@@ -25,58 +25,60 @@
 #include <SFML/Graphics.hpp>
 
 namespace Widget {
-	class Widget {
-	protected:
-		/**
-		 * Contains the position and dimensions of the object.
-		 */
-		sf::FloatRect position;
-
-	public:
-		/**
-		 * Default constructor.
-		 */
-		Widget() {
-		}
-
-		/**
-		 * Virtual destructor to allow polymorphism.
-		 */
-		virtual ~Widget() {
-		}
-
-		/**
-		 * Constructor with position parameters.
-		 */
-		Widget(float x, float y, float width, float height):
-			position(x, y, x + width, y + height) {
-		}
-
-		/**
-		 * Constructor with a prefilled position rectangle.
-		 */
-		Widget(sf::FloatRect position_):
-			position(position_) {
-		}
-
-		/**
-		 * Handle event.
-		 *
-		 * @param e The event.
-		 * @param window The window of the event.
-		 * @return true, if this object handled the event. Otherwise false.
-		 */
-		virtual bool handleEvent(const sf::Event& e, const sf::RenderWindow& window) {
-			return false;
-		}
-
-		/**
-		 * Draw the widget.
-		 *
-		 * @param window The window to draw to.
-		 */
-		virtual void draw(sf::RenderWindow& window) = 0;
-	};
+	class Widget;
 }
+
+class Widget::Widget {
+protected:
+	/**
+	 * Contains the position and dimensions of the object.
+	 */
+	sf::FloatRect position;
+
+public:
+	/**
+	 * Default constructor.
+	 */
+	Widget() {
+	}
+
+	/**
+	 * Virtual destructor to allow polymorphism.
+	 */
+	virtual ~Widget() {
+	}
+
+	/**
+	 * Constructor with position parameters.
+	 */
+	Widget(float x, float y, float width, float height):
+		position(x, y, x + width, y + height) {
+	}
+
+	/**
+	 * Constructor with a prefilled position rectangle.
+	 */
+	Widget(sf::FloatRect position_):
+		position(position_) {
+	}
+
+	/**
+	 * Handle event.
+	 *
+	 * @param e The event.
+	 * @param window The window of the event.
+	 * @return true, if this object handled the event. Otherwise false.
+	 */
+	virtual bool handleEvent(const sf::Event& e, const sf::RenderWindow& window) {
+		return false;
+	}
+
+	/**
+	 * Draw the widget.
+	 *
+	 * @param window The window to draw to.
+	 */
+	virtual void draw(sf::RenderWindow& window) = 0;
+};
 
 #endif
