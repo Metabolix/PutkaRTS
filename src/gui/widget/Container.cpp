@@ -50,3 +50,14 @@ void GUI::Widget::Container::draw(sf::RenderWindow& window) {
 bool GUI::Widget::Container::handleEvent(const sf::Event& event, const sf::RenderWindow& window) {
 	return std::find_if(objects.begin(), objects.end(), boost::bind(&Widget::handleEvent, _1, boost::cref(event), boost::cref(window))) != objects.end();
 }
+
+void GUI::Widget::Container::activate(const Widget * widget) {
+	for (WidgetListType::iterator i = objects.begin(); i != objects.end(); ++i) {
+		if (i->get() == widget) {
+			boost::shared_ptr<Widget> tmp = *i;
+			objects.erase(i);
+			objects.push_front(tmp);
+			return;
+		}
+	}
+}

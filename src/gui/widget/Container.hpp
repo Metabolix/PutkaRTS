@@ -76,6 +76,13 @@ public:
 	 * @return true, if one of the children handled the event. Otherwise false.
 	 */
 	virtual bool handleEvent(const sf::Event& event, const sf::RenderWindow& window);
+
+	/**
+	 * Move widget to the front of the list. First widget receives events first and is drawn last.
+	 *
+	 * @param widget Pointer ot the widget to be moved. Used only to identify the widget.
+	 */
+	virtual void activate(const Widget* widget);
 };
 
 #endif
