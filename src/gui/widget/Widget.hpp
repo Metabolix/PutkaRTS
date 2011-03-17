@@ -27,6 +27,7 @@
 namespace GUI {
 	namespace Widget {
 		class Widget;
+		class Container;
 	}
 }
 
@@ -37,11 +38,17 @@ protected:
 	 */
 	sf::FloatRect position;
 
+	/*
+	 * Pointer to the gui container.
+	 */
+	Container *container;
+
 public:
 	/**
 	 * Default constructor.
 	 */
-	Widget() {
+	Widget():
+		container(NULL){
 	}
 
 	/**
@@ -54,14 +61,17 @@ public:
 	 * Constructor with position parameters.
 	 */
 	Widget(float x, float y, float width, float height):
-		position(x, y, x + width, y + height) {
+		position(x, y, x + width, y + height),
+		container(NULL) {
+
 	}
 
 	/**
 	 * Constructor with a prefilled position rectangle.
 	 */
 	Widget(sf::FloatRect position_):
-		position(position_) {
+		position(position_),
+		container(NULL) {
 	}
 
 	/**
@@ -81,6 +91,16 @@ public:
 	 * @param window The window to draw to.
 	 */
 	virtual void draw(sf::RenderWindow& window) = 0;
+
+	/**
+	 * Set the container pointer.
+	 *
+	 * @param container_ Pointer to the container.
+	 */
+	virtual void setContainer(Container *container_) {
+		container = container_;
+	}
+
 };
 
 #endif
