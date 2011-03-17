@@ -48,7 +48,7 @@ void GUI::Widget::DropDown::dropButtonPressed() {
 void GUI::Widget::DropDown::itemSelected(const List::Item& item) {
 	open = false;
 
-	if(action) {
+	if (action) {
 		action(item);
 	}
 }
