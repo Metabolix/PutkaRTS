@@ -29,6 +29,7 @@
 
 GUI::Widget::DropDown::DropDown(float x, float y, float width, float height, float dropDownMaxHeight_, CallbackType callback):
 	Widget(x, y, width, height),
+	action(callback),
 	dropButton("V", x + width - height + 2, y + 2, height - 4, height - 4, boost::bind(&GUI::Widget::DropDown::dropButtonPressed, this)),
 	dropList(x, y + height, width, dropDownMaxHeight_, boost::bind(&GUI::Widget::DropDown::itemSelected, this, _1)),
 	open(false) {
