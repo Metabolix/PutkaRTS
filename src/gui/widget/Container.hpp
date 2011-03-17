@@ -44,6 +44,9 @@ protected:
 	/** List of the objects in this container. */
 	WidgetListType objects;
 public:
+	/** Destructor. */
+	virtual ~Container();
+
 	/**
 	 * Insert another object.
 	 *
