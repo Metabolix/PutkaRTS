@@ -23,7 +23,7 @@
 #include "List.hpp"
 
 #include <algorithm>
-#include <boost\bind.hpp>
+#include <boost/bind.hpp>
 
 GUI::Widget::List::Item GUI::Widget::List::invalidItem = {"", ""};
 

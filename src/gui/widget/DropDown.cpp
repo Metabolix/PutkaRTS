@@ -24,7 +24,7 @@
 #include "Container.hpp"
 
 #include <algorithm>
-#include <boost\bind.hpp>
+#include <boost/bind.hpp>
 
 
 GUI::Widget::DropDown::DropDown(float x, float y, float width, float height, float dropDownMaxHeight_, CallbackType callback):
