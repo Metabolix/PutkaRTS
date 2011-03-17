@@ -36,7 +36,7 @@ void GUI::Widget::Container::erase(boost::shared_ptr<Widget> object) {
 }
 
 void GUI::Widget::Container::draw(sf::RenderWindow& window) {
-	std::for_each(objects.begin(), objects.end(), boost::bind(&Widget::draw, _1, boost::ref(window)));
+	std::for_each(objects.rbegin(), objects.rend(), boost::bind(&Widget::draw, _1, boost::ref(window)));
 }
 
 bool GUI::Widget::Container::handleEvent(const sf::Event& event, const sf::RenderWindow& window) {
