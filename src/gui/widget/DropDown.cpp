@@ -29,10 +29,10 @@
 
 GUI::Widget::DropDown::DropDown(float x, float y, float width, float height, float dropDownMaxHeight_, CallbackType callback):
 	Widget(x, y, width, height),
-	action(callback),
 	dropButton("V", x + width - height + 2, y + 2, height - 4, height - 4, boost::bind(&GUI::Widget::DropDown::dropButtonPressed, this)),
 	dropList(x, y + height, width, dropDownMaxHeight_, boost::bind(&GUI::Widget::DropDown::itemSelected, this, _1)),
-	open(false) {
+	open(false),
+	action(callback) {
 	dropList.setLineHeight(height - 2 * dropList.getBorderWidth());
 	dropDownMaxHeight = dropDownMaxHeight_;
 	calculateDropDownSize();
@@ -57,13 +57,12 @@ void GUI::Widget::DropDown::itemSelected(const List::Item& item) {
 void GUI::Widget::DropDown::calculateDropDownSize() {
 	float height = std::max(1, std::min<int>(dropList.countItems(), dropDownMaxHeight / dropList.getLineHeight()));
 	height *= dropList.getLineHeight();
-	height +=  + 2 * dropList.getBorderWidth();
-	
+	height += 2 * dropList.getBorderWidth();
+
 	dropList.setSize(position.GetWidth(), height);
 }
 
 bool GUI::Widget::DropDown::handleEvent(const sf::Event& e, const sf::RenderWindow& window) {
-	
 	if (dropButton.handleEvent(e, window)) {
 		return true;
 	}

@@ -29,10 +29,10 @@ GUI::Widget::List::Item GUI::Widget::List::invalidItem = {"", ""};
 
 GUI::Widget::List::List(float x, float y, float width, float height, CallbackType callback):
 	Widget(x, y, width, height),
+	scrollbar(x + width - 16 - 4, y + 4, height - 2 * 4, 16, true),
 	action(callback),
 	lineHeight(20),
-	borderWidth(4),
-	scrollbar(x + width - 16 - 4, y + 4, height - 2 * 4, 16, true) {
+	borderWidth(4) {
 	selected = items.end();
 	scrollPosition = 0;
 }
@@ -108,7 +108,7 @@ void GUI::Widget::List::draw(sf::RenderWindow& window) {
 			sf::Color(0, 0, 0)
 		)
 	);
-	
+
 	int counter = 0;
 
 	const sf::Input& input = window.GetInput();
@@ -132,7 +132,7 @@ void GUI::Widget::List::draw(sf::RenderWindow& window) {
 		}
 
 		tmpText.SetText(i->text);
-		
+
 		if (selected == i) {
 			tmpText.SetColor(sf::Color(0xFF, 0xFF, 0xFF));
 			window.Draw(
