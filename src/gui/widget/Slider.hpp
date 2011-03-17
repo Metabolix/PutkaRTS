@@ -61,7 +61,6 @@ public:
 	 * @param y Y coordinate of the slider.
 	 * @param length Length of the slider
 	 * @param thickness Thickness of the slider.
-	 * @param height Height of the slider.
 	 * @param vertical Orientation of the slider. Horizontal by default.
 	 * @param callback The action to take when moved.
 	 */

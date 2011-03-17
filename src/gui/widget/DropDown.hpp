@@ -56,13 +56,15 @@ private:
 
 protected:
 	/**
-	* Opens the menu.
-	*/
+	 * Opens the menu.
+	 */
 	virtual void dropButtonPressed();
 
 	/**
-	* Closes the menu and calls action().
-	*/
+	 * Closes the menu and calls action().
+	 *
+	 * @param item The selected item.
+	 */
 	virtual void itemSelected(const List::Item& item);
 
 	/** Max height for the drop-down part*/
@@ -78,9 +80,10 @@ public:
 	 * @param y Y coordinate.
 	 * @param width Width.
 	 * @param height Height.
+	 * @param dropDownMaxHeight The maximum height of the menu when opened.
 	 * @param callback The action to take when item is selected.
 	 */
-	DropDown(float x, float y, float width, float height, float dropDownMaxHeight_, CallbackType callback = NULL);
+	DropDown(float x, float y, float width, float height, float dropDownMaxHeight, CallbackType callback = NULL);
 
 	/**
 	 * Handle events, namely mouse clicks.
