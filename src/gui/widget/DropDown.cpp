@@ -21,6 +21,7 @@
  */
 
 #include "DropDown.hpp"
+#include "Container.hpp"
 
 #include <algorithm>
 #include <boost\bind.hpp>
@@ -38,6 +39,10 @@ GUI::Widget::DropDown::DropDown(float x, float y, float width, float height, flo
 
 void GUI::Widget::DropDown::dropButtonPressed() {
 	open = true;
+
+	if (container) {
+		container->activate(this);
+	}
 }
 
 void GUI::Widget::DropDown::itemSelected(const List::Item& item) {
