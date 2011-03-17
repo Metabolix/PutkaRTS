@@ -41,7 +41,7 @@ bool GUI::Widget::Slider::handleEvent(const sf::Event& e, const sf::RenderWindow
 
 			float mousePos = (vertical?mouse.y - position.Top:mouse.x - position.Left);
 
-			if( mousePos >= sliderPosition && mousePos < sliderPosition + sliderLength) {
+			if (mousePos >= sliderPosition && mousePos < sliderPosition + sliderLength) {
 				//slider pressed
 				isDragged = true;
 				oldMouseCoordinate = (vertical ? mouse.y : mouse.x);
@@ -60,7 +60,7 @@ bool GUI::Widget::Slider::handleEvent(const sf::Event& e, const sf::RenderWindow
 
 		oldMouseCoordinate = (vertical ? mouse.y : mouse.x);
 
-		if(action) {
+		if (action) {
 			action(getScrollPosition());
 		}
 
@@ -77,7 +77,7 @@ void GUI::Widget::Slider::draw(sf::RenderWindow& window) {
 	//bg
 	window.Draw(sf::Shape::Rectangle(position.Left, position.Top, position.Right, position.Bottom, sf::Color(0x55, 0x44, 0x33)));
 
-	if(vertical) {
+	if (vertical) {
 		window.Draw(
 			sf::Shape::Rectangle(
 				position.Left + bw,
