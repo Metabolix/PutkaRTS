@@ -57,7 +57,8 @@ void GUI::GameHandler::loadMapData() {
 }
 
 void GUI::GameHandler::drawGame(sf::RenderWindow& window) const {
-	const Map& map = connection->getGame().getMap();
+	const Game& game = connection->getGame();
+	const Map& map = game.getMap();
 
 	//calculate which tiles are on the screen.
 	Map::SizeType beginY = std::max(0.0f, gameView.GetRect().Top);
@@ -75,7 +76,22 @@ void GUI::GameHandler::drawGame(sf::RenderWindow& window) const {
 		}
 	}
 
-	// TODO: Draw the objects as well!
+	// TODO: Draw the objects better, load real graphics and such.
+	const Game::ObjectContainerType& objects = game.getObjects();
+	sf::Shape tmp;
+	tmp.AddPoint(-0.2, -0.1);
+	tmp.AddPoint(-0.0, -0.1);
+	tmp.AddPoint(-0.0, -0.2);
+	tmp.AddPoint(+0.2, -0.0);
+	tmp.AddPoint(-0.0, +0.2);
+	tmp.AddPoint(-0.0, +0.1);
+	tmp.AddPoint(-0.2, +0.1);
+	for (Game::ObjectContainerType::const_iterator i = objects.begin(); i != objects.end(); ++i) {
+		const World::Object& object = *i->second;
+		tmp.SetPosition(object.getPosition().x.getDouble(), object.getPosition().y.getDouble());
+		tmp.SetRotation(-Math::toDegrees(object.getDirection().getDouble()));
+		window.Draw(tmp);
+	}
 }
 
 void GUI::GameHandler::exit() {
