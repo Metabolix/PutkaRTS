@@ -109,6 +109,8 @@ void GUI::GameHandler::run(sf::RenderWindow& window) {
 				continue;
 			}
 		} else {
+			connection->runUntilNow();
+
 			handleScrolling(window);
 
 			window.Clear();
