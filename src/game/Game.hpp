@@ -27,8 +27,11 @@
 #include "Map.hpp"
 #include "Object.hpp"
 
+#include <queue>
 #include <map>
 #include <memory>
+
+#include <boost/function.hpp>
 
 /**
  * The root of all game logic.
@@ -40,9 +43,15 @@ public:
 
 	/** Object type for storing the game's objects. */
 	typedef std::map<unsigned int, boost::shared_ptr<World::Object> > ObjectContainerType;
+
+	/** Type for specifying an external callback for message handling. */
+	typedef boost::function<void(const Message&)> MessageCallbackType;
 private:
 	/** Keep track of game time. */
 	Scalar<SIUnit::Time> clock;
+
+	/** Pending messages. */
+	std::priority_queue<Message> messages;
 
 	/** The map on which the game is played. */
 	std::auto_ptr<Map> map;
@@ -54,8 +63,24 @@ private:
 	 * Run the game one step forward.
 	 *
 	 * @param dt The time step length.
+	 * @param messageCallback The function to call when a message is handled.
 	 */
-	void runStep(Scalar<SIUnit::Time> dt);
+	void runStep(Scalar<SIUnit::Time> dt, MessageCallbackType messageCallback);
+
+	/**
+	 * Handle the messages up to the current game time.
+	 *
+	 * @param messageCallback The function to call when a message is handled.
+	 */
+	void handleMessages(MessageCallbackType messageCallback);
+
+	/**
+	 * Handle a message.
+	 *
+	 * @param message The message to handle.
+	 * @return true if the message is ok, false if it's somehow invalid.
+	 */
+	bool handleMessage(const Message& message);
 public:
 	/**
 	 * Constructor.
@@ -82,15 +107,16 @@ public:
 	 * Run the game up to the given time.
 	 *
 	 * @param time The time.
+	 * @param messageCallback The function to call when a message is handled.
 	 */
-	void runUntil(Scalar<SIUnit::Time> time);
+	void runUntil(Scalar<SIUnit::Time> time, MessageCallbackType messageCallback = 0);
 
 	/**
-	 * Handle a message.
+	 * Insert a message in the queue.
 	 *
-	 * @param message The message; timestamp will be overridden!
+	 * @param message The message.
 	 */
-	void handleMessage(const Message& message);
+	void insertMessage(const Message& message);
 protected:
 	/**
 	 * Add object to game.

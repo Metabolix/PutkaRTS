@@ -32,11 +32,15 @@ Game::Game(std::auto_ptr<Map> map_):
 	map->createInitialObjects(*this);
 }
 
-void Game::runUntil(Scalar<SIUnit::Time> time) {
+void Game::runUntil(Scalar<SIUnit::Time> time, MessageCallbackType messageCallback) {
 	const Scalar<SIUnit::Time> dt = 1.0 / 32;
 	while (clock + dt < time) {
-		runStep(dt);
+		runStep(dt, messageCallback);
 	}
+}
+
+void Game::insertMessage(const Message& message) {
+	messages.push(message);
 }
 
 void Game::insertObject(boost::shared_ptr<World::Object> object) {
@@ -45,9 +49,9 @@ void Game::insertObject(boost::shared_ptr<World::Object> object) {
 	objects.insert(std::make_pair(id + 1, object));
 }
 
-void Game::runStep(Scalar<SIUnit::Time> dt) {
+void Game::runStep(Scalar<SIUnit::Time> dt, MessageCallbackType messageCallback) {
 	clock += dt;
-	// TODO: Handle messages!
+	handleMessages(messageCallback);
 
 	for (ObjectContainerType::iterator i = objects.begin(); i != objects.end();) {
 		ObjectContainerType::iterator next = i;
@@ -59,6 +63,24 @@ void Game::runStep(Scalar<SIUnit::Time> dt) {
 	}
 }
 
-void Game::handleMessage(const Message& message) {
-	// TODO: Copy the message into an internal list, set message.timestamp = clock;
+bool Game::handleMessage(const Message& message) {
+	// TODO: Check that the message is valid!
+	bool notValid = false;
+	if (notValid) {
+		return false;
+	}
+	// TODO: Do something with the message!
+	return true;
+}
+
+void Game::handleMessages(MessageCallbackType messageCallback) {
+	while (!messages.empty() && messages.top().timestamp <= clock) {
+		Message message(messages.top());
+		messages.pop();
+
+		message.timestamp = clock;
+		if (handleMessage(message) && messageCallback) {
+			messageCallback(message);
+		}
+	}
 }

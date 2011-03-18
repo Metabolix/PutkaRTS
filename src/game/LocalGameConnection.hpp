@@ -47,7 +47,7 @@ public:
 	 * @param message The message to send; this implementation passes it straight to the current Game.
 	 */
 	void sendMessage(const Message& message) {
-		game->handleMessage(message);
+		game->insertMessage(message);
 	}
 
 	/**
