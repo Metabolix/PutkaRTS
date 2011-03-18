@@ -1,6 +1,7 @@
 CXX := c++
 CXXFLAGS := -O -g -std=c++98 -Wall -pedantic
-INCLUDES := -Isrc
+INCLUDE_DIRS := -Isrc -Iext/include
+LIB_DIRS := -Lext/lib
 
 PUTKARTS_VERSION :=
 CXX_VER = "-DPUTKARTS_VERSION=\"$(PUTKARTS_VERSION)\""
@@ -69,12 +70,12 @@ $(GUI_BIN): $(patsubst src/%,build/%.o,$(GUI_SRC))
 $(GUI_BIN):
 	@echo [LINK] $@
 	@$(call mkdir,$(dir $@))
-	@$(CXX) $(CXXFLAGS) -o $@ $(filter %.o,$^) $(GUI_LIBS)
+	@$(CXX) $(CXXFLAGS) $(LIB_DIRS) -o $@ $(filter %.o,$^) $(GUI_LIBS)
 
 $(CLI_BIN):
 	@echo [LINK] $@
 	@$(call mkdir,$(dir $@))
-	@$(CXX) $(CXXFLAGS) -o $@ $(filter %.o,$^) $(CLI_LIBS)
+	@$(CXX) $(CXXFLAGS) $(LIB_DIRS) -o $@ $(filter %.o,$^) $(CLI_LIBS)
 
 # Include dependencies; generation rules are below.
 -include $(FILES_DEP)
@@ -83,13 +84,13 @@ $(CLI_BIN):
 build/%.dep: src/%
 	@echo [DEPEND] $<
 	@$(call mkdir,$(dir $@))
-	@$(CXX) $(CXXFLAGS) $(INCLUDES) $(CXX_VER) -MM $< -MT $@ > $@
+	@$(CXX) $(CXXFLAGS) $(INCLUDE_DIRS) $(CXX_VER) -MM $< -MT $@ > $@
 
 # Compilation
 build/%.o: src/% build/%.dep
 	@echo [CXX] $<
 	@$(call mkdir,$(dir $@))
-	@$(CXX) $(CXXFLAGS) $(INCLUDES) $(CXX_VER) $< -c -o $@
+	@$(CXX) $(CXXFLAGS) $(INCLUDE_DIRS) $(CXX_VER) $< -c -o $@
 
 # Always regenerate program version string
 build/ProgramInfo.cpp.o: $(FILES_CPP) $(FILES_HPP)
