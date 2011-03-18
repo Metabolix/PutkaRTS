@@ -40,6 +40,11 @@ struct Vector2 {
 	// Constructor from members
 	Vector2(Scalar<U1> const& _x, Scalar<U1> const& _y) : x(_x), y(_y) {}
 
+	// Constructor from angle
+	static Type fromAngle(Scalar<SIUnit::Angle> angle) {
+		return Type(cos(angle), sin(angle));
+	}
+
 	// Special values
 	static Type zero() { return Type(Scalar<U1>::zero(), Scalar<U1>::zero()); }
 	static Type nan() { return Type(Scalar<U1>::nan(), Scalar<U1>::nan()); }
