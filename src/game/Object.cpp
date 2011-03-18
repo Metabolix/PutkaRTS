@@ -44,3 +44,11 @@ void World::Object::setExperience(int experience_) {
 		experience = 0;
 	}
 }
+
+bool World::Object::runStep(Scalar<SIUnit::Time> dt, Game& game) {
+	// TODO: Handle whatever the object is doing.
+	// TODO: Check collisions before moving!
+	direction += Scalar<SIUnit::AngularVelocity>(Math::pi / 10) * dt;
+	position += Vector2<>::fromAngle(direction) * Scalar<SIUnit::Velocity>(1) * dt;
+	return true;
+}

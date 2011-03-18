@@ -23,8 +23,6 @@
 
 #include <stdexcept>
 
-const Scalar<SIUnit::Time> Game::stepTime = 1 / 30;
-
 Game::Game(std::auto_ptr<Map> map_):
 	map(map_) {
 	if (!map.get()) {
@@ -35,8 +33,9 @@ Game::Game(std::auto_ptr<Map> map_):
 }
 
 void Game::runUntil(Scalar<SIUnit::Time> time) {
-	while (clock + stepTime < time) {
-		runStep();
+	const Scalar<SIUnit::Time> dt = 1.0 / 32;
+	while (clock + dt < time) {
+		runStep(dt);
 	}
 }
 
@@ -46,8 +45,18 @@ void Game::insertObject(boost::shared_ptr<World::Object> object) {
 	objects.insert(std::make_pair(id + 1, object));
 }
 
-void Game::runStep() {
-	// TODO: Update clock by some value and update the world respectively.
+void Game::runStep(Scalar<SIUnit::Time> dt) {
+	clock += dt;
+	// TODO: Handle messages!
+
+	for (ObjectContainerType::iterator i = objects.begin(); i != objects.end();) {
+		ObjectContainerType::iterator next = i;
+		++next;
+		if (!i->second->runStep(dt, *this)) {
+			objects.erase(i);
+		}
+		i = next;
+	}
 }
 
 void Game::handleMessage(const Message& message) {

@@ -25,6 +25,7 @@
 #include "util/Scalar.hpp"
 #include "Message.hpp"
 #include "Map.hpp"
+#include "Object.hpp"
 
 #include <map>
 #include <memory>
@@ -40,9 +41,6 @@ public:
 	/** Object type for storing the game's objects. */
 	typedef std::map<unsigned int, boost::shared_ptr<World::Object> > ObjectContainerType;
 private:
-	/** Game step duration. */
-	static const Scalar<SIUnit::Time> stepTime;
-
 	/** Keep track of game time. */
 	Scalar<SIUnit::Time> clock;
 
@@ -54,8 +52,10 @@ private:
 
 	/**
 	 * Run the game one step forward.
+	 *
+	 * @param dt The time step length.
 	 */
-	void runStep();
+	void runStep(Scalar<SIUnit::Time> dt);
 public:
 	/**
 	 * Constructor.

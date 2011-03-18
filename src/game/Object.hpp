@@ -27,6 +27,8 @@
 
 #include <boost/shared_ptr.hpp>
 
+class Game;
+
 namespace World {
 	/**
 	 * This class describes world object.
@@ -102,6 +104,15 @@ namespace World {
 		int getExperience() const {
 			return experience;
 		}
+
+		/**
+		 * Move the unit one step in time.
+		 *
+		 * @param dt The time step size.
+		 * @param game The game
+		 * @return true if the object is still alive after the step.
+		 */
+		bool runStep(Scalar<SIUnit::Time> dt, Game& game);
 	protected:
 		/**
 		 * Set object's position.
