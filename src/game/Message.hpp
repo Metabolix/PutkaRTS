@@ -30,6 +30,17 @@
 struct Message {
 	Scalar<SIUnit::Time> timestamp;
 	// TODO: implementation missing!
+
+	/**
+	 * Compare this message to another; order by timestamps.
+	 *
+	 * @param m2 The other message
+	 * @return true if this message has earlier timestamp than the other.
+	 */
+	bool operator < (const Message& m2) const {
+		const Message& m1 = *this;
+		return m1.timestamp < m2.timestamp;
+	}
 };
 
 #endif
