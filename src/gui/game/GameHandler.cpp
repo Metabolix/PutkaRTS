@@ -24,6 +24,7 @@
 #include "util/Path.hpp"
 
 #include "GameHandler.hpp"
+#include "GameObject.hpp"
 #include "game/Map.hpp"
 
 #include "gui/widget/Button.hpp"
@@ -76,21 +77,12 @@ void GUI::GameHandler::drawGame(sf::RenderWindow& window) const {
 		}
 	}
 
-	// TODO: Draw the objects better, load real graphics and such.
+	// TODO: Get only visible objects! Maybe use something like game.forEachObject(rectangle, callback).
 	const Game::ObjectContainerType& objects = game.getObjects();
-	sf::Shape tmp;
-	tmp.AddPoint(-0.2, -0.1);
-	tmp.AddPoint(-0.0, -0.1);
-	tmp.AddPoint(-0.0, -0.2);
-	tmp.AddPoint(+0.2, -0.0);
-	tmp.AddPoint(-0.0, +0.2);
-	tmp.AddPoint(-0.0, +0.1);
-	tmp.AddPoint(-0.2, +0.1);
 	for (Game::ObjectContainerType::const_iterator i = objects.begin(); i != objects.end(); ++i) {
-		const World::Object& object = *i->second;
-		tmp.SetPosition(object.getPosition().x.getDouble(), object.getPosition().y.getDouble());
-		tmp.SetRotation(-Math::toDegrees(object.getDirection().getDouble()));
-		window.Draw(tmp);
+		// TODO: Make the GameObjects persistent so that they can keep track of the animation!
+		GameObject tmp(i->second);
+		tmp.draw(window);
 	}
 }
 
