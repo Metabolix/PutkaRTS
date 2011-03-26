@@ -129,6 +129,13 @@ public:
 	 * @param key Key for the item to erase.
 	 */
 	virtual void eraseItem(const GUI::Widget::List::KeyType& key);
+
+	/**
+	 * Select item with matching key. If no match is found, selection remains unaltered.
+	 *
+	 * @param key Key for the item to select.
+	 */
+	virtual void selectItem(const GUI::Widget::List::KeyType& key);
 };
 
 #endif

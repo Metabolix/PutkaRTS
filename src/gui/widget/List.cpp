@@ -253,3 +253,12 @@ void GUI::Widget::List::setSize(float width, float height) {
 	scrollbar.setPosition(position.Left + width - 16 - getBorderWidth(), position.Top + getBorderWidth());
 	scrollbar.setSize(height - 2 * getBorderWidth(), 16);
 }
+
+void GUI::Widget::List::selectItem(const GUI::Widget::List::KeyType& key) {
+	for (ItemContainerType::const_iterator i = items.begin(); i != items.end(); ++i) {
+		if (i->key == key) {
+			selected = i;
+			return;
+		}
+	}
+}

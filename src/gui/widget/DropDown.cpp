@@ -126,3 +126,7 @@ void GUI::Widget::DropDown::insertItem(const GUI::Widget::List::KeyType& key, co
 void GUI::Widget::DropDown::eraseItem(const GUI::Widget::List::KeyType& key) {
 	dropList.eraseItem(key);
 }
+
+void GUI::Widget::DropDown::selectItem(const GUI::Widget::List::KeyType& key) {
+	dropList.selectItem(key);
+}
