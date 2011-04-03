@@ -63,9 +63,6 @@ class GUI::GameHandler: public Widget::Container {
 	/** Used to break the main loop from within member functions. */
 	bool gameClosed;
 public:
-	/** The current GameHandler instance; there should always be only one. */
-	static std::auto_ptr<GameHandler> instance;
-
 	/**
 	 * Constructor.
 	 *
@@ -92,11 +89,13 @@ public:
 	void exit();
 
 	/**
-	 * Run the game until it ends.
+	 * Handle event.
 	 *
-	 * @param window The window to use for input and rendering.
+	 * @param e The event.
+	 * @param window The window of the event.
+	 * @return true, if this object handled the event. Otherwise false.
 	 */
-	void run(sf::RenderWindow& window);
+	bool handleEvent(const sf::Event& e, const sf::RenderWindow& window);
 
 	/**
 	 * Draw the widget.

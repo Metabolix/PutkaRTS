@@ -31,12 +31,9 @@
 
 #include <SFML/Graphics.hpp>
 
-#include <memory>
 #include <algorithm>
 #include <cmath>
 #include <boost/bind.hpp>
-
-std::auto_ptr<GUI::GameHandler> GUI::GameHandler::instance;
 
 const int GUI::GameHandler::tileSize = 32;
 
@@ -44,7 +41,6 @@ GUI::GameHandler::GameHandler(std::auto_ptr<GameConnection> connection_, sf::Ren
 	guiView(window.GetDefaultView()),
 	connection(connection_),
 	mouseDrag(false) {
-	instance.reset(this);
 
 	loadMapData();
 	resetGameView(window, true);
@@ -92,28 +88,17 @@ void GUI::GameHandler::drawGame(sf::RenderWindow& window) const {
 }
 
 void GUI::GameHandler::exit() {
-	gameClosed = true;
+	if (GUI::currentWidget.get() == this) {
+		GUI::currentWidget.reset();
+	}
 }
 
-void GUI::GameHandler::run(sf::RenderWindow& window) {
-	window.SetFramerateLimit(60);
-
-	gameClosed = false;
-	while (window.IsOpened() && !gameClosed) {
-		sf::Event e;
-		if (window.GetEvent(e)) {
-			if (e.Type == sf::Event::Closed) {
-				window.Close();
-				break;
-			}
-			if (e.Type == sf::Event::KeyPressed && e.Key.Code == sf::Key::Escape) {
-				break;
-			}
-			handleEvent(e, window);
-		} else {
-			draw(window);
-		}
+bool GUI::GameHandler::handleEvent(const sf::Event& e, const sf::RenderWindow& window) {
+	if (e.Type == sf::Event::KeyPressed && e.Key.Code == sf::Key::Escape) {
+		exit();
+		return true;
 	}
+	return Container::handleEvent(e, window);
 }
 
 void GUI::GameHandler::draw(sf::RenderWindow& window) {

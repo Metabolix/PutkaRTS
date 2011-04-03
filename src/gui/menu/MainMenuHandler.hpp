@@ -59,13 +59,6 @@ public:
 	MainMenuHandler(sf::RenderWindow& window);
 
 	/**
-	 * Run the menu until it quits or a game starts.
-	 *
-	 * @param window The window to use for input and rendering.
-	 */
-	void run(sf::RenderWindow& window);
-
-	/**
 	 * Draw the widget.
 	 *
 	 * @param window The window to draw to.

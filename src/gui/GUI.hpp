@@ -23,6 +23,9 @@
 #define PUTKARTS_GUI_HPP
 
 #include "util/Configuration.hpp"
+#include "gui/widget/Widget.hpp"
+
+#include <boost/shared_ptr.hpp>
 
 /**
  * Namespace for everything that is specific to the graphical program.
@@ -30,6 +33,9 @@
 namespace GUI {
 	/** Configuration. */
 	extern Configuration config;
+
+	/** The current Widget. */
+	extern boost::shared_ptr<Widget::Widget> currentWidget;
 }
 
 #endif

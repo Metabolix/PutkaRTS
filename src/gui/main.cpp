@@ -69,17 +69,32 @@ try {
 	std::string title = ProgramInfo::name + " (version " + ProgramInfo::version + ", GUI)";
 	sf::RenderWindow window(mode, title, style);
 
-	MainMenuHandler menu(window);
+	window.SetFramerateLimit(GUI::config.getInt("window.framerate", 60));
 
 	while (window.IsOpened()) {
-		menu.run(window);
-		if (!window.IsOpened()) {
-			break;
+		// If nothing is running, start the menu.
+		if (!currentWidget) {
+			currentWidget.reset(new MainMenuHandler(window));
 		}
-		if (GameHandler::instance.get()) {
-			GameHandler::instance->run(window);
+
+		// Make another pointer to avoid deleting the widget prematurely.
+		boost::shared_ptr<Widget::Widget> widget(currentWidget);
+
+		sf::Event e;
+		if (window.GetEvent(e)) {
+			if (widget->handleEvent(e, window)) {
+				continue;
+			}
+			if (e.Type == sf::Event::Closed || (e.Type == sf::Event::KeyPressed && e.Key.Code == sf::Key::Escape)) {
+				window.Close();
+				continue;
+			}
+		} else {
+			widget->draw(window);
 		}
 	}
+	currentWidget.reset();
+
 	try {
 		GUI::config.save(configPath);
 	} catch (std::runtime_error& e) {

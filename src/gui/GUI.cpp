@@ -22,3 +22,5 @@
 #include "GUI.hpp"
 
 Configuration GUI::config;
+
+boost::shared_ptr<GUI::Widget::Widget> GUI::currentWidget;

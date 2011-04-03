@@ -20,6 +20,7 @@
  */
 
 #include "MainMenuHandler.hpp"
+#include "gui/GUI.hpp"
 #include "gui/game/GameHandler.hpp"
 #include "game/LocalGameConnection.hpp"
 #include "game/Game.hpp"
@@ -48,7 +49,7 @@ void GUI::MainMenuHandler::startGame(sf::RenderWindow& window) {
 	std::auto_ptr<Map> map(new Map("maps/testmap"));
 	std::auto_ptr<Game> game(new Game(map));
 	std::auto_ptr<GameConnection> connection(new LocalGameConnection(game));
-	GameHandler::instance.reset(new GameHandler(connection, window));
+	GUI::currentWidget.reset(new GameHandler(connection, window));
 }
 
 void GUI::MainMenuHandler::draw(sf::RenderWindow& window) {
@@ -62,24 +63,4 @@ void GUI::MainMenuHandler::draw(sf::RenderWindow& window) {
 	window.Draw(logoSprite);
 	Container::draw(window);
 	window.Display();
-}
-
-void GUI::MainMenuHandler::run(sf::RenderWindow& window) {
-	// Entering main menu, no game should be running.
-	GameHandler::instance.reset();
-
-	window.SetFramerateLimit(30);
-
-	while (window.IsOpened() && !GameHandler::instance.get()) {
-		sf::Event e;
-		if (window.GetEvent(e)) {
-			if (e.Type == sf::Event::Closed || (e.Type == sf::Event::KeyPressed && e.Key.Code == sf::Key::Escape)) {
-				window.Close();
-				continue;
-			}
-			handleEvent(e, window);
-		} else {
-			draw(window);
-		}
-	}
 }
