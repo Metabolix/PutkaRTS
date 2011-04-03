@@ -90,7 +90,9 @@ public:
 	 *
 	 * @param window The window to draw to.
 	 */
-	virtual void draw(sf::RenderWindow& window) = 0;
+	virtual void draw(sf::RenderWindow& window) {
+		return;
+	}
 
 	/**
 	 * Set the container pointer.
