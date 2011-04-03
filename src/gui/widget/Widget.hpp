@@ -38,7 +38,7 @@ protected:
 	 */
 	sf::FloatRect position;
 
-	/*
+	/**
 	 * Pointer to the gui container.
 	 */
 	Container *container;
