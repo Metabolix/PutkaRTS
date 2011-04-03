@@ -28,6 +28,7 @@
 #include <memory>
 #include <SFML/Graphics.hpp>
 
+#include "gui/widget/Container.hpp"
 #include "gui/graphics/ImageCache.hpp"
 
 namespace GUI {
@@ -37,7 +38,7 @@ namespace GUI {
 /**
  * Class for the game GUI.
  */
-class GUI::GameHandler {
+class GUI::GameHandler: public Widget::Container {
 	/** The view used while rendering the GUI. */
 	sf::View guiView;
 
@@ -69,8 +70,9 @@ public:
 	 * Constructor.
 	 *
 	 * @param connection The game connection to use.
+	 * @param window The window to use for input and rendering.
 	 */
-	GameHandler(std::auto_ptr<GameConnection> connection);
+	GameHandler(std::auto_ptr<GameConnection> connection, sf::RenderWindow& window);
 
 	/**
 	 * Load map graphics etc.
@@ -95,6 +97,13 @@ public:
 	 * @param window The window to use for input and rendering.
 	 */
 	void run(sf::RenderWindow& window);
+
+	/**
+	 * Draw the widget.
+	 *
+	 * @param window The window to draw to.
+	 */
+	void draw(sf::RenderWindow& window);
 
 	/**
 	 * Handle map scrolling calculations.

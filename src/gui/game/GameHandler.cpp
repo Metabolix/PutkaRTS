@@ -28,7 +28,6 @@
 #include "game/Map.hpp"
 
 #include "gui/widget/Button.hpp"
-#include "gui/widget/Container.hpp"
 
 #include <SFML/Graphics.hpp>
 
@@ -41,10 +40,16 @@ std::auto_ptr<GUI::GameHandler> GUI::GameHandler::instance;
 
 const int GUI::GameHandler::tileSize = 32;
 
-GUI::GameHandler::GameHandler(std::auto_ptr<GameConnection> connection_):
+GUI::GameHandler::GameHandler(std::auto_ptr<GameConnection> connection_, sf::RenderWindow& window):
+	guiView(window.GetDefaultView()),
 	connection(connection_),
 	mouseDrag(false) {
 	instance.reset(this);
+
+	loadMapData();
+	resetGameView(window, true);
+
+	insert(new GUI::Widget::Button("X", window.GetWidth() - 24, 0, 24, 24, boost::bind(&GUI::GameHandler::exit, this)));
 }
 
 void GUI::GameHandler::loadMapData() {
@@ -91,16 +96,7 @@ void GUI::GameHandler::exit() {
 }
 
 void GUI::GameHandler::run(sf::RenderWindow& window) {
-	guiView = window.GetDefaultView();
-
-	resetGameView(window, true);
-
 	window.SetFramerateLimit(60);
-
-	loadMapData();
-
-	Widget::Container gui;
-	gui.insert(boost::shared_ptr<Widget::Button>(new Widget::Button("X", window.GetWidth() - 24, 0, 24, 24, boost::bind(&GUI::GameHandler::exit, this))));
 
 	gameClosed = false;
 	while (window.IsOpened() && !gameClosed) {
@@ -113,25 +109,24 @@ void GUI::GameHandler::run(sf::RenderWindow& window) {
 			if (e.Type == sf::Event::KeyPressed && e.Key.Code == sf::Key::Escape) {
 				break;
 			}
-			if (gui.handleEvent(e, window)) {
-				continue;
-			}
+			handleEvent(e, window);
 		} else {
-			connection->runUntilNow();
-
-			handleScrolling(window);
-
-			window.Clear();
-
-			window.SetView(gameView);
-			drawGame(window);
-
-			window.SetView(guiView);
-			gui.draw(window);
-
-			window.Display();
+			draw(window);
 		}
 	}
+}
+
+void GUI::GameHandler::draw(sf::RenderWindow& window) {
+	// FIXME: Maybe add Widget::update or something for the logic.
+	connection->runUntilNow();
+	handleScrolling(window);
+
+	window.Clear();
+	window.SetView(gameView);
+	drawGame(window);
+	window.SetView(guiView);
+	Container::draw(window);
+	window.Display();
 }
 
 void GUI::GameHandler::handleScrolling(sf::RenderWindow& window) {

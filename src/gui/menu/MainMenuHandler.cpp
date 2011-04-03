@@ -40,15 +40,15 @@ GUI::MainMenuHandler::MainMenuHandler(sf::RenderWindow& window) {
 	logoSprite.SetPosition(320, 1);
 
 	// Build the main menu GUI.
-	insert(new GUI::Widget::Button("New game", 200, 100, 240, 50, boost::bind(&GUI::MainMenuHandler::startGame, this)));
+	insert(new GUI::Widget::Button("New game", 200, 100, 240, 50, boost::bind(&GUI::MainMenuHandler::startGame, this, boost::ref(window))));
 	insert(new GUI::Widget::Button("Exit", 250, 170, 140, 50, boost::bind(&sf::RenderWindow::Close, boost::ref(window))));
 }
 
-void GUI::MainMenuHandler::startGame() {
+void GUI::MainMenuHandler::startGame(sf::RenderWindow& window) {
 	std::auto_ptr<Map> map(new Map("maps/testmap"));
 	std::auto_ptr<Game> game(new Game(map));
 	std::auto_ptr<GameConnection> connection(new LocalGameConnection(game));
-	GameHandler::instance.reset(new GameHandler(connection));
+	GameHandler::instance.reset(new GameHandler(connection, window));
 }
 
 void GUI::MainMenuHandler::draw(sf::RenderWindow& window) {

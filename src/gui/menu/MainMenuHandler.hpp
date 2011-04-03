@@ -46,8 +46,10 @@ class GUI::MainMenuHandler: public Widget::Container {
 
 	/**
 	 * Start a new game.
+	 *
+	 * @param window The window to use for input and rendering.
 	 */
-	void startGame();
+	void startGame(sf::RenderWindow& window);
 public:
 	/**
 	 * Constructor.
