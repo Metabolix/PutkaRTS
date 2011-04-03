@@ -69,7 +69,7 @@ try {
 	std::string title = ProgramInfo::name + " (version " + ProgramInfo::version + ", GUI)";
 	sf::RenderWindow window(mode, title, style);
 
-	MainMenuHandler menu;
+	MainMenuHandler menu(window);
 
 	while (window.IsOpened()) {
 		menu.run(window);

@@ -24,6 +24,9 @@
 
 #include <SFML/Graphics.hpp>
 
+#include "gui/widget/Container.hpp"
+#include "gui/graphics/ImageCache.hpp"
+
 namespace GUI {
 	class MainMenuHandler;
 }
@@ -31,12 +34,15 @@ namespace GUI {
 /**
  * Main class for the game menu.
  */
-class GUI::MainMenuHandler {
+class GUI::MainMenuHandler: public Widget::Container {
 	/** The view to use for rendering. */
 	sf::View view;
 
-	/** Used to break the main loop from within member functions. */
-	bool menuClosed;
+	/** Main menu images. */
+	ImageCache images;
+
+	/** Main menu top logo. */
+	sf::Sprite logoSprite;
 
 	/**
 	 * Start a new game.
@@ -44,11 +50,25 @@ class GUI::MainMenuHandler {
 	void startGame();
 public:
 	/**
+	 * Constructor.
+	 *
+	 * @param window The window to use for input and rendering.
+	 */
+	MainMenuHandler(sf::RenderWindow& window);
+
+	/**
 	 * Run the menu until it quits or a game starts.
 	 *
 	 * @param window The window to use for input and rendering.
 	 */
 	void run(sf::RenderWindow& window);
+
+	/**
+	 * Draw the widget.
+	 *
+	 * @param window The window to draw to.
+	 */
+	void draw(sf::RenderWindow& window);
 };
 
 #endif

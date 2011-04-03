@@ -24,10 +24,7 @@
 #include "game/LocalGameConnection.hpp"
 #include "game/Game.hpp"
 
-#include "gui/graphics/ImageCache.hpp"
-
 #include "gui/widget/Button.hpp"
-#include "gui/widget/Container.hpp"
 
 #include "util/Path.hpp"
 
@@ -35,55 +32,54 @@
 #include <algorithm>
 #include <boost/bind.hpp>
 
+GUI::MainMenuHandler::MainMenuHandler(sf::RenderWindow& window) {
+	// Put the logo at the top of the window.
+	const sf::Image& logoImage(images.get(Path::findDataPath("graphics/logo.png")));
+	logoSprite.SetImage(logoImage);
+	logoSprite.SetCenter(logoImage.GetWidth() / 2, 0);
+	logoSprite.SetPosition(320, 1);
+
+	// Build the main menu GUI.
+	insert(new GUI::Widget::Button("New game", 200, 100, 240, 50, boost::bind(&GUI::MainMenuHandler::startGame, this)));
+	insert(new GUI::Widget::Button("Exit", 250, 170, 140, 50, boost::bind(&sf::RenderWindow::Close, boost::ref(window))));
+}
+
 void GUI::MainMenuHandler::startGame() {
 	std::auto_ptr<Map> map(new Map("maps/testmap"));
 	std::auto_ptr<Game> game(new Game(map));
 	std::auto_ptr<GameConnection> connection(new LocalGameConnection(game));
 	GameHandler::instance.reset(new GameHandler(connection));
-	menuClosed = true;
 }
 
-void GUI::MainMenuHandler::run(sf::RenderWindow& window) {
-	ImageCache mainMenuImages;
-	const sf::Image& logoImage = mainMenuImages.get(Path::findDataPath("graphics/logo.png"));
-
-	// Entering main menu, no game should be running.
-	GameHandler::instance.reset();
-
+void GUI::MainMenuHandler::draw(sf::RenderWindow& window) {
 	// Make view that is as close to 640x480 as possible and centered.
 	view = window.GetDefaultView();
 	view.Zoom(std::min(view.GetRect().GetWidth() / 640, view.GetRect().GetHeight() / 480));
-	view.SetCenter(view.GetHalfSize());
+	view.SetCenter(320, 240);
 	window.SetView(view);
+
+	window.Clear(sf::Color(0xcc, 0x66, 0x33));
+	window.Draw(logoSprite);
+	Container::draw(window);
+	window.Display();
+}
+
+void GUI::MainMenuHandler::run(sf::RenderWindow& window) {
+	// Entering main menu, no game should be running.
+	GameHandler::instance.reset();
 
 	window.SetFramerateLimit(30);
 
-	// Position at the top of the window.
-	sf::Sprite logoSprite(logoImage);
-	logoSprite.SetCenter(logoImage.GetWidth() / 2, 0);
-	logoSprite.SetPosition(window.GetView().GetRect().GetWidth() / 2, 1);
-
-	// Build the main menu GUI.
-	Widget::Container gui;
-	gui.insert(boost::shared_ptr<Widget::Button>(new Widget::Button("New game", 200, 100, 240, 50, boost::bind(&GUI::MainMenuHandler::startGame, this))));
-	gui.insert(boost::shared_ptr<Widget::Button>(new Widget::Button("Exit", 250, 170, 140, 50, boost::bind(&sf::RenderWindow::Close, boost::ref(window)))));
-
-	menuClosed = false;
-	while (window.IsOpened() && !menuClosed) {
+	while (window.IsOpened() && !GameHandler::instance.get()) {
 		sf::Event e;
 		if (window.GetEvent(e)) {
-			if (gui.handleEvent(e, window)) {
-				continue;
-			}
 			if (e.Type == sf::Event::Closed || (e.Type == sf::Event::KeyPressed && e.Key.Code == sf::Key::Escape)) {
 				window.Close();
 				continue;
 			}
+			handleEvent(e, window);
 		} else {
-			window.Clear(sf::Color(0xcc, 0x66, 0x33));
-			window.Draw(logoSprite);
-			gui.draw(window);
-			window.Display();
+			draw(window);
 		}
 	}
 }
