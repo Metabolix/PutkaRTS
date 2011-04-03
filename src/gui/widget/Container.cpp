@@ -30,12 +30,12 @@ GUI::Widget::Container::~Container() {
 	}
 }
 
-void GUI::Widget::Container::insert(boost::shared_ptr<Widget> object) {
+void GUI::Widget::Container::insert(const boost::shared_ptr<Widget>& object) {
 	object->setContainer(this);
 	objects.push_back(object);
 }
 
-void GUI::Widget::Container::erase(boost::shared_ptr<Widget> object) {
+void GUI::Widget::Container::erase(const boost::shared_ptr<Widget>& object) {
 	WidgetListType::iterator i = std::find(objects.begin(), objects.end(), object);
 	if (i != objects.end()) {
 		i->get()->setContainer(NULL);

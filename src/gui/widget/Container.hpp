@@ -52,14 +52,25 @@ public:
 	 *
 	 * @param object The object to insert.
 	 */
-	virtual void insert(boost::shared_ptr<Widget> object);
+	virtual void insert(const boost::shared_ptr<Widget>& object);
 
 	/**
 	 * Erase a previously added object.
 	 *
 	 * @param object The object to insert.
 	 */
-	virtual void erase(boost::shared_ptr<Widget> object);
+	virtual void erase(const boost::shared_ptr<Widget>& object);
+
+	/**
+	 * Insert another object.
+	 *
+	 * This version automatically wraps the pointer in a shared_ptr.
+	 *
+	 * @param object The object to insert.
+	 */
+	void insert(Widget* object) {
+		return insert(boost::shared_ptr<Widget>(object));
+	}
 
 	/**
 	 * Draw the objects in this container.
