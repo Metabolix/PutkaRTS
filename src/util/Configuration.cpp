@@ -179,6 +179,10 @@ void Configuration::remove(const std::string& key) {
 	}
 }
 
+bool Configuration::has(const std::string& key) const {
+	return configuration.find(key) != configuration.end();
+}
+
 void Configuration::clear() {
 	configuration.clear();
 }

@@ -207,6 +207,13 @@ public:
 	void remove(const std::string& key);
 
 	/**
+	 * Checks wether the key is set.
+	 *
+	 * @param key Key to check.
+	 */
+	bool has(const std::string& key) const;
+
+	/**
 	 * Clears configuration.
 	 */
 	void clear();
