@@ -30,140 +30,143 @@
 class Game;
 
 namespace World {
-	/**
-	 * This class describes world object.
-	 */
-	class Object {
-		friend class ObjectAction;
-
-		/** Pointer to object's type. */
-		boost::shared_ptr<const ObjectType> objectType;
-
-		/** Object's position. */
-		Vector2<SIUnit::Position> position;
-
-		/** Direction the object is looking. */
-		Scalar<SIUnit::Angle> direction;
-
-		/** Object's hit points. */
-		int hitPoints;
-
-		/** Object's experience. */
-		int experience;
-
-	public:
-		/**
-		 * Constructor.
-		 *
-		 * @param objectType Object's type.
-		 * @param position Object's starting position.
-		 */
-		Object(const boost::shared_ptr<const ObjectType> objectType, const Vector2<SIUnit::Position>& position);
-
-		/**
-		 * Return object's Object type.
-		 *
-		 * @return Object's object type.
-		 */
-		const boost::shared_ptr<const ObjectType> getObjectType() const {
-			return objectType;
-		}
-
-		/**
-		 * Return object's position.
-		 *
-		 * @return Position of the object.
-		 */
-		Vector2<SIUnit::Position> getPosition() const {
-			return position;
-		}
-
-		/**
-		 * Return the direction the object is looking.
-		 *
-		 * @return Direction of the object.
-		 */
-		Scalar<SIUnit::Angle> getDirection() const {
-			return direction;
-		}
-
-		/**
-		 * Return object's hit points.
-		 *
-		 * @return Object's hit points.
-		 */
-		int getHitPoints() const {
-			return hitPoints;
-		}
-
-		/**
-		 * Return object's experience.
-		 *
-		 * @return Object's experience.
-		 */
-		int getExperience() const {
-			return experience;
-		}
-
-		/**
-		 * Move the unit one step in time.
-		 *
-		 * @param dt The time step size.
-		 * @param game The game
-		 * @return true if the object is still alive after the step.
-		 */
-		bool runStep(Scalar<SIUnit::Time> dt, Game& game);
-	protected:
-		/**
-		 * Set object's position.
-		 *
-		 * @param position_ Position to set.
-		 */
-		void setPosition(const Vector2<SIUnit::Position>& position_) {
-			position = position_;
-		}
-
-		/**
-		 * Set object's direction.
-		 *
-		 * @param direction_ Direction to set.
-		 */
-		void setDirection(const Scalar<SIUnit::Angle>& direction_) {
-			direction = direction_;
-		}
-
-		/**
-		 * Set object's hit points.
-		 *
-		 * @param hitPoints Hit points to set.
-		 */
-		void setHitPoints(int hitPoints);
-
-		/**
-		 * Set object's experience.
-		 *
-		 * @param experience Experience to set.
-		 */
-		void setExperience(int experience);
-
-		/**
-		 * Add (or subtract) object's hit points.
-		 *
-		 * @param change Hit points change.
-		 */
-		void addHitPoints(int change) {
-			setHitPoints(getHitPoints() + change);
-		}
-
-		/**
-		 * Add (or subtract) object's experience.
-		 *
-		 * @param change Experience change.
-		 */
-		void addExperience(int change) {
-			setExperience(getExperience() + change);
-		}
-	};
+	class Object;
+	class ObjectAction;
 }
+
+/**
+ * This class describes world object.
+ */
+class World::Object {
+	friend class World::ObjectAction;
+
+	/** Pointer to object's type. */
+	boost::shared_ptr<const ObjectType> objectType;
+
+	/** Object's position. */
+	Vector2<SIUnit::Position> position;
+
+	/** Direction the object is looking. */
+	Scalar<SIUnit::Angle> direction;
+
+	/** Object's hit points. */
+	int hitPoints;
+
+	/** Object's experience. */
+	int experience;
+
+public:
+	/**
+	 * Constructor.
+	 *
+	 * @param objectType Object's type.
+	 * @param position Object's starting position.
+	 */
+	Object(const boost::shared_ptr<const ObjectType> objectType, const Vector2<SIUnit::Position>& position);
+
+	/**
+	 * Return object's Object type.
+	 *
+	 * @return Object's object type.
+	 */
+	const boost::shared_ptr<const ObjectType> getObjectType() const {
+		return objectType;
+	}
+
+	/**
+	 * Return object's position.
+	 *
+	 * @return Position of the object.
+	 */
+	Vector2<SIUnit::Position> getPosition() const {
+		return position;
+	}
+
+	/**
+	 * Return the direction the object is looking.
+	 *
+	 * @return Direction of the object.
+	 */
+	Scalar<SIUnit::Angle> getDirection() const {
+		return direction;
+	}
+
+	/**
+	 * Return object's hit points.
+	 *
+	 * @return Object's hit points.
+	 */
+	int getHitPoints() const {
+		return hitPoints;
+	}
+
+	/**
+	 * Return object's experience.
+	 *
+	 * @return Object's experience.
+	 */
+	int getExperience() const {
+		return experience;
+	}
+
+	/**
+	 * Move the unit one step in time.
+	 *
+	 * @param dt The time step size.
+	 * @param game The game
+	 * @return true if the object is still alive after the step.
+	 */
+	bool runStep(Scalar<SIUnit::Time> dt, Game& game);
+protected:
+	/**
+	 * Set object's position.
+	 *
+	 * @param position_ Position to set.
+	 */
+	void setPosition(const Vector2<SIUnit::Position>& position_) {
+		position = position_;
+	}
+
+	/**
+	 * Set object's direction.
+	 *
+	 * @param direction_ Direction to set.
+	 */
+	void setDirection(const Scalar<SIUnit::Angle>& direction_) {
+		direction = direction_;
+	}
+
+	/**
+	 * Set object's hit points.
+	 *
+	 * @param hitPoints Hit points to set.
+	 */
+	void setHitPoints(int hitPoints);
+
+	/**
+	 * Set object's experience.
+	 *
+	 * @param experience Experience to set.
+	 */
+	void setExperience(int experience);
+
+	/**
+	 * Add (or subtract) object's hit points.
+	 *
+	 * @param change Hit points change.
+	 */
+	void addHitPoints(int change) {
+		setHitPoints(getHitPoints() + change);
+	}
+
+	/**
+	 * Add (or subtract) object's experience.
+	 *
+	 * @param change Experience change.
+	 */
+	void addExperience(int change) {
+		setExperience(getExperience() + change);
+	}
+};
 
 #endif
