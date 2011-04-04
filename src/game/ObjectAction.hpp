@@ -27,31 +27,30 @@
 
 namespace World {
 	class Object;
+	class ObjectAction;
 }
 
-namespace World {
+/**
+ * This class describes object action.
+ */
+class World::ObjectAction {
+	/** Description for action. */
+	std::string description;
+
+public:
 	/**
-	 * This class describes object action.
+	 * Constructor that also loads action stream.
 	 */
-	class ObjectAction {
-		/** Description for action. */
-		std::string description;
+	ObjectAction(std::istream& stream);
 
-	public:
-		/**
-		 * Constructor that also loads action stream.
-		 */
-		ObjectAction(std::istream& stream);
-
-		/**
-		 * Run object action.
-		 *
-		 * @param actor Acting object.
-		 * @param target Target of the action.
-		 * @return Whether it was possible to run the action.
-		 */
-		bool runAction(boost::shared_ptr<World::Object> actor, boost::shared_ptr<World::Object> target);
-	};
-}
+	/**
+	 * Run object action.
+	 *
+	 * @param actor Acting object.
+	 * @param target Target of the action.
+	 * @return Whether it was possible to run the action.
+	 */
+	bool runAction(boost::shared_ptr<World::Object> actor, boost::shared_ptr<World::Object> target);
+};
 
 #endif
