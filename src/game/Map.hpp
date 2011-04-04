@@ -29,6 +29,7 @@
 #include <memory>
 
 #include "util/Array2D.hpp"
+#include "util/Configuration.hpp"
 #include "TechTree.hpp"
 
 class Game;
@@ -61,6 +62,9 @@ private:
 	 */
 	std::string directory;
 
+	/** Map information. */
+	Configuration info;
+
 	/**
 	 * Map in array of tiles.
 	 */
@@ -75,6 +79,30 @@ private:
 	 * Map's tech tree.
 	 */
 	std::auto_ptr<World::TechTree> techTree;
+
+	/**
+	 * Load map info (name and such).
+	 *
+	 * @param file The input stream.
+	 * @throw std::runtime_error Thrown if the info section is invalid.
+	 */
+	void loadInfo(std::istream& file);
+
+	/**
+	 * Load tile info.
+	 *
+	 * @param file The input stream.
+	 * @throw std::runtime_error Thrown if the tile data is invalid.
+	 */
+	void loadTileInfo(std::istream& file);
+
+	/**
+	 * Load tiles.
+	 *
+	 * @param file The input stream.
+	 * @throw std::runtime_error Thrown if the map is invalid.
+	 */
+	void loadTileMap(std::istream& file);
 public:
 	/**
 	 * Default constructor.
