@@ -83,7 +83,7 @@ public:
 	 *
 	 * @param stream Stream to read configuration.
 	 */
-	 void load(std::istream& stream);
+	void load(std::istream& stream);
 
 	/**
 	 * Loads the configuration from file.
@@ -209,7 +209,7 @@ public:
 	/**
 	 * Clears configuration.
 	 */
-	 void clear();
+	void clear();
 };
 
 #endif
