@@ -24,6 +24,7 @@
 
 #include <vector>
 #include <stdexcept>
+#include <algorithm>
 #include <boost/format.hpp>
 
 /**
@@ -59,6 +60,24 @@ public:
 	}
 
 	/**
+	 * Swap this and another array.
+	 *
+	 * @param other The other array.
+	 */
+	void swap(Array2D<T>& other) {
+		std::swap(sizeX, other.sizeX);
+		std::swap(sizeY, other.sizeY);
+		std::swap(data, other.data);
+	}
+
+	/**
+	 * Is the array empty?
+	 */
+	bool empty() {
+		return data.empty();
+	}
+
+	/**
 	 * Clear the array (resize to 0x0).
 	 */
 	void clear() {
@@ -75,10 +94,18 @@ public:
 	 * @param value The value to use for initializing the new array.
 	 */
 	void resize(SizeType newSizeX = 0, SizeType newSizeY = 0, const T& value = T()) {
-		clear();
-		data.resize(newSizeX * newSizeY, value);
-		sizeX = newSizeX;
-		sizeY = newSizeY;
+		if (sizeX == newSizeX) {
+			data.resize(sizeX * newSizeY, value);
+			sizeY = newSizeY;
+			return;
+		}
+		Array2D<T> tmp(newSizeX, newSizeY, value);
+		for (SizeType y = 0; y < std::min(newSizeY, sizeY); ++y) {
+			for (SizeType x = 0; x < std::min(newSizeX, sizeX); ++x) {
+				tmp(x, y) = operator()(x, y);
+			}
+		}
+		swap(tmp);
 	}
 
 	/**
