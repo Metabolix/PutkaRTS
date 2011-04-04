@@ -26,39 +26,41 @@
 #include <iostream>
 
 namespace World {
-	/**
-	 * This class describes object type.
-	 */
-	class ObjectType {
-		/** Object type's friends */
-		friend class ObjectAction;
-
-		/** Object type's animation set name. */
-		std::string animationSet;
-
-		/** Object type's name. */
-		std::string name;
-
-		/** Object type's maximum hit points. */
-		int maxHitPoints;
-
-	public:
-		/**
-		 * Constructor that loads the object type data from stream.
-		 *
-		 * @param stream Stream to read object type data.
-		 */
-		ObjectType(std::istream& stream);
-
-		/**
-		 * Return object type's maximum hit points.
-		 *
-		 * @return Object type's maximum hit points.
-		 */
-		int getMaxHitPoints() const {
-			return maxHitPoints;
-		}
-	};
+	class ObjectType;
 }
+
+/**
+ * This class describes object type.
+ */
+class World::ObjectType {
+	/** Object type's friends */
+	friend class ObjectAction;
+
+	/** Object type's animation set name. */
+	std::string animationSet;
+
+	/** Object type's name. */
+	std::string name;
+
+	/** Object type's maximum hit points. */
+	int maxHitPoints;
+
+public:
+	/**
+	 * Constructor that loads the object type data from stream.
+	 *
+	 * @param stream Stream to read object type data.
+	 */
+	ObjectType(std::istream& stream);
+
+	/**
+	 * Return object type's maximum hit points.
+	 *
+	 * @return Object type's maximum hit points.
+	 */
+	int getMaxHitPoints() const {
+		return maxHitPoints;
+	}
+};
 
 #endif
