@@ -126,7 +126,8 @@ public:
 	 * Get reference to a value.
 	 */
 	T& operator() (SizeType x, SizeType y) {
-		if (x < 0 || x >= sizeX || y < 0 || y >= sizeY) {
+		// (x < 0 || y < 0) == false, because SizeType is unsigned.
+		if (x >= sizeX || y >= sizeY) {
 			throw std::out_of_range((boost::format("Index out of range (%d, %d)!") % x % y).str());
 		}
 		return data[x + y * sizeX];
@@ -136,7 +137,8 @@ public:
 	 * Get reference to a value; const version.
 	 */
 	const T& operator() (SizeType x, SizeType y) const {
-		if (x < 0 || x >= sizeX || y < 0 || y >= sizeY) {
+		// (x < 0 || y < 0) == false, because SizeType is unsigned.
+		if (x >= sizeX || y >= sizeY) {
 			throw std::out_of_range((boost::format("Index out of range (%d, %d)!") % x % y).str());
 		}
 		return data[x + y * sizeX];
