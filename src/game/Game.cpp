@@ -45,8 +45,8 @@ void Game::insertMessage(const Message& message) {
 
 void Game::insertObject(boost::shared_ptr<World::Object> object) {
 	//  FIXME: This might overflow in long games.
-	unsigned int id = objects.empty() ? 0 : objects.rbegin()->first;
-	objects.insert(std::make_pair(id + 1, object));
+	object->id = 1 + (objects.empty() ? 0 : objects.rbegin()->first);
+	objects.insert(std::make_pair(object->id, object));
 }
 
 void Game::runStep(Scalar<SIUnit::Time> dt, MessageCallbackType messageCallback) {

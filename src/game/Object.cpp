@@ -22,6 +22,7 @@
 #include "Object.hpp"
 
 World::Object::Object(const boost::shared_ptr<const ObjectType> objectType_, const Vector2<SIUnit::Position>& position_):
+	id(0),
 	objectType(objectType_),
 	position(position_),
 	direction(0),

@@ -38,8 +38,14 @@ namespace World {
  * This class describes world object.
  */
 class World::Object {
+public:
 	friend class World::ObjectAction;
+	typedef unsigned int IdType;
 
+	/** Id of the object. */
+	IdType id;
+
+private:
 	/** Pointer to object's type. */
 	boost::shared_ptr<const ObjectType> objectType;
 
