@@ -40,9 +40,14 @@ struct Vector2 {
 	// Constructor from members
 	Vector2(Scalar<U1> const& _x, Scalar<U1> const& _y) : x(_x), y(_y) {}
 
-	// Constructor from angle
+	// Construct from angle
 	static Type fromAngle(Scalar<SIUnit::Angle> angle) {
 		return Type(cos(angle), sin(angle));
+	}
+
+	// Calculate angle
+	Scalar<SIUnit::Angle> toAngle() const {
+		return atan2(y, x);
 	}
 
 	// Special values
@@ -63,6 +68,10 @@ struct Vector2 {
 		return (x || y) ? (BoolDummyType) &Type::isZero : 0;
 	}
 	bool operator ! () const { return !x && !y; }
+
+	// Some meaningful comparisons
+	bool operator == (Type const& t) const { return x == t.x && y == t.y; }
+	bool operator != (Type const& t) const { return x != t.x || y != t.y; }
 
 	// Checks for special cases
 	bool isNaN() const {

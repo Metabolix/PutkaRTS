@@ -50,6 +50,18 @@ struct Scalar {
 		return value;
 	}
 
+	// Assignment without type checks
+	template <typename U2>
+	void unsafeAssign(Scalar<U2> const& t) {
+		value = t.value;
+	}
+
+	// Conversion without type checks
+	template <typename U2>
+	Scalar<U2> unsafeConvert() const {
+		return Scalar<U2>(value);
+	}
+
 	// Special values
 	static Type zero() { return Type(0); }
 	static Type nan() { return Type(std::numeric_limits<T>::quiet_NaN()); }
@@ -73,6 +85,12 @@ struct Scalar {
 	}
 	bool isZero() const {
 		return value == 0;
+	}
+	bool isPositive() const {
+		return value > 0;
+	}
+	bool isNegative() const {
+		return value < 0;
 	}
 
 	// Strip unit
@@ -190,6 +208,10 @@ inline Scalar<> sin(Scalar<> const& a) {
 }
 inline Scalar<> tan(Scalar<> const& a) {
 	return std::tan(a.value);
+}
+template <typename U1>
+inline Scalar<> atan2(Scalar<U1> const& y, Scalar<U1> const& x) {
+	return std::atan2(y.value, x.value);
 }
 
 #endif
