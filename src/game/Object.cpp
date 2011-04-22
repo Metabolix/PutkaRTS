@@ -26,6 +26,7 @@ World::Object::Object(const boost::shared_ptr<const ObjectType> objectType_, con
 	objectType(objectType_),
 	position(position_),
 	direction(0),
+	targetPosition(position_),
 	hitPoints(objectType_->getMaxHitPoints()),
 	experience(0) {
 }
@@ -49,7 +50,15 @@ void World::Object::setExperience(int experience_) {
 bool World::Object::runStep(Scalar<SIUnit::Time> dt, Game& game) {
 	// TODO: Handle whatever the object is doing.
 	// TODO: Check collisions before moving!
-	direction += Scalar<SIUnit::AngularVelocity>(Math::pi / 10) * dt;
-	position += Vector2<>::fromAngle(direction) * Scalar<SIUnit::Velocity>(1) * dt;
+	if (position == targetPosition) {
+		targetPosition += Vector2<>::fromAngle(rand() % 1000) * Scalar<SIUnit::Position>(2);
+	} else {
+		Vector2<SIUnit::Position> old = position;
+		direction = (targetPosition - position).toAngle();
+		position += Vector2<>::fromAngle(direction) * Scalar<SIUnit::Velocity>(1) * dt;
+		if ((targetPosition - old).dot(targetPosition - position).isNegative()) {
+			position = targetPosition;
+		}
+	}
 	return true;
 }

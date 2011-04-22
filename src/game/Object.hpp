@@ -55,6 +55,9 @@ private:
 	/** Direction the object is looking. */
 	Scalar<SIUnit::Angle> direction;
 
+	/** Object's target position, if applicable. */
+	Vector2<SIUnit::Position> targetPosition;
+
 	/** Object's hit points. */
 	int hitPoints;
 
