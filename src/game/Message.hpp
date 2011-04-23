@@ -23,13 +23,32 @@
 #define PUTKARTS_Message_HPP
 
 #include "util/Scalar.hpp"
+#include "util/Vector2.hpp"
+
+#include "Object.hpp"
+
+#include <list>
 
 /**
  * This class should describe any action in the game, most importantly moving units.
  */
-struct Message {
+class Message {
+public:
+	/** The timestamp for handling the message. */
 	Scalar<SIUnit::Time> timestamp;
-	// TODO: implementation missing!
+
+	/** The position associated with this message; mostly used for moving and such. */
+	Vector2<SIUnit::Position> position;
+
+	/** The actor objects. */
+	std::list<World::Object::IdType> actors;
+
+	/**
+	 * Default constructor.
+	 */
+	Message() {
+		// Nothing here.
+	}
 
 	/**
 	 * Compare this message to another; order by timestamps.
