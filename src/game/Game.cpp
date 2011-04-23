@@ -78,7 +78,10 @@ bool Game::handleMessage(Message& message) {
 		}
 	}
 
-	// TODO: Do something with the message!
+	// TODO: Handle the message properly!
+	for (std::list<World::Object::IdType>::const_iterator i = message.actors.begin(); i != message.actors.end(); ++i) {
+		objects[*i]->handleMessage(message, *this);
+	}
 	return true;
 }
 

@@ -20,6 +20,7 @@
  */
 
 #include "Object.hpp"
+#include "Message.hpp"
 
 World::Object::Object(const boost::shared_ptr<const ObjectType> objectType_, const Vector2<SIUnit::Position>& position_):
 	id(0),
@@ -45,6 +46,11 @@ void World::Object::setExperience(int experience_) {
 	if (experience < 0) {
 		experience = 0;
 	}
+}
+
+void World::Object::handleMessage(const Message& message, const Game& game) {
+	// TODO: Handle the message properly!
+	targetPosition = message.position;
 }
 
 bool World::Object::runStep(Scalar<SIUnit::Time> dt, Game& game) {

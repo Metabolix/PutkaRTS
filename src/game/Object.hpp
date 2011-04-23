@@ -28,6 +28,7 @@
 #include <boost/shared_ptr.hpp>
 
 class Game;
+class Message;
 
 namespace World {
 	class Object;
@@ -117,6 +118,14 @@ public:
 	int getExperience() const {
 		return experience;
 	}
+
+	/**
+	 * Handle a message.
+	 *
+	 * @param message The message to handle.
+	 * @param game The current game, if the message requires additional information.
+	 */
+	void handleMessage(const Message& message, const Game& game);
 
 	/**
 	 * Move the unit one step in time.
