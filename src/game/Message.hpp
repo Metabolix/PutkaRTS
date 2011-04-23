@@ -51,6 +51,20 @@ public:
 	}
 
 	/**
+	 * Constructor that deserializes a message, usually received over the network.
+	 *
+	 * @param The bytes representing a message.
+	 */
+	Message(std::string data);
+
+	/**
+	 * Serialize the message for sending it over the network.
+	 *
+	 * @return The bytes representing this message.
+	 */
+	std::string serialize() const;
+
+	/**
 	 * Compare this message to another; order by timestamps.
 	 *
 	 * @param m2 The other message
