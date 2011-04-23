@@ -53,7 +53,7 @@ public:
 	/**
 	 * Constructor that deserializes a message, usually received over the network.
 	 *
-	 * @param The bytes representing a message.
+	 * @param data The bytes representing a message.
 	 */
 	Message(std::string data);
 
