@@ -98,7 +98,25 @@ bool GUI::GameHandler::handleEvent(const sf::Event& e, const sf::RenderWindow& w
 		exit();
 		return true;
 	}
-	return Container::handleEvent(e, window);
+	if (Container::handleEvent(e, window)) {
+		return true;
+	}
+
+	// TODO: Handle selecting units etc. This is just for testing!
+	if (e.Type == sf::Event::MouseButtonPressed && e.MouseButton.Button == sf::Mouse::Right) {
+		const Game& game = connection->getGame();
+		const Game::ObjectContainerType& objects = game.getObjects();
+		sf::Vector2f mousePosition = window.ConvertCoords(e.MouseButton.X, e.MouseButton.Y, &gameView);
+		Message msg;
+		msg.position.x = mousePosition.x;
+		msg.position.y = mousePosition.y;
+		for (Game::ObjectContainerType::const_iterator i = objects.begin(); i != objects.end(); ++i) {
+			msg.actors.push_back(i->first);
+		}
+		connection->sendMessage(msg);
+	}
+
+	return false;
 }
 
 void GUI::GameHandler::draw(sf::RenderWindow& window) {
