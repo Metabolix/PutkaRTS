@@ -80,7 +80,7 @@ private:
 	 * @param message The message to handle.
 	 * @return true if the message is ok, false if it's somehow invalid.
 	 */
-	bool handleMessage(const Message& message);
+	bool handleMessage(Message& message);
 public:
 	/**
 	 * Constructor.

@@ -63,12 +63,21 @@ void Game::runStep(Scalar<SIUnit::Time> dt, MessageCallbackType messageCallback)
 	}
 }
 
-bool Game::handleMessage(const Message& message) {
+bool Game::handleMessage(Message& message) {
 	// TODO: Check that the message is valid!
 	bool notValid = false;
 	if (notValid) {
 		return false;
 	}
+
+	// Remove actors that do not exist.
+	for (std::list<World::Object::IdType>::iterator j, i = message.actors.begin(); i != message.actors.end();) {
+		j = i++;
+		if (objects.find(*j) == objects.end()) {
+			i = message.actors.erase(j);
+		}
+	}
+
 	// TODO: Do something with the message!
 	return true;
 }
