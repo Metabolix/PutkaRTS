@@ -64,6 +64,11 @@ try {
 		if (!mode.IsValid()) {
 			mode = sf::VideoMode::GetDesktopMode();
 		}
+	} else if (mode.Width > sf::VideoMode::GetDesktopMode().Width || mode.Height > sf::VideoMode::GetDesktopMode().Height) {
+		//Scale down the window size if larger than desktop resolution.
+		float scale = std::max((float)mode.Width / sf::VideoMode::GetDesktopMode().Width, (float)mode.Height / sf::VideoMode::GetDesktopMode().Height);
+		mode.Width /= scale;
+		mode.Height /= scale;
 	}
 
 	std::string title = ProgramInfo::name + " (version " + ProgramInfo::version + ", GUI)";
