@@ -29,7 +29,7 @@
 
 #include "util/Path.hpp"
 
-#include "menu/MainMenuHandler.hpp"
+#include "menu/MainMenu.hpp"
 #include "game/GameHandler.hpp"
 
 namespace GUI {
@@ -79,7 +79,7 @@ try {
 	while (window.IsOpened()) {
 		// If nothing is running, start the menu.
 		if (!currentWidget) {
-			currentWidget.reset(new MainMenuHandler(window));
+			currentWidget.reset(new Menu::MainMenu(window));
 		}
 
 		// Make another pointer to avoid deleting the widget prematurely.
