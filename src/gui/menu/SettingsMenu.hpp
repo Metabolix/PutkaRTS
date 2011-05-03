@@ -67,6 +67,7 @@ public:
 	 * Constructor.
 	 *
 	 * @param window The window to use for input and rendering.
+	 * @param _parent Pointer to parent object. Control is returned to parent when menu is closed.
 	 */
 	SettingsMenu(sf::RenderWindow& window, boost::shared_ptr<Widget> _parent);
 };
