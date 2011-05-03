@@ -45,6 +45,12 @@ class GUI::Menu::MainMenu: public Menu {
 	 */
 	void startGame(sf::RenderWindow& window);
 
+	/**
+	 * Open the settings menu.
+	 *
+	 * @param window The window used for input and rendering.
+	 */
+	void gotoSettings(sf::RenderWindow& window);
 public:
 	/**
 	 * Constructor.

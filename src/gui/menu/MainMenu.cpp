@@ -39,6 +39,7 @@ GUI::Menu::MainMenu::MainMenu(sf::RenderWindow& window):
 	Menu(window) {
 	// Build the main menu GUI.
 	insert(new GUI::Widget::Button("New game", 200, 100, 240, 50, boost::bind(&GUI::Menu::MainMenu::startGame, this, boost::ref(window))));
+	insert(new GUI::Widget::Button("Settings", 250, 170, 140, 50, boost::bind(&GUI::Menu::MainMenu::gotoSettings, this, boost::ref(window))));
 	insert(new GUI::Widget::Button("Exit", 250, 240, 140, 50, boost::bind(&sf::RenderWindow::Close, boost::ref(window))));
 }
 
@@ -47,4 +48,8 @@ void GUI::Menu::MainMenu::startGame(sf::RenderWindow& window) {
 	std::auto_ptr<Game> game(new Game(map));
 	std::auto_ptr<GameConnection> connection(new LocalGameConnection(game));
 	GUI::currentWidget.reset(new GameHandler(connection, window));
+}
+
+void GUI::Menu::MainMenu::gotoSettings(sf::RenderWindow& window) {
+	GUI::currentWidget.reset(new GUI::Menu::SettingsMenu(window, GUI::currentWidget));
 }
