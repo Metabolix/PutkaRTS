@@ -62,7 +62,3 @@ void GUI::Menu::Menu::draw(sf::RenderWindow& window) {
 	window.Draw(logoSprite);
 	window.Display();
 }
-
-bool GUI::Menu::Menu::isOpen() const {
-	return menuIsOpen;
-}

@@ -73,7 +73,6 @@ public:
 	/**
 	 * Constructor.
 	 *
-	 * @param window The window to use for input and rendering.
 	 * @param _parent Pointer to the parent object. Control is returned to parent when menu is closed.
 	 */
 	Menu(boost::shared_ptr<Widget> _parent = boost::shared_ptr<Widget>());
@@ -85,12 +84,14 @@ public:
 	 */
 	void draw(sf::RenderWindow& window);
 
-	/*
+	/**
 	 * Is the menu open?
 	 *
-	 * @ return Returns true if the menu is flagged as open.
+	 * @return Returns true if the menu is flagged as open.
 	 */
-	bool isOpen() const;
+	bool isOpen() const {
+		return menuIsOpen;
+	}
 };
 
 #endif
