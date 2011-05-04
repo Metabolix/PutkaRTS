@@ -36,6 +36,9 @@ namespace GUI {
 
 	/** The current Widget. */
 	extern boost::shared_ptr<Widget::Widget> currentWidget;
+
+	/** The current desktop video mode. Hope it doesn't change. */
+	extern const sf::VideoMode desktopMode;
 }
 
 #endif
