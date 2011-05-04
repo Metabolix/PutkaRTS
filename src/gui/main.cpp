@@ -72,7 +72,7 @@ try {
 	}
 
 	std::string title = ProgramInfo::name + " (version " + ProgramInfo::version + ", GUI)";
-	sf::RenderWindow window(mode, title, style);
+	window.Create(mode, title, style);
 
 	window.SetFramerateLimit(GUI::config.getInt("window.framerate", 60));
 
