@@ -33,8 +33,8 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/format.hpp>
 
-GUI::Menu::SettingsMenu::SettingsMenu(sf::RenderWindow& window, boost::shared_ptr<Widget> _parent) :
-	Menu(_parent) {
+GUI::Menu::SettingsMenu::SettingsMenu(sf::RenderWindow& window, boost::shared_ptr<Widget> parent_) :
+	Menu(parent_) {
 
 	//Get current settings.
 	fullscreen = GUI::config.getBool("window.fullscreen", false);

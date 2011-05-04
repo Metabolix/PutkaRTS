@@ -60,9 +60,9 @@ protected:
 	/**
 	 * Set parent and flag the menu as open.
 	 *
-	 * @param _parent Pointer to the parent object. Control is returned to parent when menu is closed.
+	 * @param parent_ Pointer to the parent object. Control is returned to parent when menu is closed.
 	 */
-	void openMenu(boost::shared_ptr<Widget> _parent = boost::shared_ptr<Widget>());
+	void openMenu(boost::shared_ptr<Widget> parent_ = boost::shared_ptr<Widget>());
 
 	/**
 	 * Return control to parent if one is specified and flag the menu as closed.
@@ -73,9 +73,9 @@ public:
 	/**
 	 * Constructor.
 	 *
-	 * @param _parent Pointer to the parent object. Control is returned to parent when menu is closed.
+	 * @param parent_ Pointer to the parent object. Control is returned to parent when menu is closed.
 	 */
-	Menu(boost::shared_ptr<Widget> _parent = boost::shared_ptr<Widget>());
+	Menu(boost::shared_ptr<Widget> parent_ = boost::shared_ptr<Widget>());
 
 	/**
 	 * Draw the widget.
