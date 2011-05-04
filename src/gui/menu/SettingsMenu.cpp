@@ -32,6 +32,7 @@
 #include <boost/bind.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/format.hpp>
+#include <boost/lexical_cast.hpp>
 
 GUI::Menu::SettingsMenu::SettingsMenu(sf::RenderWindow& window, boost::shared_ptr<Widget> parent_) :
 	Menu(parent_) {
@@ -107,9 +108,6 @@ void GUI::Menu::SettingsMenu::setVideoMode(const GUI::Widget::List::Item& item) 
 		return;
 	}
 
-	int key = atoi(item.key.c_str());
-
-	if (key >= 0 && key < sf::VideoMode::GetModesCount()) {
-		videoMode = key;
-	}
+	// Non-empty keys are valid.
+	videoMode = boost::lexical_cast<std::size_t>(item.key.c_str());
 }
