@@ -23,6 +23,8 @@
 #define PUTKARTS_GUI_ImageCache_HPP
 
 #include <SFML/Graphics.hpp>
+#include <boost/shared_ptr.hpp>
+#include <boost/weak_ptr.hpp>
 #include <string>
 #include <map>
 
@@ -34,11 +36,14 @@ namespace GUI {
  * Class for loading and automatically caching images.
  */
 class GUI::ImageCache {
-	/** Type of the map used to keep track of loaded files. */
-	typedef std::map<std::string, std::string> FileMap;
+	/** Structure to hold an image and its reference count. */
+	struct Node;
 
 	/** List of currently loaded images and their file names. */
-	FileMap loaded;
+	static std::map<std::string, boost::weak_ptr<Node> > known;
+
+	/** List of currently loaded images and their file names. */
+	std::map<std::string, boost::shared_ptr<Node> > loaded;
 public:
 	/**
 	 * Fetch an image from the cache.

@@ -30,69 +30,67 @@
 /**
  * Structure to hold an image and its reference count.
  */
-struct ImageCacheNode {
+struct GUI::ImageCache::Node {
+	std::string file;
 	sf::Image image;
-	int references;
-};
-
-/** All the images that are currently loaded, listed by file name. */
-static std::map<std::string, ImageCacheNode> images;
-
-const sf::Image& GUI::ImageCache::get(const std::string& id, const std::string& file) {
-	if (loaded.find(id) != loaded.end()) {
-		if (loaded.find(id)->second != file) {
-			throw std::runtime_error("ImageCache already contains '" + id + "' (loaded from " + loaded.find(id)->second + "), can't load " + file + "!");
-		}
-		return images[file].image;
-	}
-
-	if (images.find(file) == images.end()) {
-		images[file].references = 0;
-		if (!images[file].image.LoadFromFile(file)) {
-			images.erase(file);
+	Node(std::string file_): file(file_) {
+		if (!image.LoadFromFile(file)) {
 			throw std::runtime_error(file + " could not be loaded!");
 		}
 	}
+};
 
-	loaded[id] = file;
-	images[file].references += 1;
+/** All the images that are currently loaded, listed by file name. */
+std::map<std::string, boost::weak_ptr<GUI::ImageCache::Node> > GUI::ImageCache::known;
 
-	return images[file].image;
+const sf::Image& GUI::ImageCache::get(const std::string& id, const std::string& file) {
+	// Check if the image is already loaded.
+	if (loaded.find(id) != loaded.end()) {
+		const Node& node = *loaded.find(id)->second;
+		if (node.file != file) {
+			throw std::runtime_error("ImageCache already contains '" + id + "' (loaded from " + node.file + "), can't load " + file + "!");
+		}
+		return node.image;
+	}
+
+	boost::shared_ptr<Node> node;
+
+	// Check if some other cache already has the image.
+	if (known.find(file) != known.end()) {
+		node = known.find(file)->second.lock();
+	}
+
+	// Load the image and store a weak reference.
+	if (!node) {
+		node.reset(new Node(file));
+		known[file] = node;
+	}
+	loaded[id] = node;
+
+	return node->image;
 }
 
 const sf::Image& GUI::ImageCache::get(const std::string& fileOrId) {
 	if (loaded.find(fileOrId) != loaded.end()) {
-		const ImageCache& tmp = *this;
-		return tmp.get(fileOrId);
+		return loaded.find(fileOrId)->second->image;
 	}
 	return get(fileOrId, fileOrId);
 }
 
 const sf::Image& GUI::ImageCache::get(const std::string& id) const {
-	if (loaded.find(id) == loaded.end()) {
-		throw std::runtime_error("ImageCache does not contain '" + id + "'!");
+	if (loaded.find(id) != loaded.end()) {
+		return loaded.find(id)->second->image;
 	}
-	return images[loaded.find(id)->second].image;
+	throw std::runtime_error("ImageCache does not contain '" + id + "'!");
 }
 
 void GUI::ImageCache::clear() {
-	for (FileMap::iterator i = loaded.begin(); i != loaded.end(); ++i) {
-		images[i->second].references -= 1;
-		if (!images[i->second].references) {
-			images.erase(i->second);
-		}
-	}
 	loaded.clear();
 }
 
 GUI::ImageCache& GUI::ImageCache::operator = (const ImageCache& other) {
-	if (this == &other) {
-		return *this;
-	}
-	clear();
-	loaded = other.loaded;
-	for (FileMap::iterator i = loaded.begin(); i != loaded.end(); ++i) {
-		images[i->second].references += 1;
+	if (this != &other) {
+		loaded = other.loaded;
 	}
 	return *this;
 }
