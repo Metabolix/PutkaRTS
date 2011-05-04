@@ -46,6 +46,7 @@ GUI::GameHandler::GameHandler(std::auto_ptr<GameConnection> connection_, sf::Ren
 	resetGameView(window, true);
 
 	insert(new GUI::Widget::Button("X", window.GetWidth() - 24, 0, 24, 24, boost::bind(&GUI::GameHandler::exit, this)));
+	insert(new GUI::Widget::Button("S", window.GetWidth() - 48, 0, 24, 24, boost::bind(&GUI::GameHandler::openSettingsMenu, this, boost::ref(window))));
 }
 
 void GUI::GameHandler::loadMapData() {
@@ -94,6 +95,13 @@ void GUI::GameHandler::exit() {
 }
 
 bool GUI::GameHandler::handleEvent(const sf::Event& e, const sf::RenderWindow& window) {
+	if (settingsMenu) {
+		bool ret = settingsMenu->handleEvent(e, window);
+		if (!settingsMenu->isOpen()) {
+			settingsMenu.reset();
+		}
+		return ret;
+	}
 	if (e.Type == sf::Event::KeyPressed && e.Key.Code == sf::Key::Escape) {
 		exit();
 		return true;
@@ -122,13 +130,23 @@ bool GUI::GameHandler::handleEvent(const sf::Event& e, const sf::RenderWindow& w
 void GUI::GameHandler::draw(sf::RenderWindow& window) {
 	// FIXME: Maybe add Widget::update or something for the logic.
 	connection->runUntilNow();
-	handleScrolling(window);
+	bool gameActive = !settingsMenu;
+
+	if (gameActive) {
+		handleScrolling(window);
+	}
 
 	window.Clear();
-	window.SetView(gameView);
-	drawGame(window);
-	window.SetView(guiView);
-	Container::draw(window);
+	if (gameActive) {
+		window.SetView(gameView);
+		drawGame(window);
+		window.SetView(guiView);
+		Container::draw(window);
+	}
+	if (settingsMenu) {
+		settingsMenu->draw(window);
+	}
+
 	window.Display();
 }
 
@@ -235,4 +253,8 @@ void GUI::GameHandler::resetGameView(sf::RenderWindow& window, bool resetLocatio
 	gameView = window.GetDefaultView();
 	gameView.SetCenter(location);
 	gameView.Zoom(tileSize);
+}
+
+void GUI::GameHandler::openSettingsMenu(sf::RenderWindow& window) {
+	settingsMenu.reset(new Menu::SettingsMenu(window));
 }

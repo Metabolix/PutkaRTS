@@ -27,9 +27,11 @@
 
 #include <memory>
 #include <SFML/Graphics.hpp>
+#include <boost/shared_ptr.hpp>
 
 #include "gui/widget/Container.hpp"
 #include "gui/graphics/ImageCache.hpp"
+#include "gui/menu/SettingsMenu.hpp"
 
 namespace GUI {
 	class GameHandler;
@@ -62,6 +64,9 @@ class GUI::GameHandler: public Widget::Container {
 
 	/** Used to break the main loop from within member functions. */
 	bool gameClosed;
+
+	/** The settings menu, if opened. */
+	boost::shared_ptr<Menu::SettingsMenu> settingsMenu;
 public:
 	/**
 	 * Constructor.
@@ -118,6 +123,13 @@ public:
 	 * @param resetLocation Reset location as well, or reset only zoom?
 	 */
 	void resetGameView(sf::RenderWindow& window, bool resetLocation);
+
+	/**
+	 * Open the settings menu.
+	 *
+	 * @param window The window of the event.
+	 */
+	void openSettingsMenu(sf::RenderWindow& window);
 };
 
 #endif
