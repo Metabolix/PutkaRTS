@@ -88,16 +88,16 @@ void GUI::Widget::DropDown::draw(sf::RenderWindow& window) {
 			Widget::position.Top + bw,
 			Widget::position.Right - bw,
 			Widget::position.Bottom - bw,
-			sf::Color(0x55, 0x44, 0x33),
+			Color::background,
 			bw,
-			sf::Color(0, 0, 0)
+			Color::border
 		)
 	);
 
 	sf::String tmpText("|");
 	float scale = (Widget::position.GetHeight() - 2 * bw) / tmpText.GetRect().GetHeight() * 0.95f;
 	tmpText.Scale(scale, scale);
-	tmpText.SetColor(sf::Color(0, 0, 0));
+	tmpText.SetColor(Color::text);
 
 	tmpText.SetText(dropList.getSelectedText());
 	tmpText.SetPosition(Widget::position.Left + 2 * bw, Widget::position.Top + bw);

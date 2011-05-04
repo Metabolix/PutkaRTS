@@ -59,14 +59,12 @@ void GUI::Widget::Checkbox::draw(sf::RenderWindow& window) {
 	float scale = (position.GetHeight() - 2 * bw) / label.GetRect().GetHeight() * 1.25f;
 	label.Scale(scale, scale);
 
-	sf::Color background(0x55, 0x44, 0x33);
-
-	window.Draw(sf::Shape::Rectangle(position.Left + bw, position.Top + bw, position.Right - bw, position.Bottom - bw, background, bw, sf::Color::Black));
+	window.Draw(sf::Shape::Rectangle(position.Left + bw, position.Top + bw, position.Right - bw, position.Bottom - bw, Color::background, bw, Color::border));
 	window.Draw(label);
 
 	if (isChecked) {
-		window.Draw(sf::Shape::Line(position.Left + 2 * bw, position.Top + 2 * bw, position.Right - 2 * bw, position.Bottom - 2 * bw, bw, sf::Color::Black));
-		window.Draw(sf::Shape::Line(position.Right - 2 * bw, position.Top + 2 * bw, position.Left + 2 * bw, position.Bottom - 2 * bw, bw, sf::Color::Black));
+		window.Draw(sf::Shape::Line(position.Left + 2 * bw, position.Top + 2 * bw, position.Right - 2 * bw, position.Bottom - 2 * bw, bw, Color::text));
+		window.Draw(sf::Shape::Line(position.Right - 2 * bw, position.Top + 2 * bw, position.Left + 2 * bw, position.Bottom - 2 * bw, bw, Color::text));
 	}
 }
 

@@ -96,6 +96,7 @@ void GUI::Widget::List::draw(sf::RenderWindow& window) {
 	sf::String tmpText("|");
 	float scale = lineHeight / tmpText.GetRect().GetHeight() * 0.95f;
 	tmpText.Scale(scale, scale);
+	tmpText.SetColor(Color::text);
 
 	window.Draw(
 		sf::Shape::Rectangle(
@@ -103,9 +104,9 @@ void GUI::Widget::List::draw(sf::RenderWindow& window) {
 			position.Top + borderWidth,
 			position.Right - borderWidth,
 			position.Bottom - borderWidth,
-			sf::Color(0x55, 0x44, 0x33),
+			Color::background,
 			borderWidth,
-			sf::Color(0, 0, 0)
+			Color::border
 		)
 	);
 
@@ -134,29 +135,25 @@ void GUI::Widget::List::draw(sf::RenderWindow& window) {
 		tmpText.SetText(i->text);
 
 		if (selected == i) {
-			tmpText.SetColor(sf::Color(0xFF, 0xFF, 0xFF));
 			window.Draw(
 				sf::Shape::Rectangle(
 					position.Left + borderWidth,
 					position.Top + borderWidth + (counter - scrollPosition) * lineHeight,
 					position.Right - borderWidth,
 					position.Top + borderWidth + (counter + 1 - scrollPosition) * lineHeight,
-					sf::Color(0, 162, 232)
+					Color::backgroundHover
 				)
 			);
 		} else if (counter == hoverIndex) {
-			tmpText.SetColor(sf::Color(0, 0, 0));
 			window.Draw(
 				sf::Shape::Rectangle(
 					position.Left + borderWidth,
 					position.Top + borderWidth + (counter - scrollPosition) * lineHeight,
 					position.Right - borderWidth,
 					position.Top + borderWidth + (counter + 1 - scrollPosition) * lineHeight,
-					sf::Color(0x75, 0x64, 0x53)
+					Color::backgroundHover
 				)
 			);
-		} else {
-			tmpText.SetColor(sf::Color(0, 0, 0));
 		}
 
 		tmpText.SetPosition(position.Left + 2 * borderWidth, position.Top + borderWidth + (counter - scrollPosition) * lineHeight);

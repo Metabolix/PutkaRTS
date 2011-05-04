@@ -28,6 +28,12 @@ namespace GUI {
 	namespace Widget {
 		class Widget;
 		class Container;
+		namespace Color {
+			extern const sf::Color background;
+			extern const sf::Color backgroundHover;
+			extern const sf::Color border;
+			extern const sf::Color text;
+		}
 	}
 }
 

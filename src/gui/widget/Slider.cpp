@@ -75,7 +75,7 @@ void GUI::Widget::Slider::draw(sf::RenderWindow& window) {
 	sf::Vector2f mouse(window.ConvertCoords(input.GetMouseX(), input.GetMouseY()));
 
 	//bg
-	window.Draw(sf::Shape::Rectangle(position.Left, position.Top, position.Right, position.Bottom, sf::Color(0x55, 0x44, 0x33)));
+	window.Draw(sf::Shape::Rectangle(position.Left, position.Top, position.Right, position.Bottom, Color::background));
 
 	if (vertical) {
 		window.Draw(
@@ -84,9 +84,9 @@ void GUI::Widget::Slider::draw(sf::RenderWindow& window) {
 				position.Top + sliderPosition + bw,
 				position.Right - bw,
 				position.Top + sliderPosition + sliderLength - bw,
-				sf::Color(0xcc, 0x99, 0x66),
+				Color::backgroundHover,
 				bw,
-				sf::Color::Black
+				Color::border
 			)
 		);
 	} else {
@@ -96,9 +96,9 @@ void GUI::Widget::Slider::draw(sf::RenderWindow& window) {
 				position.Top + bw,
 				position.Left + sliderPosition + sliderLength - bw,
 				position.Bottom - bw,
-				sf::Color(0xcc, 0x99, 0x66),
+				Color::backgroundHover,
 				bw,
-				sf::Color::Black
+				Color::border
 			)
 		);
 	}

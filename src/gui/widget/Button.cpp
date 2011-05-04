@@ -29,6 +29,7 @@ GUI::Widget::Button::Button(const std::string& text, float x, float y, float wid
 	action(callback) {
 	static sf::String maxHeightString("|");
 	label.SetCenter(label.GetRect().GetWidth() / 2, maxHeightString.GetRect().GetHeight() / 2);
+	label.SetColor(Color::text);
 }
 
 bool GUI::Widget::Button::handleEvent(const sf::Event& e, const sf::RenderWindow& window) {
@@ -57,12 +58,12 @@ void GUI::Widget::Button::draw(sf::RenderWindow& window) {
 	float scale = std::min((position.GetWidth() - 2 * bw) / labelRect.GetWidth(), (position.GetHeight() - 2 * bw) / labelRect.GetHeight()) * 0.85f;
 	label.Scale(scale, scale);
 
-	sf::Color background(0x55, 0x44, 0x33);
+	sf::Color background(Color::background);
 
 	if (position.Contains(mouse.x, mouse.y)) {
-		background = sf::Color(0xcc, 0x99, 0x66);
+		background = Color::backgroundHover;
 	}
 
-	window.Draw(sf::Shape::Rectangle(position.Left + bw, position.Top + bw, position.Right - bw, position.Bottom - bw, background, bw, sf::Color::Black));
+	window.Draw(sf::Shape::Rectangle(position.Left + bw, position.Top + bw, position.Right - bw, position.Bottom - bw, background, bw, Color::border));
 	window.Draw(label);
 }
