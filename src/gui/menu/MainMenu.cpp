@@ -36,7 +36,7 @@
 #include <boost/bind.hpp>
 
 GUI::Menu::MainMenu::MainMenu(sf::RenderWindow& window):
-	Menu(window) {
+	Menu() {
 	// Build the main menu GUI.
 	insert(new GUI::Widget::Button("New game", 200, 100, 240, 50, boost::bind(&GUI::Menu::MainMenu::startGame, this, boost::ref(window))));
 	insert(new GUI::Widget::Button("Settings", 250, 170, 140, 50, boost::bind(&GUI::Menu::MainMenu::gotoSettings, this, boost::ref(window))));

@@ -76,7 +76,7 @@ public:
 	 * @param window The window to use for input and rendering.
 	 * @param _parent Pointer to the parent object. Control is returned to parent when menu is closed.
 	 */
-	Menu(sf::RenderWindow& window, boost::shared_ptr<Widget> _parent = boost::shared_ptr<Widget>());
+	Menu(boost::shared_ptr<Widget> _parent = boost::shared_ptr<Widget>());
 
 	/**
 	 * Draw the widget.

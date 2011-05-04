@@ -29,7 +29,7 @@
 
 GUI::ImageCache GUI::Menu::Menu::images;
 
-GUI::Menu::Menu::Menu(sf::RenderWindow& window, boost::shared_ptr<Widget> _parent) {
+GUI::Menu::Menu::Menu(boost::shared_ptr<Widget> _parent) {
 	const sf::Image& logoImage(images.get(Path::findDataPath("graphics/logo.png")));
 	logoSprite.SetImage(logoImage);
 	logoSprite.SetCenter(logoImage.GetWidth() / 2, 0);
