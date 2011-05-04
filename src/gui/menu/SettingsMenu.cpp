@@ -93,6 +93,7 @@ void GUI::Menu::SettingsMenu::applyChanges(sf::RenderWindow& window) {
 
 	if (resize) {
 		window.SetSize(mode.Width, mode.Height);
+		window.GetDefaultView().SetFromRect(sf::FloatRect(0, 0, mode.Width, mode.Height));
 	}
 
 	GUI::config.save();
