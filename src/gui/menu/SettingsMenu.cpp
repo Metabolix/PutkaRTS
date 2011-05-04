@@ -77,20 +77,21 @@ GUI::Menu::SettingsMenu::SettingsMenu(sf::RenderWindow& window, boost::shared_pt
 void GUI::Menu::SettingsMenu::applyChanges(sf::RenderWindow& window) {
 	sf::VideoMode mode = sf::VideoMode::GetMode(videoMode);
 
-	bool resize = false;
+	if (!mode.IsValid()) {
+		fullscreen = false;
+	}
 
 	if (mode.Width != window.GetWidth() || mode.Height != window.GetHeight()) {
 		GUI::config.setInt("window.size.x", mode.Width);
 		GUI::config.setInt("window.size.y", mode.Height);
-		resize = true;
 	}
 
-	if (fullscreen != GUI::config.getBool("window.fullscreen", false)) {
+	if (fullscreen || GUI::config.getBool("window.fullscreen", false)) {
 		GUI::config.setBool("window.fullscreen", fullscreen);
-		resize = false;
+		GUI::createWindow();
 	}
 
-	if (resize) {
+	if (mode.Width != window.GetWidth() || mode.Height != window.GetHeight()) {
 		window.SetSize(mode.Width, mode.Height);
 		window.GetDefaultView().SetFromRect(sf::FloatRect(0, 0, mode.Width, mode.Height));
 	}
