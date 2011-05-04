@@ -42,7 +42,7 @@ namespace GUI {
 class GUI::Menu::SettingsMenu: public Menu {
 
 	/** Index for the selected video mode. */
-	int videoMode;
+	std::size_t videoMode;
 
 	/** Selected fullscreen state. */
 	bool fullscreen;

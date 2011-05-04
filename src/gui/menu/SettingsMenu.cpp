@@ -38,8 +38,6 @@ GUI::Menu::SettingsMenu::SettingsMenu(sf::RenderWindow& window, boost::shared_pt
 
 	//Get current settings.
 	fullscreen = GUI::config.getBool("window.fullscreen", false);
-	int res_x = GUI::config.getInt("window.size.x", 800);
-	int res_y = GUI::config.getInt("window.size.y", 600);
 
 	//List video modes.
 	boost::shared_ptr<GUI::Widget::DropDown> videoModeList(new GUI::Widget::DropDown(100, 150, 200, 25, 200, boost::bind(&GUI::Menu::SettingsMenu::setVideoMode, this, _1)));
@@ -62,7 +60,7 @@ GUI::Menu::SettingsMenu::SettingsMenu(sf::RenderWindow& window, boost::shared_pt
 
 		videoModeList->insertItem(key.str(), text.str());
 
-		if (mode.Width == res_x && mode.Height == res_y) {
+		if (mode.Width == window.GetWidth() && mode.Height == window.GetHeight()) {
 			videoModeList->selectItem(key.str());
 			videoMode = atoi(key.str().c_str());
 		}
@@ -78,9 +76,9 @@ GUI::Menu::SettingsMenu::SettingsMenu(sf::RenderWindow& window, boost::shared_pt
 void GUI::Menu::SettingsMenu::applyChanges(sf::RenderWindow& window) {
 	sf::VideoMode mode = sf::VideoMode::GetMode(videoMode);
 
-	bool resize;
+	bool resize = false;
 
-	if (mode.Width != GUI::config.getInt("window.size.x", 800) || mode.Height != GUI::config.getInt("window.size.y", 600)) {
+	if (mode.Width != window.GetWidth() || mode.Height != window.GetHeight()) {
 		GUI::config.setInt("window.size.x", mode.Width);
 		GUI::config.setInt("window.size.y", mode.Height);
 		resize = true;
