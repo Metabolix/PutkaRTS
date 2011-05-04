@@ -26,6 +26,7 @@
 #include "gui/widget/Widget.hpp"
 
 #include <boost/shared_ptr.hpp>
+#include <SFML/Graphics.hpp>
 
 /**
  * Namespace for everything that is specific to the graphical program.
@@ -36,6 +37,9 @@ namespace GUI {
 
 	/** The current Widget. */
 	extern boost::shared_ptr<Widget::Widget> currentWidget;
+
+	/** The window for the game */
+	extern sf::RenderWindow window;
 
 	/** The current desktop video mode. Hope it doesn't change. */
 	extern const sf::VideoMode desktopMode;

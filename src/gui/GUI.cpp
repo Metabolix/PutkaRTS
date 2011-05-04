@@ -25,4 +25,6 @@ Configuration GUI::config;
 
 boost::shared_ptr<GUI::Widget::Widget> GUI::currentWidget;
 
+sf::RenderWindow GUI::window;
+
 const sf::VideoMode GUI::desktopMode = sf::VideoMode::GetDesktopMode();
