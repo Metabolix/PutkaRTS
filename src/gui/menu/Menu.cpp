@@ -29,16 +29,23 @@
 
 GUI::ImageCache GUI::Menu::Menu::images;
 
-GUI::Menu::Menu::Menu(sf::RenderWindow& window, boost::shared_ptr<Widget> _parent) :
-	parent(_parent) {
+GUI::Menu::Menu::Menu(sf::RenderWindow& window, boost::shared_ptr<Widget> _parent) {
 	const sf::Image& logoImage(images.get(Path::findDataPath("graphics/logo.png")));
 	logoSprite.SetImage(logoImage);
 	logoSprite.SetCenter(logoImage.GetWidth() / 2, 0);
 	logoSprite.SetPosition(320, 1);
+
+	openMenu(_parent);
+}
+
+void GUI::Menu::Menu::openMenu(boost::shared_ptr<Widget> _parent) {
+	parent = _parent;
 }
 
 void GUI::Menu::Menu::closeMenu() {
-	GUI::currentWidget = parent;
+	if (currentWidget.get() == this) {
+		GUI::currentWidget = parent;
+	}
 }
 
 void GUI::Menu::Menu::draw(sf::RenderWindow& window) {

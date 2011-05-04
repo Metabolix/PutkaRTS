@@ -55,6 +55,13 @@ protected:
 	static ImageCache images;
 
 	/**
+	 * Set parent.
+	 *
+	 * @param _parent Pointer to the parent object. Control is returned to parent when menu is closed.
+	 */
+	void openMenu(boost::shared_ptr<Widget> _parent = boost::shared_ptr<Widget>());
+
+	/**
 	 * Return control to parent if one is specified.
 	 */
 	void closeMenu();
