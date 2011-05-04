@@ -20,6 +20,7 @@
  */
 
 #include "GUI.hpp"
+#include "ProgramInfo.hpp"
 
 Configuration GUI::config;
 
@@ -28,3 +29,27 @@ boost::shared_ptr<GUI::Widget::Widget> GUI::currentWidget;
 sf::RenderWindow GUI::window;
 
 const sf::VideoMode GUI::desktopMode = sf::VideoMode::GetDesktopMode();
+
+void GUI::createWindow() {
+	sf::VideoMode mode = sf::VideoMode(
+		GUI::config.getInt("window.size.x", 800),
+		GUI::config.getInt("window.size.y", 600)
+	);
+	unsigned long style = sf::Style::Close;
+
+	if (GUI::config.getBool("window.fullscreen", false)) {
+		style = sf::Style::Fullscreen;
+		if (!mode.IsValid()) {
+			mode = desktopMode;
+		}
+	} else if (mode.Width > desktopMode.Width || mode.Height > desktopMode.Height) {
+		//Scale down the window size if larger than desktop resolution.
+		float scale = std::max((float)mode.Width / desktopMode.Width, (float)mode.Height / desktopMode.Height);
+		mode.Width /= scale;
+		mode.Height /= scale;
+	}
+
+	std::string title = ProgramInfo::name + " (version " + ProgramInfo::version + ", GUI)";
+	window.Create(mode, title, style);
+	window.SetFramerateLimit(GUI::config.getInt("window.framerate", 60));
+}

@@ -43,6 +43,11 @@ namespace GUI {
 
 	/** The current desktop video mode. Hope it doesn't change. */
 	extern const sf::VideoMode desktopMode;
+
+	/**
+	 * Create (or recreate) the main window.
+	 */
+	void createWindow();
 }
 
 #endif
