@@ -39,10 +39,12 @@ GUI::Menu::Menu::Menu(sf::RenderWindow& window, boost::shared_ptr<Widget> _paren
 }
 
 void GUI::Menu::Menu::openMenu(boost::shared_ptr<Widget> _parent) {
+	menuIsOpen = true;
 	parent = _parent;
 }
 
 void GUI::Menu::Menu::closeMenu() {
+	menuIsOpen = false;
 	if (currentWidget.get() == this) {
 		GUI::currentWidget = parent;
 	}
@@ -59,4 +61,8 @@ void GUI::Menu::Menu::draw(sf::RenderWindow& window) {
 	Container::draw(window);
 	window.Draw(logoSprite);
 	window.Display();
+}
+
+bool GUI::Menu::Menu::isOpen() const {
+	return menuIsOpen;
 }

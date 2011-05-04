@@ -50,19 +50,22 @@ class GUI::Menu::Menu: public Widget::Container {
 	/** Menu top logo. */
 	sf::Sprite logoSprite;
 
+	/** Keeps track whether the menu is active or not. */
+	bool menuIsOpen;
+
 protected:
 	/** Menu images. */
 	static ImageCache images;
 
 	/**
-	 * Set parent.
+	 * Set parent and flag the menu as open.
 	 *
 	 * @param _parent Pointer to the parent object. Control is returned to parent when menu is closed.
 	 */
 	void openMenu(boost::shared_ptr<Widget> _parent = boost::shared_ptr<Widget>());
 
 	/**
-	 * Return control to parent if one is specified.
+	 * Return control to parent if one is specified and flag the menu as closed.
 	 */
 	void closeMenu();
 
@@ -81,6 +84,13 @@ public:
 	 * @param window The window to draw to.
 	 */
 	void draw(sf::RenderWindow& window);
+
+	/*
+	 * Is the menu open?
+	 *
+	 * @ return Returns true if the menu is flagged as open.
+	 */
+	bool isOpen() const;
 };
 
 #endif
