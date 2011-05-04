@@ -50,7 +50,7 @@ GUI::Menu::SettingsMenu::SettingsMenu(sf::RenderWindow& window, boost::shared_pt
 			continue;
 		}
 
-		if (mode.Width > sf::VideoMode::GetDesktopMode().Width || mode.Height > sf::VideoMode::GetDesktopMode().Height) {
+		if (mode.Width > desktopMode.Width || mode.Height > desktopMode.Height) {
 			continue;
 		}
 

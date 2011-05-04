@@ -62,11 +62,11 @@ try {
 	if (GUI::config.getBool("window.fullscreen", false)) {
 		style = sf::Style::Fullscreen;
 		if (!mode.IsValid()) {
-			mode = sf::VideoMode::GetDesktopMode();
+			mode = desktopMode;
 		}
-	} else if (mode.Width > sf::VideoMode::GetDesktopMode().Width || mode.Height > sf::VideoMode::GetDesktopMode().Height) {
+	} else if (mode.Width > desktopMode.Width || mode.Height > desktopMode.Height) {
 		//Scale down the window size if larger than desktop resolution.
-		float scale = std::max((float)mode.Width / sf::VideoMode::GetDesktopMode().Width, (float)mode.Height / sf::VideoMode::GetDesktopMode().Height);
+		float scale = std::max((float)mode.Width / desktopMode.Width, (float)mode.Height / desktopMode.Height);
 		mode.Width /= scale;
 		mode.Height /= scale;
 	}
