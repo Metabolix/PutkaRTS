@@ -25,9 +25,7 @@
 #include <boost/bind.hpp>
 
 GUI::Widget::Container::~Container() {
-	while (!objects.empty()) {
-		erase(*objects.begin());
-	}
+	clear();
 }
 
 void GUI::Widget::Container::insert(const boost::shared_ptr<Widget>& object) {
