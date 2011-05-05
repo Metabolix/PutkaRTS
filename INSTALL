@@ -26,7 +26,7 @@ a compatible make utility installed, the project can be built by
 typing the command 'make' on the command line in the PutkaRTS directory.
 If everything is fine, this will build two binaries:
 	bin/PutkaRTS (GUI client/server)
-	bin/PutkaRTSd (CLI server)
+	bin/PutkaRTS-cli (CLI server)
 
 If the make utility is missing, the project can be built manually by
 compiling the cpp files and linking them together as follows:
