@@ -61,3 +61,9 @@ void GUI::Widget::Container::activate(const Widget * widget) {
 		}
 	}
 }
+
+void GUI::Widget::Container::clear() {
+	while (!objects.empty()) {
+		erase(*objects.begin());
+	}
+}

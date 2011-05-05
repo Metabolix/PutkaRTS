@@ -94,6 +94,11 @@ public:
 	 * @param widget Pointer ot the widget to be moved. Used only to identify the widget.
 	 */
 	virtual void activate(const Widget* widget);
+
+	/**
+	 * Erase all objects.
+	 */
+	virtual void clear();
 };
 
 #endif
