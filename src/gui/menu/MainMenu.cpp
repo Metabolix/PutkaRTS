@@ -31,9 +31,9 @@
 #include "game/LocalGameConnection.hpp"
 #include "game/Game.hpp"
 
-#include <memory>
 #include <algorithm>
 #include <boost/bind.hpp>
+#include <boost/shared_ptr.hpp>
 
 GUI::Menu::MainMenu::MainMenu(sf::RenderWindow& window):
 	Menu() {
@@ -44,9 +44,9 @@ GUI::Menu::MainMenu::MainMenu(sf::RenderWindow& window):
 }
 
 void GUI::Menu::MainMenu::startGame(sf::RenderWindow& window) {
-	std::auto_ptr<Map> map(new Map("maps/testmap"));
-	std::auto_ptr<Game> game(new Game(map));
-	std::auto_ptr<GameConnection> connection(new LocalGameConnection(game));
+	boost::shared_ptr<Map> map(new Map("maps/testmap"));
+	boost::shared_ptr<Game> game(new Game(map));
+	boost::shared_ptr<GameConnection> connection(new LocalGameConnection(game));
 	GUI::currentWidget.reset(new GameHandler(connection, window));
 }
 

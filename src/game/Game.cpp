@@ -23,7 +23,7 @@
 
 #include <stdexcept>
 
-Game::Game(std::auto_ptr<Map> map_):
+Game::Game(boost::shared_ptr<Map> map_):
 	map(map_) {
 	if (!map.get()) {
 		throw std::logic_error("Game::Game: Map is NULL!");

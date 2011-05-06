@@ -26,7 +26,7 @@
 
 #include <string>
 #include <map>
-#include <memory>
+#include <boost/shared_ptr.hpp>
 
 #include "util/Array2D.hpp"
 #include "util/Configuration.hpp"
@@ -78,7 +78,7 @@ private:
 	/**
 	 * Map's tech tree.
 	 */
-	std::auto_ptr<World::TechTree> techTree;
+	boost::shared_ptr<World::TechTree> techTree;
 
 	/**
 	 * Load map info (name and such).
@@ -118,7 +118,7 @@ public:
 	 */
 	Map(const std::string& directory) {
 		load(directory);
-		techTree = std::auto_ptr<World::TechTree>(new World::TechTree("dummy"));
+		techTree = boost::shared_ptr<World::TechTree>(new World::TechTree("dummy"));
 	}
 
 	/**

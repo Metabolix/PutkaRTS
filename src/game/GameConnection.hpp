@@ -24,7 +24,7 @@
 
 #include <string>
 #include <stdexcept>
-#include <memory>
+#include <boost/shared_ptr.hpp>
 
 #include "Game.hpp"
 #include "Message.hpp"
@@ -35,14 +35,14 @@
 class GameConnection {
 protected:
 	/** The current game. */
-	std::auto_ptr<Game> game;
+	boost::shared_ptr<Game> game;
 public:
 	/**
 	 * Constructor.
 	 *
 	 * @param game_ The current game instance.
 	 */
-	GameConnection(std::auto_ptr<Game> game_): game(game_) {
+	GameConnection(boost::shared_ptr<Game> game_): game(game_) {
 		if (!game.get()) {
 			throw std::logic_error("GameConnection: game is NULL!");
 		}

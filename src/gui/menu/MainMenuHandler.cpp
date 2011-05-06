@@ -29,9 +29,9 @@
 
 #include "util/Path.hpp"
 
-#include <memory>
 #include <algorithm>
 #include <boost/bind.hpp>
+#include <boost/shared_ptr.hpp>
 
 GUI::MainMenuHandler::MainMenuHandler(sf::RenderWindow& window) {
 	// Put the logo at the top of the window.
@@ -46,9 +46,9 @@ GUI::MainMenuHandler::MainMenuHandler(sf::RenderWindow& window) {
 }
 
 void GUI::MainMenuHandler::startGame(sf::RenderWindow& window) {
-	std::auto_ptr<Map> map(new Map("maps/testmap"));
-	std::auto_ptr<Game> game(new Game(map));
-	std::auto_ptr<GameConnection> connection(new LocalGameConnection(game));
+	boost::shared_ptr<Map> map(new Map("maps/testmap"));
+	boost::shared_ptr<Game> game(new Game(map));
+	boost::shared_ptr<GameConnection> connection(new LocalGameConnection(game));
 	GUI::currentWidget.reset(new GameHandler(connection, window));
 }
 

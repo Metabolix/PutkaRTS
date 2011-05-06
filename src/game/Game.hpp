@@ -29,7 +29,7 @@
 
 #include <queue>
 #include <map>
-#include <memory>
+#include <boost/shared_ptr.hpp>
 
 #include <boost/function.hpp>
 
@@ -54,7 +54,7 @@ private:
 	std::priority_queue<Message> messages;
 
 	/** The map on which the game is played. */
-	std::auto_ptr<Map> map;
+	boost::shared_ptr<Map> map;
 
 	/** Objects in the game */
 	ObjectContainerType objects;
@@ -87,7 +87,7 @@ public:
 	 *
 	 * @param map The map.
 	 */
-	Game(std::auto_ptr<Map> map);
+	Game(boost::shared_ptr<Map> map);
 
 	/**
 	 * Get the map.

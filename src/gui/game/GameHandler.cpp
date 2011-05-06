@@ -37,7 +37,7 @@
 
 const int GUI::GameHandler::tileSize = 32;
 
-GUI::GameHandler::GameHandler(std::auto_ptr<GameConnection> connection_, sf::RenderWindow& window):
+GUI::GameHandler::GameHandler(boost::shared_ptr<GameConnection> connection_, sf::RenderWindow& window):
 	guiView(window.GetDefaultView()),
 	connection(connection_),
 	mouseDrag(false) {

@@ -36,7 +36,7 @@ public:
 	/**
 	 * Constructor.
 	 */
-	RemoteGameConnection(std::auto_ptr<Game> game_):
+	RemoteGameConnection(boost::shared_ptr<Game> game_):
 		GameConnection(game_) {
 	}
 

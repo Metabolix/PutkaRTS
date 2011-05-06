@@ -37,7 +37,7 @@ public:
 	/**
 	 * Constructor.
 	 */
-	LocalGameConnection(std::auto_ptr<Game> game_):
+	LocalGameConnection(boost::shared_ptr<Game> game_):
 		GameConnection(game_) {
 	}
 

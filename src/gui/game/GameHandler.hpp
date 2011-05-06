@@ -25,7 +25,6 @@
 
 #include "game/GameConnection.hpp"
 
-#include <memory>
 #include <SFML/Graphics.hpp>
 #include <boost/shared_ptr.hpp>
 
@@ -48,7 +47,7 @@ class GUI::GameHandler: public Widget::Container {
 	ImageCache images;
 
 	/** The game connection to use. */
-	std::auto_ptr<GameConnection> connection;
+	boost::shared_ptr<GameConnection> connection;
 
 	/** Camera position and zoom */
 	sf::View gameView;
@@ -74,7 +73,7 @@ public:
 	 * @param connection The game connection to use.
 	 * @param window The window to use for input and rendering.
 	 */
-	GameHandler(std::auto_ptr<GameConnection> connection, sf::RenderWindow& window);
+	GameHandler(boost::shared_ptr<GameConnection> connection, sf::RenderWindow& window);
 
 	/**
 	 * Load map graphics etc.
