@@ -73,6 +73,7 @@ try {
 				continue;
 			}
 		} else {
+			widget->updateState(window);
 			widget->draw(window);
 		}
 	}
