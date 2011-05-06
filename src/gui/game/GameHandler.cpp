@@ -130,24 +130,24 @@ bool GUI::GameHandler::handleEvent(const sf::Event& e, const sf::RenderWindow& w
 	return false;
 }
 
-void GUI::GameHandler::draw(sf::RenderWindow& window) {
-	// FIXME: Maybe add Widget::update or something for the logic.
+void GUI::GameHandler::updateState(sf::RenderWindow& window) {
 	connection->runUntilNow();
-	bool gameActive = !settingsMenu;
 
-	if (gameActive) {
+	if (!settingsMenu) {
 		gameView.update(window);
 	}
+}
 
+void GUI::GameHandler::draw(sf::RenderWindow& window) {
 	window.Clear();
-	if (gameActive) {
+
+	if (settingsMenu) {
+		settingsMenu->draw(window);
+	} else {
 		window.SetView(gameView);
 		drawGame(window);
 		window.SetView(guiView);
 		Container::draw(window);
-	}
-	if (settingsMenu) {
-		settingsMenu->draw(window);
 	}
 
 	window.Display();

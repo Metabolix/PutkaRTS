@@ -94,6 +94,13 @@ public:
 	bool handleEvent(const sf::Event& e, const sf::RenderWindow& window);
 
 	/**
+	 * Update the widget state, if it needs to change without events.
+	 *
+	 * @param window The current window.
+	 */
+	void updateState(sf::RenderWindow& window);
+
+	/**
 	 * Draw the widget.
 	 *
 	 * @param window The window to draw to.
