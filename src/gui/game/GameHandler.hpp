@@ -31,6 +31,7 @@
 #include "gui/widget/Container.hpp"
 #include "gui/graphics/ImageCache.hpp"
 #include "gui/menu/SettingsMenu.hpp"
+#include "gui/game/ScrollingView.hpp"
 
 namespace GUI {
 	class GameHandler;
@@ -50,16 +51,7 @@ class GUI::GameHandler: public Widget::Container {
 	boost::shared_ptr<GameConnection> connection;
 
 	/** Camera position and zoom */
-	sf::View gameView;
-
-	/** Size of one map tile */
-	static const int tileSize;
-
-	/** Is map being dragged with mouse?*/
-	bool mouseDrag;
-
-	/** Window coordinates for drag origin*/
-	sf::Vector2f dragOrigin;
+	GUI::ScrollingView gameView;
 
 	/** Used to break the main loop from within member functions. */
 	bool gameClosed;
@@ -107,21 +99,6 @@ public:
 	 * @param window The window to draw to.
 	 */
 	void draw(sf::RenderWindow& window);
-
-	/**
-	 * Handle map scrolling calculations.
-	 *
-	 * @param window The window to use for input and rendering.
-	 */
-	void handleScrolling(sf::RenderWindow& window);
-
-	/**
-	 * Reset view used for map rendering
-	 *
-	 * @param window The window to use for view data.
-	 * @param resetLocation Reset location as well, or reset only zoom?
-	 */
-	void resetGameView(sf::RenderWindow& window, bool resetLocation);
 
 	/**
 	 * Open the settings menu.
