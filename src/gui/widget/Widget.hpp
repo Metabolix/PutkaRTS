@@ -92,6 +92,15 @@ public:
 	}
 
 	/**
+	 * Update the widget state, if it needs to change without events.
+	 *
+	 * @param window The current window.
+	 */
+	virtual void updateState(sf::RenderWindow& window) {
+		return;
+	}
+
+	/**
 	 * Draw the widget.
 	 *
 	 * @param window The window to draw to.

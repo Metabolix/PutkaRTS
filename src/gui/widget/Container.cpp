@@ -49,6 +49,10 @@ bool GUI::Widget::Container::handleEvent(const sf::Event& event, const sf::Rende
 	return std::find_if(objects.begin(), objects.end(), boost::bind(&Widget::handleEvent, _1, boost::cref(event), boost::cref(window))) != objects.end();
 }
 
+void GUI::Widget::Container::updateState(sf::RenderWindow& window) {
+	std::for_each(objects.rbegin(), objects.rend(), boost::bind(&Widget::updateState, _1, boost::ref(window)));
+}
+
 void GUI::Widget::Container::activate(const Widget * widget) {
 	for (WidgetListType::iterator i = objects.begin(); i != objects.end(); ++i) {
 		if (i->get() == widget) {

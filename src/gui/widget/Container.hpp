@@ -89,6 +89,13 @@ public:
 	virtual bool handleEvent(const sf::Event& event, const sf::RenderWindow& window);
 
 	/**
+	 * Update the objects in this container.
+	 *
+	 * @param window The current window.
+	 */
+	virtual void updateState(sf::RenderWindow& window);
+
+	/**
 	 * Move widget to the front of the list. First widget receives events first and is drawn last.
 	 *
 	 * @param widget Pointer ot the widget to be moved. Used only to identify the widget.
