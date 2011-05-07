@@ -63,8 +63,9 @@ public:
 	 * @param thickness Thickness of the slider.
 	 * @param vertical Orientation of the slider. Horizontal by default.
 	 * @param callback The action to take when moved.
+	 * @param initialValue Initial value for the slider. 0 by default.
 	 */
-	Slider(float x, float y, float length, float thickness, bool vertical = false, CallbackType callback = NULL);
+	Slider(float x, float y, float length, float thickness, bool vertical = false, CallbackType callback = NULL, float initialValue = 0.0f);
 
 	/**
 	 * Handle events.

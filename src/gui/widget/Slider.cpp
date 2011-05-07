@@ -24,13 +24,14 @@
 
 #include <algorithm>
 
-GUI::Widget::Slider::Slider(float x, float y, float length, float thickness, bool _vertical, CallbackType callback):
+GUI::Widget::Slider::Slider(float x, float y, float length, float thickness, bool _vertical, CallbackType callback, float initialValue):
 	Widget(x, y, (_vertical ? thickness : length), (_vertical ? length : thickness)),
 	action(callback),
 	vertical(_vertical) {
 	sliderPosition = 0;
 	sliderLength = length / 5;
 	isDragged = false;
+	setScrollPosition(initialValue);
 }
 
 bool GUI::Widget::Slider::handleEvent(const sf::Event& e, const sf::RenderWindow& window) {
