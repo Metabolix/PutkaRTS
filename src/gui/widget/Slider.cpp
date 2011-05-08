@@ -123,3 +123,11 @@ void GUI::Widget::Slider::setSize(float length, float thickness) {
 	position.Bottom = position.Top + (vertical ? length : thickness);
 	sliderLength = length / 5;
 }
+
+float GUI::Widget::Slider::transformValue(float raw, float min, float max) {
+	return min + std::max(0.0f, std::min(raw, 1.0f)) * (max - min);
+}
+
+float GUI::Widget::Slider::inverseTransformValue(float value, float min, float max) {
+	return std::max(0.0f, std::min((value - min) / (max - min), 1.0f));
+}

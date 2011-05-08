@@ -112,6 +112,26 @@ public:
 	 * @param thickness New thickness
 	 */
 	virtual void setSize(float length, float thickness);
+
+	/**
+	 * Transform raw value from a slider into a value within given range.
+	 *
+	 * @param raw The raw value from the slider.
+	 * @param min Low end of the desired value range.
+	 * @param max High end of the desired value range.
+	 * @return Returns the transformed value. (min + raw * (max - min))
+	 */
+	static float transformValue(float raw, float min, float max);
+
+	/**
+	 * Inverse of the transformValue(). Transforms the given value into range used by sliders. 
+	 *
+	 * @param value The value to transform.
+	 * @param min Low end of the desired value range.
+	 * @param max High end of the desired value range.
+	 * @return Returns the transformed value. ((value - min) / (max - min))
+	 */
+	static float inverseTransformValue(float value, float min, float max);
 };
 
 #endif
