@@ -49,6 +49,8 @@ private:
 
 	float sliderPosition;
 	float sliderLength;
+	float rangeMax;
+	float rangeMin;
 	bool vertical;
 	bool isDragged;
 	float oldMouseCoordinate;
@@ -63,9 +65,11 @@ public:
 	 * @param thickness Thickness of the slider.
 	 * @param vertical Orientation of the slider. Horizontal by default.
 	 * @param callback The action to take when moved.
-	 * @param initialValue Initial value for the slider. 0 by default.
+	 * @param rangeMin Low end of the desired value range.
+	 * @param rangeMax High end of the desired value range.
+	 * @param initialValue Initial value for the slider.
 	 */
-	Slider(float x, float y, float length, float thickness, bool vertical = false, CallbackType callback = NULL, float initialValue = 0.0f);
+	Slider(float x, float y, float length, float thickness, bool vertical = false, CallbackType callback = NULL, float rangeMin = 0.0f, float rangeMax = 1.0f, float initialValue = 0.0f);
 
 	/**
 	 * Handle events.

@@ -24,13 +24,15 @@
 
 #include <algorithm>
 
-GUI::Widget::Slider::Slider(float x, float y, float length, float thickness, bool _vertical, CallbackType callback, float initialValue):
+GUI::Widget::Slider::Slider(float x, float y, float length, float thickness, bool _vertical, CallbackType callback, float rangeMin_, float rangeMax_, float initialValue):
 	Widget(x, y, (_vertical ? thickness : length), (_vertical ? length : thickness)),
 	action(callback),
 	vertical(_vertical) {
 	sliderPosition = 0;
 	sliderLength = length / 5;
 	isDragged = false;
+	rangeMin = rangeMin_;
+	rangeMax = rangeMax_;
 	setScrollPosition(initialValue);
 }
 
@@ -106,12 +108,12 @@ void GUI::Widget::Slider::draw(sf::RenderWindow& window) {
 }
 
 void GUI::Widget::Slider::setScrollPosition(float v) {
-	v = std::max(0.0f, std::min(v, 1.0f));
+	v = inverseTransformValue(v, rangeMin, rangeMax);
 	sliderPosition = v * ((vertical ? position.GetHeight() : position.GetWidth()) - sliderLength);
 }
 
 float GUI::Widget::Slider::getScrollPosition() const {
-	return sliderPosition / ((vertical ? position.GetHeight() : position.GetWidth()) - sliderLength);
+	return transformValue(sliderPosition / ((vertical ? position.GetHeight() : position.GetWidth()) - sliderLength), rangeMin, rangeMax);
 }
 
 void GUI::Widget::Slider::setPosition(float x, float y) {
