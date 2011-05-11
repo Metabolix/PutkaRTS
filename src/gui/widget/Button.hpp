@@ -78,7 +78,17 @@ public:
 	 *
 	 * @param window The render window.
 	 */
-	virtual void draw(sf::RenderWindow& window);
+	virtual void draw(sf::RenderWindow& window) {
+		draw(window, false);
+	};
+
+	/**
+	 * Draw the button.
+	 *
+	 * @param window The render window.
+	 * @param highlight If true. Different background color is used.
+	 */
+	virtual void draw(sf::RenderWindow& window, bool highlight);
 };
 
 #endif

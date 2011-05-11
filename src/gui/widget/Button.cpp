@@ -47,7 +47,7 @@ bool GUI::Widget::Button::handleEvent(const sf::Event& e, const sf::RenderWindow
 	return false;
 }
 
-void GUI::Widget::Button::draw(sf::RenderWindow& window) {
+void GUI::Widget::Button::draw(sf::RenderWindow& window, bool highlight) {
 	const int bw = (std::min(position.GetWidth(), position.GetHeight()) < 40 ? 2 : 4); // Border width
 	const sf::Input& input(window.GetInput());
 	sf::Vector2f mouse(window.ConvertCoords(input.GetMouseX(), input.GetMouseY()));
@@ -60,7 +60,7 @@ void GUI::Widget::Button::draw(sf::RenderWindow& window) {
 
 	sf::Color background(Color::background);
 
-	if (position.Contains(mouse.x, mouse.y)) {
+	if (position.Contains(mouse.x, mouse.y) || highlight) {
 		background = Color::backgroundHover;
 	}
 
