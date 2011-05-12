@@ -118,6 +118,10 @@ public:
 		container = container_;
 	}
 
+	virtual void setPosition(float x, float y, float width, float height) {
+		position = sf::FloatRect(x, y, x + width, y + height);
+	}
+
 };
 
 #endif
