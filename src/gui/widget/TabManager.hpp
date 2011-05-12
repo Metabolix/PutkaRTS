@@ -55,6 +55,11 @@ protected:
 	/** Currently selected tab key */
 	TabKeyType selectedTabKey;
 
+	/**
+	 * Create a tab manager with position. Used by TabPanel.
+	 */
+	TabManager(float x, float y, float width, float height);
+
 public:
 	/**
 	 * Create a tab manager.

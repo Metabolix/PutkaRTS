@@ -26,6 +26,10 @@
 GUI::Widget::TabManager::TabManager() {
 }
 
+GUI::Widget::TabManager::TabManager(float x, float y, float width, float height):
+	Widget(x, y, width, height) {
+}
+
 bool GUI::Widget::TabManager::handleEvent(const sf::Event& e, const sf::RenderWindow& window) {
 	TabListType::iterator selectedTab = tabs.find(selectedTabKey);
 
