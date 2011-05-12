@@ -71,7 +71,7 @@ void Map::loadTileInfo(std::istream& file) {
 void Map::loadTileMap(std::istream& file) {
 	tileMap.clear();
 	std::string line;
-	while (getline(file, line)) {
+	while (std::getline(file, line)) {
 		boost::trim(line);
 		if (line.empty()) {
 			break;
