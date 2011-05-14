@@ -29,6 +29,8 @@
 
 #include "gui/widget/Widget.hpp"
 #include "gui/widget/List.hpp"
+#include "gui/widget/TabPanel.hpp"
+
 
 namespace GUI {
 	namespace Menu {
@@ -40,12 +42,19 @@ namespace GUI {
  * Class for the setting menu.
  */
 class GUI::Menu::SettingsMenu: public Menu {
+	/** Manager for the tabs. */
+	boost::shared_ptr<GUI::Widget::TabPanel> tabManager;
 
 	/** Index for the selected video mode. */
 	std::size_t videoMode;
 
 	/** Selected fullscreen state. */
 	bool fullscreen;
+
+	/**
+	 * Build graphics tab.
+	 */
+	void buildGraphicsTab(const GUI::Widget::TabPanel::TabKeyType& key);
 
 	/**
 	 * Save changes and return to main menu.

@@ -35,13 +35,23 @@
 #include <boost/lexical_cast.hpp>
 
 GUI::Menu::SettingsMenu::SettingsMenu(sf::RenderWindow& window, boost::shared_ptr<Widget> parent_) :
-	Menu(parent_) {
+	Menu(parent_),
+	tabManager(new GUI::Widget::TabPanel(50, 100, 200, 16)) {
+
+	insert(tabManager);
+	insert(new GUI::Widget::Button("Accept", 400, 300, 100, 30, boost::bind(&GUI::Menu::SettingsMenu::applyChanges, this, boost::ref(window))));
+	insert(new GUI::Widget::Button("Cancel", 400, 340, 100, 30, boost::bind(&GUI::Menu::SettingsMenu::closeMenu, this)));
+
+	buildGraphicsTab(1);
+}
+
+void GUI::Menu::SettingsMenu::buildGraphicsTab(const GUI::Widget::TabPanel::TabKeyType& key) {
 
 	//Get current settings.
 	fullscreen = GUI::config.getBool("window.fullscreen", false);
 
 	//List video modes.
-	boost::shared_ptr<GUI::Widget::DropDown> videoModeList(new GUI::Widget::DropDown(100, 150, 200, 25, 200, boost::bind(&GUI::Menu::SettingsMenu::setVideoMode, this, _1)));
+	boost::shared_ptr<GUI::Widget::DropDown> videoModeList(new GUI::Widget::DropDown(100, 200, 200, 25, 200, boost::bind(&GUI::Menu::SettingsMenu::setVideoMode, this, _1)));
 	for (unsigned i = 0; i < sf::VideoMode::GetModesCount(); i++) {
 		const sf::VideoMode& mode = sf::VideoMode::GetMode(i);
 
@@ -67,11 +77,13 @@ GUI::Menu::SettingsMenu::SettingsMenu(sf::RenderWindow& window, boost::shared_pt
 		}
 	}
 
-	//Build GUI
-	insert(videoModeList);
-	insert(new GUI::Widget::Checkbox("Fullscreen (needs restart to take effect)", 100, 100, 20, 20, fullscreen, boost::bind(&GUI::Menu::SettingsMenu::setFullScreen, this, _1)));
-	insert(new GUI::Widget::Button("Accept", 400, 300, 100, 30, boost::bind(&GUI::Menu::SettingsMenu::applyChanges, this, boost::ref(window))));
-	insert(new GUI::Widget::Button("Cancel", 400, 340, 100, 30, boost::bind(&GUI::Menu::SettingsMenu::closeMenu, this)));
+	//create tab
+	tabManager->addTab(key, "Graphics");
+
+	//insert resolution list
+	tabManager->getTab(key)->insert(videoModeList);
+	//insert fullscreen box
+	tabManager->getTab(key)->insert(new GUI::Widget::Checkbox("Fullscreen (needs restart to take effect)", 100, 150, 20, 20, fullscreen, boost::bind(&GUI::Menu::SettingsMenu::setFullScreen, this, _1)));
 }
 
 void GUI::Menu::SettingsMenu::applyChanges(sf::RenderWindow& window) {
