@@ -61,7 +61,9 @@ clean_html:
 
 # Documentation build with Doxygen
 html: Doxyfile $(FILES_CPP) $(FILES_HPP)
-	doxygen
+	@echo [DOXYGEN]
+	@$(call mkdir,html)
+	@doxygen > html/doxygen.log
 
 # Build rules for binaries.
 $(CLI_BIN): $(patsubst src/%,build/%.o,$(CLI_SRC))
