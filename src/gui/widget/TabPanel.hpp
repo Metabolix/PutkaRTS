@@ -118,6 +118,9 @@ public:
 	 */
 	virtual TabContainerPtrType addTab(const TabKeyType& key, const std::string& title, TabContainerPtrType container = TabContainerPtrType());
 
+	// Allow tabs without buttons using the inherited method.
+	using TabManager::addTab;
+
 	/**
 	 * Remove a tab.
 	 *
