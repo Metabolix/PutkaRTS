@@ -236,19 +236,15 @@ unsigned GUI::Widget::List::countItems() const {
 	return items.size();
 }
 
-void GUI::Widget::List::setPosition(float x, float y) {
-	position.Offset(x - position.Left, y - position.Top);
-
-	scrollbar.setPosition(position.Left + position.GetWidth() - 16 - getBorderWidth(), position.Top + getBorderWidth());
-	scrollbar.setSize(16, position.GetHeight() - 2 * getBorderWidth());
+void GUI::Widget::List::move(float dx, float dy) {
+	Widget::move(dx, dy);
+	scrollbar.move(dx, dy);
 }
 
 void GUI::Widget::List::setSize(float width, float height) {
-	position.Right = position.Left + width;
-	position.Bottom = position.Top + height;
-
-	scrollbar.setPosition(position.Left + width - 16 - getBorderWidth(), position.Top + getBorderWidth());
-	scrollbar.setSize(height - 2 * getBorderWidth(), 16);
+	scrollbar.move(width - position.GetWidth(), 0);
+	scrollbar.setSize(16, height - 2 * getBorderWidth());
+	Widget::setSize(width, height);
 }
 
 void GUI::Widget::List::selectItem(const GUI::Widget::List::KeyType& key) {

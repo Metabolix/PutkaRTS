@@ -181,18 +181,12 @@ public:
 	virtual unsigned countItems() const;
 
 	/**
-	 * Set new position the widget.
-	 *
-	 * @param x New x position
-	 * @param y New y position
+	 * Change widget position.
 	 */
-	virtual void setPosition(float x, float y);
+	virtual void move(float dx, float dy);
 
 	/**
-	 * Set new size for the widget.
-	 *
-	 * @param width New width
-	 * @param height New height
+	 * Set widget size.
 	 */
 	virtual void setSize(float width, float height);
 
