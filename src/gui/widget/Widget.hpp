@@ -118,10 +118,20 @@ public:
 		container = container_;
 	}
 
-	virtual void setPosition(float x, float y, float width, float height) {
-		position = sf::FloatRect(x, y, x + width, y + height);
-	}
+	/**
+	 * Set widget position. DO NOT OVERRIDE!
+	 */
+	virtual void setPosition(float x, float y, float width, float height);
 
+	/**
+	 * Change widget position.
+	 */
+	virtual void move(float dx, float dy);
+
+	/**
+	 * Set widget size.
+	 */
+	virtual void setSize(float width, float height);
 };
 
 #endif

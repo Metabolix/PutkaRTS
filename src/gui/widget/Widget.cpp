@@ -31,3 +31,17 @@ namespace GUI {
 		}
 	}
 }
+
+void GUI::Widget::Widget::setPosition(float x, float y, float width, float height) {
+	move(x - position.Left, y - position.Top);
+	setSize(width, height);
+}
+
+void GUI::Widget::Widget::move(float dx, float dy) {
+	position.Offset(dx, dy);
+}
+
+void GUI::Widget::Widget::setSize(float width, float height) {
+	position.Right = position.Left + width;
+	position.Bottom = position.Top + height;
+}
