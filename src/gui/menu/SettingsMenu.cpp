@@ -26,6 +26,8 @@
 #include "gui/widget/Button.hpp"
 #include "gui/widget/Checkbox.hpp"
 #include "gui/widget/DropDown.hpp"
+#include "gui/widget/Slider.hpp"
+#include "gui/widget/Label.hpp"
 
 #include "util/Path.hpp"
 
@@ -43,6 +45,7 @@ GUI::Menu::SettingsMenu::SettingsMenu(sf::RenderWindow& window, boost::shared_pt
 	insert(new GUI::Widget::Button("Cancel", 400, 340, 100, 30, boost::bind(&GUI::Menu::SettingsMenu::closeMenu, this)));
 
 	buildGraphicsTab(1);
+	buildInputTab(2);
 }
 
 void GUI::Menu::SettingsMenu::buildGraphicsTab(const GUI::Widget::TabPanel::TabKeyType& key) {
@@ -86,6 +89,30 @@ void GUI::Menu::SettingsMenu::buildGraphicsTab(const GUI::Widget::TabPanel::TabK
 	tabManager->getTab(key)->insert(new GUI::Widget::Checkbox("Fullscreen (needs restart to take effect)", 100, 150, 20, 20, fullscreen, boost::bind(&GUI::Menu::SettingsMenu::setFullScreen, this, _1)));
 }
 
+void GUI::Menu::SettingsMenu::buildInputTab(const GUI::Widget::TabPanel::TabKeyType& key) {
+
+	//get current settings.
+	zoomSpeed = GUI::config.getDouble("gameUI.zoomSpeed", 2);
+	keyboardScrollSpeed = GUI::config.getDouble("gameUI.keyboardScrollSpeed", 1);
+	borderScrollSpeed = GUI::config.getDouble("gameUI.borderScrollSpeed", 1);
+	reverseDrag = GUI::config.getBool("gameUI.reverseDrag", false);
+
+	//create tab
+	tabManager->addTab(key, "Input");
+
+	//zoomSpeed
+	tabManager->getTab(key)->insert(new GUI::Widget::Label("Zooming speed", 100, 150, 16));
+	tabManager->getTab(key)->insert(new GUI::Widget::Slider(100, 170, 200, 15, false, boost::bind(&GUI::Menu::SettingsMenu::setZoomSpeed, this, _1), 0.5f, 4.0f, zoomSpeed));
+	//keyboardScrollSpeed
+	tabManager->getTab(key)->insert(new GUI::Widget::Label("Keyboard scrolling speed", 100, 200, 16));
+	tabManager->getTab(key)->insert(new GUI::Widget::Slider(100, 220, 200, 15, false, boost::bind(&GUI::Menu::SettingsMenu::setKeyboardScrollSpeed, this, _1), 0.5f, 2.0f, keyboardScrollSpeed));
+	//borderScrollSpeed
+	tabManager->getTab(key)->insert(new GUI::Widget::Label("Border scrolling speed", 100, 250, 16));
+	tabManager->getTab(key)->insert(new GUI::Widget::Slider(100, 270, 200, 15, false, boost::bind(&GUI::Menu::SettingsMenu::setBorderScrollSpeed, this, _1), 0.5f, 2.0f, borderScrollSpeed));
+	//reverseDrag
+	tabManager->getTab(key)->insert(new GUI::Widget::Checkbox("Reverse dragging.", 100, 300, 20, 20, fullscreen, boost::bind(&GUI::Menu::SettingsMenu::setReverseDrag, this, _1)));
+}
+
 void GUI::Menu::SettingsMenu::applyChanges(sf::RenderWindow& window) {
 	sf::VideoMode mode = sf::VideoMode::GetMode(videoMode);
 
@@ -108,6 +135,11 @@ void GUI::Menu::SettingsMenu::applyChanges(sf::RenderWindow& window) {
 		window.GetDefaultView().SetFromRect(sf::FloatRect(0, 0, mode.Width, mode.Height));
 	}
 
+	GUI::config.setDouble("gameUI.zoomSpeed", zoomSpeed);
+	GUI::config.setDouble("gameUI.keyboardScrollSpeed", keyboardScrollSpeed);
+	GUI::config.setDouble("gameUI.borderScrollSpeed", borderScrollSpeed);
+	GUI::config.setBool("gameUI.reverseDrag", reverseDrag);
+
 	GUI::config.save();
 	closeMenu();
 }
@@ -123,4 +155,20 @@ void GUI::Menu::SettingsMenu::setVideoMode(const GUI::Widget::List::Item& item) 
 
 	// Non-empty keys are valid.
 	videoMode = boost::lexical_cast<std::size_t>(item.key.c_str());
+}
+
+void GUI::Menu::SettingsMenu::setBorderScrollSpeed(float value) {
+	borderScrollSpeed = value;
+}
+
+void GUI::Menu::SettingsMenu::setKeyboardScrollSpeed(float value) {
+	keyboardScrollSpeed = value;
+}
+
+void GUI::Menu::SettingsMenu::setZoomSpeed(float value) {
+	zoomSpeed = value;
+}
+
+void GUI::Menu::SettingsMenu::setReverseDrag(bool state) {
+	reverseDrag = state;
 }
