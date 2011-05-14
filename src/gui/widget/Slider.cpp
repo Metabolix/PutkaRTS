@@ -29,7 +29,6 @@ GUI::Widget::Slider::Slider(float x, float y, float length, float thickness, boo
 	action(callback),
 	vertical(_vertical) {
 	sliderPosition = 0;
-	sliderLength = length / 5;
 	isDragged = false;
 	rangeMin = rangeMin_;
 	rangeMax = rangeMax_;
@@ -44,7 +43,7 @@ bool GUI::Widget::Slider::handleEvent(const sf::Event& e, const sf::RenderWindow
 
 			float mousePos = (vertical?mouse.y - position.Top:mouse.x - position.Left);
 
-			if (mousePos >= sliderPosition && mousePos < sliderPosition + sliderLength) {
+			if (mousePos >= sliderPosition && mousePos < sliderPosition + getSliderLength()) {
 				//slider pressed
 				isDragged = true;
 				oldMouseCoordinate = (vertical ? mouse.y : mouse.x);
@@ -59,7 +58,7 @@ bool GUI::Widget::Slider::handleEvent(const sf::Event& e, const sf::RenderWindow
 		sf::Vector2f mouse(window.ConvertCoords(e.MouseMove.X, e.MouseMove.Y));
 
 		sliderPosition += (vertical ? mouse.y : mouse.x) - oldMouseCoordinate;
-		sliderPosition = std::max(0.0f, std::min(sliderPosition, (vertical ? position.GetHeight() : position.GetWidth()) - sliderLength));
+		sliderPosition = std::max(0.0f, std::min(sliderPosition, (vertical ? position.GetHeight() : position.GetWidth()) - getSliderLength()));
 
 		oldMouseCoordinate = (vertical ? mouse.y : mouse.x);
 
@@ -86,7 +85,7 @@ void GUI::Widget::Slider::draw(sf::RenderWindow& window) {
 				position.Left + bw,
 				position.Top + sliderPosition + bw,
 				position.Right - bw,
-				position.Top + sliderPosition + sliderLength - bw,
+				position.Top + sliderPosition + getSliderLength() - bw,
 				Color::backgroundHover,
 				bw,
 				Color::border
@@ -97,7 +96,7 @@ void GUI::Widget::Slider::draw(sf::RenderWindow& window) {
 			sf::Shape::Rectangle(
 				position.Left + sliderPosition + bw,
 				position.Top + bw,
-				position.Left + sliderPosition + sliderLength - bw,
+				position.Left + sliderPosition + getSliderLength() - bw,
 				position.Bottom - bw,
 				Color::backgroundHover,
 				bw,
@@ -109,21 +108,15 @@ void GUI::Widget::Slider::draw(sf::RenderWindow& window) {
 
 void GUI::Widget::Slider::setScrollPosition(float v) {
 	v = inverseTransformValue(v, rangeMin, rangeMax);
-	sliderPosition = v * ((vertical ? position.GetHeight() : position.GetWidth()) - sliderLength);
+	sliderPosition = v * ((vertical ? position.GetHeight() : position.GetWidth()) - getSliderLength());
 }
 
 float GUI::Widget::Slider::getScrollPosition() const {
-	return transformValue(sliderPosition / ((vertical ? position.GetHeight() : position.GetWidth()) - sliderLength), rangeMin, rangeMax);
+	return transformValue(sliderPosition / ((vertical ? position.GetHeight() : position.GetWidth()) - getSliderLength()), rangeMin, rangeMax);
 }
 
-void GUI::Widget::Slider::setPosition(float x, float y) {
-	position.Offset(x - position.Left, y - position.Top);
-}
-
-void GUI::Widget::Slider::setSize(float length, float thickness) {
-	position.Right = position.Left + (vertical ? thickness : length);
-	position.Bottom = position.Top + (vertical ? length : thickness);
-	sliderLength = length / 5;
+float GUI::Widget::Slider::getSliderLength() const {
+	return 0.2 * (vertical ? position.GetHeight() : position.GetWidth());
 }
 
 float GUI::Widget::Slider::transformValue(float raw, float min, float max) {

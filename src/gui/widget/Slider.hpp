@@ -42,18 +42,20 @@ public:
 	typedef boost::function<void(float)> CallbackType;
 
 private:
-	/**
-	 * Callback function for the button.
-	 */
+	/** Callback function for the button. */
 	CallbackType action;
 
 	float sliderPosition;
-	float sliderLength;
 	float rangeMax;
 	float rangeMin;
 	bool vertical;
 	bool isDragged;
 	float oldMouseCoordinate;
+
+	/**
+	 * Calculate the slider length.
+	 */
+	float getSliderLength() const;
 
 public:
 	/**
@@ -90,32 +92,16 @@ public:
 	/**
 	 * Set the slider position.
 	 *
-	 * @param v New position of the slider. Value between 0.0f - 1.0f.
+	 * @param v New position of the slider.
 	 */
 	virtual void setScrollPosition(float v);
 
 	/**
 	 * Fet the current slider position.
 	 *
-	 * @return Returns the current slider position. Value between 0.0f - 1.0f.
+	 * @return Returns the current slider position.
 	 */
 	virtual float getScrollPosition() const;
-
-	/**
-	 * Set new position the widget.
-	 *
-	 * @param x New x position
-	 * @param y New y position
-	 */
-	virtual void setPosition(float x, float y);
-
-	/**
-	 * Set new size for the widget.
-	 *
-	 * @param length New length
-	 * @param thickness New thickness
-	 */
-	virtual void setSize(float length, float thickness);
 
 	/**
 	 * Transform raw value from a slider into a value within given range.
@@ -128,7 +114,7 @@ public:
 	static float transformValue(float raw, float min, float max);
 
 	/**
-	 * Inverse of the transformValue(). Transforms the given value into range used by sliders. 
+	 * Inverse of the transformValue(). Transforms the given value into range used by sliders.
 	 *
 	 * @param value The value to transform.
 	 * @param min Low end of the desired value range.
