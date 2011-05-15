@@ -25,8 +25,13 @@
 #include <algorithm>
 
 
-GUI::Widget::Label::Label(const std::string& text, float x, float y, float size):
-	Widget(x, y, std::numeric_limits<float>::infinity(), size),
+GUI::Widget::Label::Label(const std::string& text, float x, float y, float height):
+	Widget(x, y, std::numeric_limits<float>::infinity(), height),
+	label(text) {
+}
+
+GUI::Widget::Label::Label(const std::string& text, float x, float y, float width, float height):
+	Widget(x, y, width, height),
 	label(text) {
 }
 

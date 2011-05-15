@@ -47,9 +47,20 @@ public:
 	 * @param text Text to render.
 	 * @param x X coordinate of the text.
 	 * @param y Y coordinate of the text.
-	 * @param size Size of the text.
+	 * @param height Height of the text.
 	 */
-	Label(const std::string& text, float x, float y, float size);
+	Label(const std::string& text, float x, float y, float height);
+
+	/**
+	 * Create a Label.
+	 *
+	 * @param text Text to render.
+	 * @param x X coordinate of the text.
+	 * @param y Y coordinate of the text.
+	 * @param width Maximum width of the text.
+	 * @param height Maximum height of the text.
+	 */
+	Label(const std::string& text, float x, float y, float width, float height);
 
 	/**
 	 * Handle events.
