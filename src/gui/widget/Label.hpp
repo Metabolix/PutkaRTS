@@ -40,6 +40,9 @@ class GUI::Widget::Label: public Widget {
 	/** Text for the label. */
 	sf::String label;
 
+	/** Is the label centered? */
+	bool isCentered;
+
 public:
 	/**
 	 * Create a Label.
@@ -61,6 +64,15 @@ public:
 	 * @param height Maximum height of the text.
 	 */
 	Label(const std::string& text, float x, float y, float width, float height);
+
+	/**
+	 * Set whether the text is centered or aligned to left.
+	 *
+	 * @param isCentered_ Is the text centered?
+	 */
+	virtual void setCentered(bool isCentered_) {
+		isCentered = isCentered_;
+	}
 
 	/**
 	 * Handle events.

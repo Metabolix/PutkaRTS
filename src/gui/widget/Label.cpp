@@ -27,12 +27,16 @@
 
 GUI::Widget::Label::Label(const std::string& text, float x, float y, float height):
 	Widget(x, y, std::numeric_limits<float>::infinity(), height),
-	label(text) {
+	label(text),
+	isCentered(false) {
+	label.SetColor(Color::text);
 }
 
 GUI::Widget::Label::Label(const std::string& text, float x, float y, float width, float height):
 	Widget(x, y, width, height),
-	label(text) {
+	label(text),
+	isCentered(false) {
+	label.SetColor(Color::text);
 }
 
 void GUI::Widget::Label::draw(sf::RenderWindow& window) {
@@ -58,7 +62,13 @@ void GUI::Widget::Label::draw(sf::RenderWindow& window) {
 	float scaleX = position.GetWidth() / label.GetRect().GetWidth();
 	float scale = std::min(scaleX, scaleY);
 
+	if (isCentered) {
+		label.SetCenter(label.GetRect().GetWidth() / 2, 0);
+		label.SetPosition(position.Left + position.GetWidth() / 2, position.Top);
+	} else {
+		label.SetCenter(0, 0);
+		label.SetPosition(position.Left, position.Top);
+	}
 	label.SetScale(scale, scale);
-	label.SetPosition(position.Left, position.Top);
 	window.Draw(label);
 }
