@@ -86,7 +86,8 @@ void GUI::Menu::SettingsMenu::buildGraphicsTab(const GUI::Widget::TabPanel::TabK
 	//insert resolution list
 	tabManager->getTab(key)->insert(videoModeList);
 	//insert fullscreen box
-	tabManager->getTab(key)->insert(new GUI::Widget::Checkbox("Fullscreen (needs restart to take effect)", 100, 150, 20, 20, fullscreen, boost::bind(&GUI::Menu::SettingsMenu::setFullScreen, this, _1)));
+	tabManager->getTab(key)->insert(new GUI::Widget::Checkbox(100, 150, 20, 20, fullscreen, boost::bind(&GUI::Menu::SettingsMenu::setFullScreen, this, _1)));
+	tabManager->getTab(key)->insert(new GUI::Widget::Label("Fullscreen (needs restart to take effect)", 125, 150, 20));
 }
 
 void GUI::Menu::SettingsMenu::buildInputTab(const GUI::Widget::TabPanel::TabKeyType& key) {
@@ -110,7 +111,8 @@ void GUI::Menu::SettingsMenu::buildInputTab(const GUI::Widget::TabPanel::TabKeyT
 	tabManager->getTab(key)->insert(new GUI::Widget::Label("Border scrolling speed", 100, 250, 16));
 	tabManager->getTab(key)->insert(new GUI::Widget::Slider(100, 270, 200, 15, false, boost::bind(&GUI::Menu::SettingsMenu::setBorderScrollSpeed, this, _1), 0.5f, 2.0f, borderScrollSpeed));
 	//reverseDrag
-	tabManager->getTab(key)->insert(new GUI::Widget::Checkbox("Reverse dragging.", 100, 300, 20, 20, fullscreen, boost::bind(&GUI::Menu::SettingsMenu::setReverseDrag, this, _1)));
+	tabManager->getTab(key)->insert(new GUI::Widget::Checkbox(100, 300, 20, 20, fullscreen, boost::bind(&GUI::Menu::SettingsMenu::setReverseDrag, this, _1)));
+	tabManager->getTab(key)->insert(new GUI::Widget::Label("Reverse dragging", 125, 300, 20));
 }
 
 void GUI::Menu::SettingsMenu::applyChanges(sf::RenderWindow& window) {
