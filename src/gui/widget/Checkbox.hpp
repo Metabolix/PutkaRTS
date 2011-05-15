@@ -43,11 +43,6 @@ public:
 
 private:
 	/**
-	 * Label for the checkbox.
-	 */
-	sf::String label;
-
-	/**
 	 * Callback function for the checkbox.
 	 */
 	CallbackType action;
@@ -61,7 +56,6 @@ public:
 	/**
 	 * Create a checkbox.
 	 *
-	 * @param text Text is rendered next to the checkbox.
 	 * @param x X coordinate of the checkbox.
 	 * @param y Y coordinate of the checkbox.
 	 * @param width Width of the checkbox.
@@ -69,7 +63,7 @@ public:
 	 * @param callback The action to take when clicked.
 	 * @param initialState Initial state of the checkbox.
 	 */
-	Checkbox(const std::string& text, float x, float y, float width, float height, bool initialState = false, CallbackType callback = NULL);
+	Checkbox(float x, float y, float width, float height, bool initialState = false, CallbackType callback = NULL);
 
 	/**
 	 * Handle events, namely mouse clicks.

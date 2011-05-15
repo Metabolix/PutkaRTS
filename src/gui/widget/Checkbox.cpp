@@ -24,13 +24,10 @@
 
 #include <algorithm>
 
-GUI::Widget::Checkbox::Checkbox(const std::string& text, float x, float y, float width, float height, bool initialState, CallbackType callback):
+GUI::Widget::Checkbox::Checkbox(float x, float y, float width, float height, bool initialState, CallbackType callback):
 	Widget(x, y, width, height),
-	label(text),
 	action(callback),
 	isChecked(initialState) {
-	static sf::String maxHeightString("|");
-	label.SetCenter(0.0f, maxHeightString.GetRect().GetHeight() / 2);
 }
 
 bool GUI::Widget::Checkbox::handleEvent(const sf::Event& e, const sf::RenderWindow& window) {
@@ -54,13 +51,7 @@ bool GUI::Widget::Checkbox::handleEvent(const sf::Event& e, const sf::RenderWind
 void GUI::Widget::Checkbox::draw(sf::RenderWindow& window) {
 	const int bw = (std::min(position.GetWidth(), position.GetHeight()) < 40 ? 2 : 4); // Border width
 
-	label.SetPosition(position.Right + 6.0f, (position.Top + position.Bottom) / 2.0f);
-
-	float scale = (position.GetHeight() - 2 * bw) / label.GetRect().GetHeight() * 1.25f;
-	label.Scale(scale, scale);
-
 	window.Draw(sf::Shape::Rectangle(position.Left + bw, position.Top + bw, position.Right - bw, position.Bottom - bw, Color::background, bw, Color::border));
-	window.Draw(label);
 
 	if (isChecked) {
 		window.Draw(sf::Shape::Line(position.Left + 2 * bw, position.Top + 2 * bw, position.Right - 2 * bw, position.Bottom - 2 * bw, bw, Color::text));
