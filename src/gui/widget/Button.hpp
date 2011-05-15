@@ -23,6 +23,7 @@
 #define PUTKARTS_GUI_Widget_Button_HPP
 
 #include "Widget.hpp"
+#include "Label.hpp"
 
 #include <boost/function.hpp>
 
@@ -44,7 +45,7 @@ private:
 	/**
 	 * Label for the button.
 	 */
-	sf::String label;
+	Label label;
 
 	/**
 	 * Callback function for the button.

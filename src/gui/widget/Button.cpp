@@ -27,9 +27,7 @@ GUI::Widget::Button::Button(const std::string& text, float x, float y, float wid
 	Widget(x, y, width, height),
 	label(text),
 	action(callback) {
-	static sf::String maxHeightString("|");
-	label.SetCenter(label.GetRect().GetWidth() / 2, maxHeightString.GetRect().GetHeight() / 2);
-	label.SetColor(Color::text);
+	label.setCentered(true);
 }
 
 bool GUI::Widget::Button::handleEvent(const sf::Event& e, const sf::RenderWindow& window) {
@@ -52,12 +50,6 @@ void GUI::Widget::Button::draw(sf::RenderWindow& window, bool highlight) {
 	const sf::Input& input(window.GetInput());
 	sf::Vector2f mouse(window.ConvertCoords(input.GetMouseX(), input.GetMouseY()));
 
-	sf::FloatRect labelRect(label.GetRect());
-	label.SetPosition((position.Right + position.Left) / 2, (position.Bottom + position.Top) / 2);
-
-	float scale = std::min((position.GetWidth() - 2 * bw) / labelRect.GetWidth(), (position.GetHeight() - 2 * bw) / labelRect.GetHeight()) * 0.85f;
-	label.Scale(scale, scale);
-
 	sf::Color background(Color::background);
 
 	if (position.Contains(mouse.x, mouse.y) || highlight) {
@@ -65,5 +57,7 @@ void GUI::Widget::Button::draw(sf::RenderWindow& window, bool highlight) {
 	}
 
 	window.Draw(sf::Shape::Rectangle(position.Left + bw, position.Top + bw, position.Right - bw, position.Bottom - bw, background, bw, Color::border));
-	window.Draw(label);
+
+	label.setPosition(position.Left + 2 * bw, position.Top + 2 * bw, position.GetWidth() - 4 * bw, position.GetHeight() - 4 * bw);
+	label.draw(window);
 }
