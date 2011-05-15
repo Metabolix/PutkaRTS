@@ -21,6 +21,7 @@
  */
 
 #include "List.hpp"
+#include "Label.hpp"
 
 #include <algorithm>
 #include <boost/bind.hpp>
@@ -93,11 +94,6 @@ bool GUI::Widget::List::handleEvent(const sf::Event& e, const sf::RenderWindow& 
 void GUI::Widget::List::draw(sf::RenderWindow& window) {
 	int lines = (position.GetHeight() - 2 * borderWidth) / lineHeight;
 
-	sf::String tmpText("|");
-	float scale = lineHeight / tmpText.GetRect().GetHeight() * 0.95f;
-	tmpText.Scale(scale, scale);
-	tmpText.SetColor(Color::text);
-
 	window.Draw(
 		sf::Shape::Rectangle(
 			position.Left + borderWidth,
@@ -132,8 +128,6 @@ void GUI::Widget::List::draw(sf::RenderWindow& window) {
 			continue;
 		}
 
-		tmpText.SetText(i->text);
-
 		if (selected == i) {
 			window.Draw(
 				sf::Shape::Rectangle(
@@ -156,8 +150,13 @@ void GUI::Widget::List::draw(sf::RenderWindow& window) {
 			);
 		}
 
-		tmpText.SetPosition(position.Left + 2 * borderWidth, position.Top + borderWidth + (counter - scrollPosition) * lineHeight);
-		window.Draw(tmpText);
+		Label tmpText(
+			i->text,
+			position.Left + 2 * borderWidth,
+			position.Top + borderWidth + (counter - scrollPosition) * lineHeight,
+			lineHeight
+		);
+		tmpText.draw(window);
 	}
 
 	if ((int)items.size() > lines) {
