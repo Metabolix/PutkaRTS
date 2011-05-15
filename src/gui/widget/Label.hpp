@@ -2,6 +2,7 @@
  * Label widget class definition.
  *
  * Copyright 2011 Mika Katajamäki
+ * Copyright 2011 Lauri Kenttä
  *
  * This file is part of PutkaRTS.
  *

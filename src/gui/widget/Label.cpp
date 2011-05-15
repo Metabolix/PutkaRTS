@@ -2,6 +2,7 @@
  * Label widget class implementation.
  *
  * Copyright 2011 Mika Katajamäki
+ * Copyright 2011 Lauri Kenttä
  *
  * This file is part of PutkaRTS.
  *
@@ -20,18 +21,39 @@
  */
 
 #include "Label.hpp"
+#include <limits>
+#include <algorithm>
 
 
 GUI::Widget::Label::Label(const std::string& text, float x, float y, float size):
-	Widget(x, y, 1.0f, size),
+	Widget(x, y, std::numeric_limits<float>::infinity(), size),
 	label(text) {
-	static sf::String maxHeightString("|");
-	float scale = position.GetHeight() / maxHeightString.GetRect().GetHeight();
-	label.Scale(scale, scale);
 }
 
 void GUI::Widget::Label::draw(sf::RenderWindow& window) {
-	label.SetPosition(position.Right, position.Top);
+	const sf::Unicode::UTF32String& data = label.GetText();
+	if (data.empty()) {
+		return;
+	}
+	size_t lineCount = std::count(data.begin(), data.end(), '\n') + (*data.rbegin() == '\n' ? 0 : 1);
 
+	static float lineHeightForSize1;
+	if (!lineHeightForSize1) {
+		sf::String maxHeightString("|");
+		lineHeightForSize1 = 1.05 * maxHeightString.GetRect().GetHeight() / maxHeightString.GetSize();
+	}
+
+	label.SetColor(Color::text);
+	label.SetScale(1, 1);
+
+	// Calculate height; using label.GetRect().GetHeight() makes different strings have different sizes.
+	float lineHeight = label.GetSize() * lineHeightForSize1;
+	float height = lineHeight * lineCount;
+	float scaleY = position.GetHeight() / height;
+	float scaleX = position.GetWidth() / label.GetRect().GetWidth();
+	float scale = std::min(scaleX, scaleY);
+
+	label.SetScale(scale, scale);
+	label.SetPosition(position.Left, position.Top);
 	window.Draw(label);
 }
