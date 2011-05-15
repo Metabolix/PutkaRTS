@@ -22,6 +22,7 @@
 
 #include "DropDown.hpp"
 #include "Container.hpp"
+#include "Label.hpp"
 
 #include <algorithm>
 #include <boost/bind.hpp>
@@ -84,25 +85,24 @@ void GUI::Widget::DropDown::draw(sf::RenderWindow& window) {
 
 	window.Draw(
 		sf::Shape::Rectangle(
-			Widget::position.Left + bw,
-			Widget::position.Top + bw,
-			Widget::position.Right - bw,
-			Widget::position.Bottom - bw,
+			position.Left + bw,
+			position.Top + bw,
+			position.Right - bw,
+			position.Bottom - bw,
 			Color::background,
 			bw,
 			Color::border
 		)
 	);
 
-	sf::String tmpText("|");
-	float scale = (Widget::position.GetHeight() - 2 * bw) / tmpText.GetRect().GetHeight() * 0.95f;
-	tmpText.Scale(scale, scale);
-	tmpText.SetColor(Color::text);
-
-	tmpText.SetText(dropList.getSelectedText());
-	tmpText.SetPosition(Widget::position.Left + 2 * bw, Widget::position.Top + bw);
-	window.Draw(tmpText);
-
+	Label tmpText(
+		dropList.getSelectedText(),
+		position.Left + 2 * bw,
+		position.Top + bw,
+		position.GetWidth() - 4 * bw,
+		position.GetHeight() - 2 * bw
+	);
+	tmpText.draw(window);
 	dropButton.draw(window);
 
 	if (open) {
