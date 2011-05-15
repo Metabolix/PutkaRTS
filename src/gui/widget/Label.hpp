@@ -49,7 +49,7 @@ public:
 	 * @param y Y coordinate of the text.
 	 * @param height Height of the text.
 	 */
-	Label(const std::string& text, float x, float y, float height);
+	Label(const std::string& text = "", float x = 0, float y = 0, float height = 8);
 
 	/**
 	 * Create a Label.
