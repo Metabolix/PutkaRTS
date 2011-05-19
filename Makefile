@@ -1,5 +1,6 @@
 CXX := c++
 CXXFLAGS := -O -g -std=c++98 -Wall -pedantic
+LINKFLAGS := -O -g
 INCLUDE_DIRS := -Isrc -Iext/include
 LIB_DIRS := -Lext/lib
 
@@ -72,12 +73,12 @@ $(GUI_BIN): $(patsubst src/%,build/%.o,$(GUI_SRC))
 $(GUI_BIN):
 	@echo [LINK] $@
 	@$(call mkdir,$(dir $@))
-	@$(CXX) $(CXXFLAGS) $(LIB_DIRS) -o $@ $(filter %.o,$^) $(GUI_LIBS)
+	@$(CXX) $(LINKFLAGS) $(LIB_DIRS) -o $@ $(filter %.o,$^) $(GUI_LIBS)
 
 $(CLI_BIN):
 	@echo [LINK] $@
 	@$(call mkdir,$(dir $@))
-	@$(CXX) $(CXXFLAGS) $(LIB_DIRS) -o $@ $(filter %.o,$^) $(CLI_LIBS)
+	@$(CXX) $(LINKFLAGS) $(LIB_DIRS) -o $@ $(filter %.o,$^) $(CLI_LIBS)
 
 # Include dependencies; generation rules are below.
 -include $(FILES_DEP)
@@ -86,7 +87,7 @@ $(CLI_BIN):
 build/%.dep: src/%
 	@echo [DEPEND] $<
 	@$(call mkdir,$(dir $@))
-	@$(CXX) $(CXXFLAGS) $(INCLUDE_DIRS) $(CXX_VER) -MM $< -MT $@ > $@
+	@$(CXX) $(CXXFLAGS) $(INCLUDE_DIRS) $(CXX_VER) -MM $< -MT $@ -MP > $@
 
 # Compilation
 build/%.o: src/% build/%.dep
