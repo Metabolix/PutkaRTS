@@ -76,6 +76,9 @@ class GUI::GameHandler: public Widget::Container {
 	/* Get a GameObject for the given object. */
 	boost::shared_ptr<GameObject> getGameObject(boost::shared_ptr<World::Object> object);
 
+	/* Get a list of the objects within the given range of the given coordinates. */
+	ObjectListType getObjectsWithinRange(float x, float y, float r);
+
 public:
 	/**
 	 * Constructor.

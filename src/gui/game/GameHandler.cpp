@@ -165,3 +165,18 @@ boost::shared_ptr<GUI::GameObject> GUI::GameHandler::getGameObject(boost::shared
 
 	return i->second;
 }
+
+GUI::GameHandler::ObjectListType GUI::GameHandler::getObjectsWithinRange(float x, float y, float r) {
+	const Game& game = connection->getGame();
+	const Game::ObjectContainerType& objects = game.getObjects();
+
+	ObjectListType result;
+
+	for (Game::ObjectContainerType::const_iterator i = objects.begin(); i != objects.end(); ++i) {
+		if (i->second->isNear(Vector2<SIUnit::Position>(x, y), Scalar<SIUnit::Length>(r))) {
+			result.push_back(getGameObject(i->second));
+		}
+	}
+
+	return result;
+}
