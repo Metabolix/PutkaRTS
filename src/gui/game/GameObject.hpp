@@ -47,6 +47,11 @@ public:
 	 */
 	GameObject(boost::shared_ptr<const World::Object> object);
 
+	/* Access the object. */
+	const boost::shared_ptr<const World::Object>& getObject() const {
+		return object;
+	}
+
 	/**
 	 * Draw the object.
 	 *
