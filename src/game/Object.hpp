@@ -120,6 +120,17 @@ public:
 	}
 
 	/**
+	 * Checks if object is within the given range of the given position.
+	 *
+	 * @param pos The position
+	 * @param range The range
+	 * @return True if object is within the given range of the given point.
+	 */
+	bool isNear(const Vector2<SIUnit::Position> &pos, const Scalar<SIUnit::Length> &range) const {
+		return (position - pos).pow2() < range.pow2();
+	}
+
+	/**
 	 * Handle a message.
 	 *
 	 * @param message The message to handle.
