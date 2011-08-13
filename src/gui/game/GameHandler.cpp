@@ -154,3 +154,14 @@ void GUI::GameHandler::draw(sf::RenderWindow& window) {
 void GUI::GameHandler::openSettingsMenu(sf::RenderWindow& window) {
 	settingsMenu.reset(new Menu::SettingsMenu(window));
 }
+
+boost::shared_ptr<GUI::GameObject> GUI::GameHandler::getGameObject(boost::shared_ptr<World::Object> object) {
+	GameObjectListType::iterator i = gameObjects.find(object);
+
+	if (i == gameObjects.end()) {
+		gameObjects[object].reset(new GUI::GameObject(object));
+		return gameObjects[object];
+	}
+
+	return i->second;
+}

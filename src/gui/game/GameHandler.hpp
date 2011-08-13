@@ -67,6 +67,15 @@ class GUI::GameHandler: public Widget::Container {
 	/** Container for keeping track of selected objects */
 	ObjectListType selectedObjects;
 
+	/* Typedef for the GameObject list. */
+	typedef std::map<boost::shared_ptr<World::Object>, boost::shared_ptr<GameObject> > GameObjectListType;
+
+	/* Map to keep track of GameObjects. */
+	GameObjectListType gameObjects;
+
+	/* Get a GameObject for the given object. */
+	boost::shared_ptr<GameObject> getGameObject(boost::shared_ptr<World::Object> object);
+
 public:
 	/**
 	 * Constructor.
