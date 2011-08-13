@@ -75,6 +75,7 @@ try {
 		} else {
 			widget->updateState(window);
 			widget->draw(window);
+			window.Display();
 		}
 	}
 	currentWidget.reset();

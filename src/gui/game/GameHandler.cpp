@@ -149,8 +149,6 @@ void GUI::GameHandler::draw(sf::RenderWindow& window) {
 		window.SetView(guiView);
 		Container::draw(window);
 	}
-
-	window.Display();
 }
 
 void GUI::GameHandler::openSettingsMenu(sf::RenderWindow& window) {

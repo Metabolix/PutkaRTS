@@ -60,5 +60,4 @@ void GUI::Menu::Menu::draw(sf::RenderWindow& window) {
 	window.Clear(sf::Color(0xcc, 0x66, 0x33));
 	Container::draw(window);
 	window.Draw(logoSprite);
-	window.Display();
 }
