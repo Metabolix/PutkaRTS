@@ -27,7 +27,9 @@
 
 #include <SFML/Graphics.hpp>
 #include <boost/shared_ptr.hpp>
+#include <vector>
 
+#include "gui/game/GameObject.hpp"
 #include "gui/widget/Container.hpp"
 #include "gui/graphics/ImageCache.hpp"
 #include "gui/menu/SettingsMenu.hpp"
@@ -58,6 +60,13 @@ class GUI::GameHandler: public Widget::Container {
 
 	/** The settings menu, if opened. */
 	boost::shared_ptr<Menu::SettingsMenu> settingsMenu;
+
+	/* Typedef for listing objects. */
+	typedef std::vector<boost::shared_ptr<GameObject> > ObjectListType;
+
+	/** Container for keeping track of selected objects */
+	ObjectListType selectedObjects;
+
 public:
 	/**
 	 * Constructor.
