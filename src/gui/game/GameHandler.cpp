@@ -135,9 +135,10 @@ bool GUI::GameHandler::handleEvent(const sf::Event& e, const sf::RenderWindow& w
 
 	if (e.Type == sf::Event::MouseButtonReleased) {
 		if (e.MouseButton.Button == sf::Mouse::Left) {
-			//Select units
-			//TODO: Select multiple units.
-			selectedObjects.clear();
+			// Select units (add to old selection if holding ctrl).
+			if (!window.GetInput().IsKeyDown(sf::Key::LControl) && !window.GetInput().IsKeyDown(sf::Key::RControl)) {
+				selectedObjects.clear();
+			}
 			sf::Vector2f mousePosition = window.ConvertCoords(e.MouseButton.X, e.MouseButton.Y, &gameView);
 			ObjectListType objects = getObjectsWithinRange(mousePosition.x, mousePosition.y, 1);
 
