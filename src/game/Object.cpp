@@ -56,9 +56,7 @@ void World::Object::handleMessage(const Message& message, const Game& game) {
 bool World::Object::runStep(Scalar<SIUnit::Time> dt, Game& game) {
 	// TODO: Handle whatever the object is doing.
 	// TODO: Check collisions before moving!
-	if (position == targetPosition) {
-		targetPosition += Vector2<>::fromAngle(rand() % 1000) * Scalar<SIUnit::Position>(2);
-	} else {
+	if (position != targetPosition) {
 		Vector2<SIUnit::Position> old = position;
 		direction = (targetPosition - position).toAngle();
 		position += Vector2<>::fromAngle(direction) * Scalar<SIUnit::Velocity>(1) * dt;
