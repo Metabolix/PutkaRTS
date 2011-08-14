@@ -121,15 +121,13 @@ bool GUI::GameHandler::handleEvent(const sf::Event& e, const sf::RenderWindow& w
 
 	if (e.Type == sf::Event::MouseButtonPressed) {
 		if (e.MouseButton.Button == sf::Mouse::Right) {
-			//For testing something
-			const Game& game = connection->getGame();
-			const Game::ObjectContainerType& objects = game.getObjects();
+			//Testing movement
 			sf::Vector2f mousePosition = window.ConvertCoords(e.MouseButton.X, e.MouseButton.Y, &gameView);
 			Message msg;
 			msg.position.x = mousePosition.x;
 			msg.position.y = mousePosition.y;
-			for (Game::ObjectContainerType::const_iterator i = objects.begin(); i != objects.end(); ++i) {
-				msg.actors.push_back(i->first);
+			for (ObjectListType::const_iterator i = selectedObjects.begin(); i != selectedObjects.end(); ++i) {
+				msg.actors.push_back((*i)->getObject()->id);
 			}
 			connection->sendMessage(msg);
 		}
