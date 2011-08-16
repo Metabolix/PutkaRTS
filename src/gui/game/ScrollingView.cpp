@@ -69,6 +69,7 @@ void GUI::ScrollingView::update(sf::RenderWindow& window) {
 
 	const float keyboardScrollSpeed = 2 * halfSize.x * GUI::config.getDouble("gameUI.keyboardScrollSpeed", 1);
 	const float borderScrollSpeed = 2 * halfSize.x * GUI::config.getDouble("gameUI.borderScrollSpeed", 1);
+	const int borderScrollThreshold = GUI::config.getInt("gameUI.borderScrollThreshold", 5);
 	const bool reverseDrag = GUI::config.getBool("gameUI.reverseDrag", false);
 
 	// scroll map with arrow keys
@@ -83,17 +84,15 @@ void GUI::ScrollingView::update(sf::RenderWindow& window) {
 		Move(0, -keyboardScrollSpeed * time);
 	}
 
-	// mouse scrolling
-	int threshold = 5;
-
-	if (input.GetMouseX() < threshold) {
+	// border scrolling
+	if (input.GetMouseX() < borderScrollThreshold) {
 		Move(-borderScrollSpeed * time, 0);
-	} else if (input.GetMouseX() > (int) window.GetWidth() - threshold) {
+	} else if (input.GetMouseX() > (int) window.GetWidth() - borderScrollThreshold) {
 		Move(borderScrollSpeed * time, 0);
 	}
-	if (input.GetMouseY() < threshold) {
+	if (input.GetMouseY() < borderScrollThreshold) {
 		Move(0, -borderScrollSpeed * time);
-	} else if (input.GetMouseY() > (int) window.GetHeight() - threshold) {
+	} else if (input.GetMouseY() > (int) window.GetHeight() - borderScrollThreshold) {
 		Move(0, borderScrollSpeed * time);
 	}
 
