@@ -115,6 +115,15 @@ bool GUI::GameHandler::handleEvent(const sf::Event& e, const sf::RenderWindow& w
 		exit();
 		return true;
 	}
+
+	// Update mouse position.
+	if (e.Type == sf::Event::MouseButtonPressed || e.Type == sf::Event::MouseButtonReleased) {
+		mouse.update(window, gameView, e.MouseButton.X, e.MouseButton.Y);
+	} else if (e.Type == sf::Event::MouseMoved) {
+		mouse.update(window, gameView, e.MouseMove.X, e.MouseMove.Y);
+	}
+
+	// Handle buttons etc.
 	if (Container::handleEvent(e, window)) {
 		return true;
 	}
@@ -122,10 +131,8 @@ bool GUI::GameHandler::handleEvent(const sf::Event& e, const sf::RenderWindow& w
 	if (e.Type == sf::Event::MouseButtonPressed) {
 		if (e.MouseButton.Button == sf::Mouse::Right) {
 			//Testing movement
-			sf::Vector2f mousePosition = window.ConvertCoords(e.MouseButton.X, e.MouseButton.Y, &gameView);
 			Message msg;
-			msg.position.x = mousePosition.x;
-			msg.position.y = mousePosition.y;
+			msg.position = mouse.getPosition();
 			for (ObjectListType::const_iterator i = selectedObjects.begin(); i != selectedObjects.end(); ++i) {
 				msg.actors.push_back((*i)->getObject()->id);
 			}
@@ -139,8 +146,7 @@ bool GUI::GameHandler::handleEvent(const sf::Event& e, const sf::RenderWindow& w
 			if (!window.GetInput().IsKeyDown(sf::Key::LControl) && !window.GetInput().IsKeyDown(sf::Key::RControl)) {
 				selectedObjects.clear();
 			}
-			sf::Vector2f mousePosition = window.ConvertCoords(e.MouseButton.X, e.MouseButton.Y, &gameView);
-			ObjectListType objects = getObjectsWithinRange(mousePosition.x, mousePosition.y, 1);
+			ObjectListType objects = getObjectsWithinRange(mouse.getPosition(), Scalar<SIUnit::Length>(1));
 
 			if (objects.size() > 0) {
 				selectedObjects.push_back(*objects.begin());
@@ -157,6 +163,7 @@ void GUI::GameHandler::updateState(sf::RenderWindow& window) {
 
 	if (!settingsMenu) {
 		gameView.update(window);
+		mouse.update(window, gameView);
 	}
 }
 
@@ -188,14 +195,14 @@ boost::shared_ptr<GUI::GameObject> GUI::GameHandler::getGameObject(boost::shared
 	return i->second;
 }
 
-GUI::GameHandler::ObjectListType GUI::GameHandler::getObjectsWithinRange(float x, float y, float r) {
+GUI::GameHandler::ObjectListType GUI::GameHandler::getObjectsWithinRange(Vector2<SIUnit::Position> position, Scalar<SIUnit::Length> range) {
 	const Game& game = connection->getGame();
 	const Game::ObjectContainerType& objects = game.getObjects();
 
 	ObjectListType result;
 
 	for (Game::ObjectContainerType::const_iterator i = objects.begin(); i != objects.end(); ++i) {
-		if (i->second->isNear(Vector2<SIUnit::Position>(x, y), Scalar<SIUnit::Length>(r))) {
+		if (i->second->isNear(position, range)) {
 			result.push_back(getGameObject(i->second));
 		}
 	}

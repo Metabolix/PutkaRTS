@@ -34,6 +34,7 @@
 #include "gui/graphics/ImageCache.hpp"
 #include "gui/menu/SettingsMenu.hpp"
 #include "gui/game/ScrollingView.hpp"
+#include "gui/game/MouseTracker.hpp"
 
 namespace GUI {
 	class GameHandler;
@@ -54,6 +55,9 @@ class GUI::GameHandler: public Widget::Container {
 
 	/** Camera position and zoom */
 	GUI::ScrollingView gameView;
+
+	/** Mouse position */
+	MouseTracker mouse;
 
 	/** Used to break the main loop from within member functions. */
 	bool gameClosed;
@@ -77,7 +81,7 @@ class GUI::GameHandler: public Widget::Container {
 	boost::shared_ptr<GameObject> getGameObject(boost::shared_ptr<World::Object> object);
 
 	/* Get a list of the objects within the given range of the given coordinates. */
-	ObjectListType getObjectsWithinRange(float x, float y, float r);
+	ObjectListType getObjectsWithinRange(Vector2<SIUnit::Position> position, Scalar<SIUnit::Length> range);
 
 public:
 	/**
