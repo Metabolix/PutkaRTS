@@ -59,6 +59,9 @@ class GUI::GameHandler: public Widget::Container {
 	/** Mouse position */
 	MouseTracker mouse;
 
+	/** Positions where the mouse buttons went down. */
+	std::map<sf::Mouse::Button, Vector2<SIUnit::Position> > mouseDownPosition;
+
 	/** Used to break the main loop from within member functions. */
 	bool gameClosed;
 

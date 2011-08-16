@@ -128,19 +128,17 @@ bool GUI::GameHandler::handleEvent(const sf::Event& e, const sf::RenderWindow& w
 		return true;
 	}
 
+	// Store mouse position when button is pressed.
 	if (e.Type == sf::Event::MouseButtonPressed) {
-		if (e.MouseButton.Button == sf::Mouse::Right) {
-			//Testing movement
-			Message msg;
-			msg.position = mouse.getPosition();
-			for (ObjectListType::const_iterator i = selectedObjects.begin(); i != selectedObjects.end(); ++i) {
-				msg.actors.push_back((*i)->getObject()->id);
-			}
-			connection->sendMessage(msg);
-		}
+		mouseDownPosition[e.MouseButton.Button] = mouse.getPosition();
 	}
 
-	if (e.Type == sf::Event::MouseButtonReleased) {
+	// Handle release only if the press was stored.
+	if (e.Type == sf::Event::MouseButtonReleased && mouseDownPosition.find(e.MouseButton.Button) != mouseDownPosition.end()) {
+		// Extract and erase the remembered position.
+		Vector2<SIUnit::Position> oldPosition = mouseDownPosition[e.MouseButton.Button];
+		mouseDownPosition.erase(e.MouseButton.Button);
+
 		if (e.MouseButton.Button == sf::Mouse::Left) {
 			// Select units (add to old selection if holding ctrl).
 			if (!window.GetInput().IsKeyDown(sf::Key::LControl) && !window.GetInput().IsKeyDown(sf::Key::RControl)) {
@@ -152,6 +150,17 @@ bool GUI::GameHandler::handleEvent(const sf::Event& e, const sf::RenderWindow& w
 				selectedObjects.push_back(*objects.begin());
 				return true;
 			}
+		}
+		// Command units only if the mouse hasn't moved much.
+		if (e.MouseButton.Button == sf::Mouse::Right && (mouse.getPosition() - oldPosition).pow2() < 0.2) {
+			//Testing movement
+			Message msg;
+			msg.position = mouse.getPosition();
+			for (ObjectListType::const_iterator i = selectedObjects.begin(); i != selectedObjects.end(); ++i) {
+				msg.actors.push_back((*i)->getObject()->id);
+			}
+			connection->sendMessage(msg);
+			return true;
 		}
 	}
 
