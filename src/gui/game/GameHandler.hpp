@@ -68,22 +68,32 @@ class GUI::GameHandler: public Widget::Container {
 	/** The settings menu, if opened. */
 	boost::shared_ptr<Menu::SettingsMenu> settingsMenu;
 
-	/* Typedef for listing objects. */
+	/** Container type for lists of objects. */
 	typedef std::vector<boost::shared_ptr<GameObject> > ObjectListType;
 
 	/** Container for keeping track of selected objects */
 	ObjectListType selectedObjects;
 
-	/* Typedef for the GameObject list. */
+	/** Container type for mapping logical objects to GUI objects. */
 	typedef std::map<boost::shared_ptr<World::Object>, boost::shared_ptr<GameObject> > GameObjectListType;
 
-	/* Map to keep track of GameObjects. */
+	/** Map to keep track of GameObjects. */
 	GameObjectListType gameObjects;
 
-	/* Get a GameObject for the given object. */
+	/**
+	 * Get a GameObject for the given object.
+	 *
+	 * @param object The logical object.
+	 * @return The GUI object.
+	 */
 	boost::shared_ptr<GameObject> getGameObject(boost::shared_ptr<World::Object> object);
 
-	/* Get a list of the objects within the given range of the given coordinates. */
+	/**
+	 * Get a list of the objects within the given range of the given coordinates.
+	 *
+	 * @param position The position to check.
+	 * @param range The maximum range to accept.
+	 */
 	ObjectListType getObjectsWithinRange(Vector2<SIUnit::Position> position, Scalar<SIUnit::Length> range);
 
 public:
