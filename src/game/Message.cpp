@@ -23,23 +23,23 @@
 #include "util/Serializer.hpp"
 #include "util/Deserializer.hpp"
 
-Message::Message(std::string data) {
+Game::Message::Message(std::string data) {
 	Deserializer input(data);
 	input.get(timestamp);
 	input.get(position);
-	World::Object::IdType id;
+	Object::IdType id;
 	while (input.get(id), id != 0) {
 		actors.push_back(id);
 	}
 }
 
-std::string Message::serialize() const {
+std::string Game::Message::serialize() const {
 	Serializer output;
 	output.put(timestamp);
 	output.put(position);
-	for (std::list<World::Object::IdType>::const_iterator i = actors.begin(); i != actors.end(); ++i) {
+	for (std::list<Object::IdType>::const_iterator i = actors.begin(); i != actors.end(); ++i) {
 		output.put(*i);
 	}
-	output.put(World::Object::IdType(0));
+	output.put(Object::IdType(0));
 	return output.getData();
 }

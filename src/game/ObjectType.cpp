@@ -21,7 +21,7 @@
 
 #include "ObjectType.hpp"
 
-World::ObjectType::ObjectType(std::istream& stream):
+Game::ObjectType::ObjectType(std::istream& stream):
 	animationSet("dummy"),
 	name("dummy"),
 	maxHitPoints(0) {

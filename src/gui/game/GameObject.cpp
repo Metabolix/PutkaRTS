@@ -21,7 +21,7 @@
 
 #include "GameObject.hpp"
 
-GUI::GameObject::GameObject(boost::shared_ptr<const World::Object> object_):
+GUI::GameObject::GameObject(boost::shared_ptr<const Game::Object> object_):
 	object(object_) {
 }
 

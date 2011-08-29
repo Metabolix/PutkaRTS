@@ -19,8 +19,8 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PUTKARTS_Game_HPP
-#define PUTKARTS_Game_HPP
+#ifndef PUTKARTS_Game_Game_HPP
+#define PUTKARTS_Game_Game_HPP
 
 #include "util/Scalar.hpp"
 #include "Message.hpp"
@@ -33,16 +33,20 @@
 
 #include <boost/function.hpp>
 
+namespace Game {
+	class Game;
+}
+
 /**
  * The root of all game logic.
  */
-class Game {
+class Game::Game {
 public:
 	friend class Map;
 	friend class ObjectAction;
 
 	/** Object type for storing the game's objects. */
-	typedef std::map<unsigned int, boost::shared_ptr<World::Object> > ObjectContainerType;
+	typedef std::map<Object::IdType, boost::shared_ptr<Object> > ObjectContainerType;
 
 	/** Type for specifying an external callback for message handling. */
 	typedef boost::function<void(const Message&)> MessageCallbackType;
@@ -123,7 +127,7 @@ protected:
 	 *
 	 * @param object Object to add.
 	 */
-	void insertObject(boost::shared_ptr<World::Object> object);
+	void insertObject(boost::shared_ptr<Object> object);
 };
 
 #endif

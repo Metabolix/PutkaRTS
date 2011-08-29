@@ -26,8 +26,8 @@
 #include <stdexcept>
 #include <boost/shared_ptr.hpp>
 
-#include "Game.hpp"
-#include "Message.hpp"
+#include "game/Game.hpp"
+#include "game/Message.hpp"
 
 /**
  * Base class for local and remote game connections.
@@ -35,14 +35,14 @@
 class GameConnection {
 protected:
 	/** The current game. */
-	boost::shared_ptr<Game> game;
+	boost::shared_ptr<Game::Game> game;
 public:
 	/**
 	 * Constructor.
 	 *
 	 * @param game_ The current game instance.
 	 */
-	GameConnection(boost::shared_ptr<Game> game_): game(game_) {
+	GameConnection(boost::shared_ptr<Game::Game> game_): game(game_) {
 		if (!game.get()) {
 			throw std::logic_error("GameConnection: game is NULL!");
 		}
@@ -58,7 +58,7 @@ public:
 	/**
 	 * Get the game object.
 	 */
-	const Game& getGame() const {
+	const Game::Game& getGame() const {
 		return *game;
 	}
 
@@ -67,7 +67,7 @@ public:
 	 *
 	 * @param message The message to send.
 	 */
-	virtual void sendMessage(const Message& message) = 0;
+	virtual void sendMessage(const Game::Message& message) = 0;
 
 	/**
 	 * Run the game up to this moment.

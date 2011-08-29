@@ -19,18 +19,17 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PUTKARTS_World_Object_HPP
-#define PUTKARTS_World_Object_HPP
+#ifndef PUTKARTS_Game_Object_HPP
+#define PUTKARTS_Game_Object_HPP
 
 #include "util/Vector2.hpp"
 #include "ObjectType.hpp"
 
 #include <boost/shared_ptr.hpp>
 
-class Game;
-class Message;
-
-namespace World {
+namespace Game {
+	class Game;
+	class Message;
 	class Object;
 	class ObjectAction;
 }
@@ -38,9 +37,9 @@ namespace World {
 /**
  * This class describes world object.
  */
-class World::Object {
+class Game::Object {
 public:
-	friend class World::ObjectAction;
+	friend class ObjectAction;
 	typedef unsigned int IdType;
 
 	/** Id of the object. */

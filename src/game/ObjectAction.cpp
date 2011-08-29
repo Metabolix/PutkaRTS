@@ -22,12 +22,12 @@
 #include "ObjectAction.hpp"
 #include "Object.hpp"
 
-World::ObjectAction::ObjectAction(std::istream& stream):
+Game::ObjectAction::ObjectAction(std::istream& stream):
 	description("dummy") {
 	// TODO: Load action data from stream.
 }
 
-bool World::ObjectAction::runAction(boost::shared_ptr<World::Object> actor, boost::shared_ptr<World::Object> target) {
+bool Game::ObjectAction::runAction(boost::shared_ptr<Object> actor, boost::shared_ptr<Object> target) {
 	// TODO: Run the action.
 	return false;
 }

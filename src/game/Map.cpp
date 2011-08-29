@@ -32,7 +32,7 @@
 #include <sstream>
 #include <boost/algorithm/string.hpp>
 
-void Map::loadInfo(std::istream& file) {
+void Game::Map::loadInfo(std::istream& file) {
 	std::string line;
 	std::stringstream buffer;
 	while (std::getline(file, line)) {
@@ -46,7 +46,7 @@ void Map::loadInfo(std::istream& file) {
 	info.load(buffer);
 }
 
-void Map::loadTileInfo(std::istream& file) {
+void Game::Map::loadTileInfo(std::istream& file) {
 	tileInfoMap.clear();
 	std::string line;
 	while (std::getline(file, line)) {
@@ -68,7 +68,7 @@ void Map::loadTileInfo(std::istream& file) {
 	}
 }
 
-void Map::loadTileMap(std::istream& file) {
+void Game::Map::loadTileMap(std::istream& file) {
 	tileMap.clear();
 	std::string line;
 	while (std::getline(file, line)) {
@@ -93,7 +93,7 @@ void Map::loadTileMap(std::istream& file) {
 	}
 }
 
-void Map::load(const std::string& directory_)
+void Game::Map::load(const std::string& directory_)
 try {
 	directory = directory_;
 	std::string filename = Path::findDataPath(directory, "data.txt");
@@ -121,14 +121,14 @@ try {
 	throw;
 }
 
-void Map::createInitialObjects(Game& game) const {
+void Game::Map::createInitialObjects(Game& game) const {
 	// TODO: Create starting objects from map data.
 
 	// Create few objects and add them to game for testing.
 	std::string objectTypeName = "dummy";
 	Vector2<SIUnit::Position> pos(10, 10);
 	for (int i = 0; i < 3; ++i) {
-		boost::shared_ptr<World::Object> testObject(new World::Object(techTree->getObjectType(objectTypeName), pos));
+		boost::shared_ptr<Object> testObject(new Object(techTree->getObjectType(objectTypeName), pos));
 		game.insertObject(testObject);
 		pos += pos;
 	}

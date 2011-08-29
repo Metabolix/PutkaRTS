@@ -23,7 +23,7 @@
 
 #include <stdexcept>
 
-Game::Game(boost::shared_ptr<Map> map_):
+Game::Game::Game(boost::shared_ptr<Map> map_):
 	map(map_) {
 	if (!map.get()) {
 		throw std::logic_error("Game::Game: Map is NULL!");
@@ -32,24 +32,24 @@ Game::Game(boost::shared_ptr<Map> map_):
 	map->createInitialObjects(*this);
 }
 
-void Game::runUntil(Scalar<SIUnit::Time> time, MessageCallbackType messageCallback) {
+void Game::Game::runUntil(Scalar<SIUnit::Time> time, MessageCallbackType messageCallback) {
 	const Scalar<SIUnit::Time> dt = 1.0 / 32;
 	while (clock + dt < time) {
 		runStep(dt, messageCallback);
 	}
 }
 
-void Game::insertMessage(const Message& message) {
+void Game::Game::insertMessage(const Message& message) {
 	messages.push(message);
 }
 
-void Game::insertObject(boost::shared_ptr<World::Object> object) {
+void Game::Game::insertObject(boost::shared_ptr<Object> object) {
 	//  FIXME: This might overflow in long games.
 	object->id = 1 + (objects.empty() ? 0 : objects.rbegin()->first);
 	objects.insert(std::make_pair(object->id, object));
 }
 
-void Game::runStep(Scalar<SIUnit::Time> dt, MessageCallbackType messageCallback) {
+void Game::Game::runStep(Scalar<SIUnit::Time> dt, MessageCallbackType messageCallback) {
 	clock += dt;
 	handleMessages(messageCallback);
 
@@ -63,7 +63,7 @@ void Game::runStep(Scalar<SIUnit::Time> dt, MessageCallbackType messageCallback)
 	}
 }
 
-bool Game::handleMessage(Message& message) {
+bool Game::Game::handleMessage(Message& message) {
 	// TODO: Check that the message is valid!
 	bool notValid = false;
 	if (notValid) {
@@ -71,7 +71,7 @@ bool Game::handleMessage(Message& message) {
 	}
 
 	// Remove actors that do not exist.
-	for (std::list<World::Object::IdType>::iterator j, i = message.actors.begin(); i != message.actors.end();) {
+	for (std::list<Object::IdType>::iterator j, i = message.actors.begin(); i != message.actors.end();) {
 		j = i++;
 		if (objects.find(*j) == objects.end()) {
 			i = message.actors.erase(j);
@@ -79,13 +79,13 @@ bool Game::handleMessage(Message& message) {
 	}
 
 	// TODO: Handle the message properly!
-	for (std::list<World::Object::IdType>::const_iterator i = message.actors.begin(); i != message.actors.end(); ++i) {
+	for (std::list<Object::IdType>::const_iterator i = message.actors.begin(); i != message.actors.end(); ++i) {
 		objects[*i]->handleMessage(message, *this);
 	}
 	return true;
 }
 
-void Game::handleMessages(MessageCallbackType messageCallback) {
+void Game::Game::handleMessages(MessageCallbackType messageCallback) {
 	while (!messages.empty() && messages.top().timestamp <= clock) {
 		Message message(messages.top());
 		messages.pop();

@@ -19,8 +19,8 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PUTKARTS_Message_HPP
-#define PUTKARTS_Message_HPP
+#ifndef PUTKARTS_Game_Message_HPP
+#define PUTKARTS_Game_Message_HPP
 
 #include "util/Scalar.hpp"
 #include "util/Vector2.hpp"
@@ -29,10 +29,14 @@
 
 #include <list>
 
+namespace Game {
+	class Message;
+}
+
 /**
  * This class should describe any action in the game, most importantly moving units.
  */
-class Message {
+class Game::Message {
 public:
 	/** The timestamp for handling the message. */
 	Scalar<SIUnit::Time> timestamp;
@@ -41,7 +45,7 @@ public:
 	Vector2<SIUnit::Position> position;
 
 	/** The actor objects. */
-	std::list<World::Object::IdType> actors;
+	std::list<Object::IdType> actors;
 
 	/**
 	 * Default constructor.

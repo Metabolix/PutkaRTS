@@ -37,7 +37,7 @@ namespace GUI {
  */
 class GUI::GameObject {
 	/** The real object in the game. */
-	boost::shared_ptr<const World::Object> object;
+	boost::shared_ptr<const Game::Object> object;
 
 public:
 	/**
@@ -45,10 +45,10 @@ public:
 	 *
 	 * @param object The real object in the game.
 	 */
-	GameObject(boost::shared_ptr<const World::Object> object);
+	GameObject(boost::shared_ptr<const Game::Object> object);
 
 	/* Access the object. */
-	const boost::shared_ptr<const World::Object>& getObject() const {
+	const boost::shared_ptr<const Game::Object>& getObject() const {
 		return object;
 	}
 

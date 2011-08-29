@@ -23,12 +23,12 @@
 
 #include <fstream>
 
-void World::TechTree::load(const std::string& directory) {
+void Game::TechTree::load(const std::string& directory) {
 	// TODO: Load ObjectTypes and ObjectActions from tech tree file.
 
 	// Generate one object type for testing.
 	std::ifstream stream;
 	std::string objectTypeName = "dummy";
-	boost::shared_ptr<World::ObjectType> testObjectType(new World::ObjectType(stream));
+	boost::shared_ptr<ObjectType> testObjectType(new ObjectType(stream));
 	objectTypes.insert(std::make_pair(objectTypeName, testObjectType));
 }

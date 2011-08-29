@@ -19,13 +19,14 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PUTKARTS_World_ObjectAction_HPP
-#define PUTKARTS_World_ObjectAction_HPP
+#ifndef PUTKARTS_Game_ObjectAction_HPP
+#define PUTKARTS_Game_ObjectAction_HPP
 
 #include <iostream>
 #include <boost/shared_ptr.hpp>
 
-namespace World {
+namespace Game {
+	class Game;
 	class Object;
 	class ObjectAction;
 }
@@ -33,7 +34,7 @@ namespace World {
 /**
  * This class describes object action.
  */
-class World::ObjectAction {
+class Game::ObjectAction {
 	/** Description for action. */
 	std::string description;
 
@@ -50,7 +51,7 @@ public:
 	 * @param target Target of the action.
 	 * @return Whether it was possible to run the action.
 	 */
-	bool runAction(boost::shared_ptr<World::Object> actor, boost::shared_ptr<World::Object> target);
+	bool runAction(boost::shared_ptr<Object> actor, boost::shared_ptr<Object> target);
 };
 
 #endif

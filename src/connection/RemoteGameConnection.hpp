@@ -24,7 +24,7 @@
 
 #include <string>
 
-#include "Message.hpp"
+#include "game/Message.hpp"
 #include "GameConnection.hpp"
 
 /**
@@ -36,7 +36,7 @@ public:
 	/**
 	 * Constructor.
 	 */
-	RemoteGameConnection(boost::shared_ptr<Game> game_):
+	RemoteGameConnection(boost::shared_ptr<Game::Game> game_):
 		GameConnection(game_) {
 	}
 
@@ -45,7 +45,7 @@ public:
 	 *
 	 * @param message The message to send.
 	 */
-	void sendMessage(const Message& message) {
+	void sendMessage(const Game::Message& message) {
 		// TODO: send the message to the server!
 	}
 
@@ -53,8 +53,8 @@ public:
 	 * Run the game up to this moment; this includes reading messages from the server.
 	 */
 	void runUntilNow() {
-		Message message;
-		// TODO: read messages from somewhere and feed them to Game::instance->addMessage(message)!
+		Game::Message message;
+		// TODO: read messages from somewhere and feed them to game->addMessage(message)!
 		// TODO: do not run until message.time, that won't be smooth!
 		game->runUntil(message.timestamp);
 	}

@@ -19,20 +19,20 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PUTKARTS_World_ObjectType_HPP
-#define PUTKARTS_World_ObjectType_HPP
+#ifndef PUTKARTS_Game_ObjectType_HPP
+#define PUTKARTS_Game_ObjectType_HPP
 
 #include <string>
 #include <iostream>
 
-namespace World {
+namespace Game {
 	class ObjectType;
 }
 
 /**
  * This class describes object type.
  */
-class World::ObjectType {
+class Game::ObjectType {
 	/** Object type's friends */
 	friend class ObjectAction;
 

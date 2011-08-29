@@ -24,7 +24,7 @@
 
 #include <string>
 
-#include "Message.hpp"
+#include "game/Message.hpp"
 #include "GameConnection.hpp"
 
 /**
@@ -37,7 +37,7 @@ public:
 	/**
 	 * Constructor.
 	 */
-	LocalGameConnection(boost::shared_ptr<Game> game_):
+	LocalGameConnection(boost::shared_ptr<Game::Game> game_):
 		GameConnection(game_) {
 	}
 
@@ -46,7 +46,7 @@ public:
 	 *
 	 * @param message The message to send; this implementation passes it straight to the current Game.
 	 */
-	void sendMessage(const Message& message) {
+	void sendMessage(const Game::Message& message) {
 		game->insertMessage(message);
 	}
 

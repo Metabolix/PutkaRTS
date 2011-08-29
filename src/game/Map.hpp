@@ -21,8 +21,8 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PUTKARTS_Map_HPP
-#define PUTKARTS_Map_HPP
+#ifndef PUTKARTS_Game_Map_HPP
+#define PUTKARTS_Game_Map_HPP
 
 #include <string>
 #include <map>
@@ -32,12 +32,15 @@
 #include "util/Configuration.hpp"
 #include "TechTree.hpp"
 
-class Game;
+namespace Game {
+	class Game;
+	class Map;
+}
 
 /**
  * This class describes the map format
  */
-class Map {
+class Game::Map {
 public:
 	/**
 	 * Type of size used in public methods
@@ -78,7 +81,7 @@ private:
 	/**
 	 * Map's tech tree.
 	 */
-	boost::shared_ptr<World::TechTree> techTree;
+	boost::shared_ptr<TechTree> techTree;
 
 	/**
 	 * Load map info (name and such).
@@ -118,7 +121,7 @@ public:
 	 */
 	Map(const std::string& directory) {
 		load(directory);
-		techTree = boost::shared_ptr<World::TechTree>(new World::TechTree("dummy"));
+		techTree = boost::shared_ptr<TechTree>(new TechTree("dummy"));
 	}
 
 	/**
@@ -167,7 +170,7 @@ public:
 	/**
 	 * Get map's tech tree.
 	 */
-	World::TechTree& getTechTree() const {
+	TechTree& getTechTree() const {
 		return *techTree;
 	}
 

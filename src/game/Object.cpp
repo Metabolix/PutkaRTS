@@ -22,7 +22,7 @@
 #include "Object.hpp"
 #include "Message.hpp"
 
-World::Object::Object(const boost::shared_ptr<const ObjectType> objectType_, const Vector2<SIUnit::Position>& position_):
+Game::Object::Object(const boost::shared_ptr<const ObjectType> objectType_, const Vector2<SIUnit::Position>& position_):
 	id(0),
 	objectType(objectType_),
 	position(position_),
@@ -32,7 +32,7 @@ World::Object::Object(const boost::shared_ptr<const ObjectType> objectType_, con
 	experience(0) {
 }
 
-void World::Object::setHitPoints(int hitPoints_) {
+void Game::Object::setHitPoints(int hitPoints_) {
 	hitPoints = hitPoints_;
 	if (hitPoints > objectType->getMaxHitPoints()) {
 		hitPoints = objectType->getMaxHitPoints();
@@ -41,19 +41,19 @@ void World::Object::setHitPoints(int hitPoints_) {
 	}
 }
 
-void World::Object::setExperience(int experience_) {
+void Game::Object::setExperience(int experience_) {
 	experience = experience_;
 	if (experience < 0) {
 		experience = 0;
 	}
 }
 
-void World::Object::handleMessage(const Message& message, const Game& game) {
+void Game::Object::handleMessage(const Message& message, const Game& game) {
 	// TODO: Handle the message properly!
 	targetPosition = message.position;
 }
 
-bool World::Object::runStep(Scalar<SIUnit::Time> dt, Game& game) {
+bool Game::Object::runStep(Scalar<SIUnit::Time> dt, Game& game) {
 	// TODO: Handle whatever the object is doing.
 	// TODO: Check collisions before moving!
 	if (position != targetPosition) {

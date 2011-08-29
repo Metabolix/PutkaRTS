@@ -19,8 +19,8 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PUTKARTS_World_TechTree_HPP
-#define PUTKARTS_World_TechTree_HPP
+#ifndef PUTKARTS_Game_TechTree_HPP
+#define PUTKARTS_Game_TechTree_HPP
 
 #include "ObjectAction.hpp"
 #include "ObjectType.hpp"
@@ -29,19 +29,19 @@
 #include <stdexcept>
 #include <boost/shared_ptr.hpp>
 
-namespace World {
+namespace Game {
 	class TechTree;
 }
 
 /**
  * This class describes tech tree.
  */
-class World::TechTree {
+class Game::TechTree {
 	/** All object actions in the tech tree. */
-	std::map<std::string, boost::shared_ptr<World::ObjectAction> > objectActions;
+	std::map<std::string, boost::shared_ptr<ObjectAction> > objectActions;
 
 	/** All object types in the tech tree. */
-	std::map<std::string, boost::shared_ptr<World::ObjectType> > objectTypes;
+	std::map<std::string, boost::shared_ptr<ObjectType> > objectTypes;
 public:
 	/**
 	 * Default constructor.
@@ -73,10 +73,10 @@ public:
 	 * @return Object action.
 	 * @return std::logic_error, if object action was not found.
 	 */
-	boost::shared_ptr<const World::ObjectAction> getObjectAction(const std::string& action) const {
-		std::map<std::string, boost::shared_ptr<World::ObjectAction> >::const_iterator iterator = objectActions.find(action);
+	boost::shared_ptr<const ObjectAction> getObjectAction(const std::string& action) const {
+		std::map<std::string, boost::shared_ptr<ObjectAction> >::const_iterator iterator = objectActions.find(action);
 		if (iterator == objectActions.end()) {
-			throw std::logic_error("World::TechTree::getObjectAction: action not found!");
+			throw std::logic_error("TechTree::getObjectAction: action not found!");
 		}
 		return iterator->second;
 	}
@@ -88,10 +88,10 @@ public:
 	 * @return Object type.
 	 * @throw std::logic_error, if object type was not found.
 	 */
-	boost::shared_ptr<const World::ObjectType> getObjectType(const std::string& type) const {
-		std::map<std::string, boost::shared_ptr<World::ObjectType> >::const_iterator iterator = objectTypes.find(type);
+	boost::shared_ptr<const ObjectType> getObjectType(const std::string& type) const {
+		std::map<std::string, boost::shared_ptr<ObjectType> >::const_iterator iterator = objectTypes.find(type);
 		if (iterator == objectTypes.end()) {
-			throw std::logic_error("World::TechTree::getObjectType: type not found!");
+			throw std::logic_error("TechTree::getObjectType: type not found!");
 		}
 		return iterator->second;
 	}
@@ -104,7 +104,7 @@ public:
 	 * @param name Object type's name.
 	 * @param objectType Object type to add.
 	 */
-	void insertObjectType(const std::string& name, const boost::shared_ptr<World::ObjectType>& objectType) {
+	void insertObjectType(const std::string& name, const boost::shared_ptr<ObjectType>& objectType) {
 		objectTypes[name] = objectType;
 	}
 
@@ -116,7 +116,7 @@ public:
 	 * @param name Object action's name.
 	 * @param objectAction Object action to add.
 	 */
-	void insertObjectAction(const std::string& name, const boost::shared_ptr<World::ObjectAction>& objectAction) {
+	void insertObjectAction(const std::string& name, const boost::shared_ptr<ObjectAction>& objectAction) {
 		objectActions[name] = objectAction;
 	}
 
@@ -126,7 +126,7 @@ public:
 	 * @param name Object type's name.
 	 */
 	void eraseObjectType(const std::string& name) {
-		std::map<std::string, boost::shared_ptr<World::ObjectType> >::iterator iterator = objectTypes.find(name);
+		std::map<std::string, boost::shared_ptr<ObjectType> >::iterator iterator = objectTypes.find(name);
 		if (iterator != objectTypes.end()) {
 			objectTypes.erase(iterator);
 		}
@@ -138,7 +138,7 @@ public:
 	 * @param name Object action's name.
 	 */
 	void eraseObjectAction(const std::string& name) {
-		std::map<std::string, boost::shared_ptr<World::ObjectAction> >::iterator iterator = objectActions.find(name);
+		std::map<std::string, boost::shared_ptr<ObjectAction> >::iterator iterator = objectActions.find(name);
 		if (iterator != objectActions.end()) {
 			objectActions.erase(iterator);
 		}

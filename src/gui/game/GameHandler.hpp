@@ -23,7 +23,7 @@
 #ifndef PUTKARTS_GUI_GameHandler_HPP
 #define PUTKARTS_GUI_GameHandler_HPP
 
-#include "game/GameConnection.hpp"
+#include "connection/GameConnection.hpp"
 
 #include <SFML/Graphics.hpp>
 #include <boost/shared_ptr.hpp>
@@ -75,7 +75,7 @@ class GUI::GameHandler: public Widget::Container {
 	ObjectListType selectedObjects;
 
 	/** Container type for mapping logical objects to GUI objects. */
-	typedef std::map<boost::shared_ptr<World::Object>, boost::shared_ptr<GameObject> > GameObjectListType;
+	typedef std::map<boost::shared_ptr<Game::Object>, boost::shared_ptr<GameObject> > GameObjectListType;
 
 	/** Map to keep track of GameObjects. */
 	GameObjectListType gameObjects;
@@ -86,7 +86,7 @@ class GUI::GameHandler: public Widget::Container {
 	 * @param object The logical object.
 	 * @return The GUI object.
 	 */
-	boost::shared_ptr<GameObject> getGameObject(boost::shared_ptr<World::Object> object);
+	boost::shared_ptr<GameObject> getGameObject(boost::shared_ptr<Game::Object> object);
 
 	/**
 	 * Get a list of the objects within the given range of the given coordinates.
