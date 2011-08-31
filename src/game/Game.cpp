@@ -96,3 +96,8 @@ void Game::Game::handleMessages(MessageCallbackType messageCallback) {
 		}
 	}
 }
+
+void Game::Game::insertPlayer(boost::shared_ptr<Player> player) {
+	player->id = 1 + (players.empty() ? 0 : players.rbegin()->first);
+	players.insert(std::make_pair(player->id, player));
+}

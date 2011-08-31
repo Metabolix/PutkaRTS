@@ -135,6 +135,13 @@ protected:
 	 * @param object Object to add.
 	 */
 	void insertObject(boost::shared_ptr<Object> object);
+
+	/**
+	 * Add new player.
+	 *
+	 * @param player Pointer to the player object to be added.
+	 */
+	void insertPlayer(boost::shared_ptr<Player> player);
 };
 
 #endif
