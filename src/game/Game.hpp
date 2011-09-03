@@ -26,6 +26,7 @@
 #include "Message.hpp"
 #include "Map.hpp"
 #include "Object.hpp"
+#include "Player.hpp"
 
 #include <queue>
 #include <map>
@@ -45,6 +46,9 @@ public:
 	friend class Map;
 	friend class ObjectAction;
 
+	/** Type for player container */
+	typedef std::map<Player::IdType, boost::shared_ptr<Player> > PlayerContainerType;
+
 	/** Object type for storing the game's objects. */
 	typedef std::map<Object::IdType, boost::shared_ptr<Object> > ObjectContainerType;
 
@@ -59,6 +63,9 @@ private:
 
 	/** The map on which the game is played. */
 	boost::shared_ptr<Map> map;
+
+	/** Players. */
+	PlayerContainerType players;
 
 	/** Objects in the game */
 	ObjectContainerType objects;
