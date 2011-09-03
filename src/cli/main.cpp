@@ -20,14 +20,16 @@
  */
 
 #include "ProgramInfo.hpp"
+#include "util/Path.hpp"
 #include <iostream>
 #include <stdexcept>
 
 /**
  * Main function for the command-line interface.
  */
-int main()
+int main(int argc, char** argv)
 try {
+	Path::init(argc ? argv[0] : "./bin/unknown.exe");
 	std::string title = ProgramInfo::name + " (version " + ProgramInfo::version + ", CLI)";
 	std::cout << title << std::endl;
 	return 0;
