@@ -137,7 +137,7 @@ bool GUI::GameHandler::handleEvent(const sf::Event& e, const sf::RenderWindow& w
 			if (!window.GetInput().IsKeyDown(sf::Key::LControl) && !window.GetInput().IsKeyDown(sf::Key::RControl)) {
 				selectedObjects.clear();
 			}
-			ObjectSetType objects = getObjectsWithinRange(mouse.getPosition(), Scalar<SIUnit::Length>(1));
+			ObjectSetType objects = getObjectsWithinRange(mouse.getPosition(), Scalar<SIUnit::Length>(0.15));
 
 			if (objects.size() > 0) {
 				selectedObjects.insert(*objects.begin());
