@@ -22,9 +22,10 @@
 #include "Object.hpp"
 #include "Message.hpp"
 
-Game::Object::Object(const boost::shared_ptr<const ObjectType> objectType_, const Vector2<SIUnit::Position>& position_):
+Game::Object::Object(const boost::shared_ptr<const ObjectType> objectType_, boost::shared_ptr<const Player> owner_, const Vector2<SIUnit::Position>& position_):
 	id(0),
 	objectType(objectType_),
+	owner(owner_),
 	position(position_),
 	direction(0),
 	targetPosition(position_),

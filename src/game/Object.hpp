@@ -24,6 +24,7 @@
 
 #include "util/Vector2.hpp"
 #include "ObjectType.hpp"
+#include "Player.hpp"
 
 #include <boost/shared_ptr.hpp>
 
@@ -49,6 +50,9 @@ private:
 	/** Pointer to object's type. */
 	boost::shared_ptr<const ObjectType> objectType;
 
+	/** Object's owner. */
+	boost::shared_ptr<const Player> owner;
+
 	/** Object's position. */
 	Vector2<SIUnit::Position> position;
 
@@ -69,9 +73,10 @@ public:
 	 * Constructor.
 	 *
 	 * @param objectType Object's type.
+	 * @param owner Object's owner.
 	 * @param position Object's starting position.
 	 */
-	Object(const boost::shared_ptr<const ObjectType> objectType, const Vector2<SIUnit::Position>& position);
+	Object(const boost::shared_ptr<const ObjectType> objectType, boost::shared_ptr<const Player> owner, const Vector2<SIUnit::Position>& position);
 
 	/**
 	 * Return object's Object type.
@@ -127,6 +132,15 @@ public:
 	 */
 	bool isNear(const Vector2<SIUnit::Position> &pos, const Scalar<SIUnit::Length> &range) const {
 		return (position - pos).pow2() < range.pow2();
+	}
+
+	/**
+	 * Get the owner of this object.
+	 *
+	 * @return Returns a pointer to the owner of this object.
+	 */
+	const boost::shared_ptr<const Player> getOwner() const {
+		return owner;
 	}
 
 	/**
