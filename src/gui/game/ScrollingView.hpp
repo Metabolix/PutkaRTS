@@ -40,7 +40,7 @@ class GUI::ScrollingView: public sf::View {
 	const std::size_t pixelsPerUnit;
 
 	/** Is map being dragged with mouse? */
-	bool mouseDrag;
+	bool mouseDragging;
 
 	/** Window coordinates for drag origin */
 	sf::Vector2f dragOrigin;

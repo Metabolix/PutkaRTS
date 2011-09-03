@@ -27,7 +27,7 @@
 GUI::ScrollingView::ScrollingView(sf::RenderWindow& window, sf::Vector2f contentSize_, std::size_t pixelsPerUnit_):
 	contentSize(contentSize_),
 	pixelsPerUnit(pixelsPerUnit_),
-	mouseDrag(false) {
+	mouseDragging(false) {
 	reset(window);
 }
 
@@ -71,6 +71,7 @@ void GUI::ScrollingView::update(sf::RenderWindow& window) {
 	const float borderScrollSpeed = 2 * halfSize.x * GUI::config.getDouble("gameUI.borderScrollSpeed", 1);
 	const int borderScrollThreshold = GUI::config.getInt("gameUI.borderScrollThreshold", 5);
 	const bool reverseDrag = GUI::config.getBool("gameUI.reverseDrag", false);
+	const bool grabCursorOnDrag = GUI::config.getBool("gameUI.grabCursorOnDrag", true);
 
 	// scroll map with arrow keys
 	if (input.IsKeyDown(sf::Key::Right)) {
@@ -85,20 +86,24 @@ void GUI::ScrollingView::update(sf::RenderWindow& window) {
 	}
 
 	// border scrolling
-	if (input.GetMouseX() < borderScrollThreshold) {
-		Move(-borderScrollSpeed * time, 0);
-	} else if (input.GetMouseX() > (int) window.GetWidth() - borderScrollThreshold) {
-		Move(borderScrollSpeed * time, 0);
-	}
-	if (input.GetMouseY() < borderScrollThreshold) {
-		Move(0, -borderScrollSpeed * time);
-	} else if (input.GetMouseY() > (int) window.GetHeight() - borderScrollThreshold) {
-		Move(0, borderScrollSpeed * time);
+	if (!mouseDragging) {
+		if (input.GetMouseX() < borderScrollThreshold) {
+			Move(-borderScrollSpeed * time, 0);
+		} else if (input.GetMouseX() > (int) window.GetWidth() - borderScrollThreshold) {
+			Move(borderScrollSpeed * time, 0);
+		}
+		if (input.GetMouseY() < borderScrollThreshold) {
+			Move(0, -borderScrollSpeed * time);
+		} else if (input.GetMouseY() > (int) window.GetHeight() - borderScrollThreshold) {
+			Move(0, borderScrollSpeed * time);
+		}
 	}
 
 	// drag with right mouse
-	if (input.IsMouseButtonDown(sf::Mouse::Right)) {
-		if (mouseDrag) {
+	if (!input.IsMouseButtonDown(sf::Mouse::Right)) {
+		mouseDragging = false;
+	} else {
+		if (mouseDragging) {
 			sf::Vector2f mapDragOrigin = window.ConvertCoords(dragOrigin.x, dragOrigin.y, this);
 			sf::Vector2f mapDragDestination = window.ConvertCoords(input.GetMouseX(), input.GetMouseY(), this);
 			sf::Vector2f change(mapDragOrigin - mapDragDestination);
@@ -107,14 +112,12 @@ void GUI::ScrollingView::update(sf::RenderWindow& window) {
 			}
 			Move(change);
 		}
-		if (mouseDrag) {
+		if (mouseDragging && grabCursorOnDrag) {
 			window.SetCursorPosition(dragOrigin.x, dragOrigin.y);
 		} else {
 			dragOrigin = sf::Vector2f(input.GetMouseX(), input.GetMouseY());
 		}
-		mouseDrag = true;
-	} else {
-		mouseDrag = false;
+		mouseDragging = true;
 	}
 
 	//reset view with home key.
