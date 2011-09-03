@@ -94,8 +94,10 @@ class GUI::GameHandler: public Widget::Container {
 	 *
 	 * @param position The position to check.
 	 * @param range The maximum range to accept.
+	 * @param howMany How many units to return at most? Zero means all.
+	 * @return The found objects, but no more than specified.
 	 */
-	ObjectSetType getObjectsWithinRange(Vector2<SIUnit::Position> position, Scalar<SIUnit::Length> range);
+	ObjectSetType getObjectsWithinRange(Vector2<SIUnit::Position> position, Scalar<SIUnit::Length> range, int howMany = 0);
 
 public:
 	/**

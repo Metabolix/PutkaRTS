@@ -134,12 +134,17 @@ bool GUI::GameHandler::handleEvent(const sf::Event& e, const sf::RenderWindow& w
 
 		if (e.MouseButton.Button == sf::Mouse::Left) {
 			// Select units (add to old selection if holding ctrl).
-			if (!window.GetInput().IsKeyDown(sf::Key::LControl) && !window.GetInput().IsKeyDown(sf::Key::RControl)) {
+			bool ctrl = window.GetInput().IsKeyDown(sf::Key::LControl) || window.GetInput().IsKeyDown(sf::Key::RControl);
+			if (!ctrl) {
 				selectedObjects.clear();
 			}
-			ObjectSetType objects = getObjectsWithinRange(mouse.getPosition(), Scalar<SIUnit::Length>(0.15));
+			ObjectSetType objects = getObjectsWithinRange(mouse.getPosition(), Scalar<SIUnit::Length>(0.15), 1);
 
 			if (objects.size() > 0) {
+				if (ctrl && selectedObjects.find(*objects.begin()) != selectedObjects.end()) {
+					selectedObjects.erase(*objects.begin());
+					return true;
+				}
 				selectedObjects.insert(*objects.begin());
 				return true;
 			}
@@ -198,7 +203,7 @@ boost::shared_ptr<GUI::GameObject> GUI::GameHandler::getGameObject(const boost::
 	return i->second;
 }
 
-GUI::GameHandler::ObjectSetType GUI::GameHandler::getObjectsWithinRange(Vector2<SIUnit::Position> position, Scalar<SIUnit::Length> range) {
+GUI::GameHandler::ObjectSetType GUI::GameHandler::getObjectsWithinRange(Vector2<SIUnit::Position> position, Scalar<SIUnit::Length> range, int howMany) {
 	const Game::Game& game = connection->getGame();
 	const Game::Game::ObjectContainerType& objects = game.getObjects();
 
@@ -206,6 +211,9 @@ GUI::GameHandler::ObjectSetType GUI::GameHandler::getObjectsWithinRange(Vector2<
 	for (Game::Game::ObjectContainerType::const_iterator i = objects.begin(); i != objects.end(); ++i) {
 		if (i->second->isNear(position, range)) {
 			result.insert(getGameObject(i->second));
+			if (howMany && !--howMany) {
+				break;
+			}
 		}
 	}
 
