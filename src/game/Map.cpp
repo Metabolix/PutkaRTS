@@ -128,7 +128,9 @@ void Game::Map::createInitialObjects(Game& game) const {
 	std::string objectTypeName = "dummy";
 	Vector2<SIUnit::Position> pos(10, 10);
 	for (int i = 0; i < 3; ++i) {
-		boost::shared_ptr<Object> testObject(new Object(techTree->getObjectType(objectTypeName), pos));
+		boost::shared_ptr<Player> testPlayer(new Player(std::string("Player ") + (char)('1' + i)));
+		game.insertPlayer(testPlayer);
+		boost::shared_ptr<Object> testObject(new Object(techTree->getObjectType(objectTypeName), testPlayer, pos));
 		game.insertObject(testObject);
 		pos += pos;
 	}
