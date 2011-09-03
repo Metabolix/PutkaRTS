@@ -193,12 +193,13 @@ void GUI::GameHandler::openSettingsMenu(sf::RenderWindow& window) {
 	settingsMenu.reset(new Menu::SettingsMenu(window));
 }
 
-boost::shared_ptr<GUI::GameObject> GUI::GameHandler::getGameObject(boost::shared_ptr<Game::Object> object) {
-	GameObjectListType::iterator i = gameObjects.find(object);
+boost::shared_ptr<GUI::GameObject> GUI::GameHandler::getGameObject(const boost::shared_ptr<const Game::Object>& object) const {
+	const Game::Object::IdType id = object->id;
+	ObjectMapType::iterator i = gameObjects.find(id);
 
 	if (i == gameObjects.end()) {
-		gameObjects[object].reset(new GUI::GameObject(object));
-		return gameObjects[object];
+		gameObjects[id].reset(new GUI::GameObject(object));
+		return gameObjects[id];
 	}
 
 	return i->second;

@@ -27,6 +27,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <boost/shared_ptr.hpp>
+#include <boost/unordered_map.hpp>
 #include <vector>
 
 #include "gui/game/GameObject.hpp"
@@ -75,10 +76,10 @@ class GUI::GameHandler: public Widget::Container {
 	ObjectListType selectedObjects;
 
 	/** Container type for mapping logical objects to GUI objects. */
-	typedef std::map<boost::shared_ptr<Game::Object>, boost::shared_ptr<GameObject> > GameObjectListType;
+	typedef boost::unordered_map<Game::Object::IdType, boost::shared_ptr<GameObject> > ObjectMapType;
 
 	/** Map to keep track of GameObjects. */
-	GameObjectListType gameObjects;
+	mutable ObjectMapType gameObjects;
 
 	/**
 	 * Get a GameObject for the given object.
@@ -86,7 +87,7 @@ class GUI::GameHandler: public Widget::Container {
 	 * @param object The logical object.
 	 * @return The GUI object.
 	 */
-	boost::shared_ptr<GameObject> getGameObject(boost::shared_ptr<Game::Object> object);
+	boost::shared_ptr<GameObject> getGameObject(const boost::shared_ptr<const Game::Object>& object) const;
 
 	/**
 	 * Get a list of the objects within the given range of the given coordinates.
