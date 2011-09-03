@@ -60,7 +60,7 @@ bool Game::Object::runStep(Scalar<SIUnit::Time> dt, Game& game) {
 	if (position != targetPosition) {
 		Vector2<SIUnit::Position> old = position;
 		direction = (targetPosition - position).toAngle();
-		position += Vector2<>::fromAngle(direction) * Scalar<SIUnit::Velocity>(1) * dt;
+		position += Vector2<>::fromAngle(direction) * objectType->getMaxVelocity() * dt;
 		if ((targetPosition - old).dot(targetPosition - position).isNegative()) {
 			position = targetPosition;
 		}

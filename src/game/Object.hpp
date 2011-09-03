@@ -130,8 +130,8 @@ public:
 	 * @param range The range
 	 * @return True if object is within the given range of the given point.
 	 */
-	bool isNear(const Vector2<SIUnit::Position> &pos, const Scalar<SIUnit::Length> &range) const {
-		return (position - pos).pow2() < range.pow2();
+	bool isNear(const Vector2<SIUnit::Position> &pos, const Scalar<SIUnit::Length> &range = Scalar<SIUnit::Length>(0)) const {
+		return (position - pos).pow2() < (objectType->getRadius() + range).pow2();
 	}
 
 	/**
