@@ -82,18 +82,11 @@ void GUI::GameHandler::drawGame(sf::RenderWindow& window) const {
 		}
 	}
 
-	//draw selection indicators.
-	for (ObjectSetType::const_iterator i = selectedObjects.begin(); i != selectedObjects.end(); ++i) {
-		Vector2<SIUnit::Position> pos = i->get()->getObject()->getPosition();
-		window.Draw(sf::Shape::Circle(pos.x.getDouble(), pos.y.getDouble(), 0.35f, sf::Color(128, 128, 255, 96), 0.1f, sf::Color(192, 192, 255)));
-	}
-
 	// TODO: Get only visible objects! Maybe use something like game.forEachObject(rectangle, callback).
 	const Game::Game::ObjectContainerType& objects = game.getObjects();
 	for (Game::Game::ObjectContainerType::const_iterator i = objects.begin(); i != objects.end(); ++i) {
-		// TODO: Make the GameObjects persistent so that they can keep track of the animation!
-		GameObject tmp(i->second);
-		tmp.draw(window);
+		boost::shared_ptr<GameObject> object(getGameObject(i->second));
+		object->draw(window, selectedObjects.find(object) != selectedObjects.end());
 	}
 }
 

@@ -56,8 +56,9 @@ public:
 	 * Draw the object.
 	 *
 	 * @param window The window to use for rendering.
+	 * @param selected Is this object selected?
 	 */
-	void draw(sf::RenderWindow& window);
+	void draw(sf::RenderWindow& window, bool selected = false);
 };
 
 #endif

@@ -25,19 +25,25 @@ GUI::GameObject::GameObject(boost::shared_ptr<const Game::Object> object_):
 	object(object_) {
 }
 
-void GUI::GameObject::draw(sf::RenderWindow& window) {
+void GUI::GameObject::draw(sf::RenderWindow& window, bool selected) {
 	// TODO: Load real graphics and track animations.
 	static sf::Shape tmp;
 	if (!tmp.GetNbPoints()) {
-		tmp.AddPoint(-0.2, -0.1);
-		tmp.AddPoint(-0.0, -0.1);
-		tmp.AddPoint(-0.0, -0.2);
-		tmp.AddPoint(+0.2, -0.0);
-		tmp.AddPoint(-0.0, +0.2);
-		tmp.AddPoint(-0.0, +0.1);
-		tmp.AddPoint(-0.2, +0.1);
+		tmp.AddPoint(-0.8, -0.4);
+		tmp.AddPoint(-0.0, -0.4);
+		tmp.AddPoint(-0.0, -0.8);
+		tmp.AddPoint(+0.8, -0.0);
+		tmp.AddPoint(-0.0, +0.8);
+		tmp.AddPoint(-0.0, +0.4);
+		tmp.AddPoint(-0.8, +0.4);
 	}
-	tmp.SetPosition(object->getPosition().x.getDouble(), object->getPosition().y.getDouble());
+	Vector2<SIUnit::Position> pos = object->getPosition();
+	double r = object->getObjectType()->getRadius().getDouble();
+	if (selected) {
+		window.Draw(sf::Shape::Circle(pos.x.getDouble(), pos.y.getDouble(), r, sf::Color(128, 128, 255, 96), 0.1f, sf::Color(192, 192, 255)));
+	}
+	tmp.SetScale(r, r);
+	tmp.SetPosition(pos.x.getDouble(), pos.y.getDouble());
 	tmp.SetRotation(-Math::toDegrees(object->getDirection().getDouble()));
 	window.Draw(tmp);
 }
