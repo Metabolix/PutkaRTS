@@ -83,7 +83,7 @@ void GUI::GameHandler::drawGame(sf::RenderWindow& window) const {
 	}
 
 	//draw selection indicators.
-	for (ObjectListType::const_iterator i = selectedObjects.begin(); i != selectedObjects.end(); ++i) {
+	for (ObjectSetType::const_iterator i = selectedObjects.begin(); i != selectedObjects.end(); ++i) {
 		Vector2<SIUnit::Position> pos = i->get()->getObject()->getPosition();
 		window.Draw(sf::Shape::Circle(pos.x.getDouble(), pos.y.getDouble(), 0.35f, sf::Color(128, 128, 255, 96), 0.1f, sf::Color(192, 192, 255)));
 	}
@@ -144,10 +144,10 @@ bool GUI::GameHandler::handleEvent(const sf::Event& e, const sf::RenderWindow& w
 			if (!window.GetInput().IsKeyDown(sf::Key::LControl) && !window.GetInput().IsKeyDown(sf::Key::RControl)) {
 				selectedObjects.clear();
 			}
-			ObjectListType objects = getObjectsWithinRange(mouse.getPosition(), Scalar<SIUnit::Length>(1));
+			ObjectSetType objects = getObjectsWithinRange(mouse.getPosition(), Scalar<SIUnit::Length>(1));
 
 			if (objects.size() > 0) {
-				selectedObjects.push_back(*objects.begin());
+				selectedObjects.insert(*objects.begin());
 				return true;
 			}
 		}
@@ -156,7 +156,7 @@ bool GUI::GameHandler::handleEvent(const sf::Event& e, const sf::RenderWindow& w
 			//Testing movement
 			Game::Message msg;
 			msg.position = mouse.getPosition();
-			for (ObjectListType::const_iterator i = selectedObjects.begin(); i != selectedObjects.end(); ++i) {
+			for (ObjectSetType::const_iterator i = selectedObjects.begin(); i != selectedObjects.end(); ++i) {
 				msg.actors.push_back((*i)->getObject()->id);
 			}
 			connection->sendMessage(msg);
@@ -205,15 +205,14 @@ boost::shared_ptr<GUI::GameObject> GUI::GameHandler::getGameObject(const boost::
 	return i->second;
 }
 
-GUI::GameHandler::ObjectListType GUI::GameHandler::getObjectsWithinRange(Vector2<SIUnit::Position> position, Scalar<SIUnit::Length> range) {
+GUI::GameHandler::ObjectSetType GUI::GameHandler::getObjectsWithinRange(Vector2<SIUnit::Position> position, Scalar<SIUnit::Length> range) {
 	const Game::Game& game = connection->getGame();
 	const Game::Game::ObjectContainerType& objects = game.getObjects();
 
-	ObjectListType result;
-
+	ObjectSetType result;
 	for (Game::Game::ObjectContainerType::const_iterator i = objects.begin(); i != objects.end(); ++i) {
 		if (i->second->isNear(position, range)) {
-			result.push_back(getGameObject(i->second));
+			result.insert(getGameObject(i->second));
 		}
 	}
 

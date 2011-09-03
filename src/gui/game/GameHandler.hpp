@@ -28,7 +28,7 @@
 #include <SFML/Graphics.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/unordered_map.hpp>
-#include <vector>
+#include <boost/unordered_set.hpp>
 
 #include "gui/game/GameObject.hpp"
 #include "gui/widget/Container.hpp"
@@ -70,10 +70,10 @@ class GUI::GameHandler: public Widget::Container {
 	boost::shared_ptr<Menu::SettingsMenu> settingsMenu;
 
 	/** Container type for lists of objects. */
-	typedef std::vector<boost::shared_ptr<GameObject> > ObjectListType;
+	typedef boost::unordered_set<boost::shared_ptr<GameObject> > ObjectSetType;
 
 	/** Container for keeping track of selected objects */
-	ObjectListType selectedObjects;
+	ObjectSetType selectedObjects;
 
 	/** Container type for mapping logical objects to GUI objects. */
 	typedef boost::unordered_map<Game::Object::IdType, boost::shared_ptr<GameObject> > ObjectMapType;
@@ -95,7 +95,7 @@ class GUI::GameHandler: public Widget::Container {
 	 * @param position The position to check.
 	 * @param range The maximum range to accept.
 	 */
-	ObjectListType getObjectsWithinRange(Vector2<SIUnit::Position> position, Scalar<SIUnit::Length> range);
+	ObjectSetType getObjectsWithinRange(Vector2<SIUnit::Position> position, Scalar<SIUnit::Length> range);
 
 public:
 	/**
