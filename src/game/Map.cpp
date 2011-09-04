@@ -27,95 +27,53 @@
 #include "Map.hpp"
 #include "Object.hpp"
 
-#include <stdexcept>
-#include <fstream>
 #include <sstream>
-#include <boost/algorithm/string.hpp>
+#include <boost/bind.hpp>
 
-void Game::Map::loadInfo(std::istream& file) {
-	std::string line;
-	std::stringstream buffer;
-	while (std::getline(file, line)) {
-		boost::trim(line);
-		if (line.empty()) {
-			break;
-		}
-		buffer << line << std::endl;
-	}
-	info.clear();
-	info.load(buffer);
+Game::Map::Map():
+	techTree(new TechTree("dummy")) {
+	bind("tile", boost::bind(&Map::luaSetTileInfo, this));
+	bind("row", boost::bind(&Map::luaSetTileRow, this));
 }
 
-void Game::Map::loadTileInfo(std::istream& file) {
-	tileInfoMap.clear();
-	std::string line;
-	while (std::getline(file, line)) {
-		boost::trim(line);
-		if (line.empty()) {
-			break;
-		}
-
-		std::istringstream buffer(line);
-		char tile;
-		TileInfo info;
-		if (!(buffer >> tile >> info.ground >> info.water >> info.texture)) {
-			throw std::runtime_error("definition section malformed!");
-		}
-		tileInfoMap[tile] = info;
-	}
-	if (tileInfoMap.empty()) {
-		throw std::runtime_error("zero dimensions!");
-	}
+void Game::Map::luaSetTileInfo() {
+	TileInfo info;
+	char tile = get<String>(1).at(0);
+	info.ground = get<Boolean>(2);
+	info.water = get<Boolean>(3);
+	info.texture = get<String>(4);
+	tileInfoMap[tile] = info;
 }
 
-void Game::Map::loadTileMap(std::istream& file) {
-	tileMap.clear();
-	std::string line;
-	while (std::getline(file, line)) {
-		boost::trim(line);
-		if (line.empty()) {
-			break;
-		}
-		if (tileMap.getSizeX() && tileMap.getSizeX() != line.size()) {
-			throw std::runtime_error("width is not constant!");
-		}
-		const SizeType y = tileMap.getSizeY();
-		tileMap.resize(line.size(), y + 1);
-		for (SizeType x = 0; x < tileMap.getSizeX(); ++x) {
-			if (tileInfoMap.find(line[x]) == tileInfoMap.end()) {
-				throw std::runtime_error(std::string() + "tile " + line[x] + " used but not defined!");
-			}
-			tileMap(x, y) = line[x];
-		}
-	}
+void Game::Map::luaSetTileRow() {
+	std::string row(get<String>(1));
 	if (tileMap.empty()) {
-		throw std::runtime_error("zero dimensions!");
+		tileMap.resize(row.size(), 1);
+	} else {
+		if (row.size() != getSizeX()) {
+			throw Lua::Exception("Inconsistent row length in map!");
+		}
+		tileMap.resize(getSizeX(), getSizeY() + 1);
+	}
+	SizeType y = getSizeY() - 1;
+	for (SizeType x = 0; x < getSizeX(); ++x) {
+		if (tileInfoMap.find(row[x]) == tileInfoMap.end()) {
+			throw Lua::Exception("Invalid character: " + row.substr(x, 1));
+		}
+		tileMap(x, y) = row[x];
 	}
 }
 
 void Game::Map::load(const std::string& directory_)
 try {
 	directory = directory_;
-	std::string filename = Path::findDataPath(directory, "data.txt");
-
-	std::ifstream file(filename.c_str());
-	if (!file) {
-		throw std::runtime_error(filename + " could not be opened!");
-	}
-
-	try {
-		loadInfo(file);
-		loadTileInfo(file);
-		loadTileMap(file);
-	} catch (std::runtime_error& e) {
-		throw std::runtime_error(filename + " has invalid format: " + e.what());
-	}
-
-	if (file.bad()) {
-		throw std::runtime_error(filename + " is invalid!");
-	}
+	directories.clear();
+	directories.push_back(directory);
+	tileMap.clear();
+	tileInfoMap.clear();
+	runFile<void>(Path::findDataPath(directory, "map.lua"));
 } catch (...) {
-	info.clear();
+	directory.clear();
 	tileMap.clear();
 	tileInfoMap.clear();
 	throw;

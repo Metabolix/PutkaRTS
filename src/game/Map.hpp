@@ -29,7 +29,8 @@
 #include <boost/shared_ptr.hpp>
 
 #include "util/Array2D.hpp"
-#include "util/Configuration.hpp"
+#include "lua/Lua.hpp"
+
 #include "TechTree.hpp"
 
 namespace Game {
@@ -40,7 +41,7 @@ namespace Game {
 /**
  * This class describes the map format
  */
-class Game::Map {
+class Game::Map: protected Lua {
 public:
 	/**
 	 * Type of size used in public methods
@@ -65,9 +66,6 @@ private:
 	 */
 	std::string directory;
 
-	/** Map information. */
-	Configuration info;
-
 	/**
 	 * Map in array of tiles.
 	 */
@@ -83,46 +81,11 @@ private:
 	 */
 	boost::shared_ptr<TechTree> techTree;
 
-	/**
-	 * Load map info (name and such).
-	 *
-	 * @param file The input stream.
-	 * @throw std::runtime_error Thrown if the info section is invalid.
-	 */
-	void loadInfo(std::istream& file);
-
-	/**
-	 * Load tile info.
-	 *
-	 * @param file The input stream.
-	 * @throw std::runtime_error Thrown if the tile data is invalid.
-	 */
-	void loadTileInfo(std::istream& file);
-
-	/**
-	 * Load tiles.
-	 *
-	 * @param file The input stream.
-	 * @throw std::runtime_error Thrown if the map is invalid.
-	 */
-	void loadTileMap(std::istream& file);
 public:
 	/**
 	 * Default constructor.
 	 */
-	Map() {
-		// Nothing here.
-	}
-
-	/**
-	 * Constructor that also loads the map.
-	 *
-	 * @param directory Map's directory.
-	 */
-	Map(const std::string& directory) {
-		load(directory);
-		techTree = boost::shared_ptr<TechTree>(new TechTree("dummy"));
-	}
+	Map();
 
 	/**
 	 * Load a map from a directory.
@@ -180,6 +143,21 @@ public:
 	 * @param game The game to add the objects.
 	 */
 	void createInitialObjects(Game& game) const;
+
+private:
+	/**
+	 * Lua callback: Set one tile info.
+	 *
+	 * f(string char, bool ground, bool water, string texture)
+	 */
+	void luaSetTileInfo();
+
+	/**
+	 * Lua callback: Set tiles.
+	 *
+	 * f(int x0, int y0, string tiles)
+	 */
+	void luaSetTileRow();
 };
 
 #endif

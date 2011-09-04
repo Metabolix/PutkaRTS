@@ -44,7 +44,8 @@ GUI::Menu::MainMenu::MainMenu(sf::RenderWindow& window):
 }
 
 void GUI::Menu::MainMenu::startGame(sf::RenderWindow& window) {
-	boost::shared_ptr<Game::Map> map(new Game::Map("maps/testmap"));
+	boost::shared_ptr<Game::Map> map(new Game::Map());
+	map->load("maps/testmap");
 	boost::shared_ptr<Game::Game> game(new Game::Game(map));
 	boost::shared_ptr<GameConnection> connection(new LocalGameConnection(game));
 	GUI::currentWidget.reset(new GameHandler(connection, window));
