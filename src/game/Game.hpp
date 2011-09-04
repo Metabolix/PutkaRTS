@@ -29,7 +29,7 @@
 #include "Player.hpp"
 
 #include <queue>
-#include <map>
+#include <boost/unordered_map.hpp>
 #include <boost/shared_ptr.hpp>
 
 #include <boost/function.hpp>
@@ -42,18 +42,19 @@ namespace Game {
  * The root of all game logic.
  */
 class Game::Game {
-public:
 	friend class Map;
 	friend class ObjectAction;
 
+public:
 	/** Type for player container */
-	typedef std::map<Player::IdType, boost::shared_ptr<Player> > PlayerContainerType;
+	typedef boost::unordered_map<Player::IdType, boost::shared_ptr<Player> > PlayerContainerType;
 
 	/** Object type for storing the game's objects. */
-	typedef std::map<Object::IdType, boost::shared_ptr<Object> > ObjectContainerType;
+	typedef boost::unordered_map<Object::IdType, boost::shared_ptr<Object> > ObjectContainerType;
 
 	/** Type for specifying an external callback for message handling. */
 	typedef boost::function<void(const Message&)> MessageCallbackType;
+
 private:
 	/** Keep track of game time. */
 	Scalar<SIUnit::Time> clock;
@@ -66,6 +67,9 @@ private:
 
 	/** Players. */
 	PlayerContainerType players;
+
+	/** Next id to assign to an object. */
+	Object::IdType freeObjectId;
 
 	/** Objects in the game */
 	ObjectContainerType objects;
@@ -92,6 +96,7 @@ private:
 	 * @return true if the message is ok, false if it's somehow invalid.
 	 */
 	bool handleMessage(Message& message);
+
 public:
 	/**
 	 * Constructor.
@@ -128,6 +133,7 @@ public:
 	 * @param message The message.
 	 */
 	void insertMessage(const Message& message);
+
 protected:
 	/**
 	 * Add object to game.

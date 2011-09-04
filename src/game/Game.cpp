@@ -22,9 +22,11 @@
 #include "Game.hpp"
 
 #include <stdexcept>
+#include <vector>
 
 Game::Game::Game(boost::shared_ptr<Map> map_):
-	map(map_) {
+	map(map_),
+	freeObjectId(1) {
 	if (!map.get()) {
 		throw std::logic_error("Game::Game: Map is NULL!");
 	}
@@ -44,8 +46,10 @@ void Game::Game::insertMessage(const Message& message) {
 }
 
 void Game::Game::insertObject(boost::shared_ptr<Object> object) {
-	//  FIXME: This might overflow in long games.
-	object->id = 1 + (objects.empty() ? 0 : objects.rbegin()->first);
+	if (freeObjectId <= 0) {
+		throw std::runtime_error("FIXME: freeObjectId has overflown!");
+	}
+	object->id = freeObjectId++;
 	objects.insert(std::make_pair(object->id, object));
 }
 
@@ -53,13 +57,17 @@ void Game::Game::runStep(Scalar<SIUnit::Time> dt, MessageCallbackType messageCal
 	clock += dt;
 	handleMessages(messageCallback);
 
-	for (ObjectContainerType::iterator i = objects.begin(); i != objects.end();) {
-		ObjectContainerType::iterator next = i;
-		++next;
-		if (!i->second->runStep(dt, *this)) {
-			objects.erase(i);
+	typedef std::vector<boost::shared_ptr<Object> > ObjectVectorType;
+	ObjectVectorType tmp;
+	tmp.reserve(objects.size());
+	for (ObjectContainerType::iterator i = objects.begin(); i != objects.end(); ++i) {
+		tmp.push_back(i->second);
+	}
+	for (ObjectVectorType::iterator i = tmp.begin(); i != tmp.end(); ++i) {
+		Object& object = **i;
+		if (!object.runStep(dt, *this)) {
+			objects.erase(object.id);
 		}
-		i = next;
 	}
 }
 
@@ -98,6 +106,6 @@ void Game::Game::handleMessages(MessageCallbackType messageCallback) {
 }
 
 void Game::Game::insertPlayer(boost::shared_ptr<Player> player) {
-	player->id = 1 + (players.empty() ? 0 : players.rbegin()->first);
+	player->id = players.size() + 1;
 	players.insert(std::make_pair(player->id, player));
 }
