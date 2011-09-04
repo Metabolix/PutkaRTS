@@ -55,6 +55,14 @@ namespace Path {
 	extern bool exists(const std::string& path);
 
 	/**
+	 * Read a whole file.
+	 *
+	 * @param path The path.
+	 * @return Contents of the file.
+	 */
+	extern std::string readFile(const std::string& path);
+
+	/**
 	 * Initialize the data and configuration paths.
 	 *
 	 * @param argv0 The first command line argument (program name).

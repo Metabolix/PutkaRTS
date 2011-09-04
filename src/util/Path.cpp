@@ -29,6 +29,7 @@
 
 #include <boost/filesystem.hpp>
 #include <string>
+#include <fstream>
 
 namespace Path {
 	/** Global data directory, often /usr/share/PutkaRTS */
@@ -83,6 +84,20 @@ bool Path::mkdirForFile(const std::string& pathStr) {
 
 bool Path::exists(const std::string& path) {
 	return boost::filesystem::exists(path);
+}
+
+std::string Path::readFile(const std::string& path) {
+	std::ifstream ifs(path.c_str(), std::ios::binary);
+	if (!ifs) {
+		throw std::runtime_error("File not found: " + path);
+	}
+	char buf[4096];
+	std::string result;
+	while (ifs.peek() != EOF) {
+		ifs.read(buf, sizeof(buf));
+		result += std::string(buf, buf + ifs.gcount());
+	}
+	return result;
 }
 
 void Path::init(const std::string& argv0) {
