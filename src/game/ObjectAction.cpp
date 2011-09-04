@@ -23,7 +23,8 @@
 #include "Object.hpp"
 
 Game::ObjectAction::ObjectAction(std::istream& stream):
-	description("dummy") {
+	id("dummy"),
+	name("Do something") {
 	// TODO: Load action data from stream.
 }
 

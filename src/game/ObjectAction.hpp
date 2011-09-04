@@ -22,6 +22,7 @@
 #ifndef PUTKARTS_Game_ObjectAction_HPP
 #define PUTKARTS_Game_ObjectAction_HPP
 
+#include <string>
 #include <iostream>
 #include <boost/shared_ptr.hpp>
 
@@ -35,8 +36,15 @@ namespace Game {
  * This class describes object action.
  */
 class Game::ObjectAction {
-	/** Description for action. */
-	std::string description;
+public:
+	typedef std::string IdType;
+
+	/** An unique identifier for this action. */
+	const IdType id;
+
+private:
+	/** The name to tell the users. */
+	std::string name;
 
 public:
 	/**
