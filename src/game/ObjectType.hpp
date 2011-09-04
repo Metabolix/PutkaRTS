@@ -35,10 +35,13 @@ namespace Game {
  * This class describes object type.
  */
 class Game::ObjectType {
-	friend class ObjectAction;
+public:
+	typedef std::string IdType;
 
 	/** An unique identifier for this type. */
-	std::string id;
+	const IdType id;
+
+private:
 
 	/** The name to tell the users. */
 	std::string name;
