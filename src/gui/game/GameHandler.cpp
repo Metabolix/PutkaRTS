@@ -35,7 +35,7 @@
 #include <cmath>
 #include <boost/bind.hpp>
 
-GUI::GameHandler::GameHandler(boost::shared_ptr<GameConnection> connection_, sf::RenderWindow& window):
+GUI::GameHandler::GameHandler(boost::shared_ptr<Connection::Client> connection_, sf::RenderWindow& window):
 	guiView(window.GetDefaultView()),
 	connection(connection_),
 	gameView(window, sf::Vector2f(connection->getGame().getMap().getSizeX(), connection->getGame().getMap().getSizeY()), 32) {
@@ -50,6 +50,8 @@ GUI::GameHandler::GameHandler(boost::shared_ptr<GameConnection> connection_, sf:
 
 	insert(new GUI::Widget::Button("X", window.GetWidth() - 24, 0, 24, 24, boost::bind(&GUI::GameHandler::exit, this)));
 	insert(new GUI::Widget::Button("S", window.GetWidth() - 48, 0, 24, 24, boost::bind(&GUI::GameHandler::openSettingsMenu, this, boost::ref(window))));
+
+	connection->setReadyToStart();
 }
 
 void GUI::GameHandler::loadMapData() {

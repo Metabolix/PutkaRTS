@@ -1,5 +1,5 @@
 /*
- * Class for remote game connection.
+ * Client side of game communication.
  *
  * Copyright 2011 Lauri Kenttä
  *
@@ -19,45 +19,39 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PUTKARTS_RemoteGameConnection_HPP
-#define PUTKARTS_RemoteGameConnection_HPP
+#ifndef PUTKARTS_Connection_Client_HPP
+#define PUTKARTS_Connection_Client_HPP
 
 #include <string>
 
 #include "game/Message.hpp"
-#include "GameConnection.hpp"
+#include "connection/Base.hpp"
+
+namespace Connection {
+	class Client;
+}
 
 /**
- * Class for participating in remote games.
+ * Base class for game clients.
  */
-class RemoteGameConnection: public GameConnection {
-	sf::Clock clock;
+class Connection::Client: virtual public Connection::Base {
 public:
-	/**
-	 * Constructor.
-	 */
-	RemoteGameConnection(boost::shared_ptr<Game::Game> game_):
-		GameConnection(game_) {
-	}
-
 	/**
 	 * Send a message describing a player action.
 	 *
 	 * @param message The message to send.
 	 */
-	void sendMessage(const Game::Message& message) {
-		// TODO: send the message to the server!
-	}
+	virtual void sendMessage(const Game::Message& message) = 0;
 
 	/**
-	 * Run the game up to this moment; this includes reading messages from the server.
+	 * Mark the client as ready for initialising the game ("settings ok, let's play").
 	 */
-	void runUntilNow() {
-		Game::Message message;
-		// TODO: read messages from somewhere and feed them to game->addMessage(message)!
-		// TODO: do not run until message.time, that won't be smooth!
-		game->runUntil(message.timestamp);
-	}
+	virtual void setReadyToInit() = 0;
+
+	/**
+	 * Mark the client as ready for initialising the game ("all set, start the clock").
+	 */
+	virtual void setReadyToStart() = 0;
 };
 
 #endif

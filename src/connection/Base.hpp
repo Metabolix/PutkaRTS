@@ -1,5 +1,5 @@
 /*
- * Class for local game "connection".
+ * Base class for game connections.
  *
  * Copyright 2011 Lauri Kenttä
  *
@@ -19,43 +19,55 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PUTKARTS_LocalGameConnection_HPP
-#define PUTKARTS_LocalGameConnection_HPP
+#ifndef PUTKARTS_Connection_Base_HPP
+#define PUTKARTS_Connection_Base_HPP
 
 #include <string>
+#include <stdexcept>
+#include <boost/shared_ptr.hpp>
 
+#include "game/Game.hpp"
 #include "game/Message.hpp"
-#include "GameConnection.hpp"
+
+namespace Connection {
+	class Base;
+}
 
 /**
- * Class for running local games.
+ * Base class for local and remote game connections.
  */
-class LocalGameConnection: public GameConnection {
-	/** The local clock. */
-	sf::Clock clock;
+class Connection::Base {
+protected:
+	/** The current game. */
+	boost::shared_ptr<Game::Game> game;
+
+	/**
+	 * Initialise the game object.
+	 */
+	virtual void initGame();
+
 public:
 	/**
-	 * Constructor.
+	 * Virtual base destructor.
 	 */
-	LocalGameConnection(boost::shared_ptr<Game::Game> game_):
-		GameConnection(game_) {
+	virtual ~Base() {
+		// Nothing to do.
 	}
 
 	/**
-	 * Send a message describing a player action.
-	 *
-	 * @param message The message to send; this implementation passes it straight to the current Game.
+	 * Get the game object.
 	 */
-	void sendMessage(const Game::Message& message) {
-		game->insertMessage(message);
+	const Game::Game& getGame() const {
+		if (!game.get()) {
+			throw std::logic_error("Connection::Base: game is NULL!");
+		}
+		return *game;
 	}
 
 	/**
 	 * Run the game up to this moment.
 	 */
-	void runUntilNow() {
-		game->runUntil(clock.GetElapsedTime());
-	}
+	virtual void runUntilNow() = 0;
 };
 
 #endif

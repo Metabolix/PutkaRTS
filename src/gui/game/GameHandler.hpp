@@ -23,7 +23,7 @@
 #ifndef PUTKARTS_GUI_GameHandler_HPP
 #define PUTKARTS_GUI_GameHandler_HPP
 
-#include "connection/GameConnection.hpp"
+#include "connection/Client.hpp"
 
 #include <SFML/Graphics.hpp>
 #include <boost/shared_ptr.hpp>
@@ -52,7 +52,7 @@ class GUI::GameHandler: public Widget::Container {
 	ImageCache images;
 
 	/** The game connection to use. */
-	boost::shared_ptr<GameConnection> connection;
+	boost::shared_ptr<Connection::Client> connection;
 
 	/** Camera position and zoom */
 	GUI::ScrollingView gameView;
@@ -106,7 +106,7 @@ public:
 	 * @param connection The game connection to use.
 	 * @param window The window to use for input and rendering.
 	 */
-	GameHandler(boost::shared_ptr<GameConnection> connection, sf::RenderWindow& window);
+	GameHandler(boost::shared_ptr<Connection::Client> connection, sf::RenderWindow& window);
 
 	/**
 	 * Load map graphics etc.
