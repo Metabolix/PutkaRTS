@@ -22,9 +22,10 @@
 #include "Server.hpp"
 
 void Connection::Server::startGame() {
-	clock.Reset();
+	clock.reset();
+	clock.unpause();
 }
 
 void Connection::Server::runUntilNow() {
-	game->runUntil(clock.GetElapsedTime());
+	game->runUntil(clock.getTime());
 }
