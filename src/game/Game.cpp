@@ -35,13 +35,18 @@ Game::Game::Game(boost::shared_ptr<Map> map_):
 	boost::shared_ptr<ObjectType> testObjectType(new ObjectType());
 	objectTypes[testObjectType->id] = testObjectType;
 
-	Vector2<SIUnit::Position> pos(10, 10);
-	for (int i = 0; i < 3; ++i) {
-		boost::shared_ptr<Player> testPlayer(new Player(std::string("Player ") + (char)('1' + i)));
+	const Map::PlayerContainerType& mapPlayers = map->getPlayers();
+	for (Map::PlayerContainerType::const_iterator i = mapPlayers.begin(); i != mapPlayers.end(); ++i) {
+		const Map::Player& p = i->second;
+
+		boost::shared_ptr<Player> testPlayer(new Player(std::string("Player ") + (char)('1' + players.size())));
 		insertPlayer(testPlayer);
-		boost::shared_ptr<Object> testObject(new Object(testObjectType, testPlayer, pos));
-		insertObject(testObject);
-		pos += pos;
+
+		for (int dx = -1; dx <= 1; ++dx) {
+			for (int dy = -1; dy <= 1; ++dy) {
+				insertObject(boost::shared_ptr<Object>(new Object(testObjectType, testPlayer, p.startPosition + Vector2<SIUnit::Position>(dx, dy))));
+			}
+		}
 	}
 }
 
