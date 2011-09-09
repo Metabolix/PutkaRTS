@@ -58,6 +58,19 @@ public:
 	 * Map type for storing the TileInfo structures.
 	 */
 	typedef std::map<char, TileInfo> TileInfoMap;
+
+	/**
+	 * Information about a player (start position).
+	 */
+	struct Player {
+		Vector2<SIUnit::Position> startPosition;
+	};
+
+	/**
+	 * Type for storing the players.
+	 */
+	typedef std::map<int, Player> PlayerContainerType;
+
 private:
 	/**
 	 * Store the map directory name, e.g. "maps/somemap".
@@ -73,6 +86,11 @@ private:
 	 * Store each tile's info.
 	 */
 	TileInfoMap tileInfoMap;
+
+	/**
+	 * Players (start positions) on the map.
+	 */
+	PlayerContainerType players;
 
 public:
 	/**
@@ -123,6 +141,13 @@ public:
 		return tileInfoMap;
 	}
 
+	/**
+	 * Get the players.
+	 */
+	const PlayerContainerType& getPlayers() const {
+		return players;
+	}
+
 private:
 	/**
 	 * Lua callback: Set one tile info.
@@ -137,6 +162,13 @@ private:
 	 * f(int x0, int y0, string tiles)
 	 */
 	void luaSetTileRow();
+
+	/**
+	 * Lua callback: Set player.
+	 *
+	 * f(int which, float startX, float startY)
+	 */
+	void luaSetPlayer();
 };
 
 #endif

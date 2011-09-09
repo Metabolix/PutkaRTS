@@ -33,6 +33,7 @@
 Game::Map::Map() {
 	bind("tile", boost::bind(&Map::luaSetTileInfo, this));
 	bind("row", boost::bind(&Map::luaSetTileRow, this));
+	bind("player", boost::bind(&Map::luaSetPlayer, this));
 }
 
 void Game::Map::luaSetTileInfo() {
@@ -61,6 +62,14 @@ void Game::Map::luaSetTileRow() {
 		}
 		tileMap(x, y) = row[x];
 	}
+}
+
+void Game::Map::luaSetPlayer() {
+	Player tmp;
+	int which = get<Integer>(1);
+	tmp.startPosition.x = get<Number>(2);
+	tmp.startPosition.y = get<Number>(3);
+	players[which] = tmp;
 }
 
 void Game::Map::load(const std::string& directory_)
