@@ -63,11 +63,9 @@ private:
 
 public:
 	/**
-	 * Constructor that loads the object type data from stream.
-	 *
-	 * @param stream Stream to read object type data.
+	 * Constructor.
 	 */
-	ObjectType(std::istream& stream);
+	ObjectType();
 
 	/**
 	 * Get the radius.

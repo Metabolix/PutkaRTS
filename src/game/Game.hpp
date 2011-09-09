@@ -25,8 +25,10 @@
 #include "util/Scalar.hpp"
 #include "Message.hpp"
 #include "Map.hpp"
-#include "Object.hpp"
 #include "Player.hpp"
+#include "ObjectType.hpp"
+#include "ObjectAction.hpp"
+#include "Object.hpp"
 
 #include <queue>
 #include <boost/unordered_map.hpp>
@@ -49,6 +51,12 @@ public:
 	/** Type for player container */
 	typedef boost::unordered_map<Player::IdType, boost::shared_ptr<Player> > PlayerContainerType;
 
+	/** Type for storing the game's object types. */
+	typedef boost::unordered_map<ObjectType::IdType, boost::shared_ptr<ObjectType> > ObjectTypeContainerType;
+
+	/** Type for storing the game's object actions. */
+	typedef boost::unordered_map<ObjectAction::IdType, boost::shared_ptr<ObjectAction> > ObjectActionContainerType;
+
 	/** Object type for storing the game's objects. */
 	typedef boost::unordered_map<Object::IdType, boost::shared_ptr<Object> > ObjectContainerType;
 
@@ -67,6 +75,12 @@ private:
 
 	/** Players. */
 	PlayerContainerType players;
+
+	/** Object types. */
+	ObjectTypeContainerType objectTypes;
+
+	/** Object actions. */
+	ObjectActionContainerType objectActions;
 
 	/** Next id to assign to an object. */
 	Object::IdType freeObjectId;

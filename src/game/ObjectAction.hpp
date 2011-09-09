@@ -48,9 +48,9 @@ private:
 
 public:
 	/**
-	 * Constructor that also loads action stream.
+	 * Constructor.
 	 */
-	ObjectAction(std::istream& stream);
+	ObjectAction();
 
 	/**
 	 * Run object action.

@@ -21,7 +21,7 @@
 
 #include "ObjectType.hpp"
 
-Game::ObjectType::ObjectType(std::istream& stream):
+Game::ObjectType::ObjectType():
 	id("dummy"),
 	name("dummy"),
 	immutable(false),
@@ -29,5 +29,4 @@ Game::ObjectType::ObjectType(std::istream& stream):
 	maxVelocity(2.5),
 	lineOfSight(10),
 	maxHitPoints(0) {
-	// TODO: Load data from stream.
 }

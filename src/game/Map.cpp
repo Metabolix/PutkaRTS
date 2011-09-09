@@ -30,8 +30,7 @@
 #include <sstream>
 #include <boost/bind.hpp>
 
-Game::Map::Map():
-	techTree(new TechTree("dummy")) {
+Game::Map::Map() {
 	bind("tile", boost::bind(&Map::luaSetTileInfo, this));
 	bind("row", boost::bind(&Map::luaSetTileRow, this));
 }
@@ -77,19 +76,4 @@ try {
 	tileMap.clear();
 	tileInfoMap.clear();
 	throw;
-}
-
-void Game::Map::createInitialObjects(Game& game) const {
-	// TODO: Create starting objects from map data.
-
-	// Create few objects and add them to game for testing.
-	std::string objectTypeName = "dummy";
-	Vector2<SIUnit::Position> pos(10, 10);
-	for (int i = 0; i < 3; ++i) {
-		boost::shared_ptr<Player> testPlayer(new Player(std::string("Player ") + (char)('1' + i)));
-		game.insertPlayer(testPlayer);
-		boost::shared_ptr<Object> testObject(new Object(techTree->getObjectType(objectTypeName), testPlayer, pos));
-		game.insertObject(testObject);
-		pos += pos;
-	}
 }

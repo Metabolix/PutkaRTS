@@ -22,10 +22,9 @@
 #include "ObjectAction.hpp"
 #include "Object.hpp"
 
-Game::ObjectAction::ObjectAction(std::istream& stream):
+Game::ObjectAction::ObjectAction():
 	id("dummy"),
 	name("Do something") {
-	// TODO: Load action data from stream.
 }
 
 bool Game::ObjectAction::runAction(boost::shared_ptr<Object> actor, boost::shared_ptr<Object> target) {

@@ -31,7 +31,18 @@ Game::Game::Game(boost::shared_ptr<Map> map_):
 		throw std::logic_error("Game::Game: Map is NULL!");
 	}
 
-	map->createInitialObjects(*this);
+	// Create some units for testing.
+	boost::shared_ptr<ObjectType> testObjectType(new ObjectType());
+	objectTypes[testObjectType->id] = testObjectType;
+
+	Vector2<SIUnit::Position> pos(10, 10);
+	for (int i = 0; i < 3; ++i) {
+		boost::shared_ptr<Player> testPlayer(new Player(std::string("Player ") + (char)('1' + i)));
+		insertPlayer(testPlayer);
+		boost::shared_ptr<Object> testObject(new Object(testObjectType, testPlayer, pos));
+		insertObject(testObject);
+		pos += pos;
+	}
 }
 
 void Game::Game::runUntil(Scalar<SIUnit::Time> time, MessageCallbackType messageCallback) {

@@ -31,8 +31,6 @@
 #include "util/Array2D.hpp"
 #include "lua/Lua.hpp"
 
-#include "TechTree.hpp"
-
 namespace Game {
 	class Game;
 	class Map;
@@ -75,11 +73,6 @@ private:
 	 * Store each tile's info.
 	 */
 	TileInfoMap tileInfoMap;
-
-	/**
-	 * Map's tech tree.
-	 */
-	boost::shared_ptr<TechTree> techTree;
 
 public:
 	/**
@@ -129,20 +122,6 @@ public:
 	const TileInfoMap& getTileInfoMap() const {
 		return tileInfoMap;
 	}
-
-	/**
-	 * Get map's tech tree.
-	 */
-	TechTree& getTechTree() const {
-		return *techTree;
-	}
-
-	/**
-	 * Create and add map's initial objects to game.
-	 *
-	 * @param game The game to add the objects.
-	 */
-	void createInitialObjects(Game& game) const;
 
 private:
 	/**
