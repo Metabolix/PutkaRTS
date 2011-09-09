@@ -100,7 +100,7 @@ template <> Lua::Number Lua::get<Lua::Number>(int index) const {
 	if (!lua_isnumber(state, index)) {
 		throw Exception("Value is not a number!");
 	}
-	return lua_tointeger(state, index);
+	return lua_tonumber(state, index);
 }
 
 template <> Lua::String Lua::get<Lua::String>(int index) const {
