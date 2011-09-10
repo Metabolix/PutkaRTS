@@ -26,11 +26,13 @@
 #include <stdexcept>
 #include <boost/shared_ptr.hpp>
 
-#include "game/Game.hpp"
-#include "game/Message.hpp"
-
 namespace Connection {
 	class Base;
+}
+
+namespace Game {
+	class Game;
+	class Message;
 }
 
 /**

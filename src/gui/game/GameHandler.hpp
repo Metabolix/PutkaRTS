@@ -23,8 +23,6 @@
 #ifndef PUTKARTS_GUI_GameHandler_HPP
 #define PUTKARTS_GUI_GameHandler_HPP
 
-#include "connection/Client.hpp"
-
 #include <SFML/Graphics.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/unordered_map.hpp>
@@ -39,6 +37,10 @@
 
 namespace GUI {
 	class GameHandler;
+}
+
+namespace Connection {
+	class Client;
 }
 
 /**
@@ -76,7 +78,7 @@ class GUI::GameHandler: public Widget::Container {
 	ObjectSetType selectedObjects;
 
 	/** Container type for mapping logical objects to GUI objects. */
-	typedef boost::unordered_map<Game::Object::IdType, boost::shared_ptr<GameObject> > ObjectMapType;
+	typedef boost::unordered_map<const void*, boost::shared_ptr<GameObject> > ObjectMapType;
 
 	/** Map to keep track of GameObjects. */
 	mutable ObjectMapType gameObjects;

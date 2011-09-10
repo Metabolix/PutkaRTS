@@ -24,7 +24,6 @@
 
 #include <string>
 
-#include "game/Message.hpp"
 #include "connection/Base.hpp"
 
 namespace Connection {

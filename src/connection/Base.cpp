@@ -21,6 +21,8 @@
 
 #include "Base.hpp"
 
+#include "game/Game.hpp"
+
 void Connection::Base::initGame() {
 	boost::shared_ptr<Game::Map> map(new Game::Map());
 	map->load("maps/testmap");

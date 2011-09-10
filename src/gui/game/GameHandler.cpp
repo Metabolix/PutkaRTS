@@ -25,6 +25,8 @@
 
 #include "GameHandler.hpp"
 #include "GameObject.hpp"
+#include "connection/Client.hpp"
+#include "game/Game.hpp"
 #include "game/Map.hpp"
 
 #include "gui/widget/Button.hpp"
@@ -195,12 +197,12 @@ void GUI::GameHandler::openSettingsMenu(sf::RenderWindow& window) {
 }
 
 boost::shared_ptr<GUI::GameObject> GUI::GameHandler::getGameObject(const boost::shared_ptr<const Game::Object>& object) const {
-	const Game::Object::IdType id = object->id;
-	ObjectMapType::iterator i = gameObjects.find(id);
+	const void* key = object.get();
+	ObjectMapType::iterator i = gameObjects.find(key);
 
 	if (i == gameObjects.end()) {
-		gameObjects[id].reset(new GUI::GameObject(object));
-		return gameObjects[id];
+		gameObjects[key].reset(new GUI::GameObject(object));
+		return gameObjects[key];
 	}
 
 	return i->second;

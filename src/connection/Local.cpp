@@ -1,5 +1,5 @@
 /*
- * Server side of game communication.
+ * Local game dummy communication.
  *
  * Copyright 2011 Lauri Kenttä
  *
@@ -19,15 +19,10 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Server.hpp"
+#include "Local.hpp"
 
 #include "game/Game.hpp"
 
-void Connection::Server::startGame() {
-	clock.reset();
-	clock.unpause();
-}
-
-void Connection::Server::runUntilNow() {
-	game->runUntil(clock.getTime());
+void Connection::Local::sendMessage(const Game::Message& message) {
+	game->insertMessage(message);
 }

@@ -22,14 +22,16 @@
 #ifndef PUTKARTS_GUI_GameObject_HPP
 #define PUTKARTS_GUI_GameObject_HPP
 
-#include "game/Object.hpp"
-
 #include <boost/shared_ptr.hpp>
 
 #include <SFML/Graphics.hpp>
 
 namespace GUI {
 	class GameObject;
+}
+
+namespace Game {
+	class Object;
 }
 
 /**

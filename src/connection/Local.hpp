@@ -24,7 +24,6 @@
 
 #include <string>
 
-#include "game/Message.hpp"
 #include "connection/Server.hpp"
 #include "connection/Client.hpp"
 
@@ -42,9 +41,7 @@ public:
 	 *
 	 * @param message The message to send.
 	 */
-	void sendMessage(const Game::Message& message) {
-		game->insertMessage(message);
-	}
+	void sendMessage(const Game::Message& message);
 
 	/**
 	 * @see Client::setReadyToInit
