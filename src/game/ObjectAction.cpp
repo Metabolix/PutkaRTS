@@ -2,6 +2,7 @@
  * Object action class implementation.
  *
  * Copyright 2011 Petri Österman
+ * Copyright 2011 Lauri Kenttä
  *
  * This file is part of PutkaRTS.
  *
@@ -20,18 +21,7 @@
  */
 
 #include "ObjectAction.hpp"
-#include "Object.hpp"
 
 const Game::ObjectAction::IdType Game::ObjectAction::NEW = "new";
 const Game::ObjectAction::IdType Game::ObjectAction::DELETE = "delete";
 const Game::ObjectAction::IdType Game::ObjectAction::MOVE = "move";
-
-Game::ObjectAction::ObjectAction():
-	id("dummy"),
-	name("Do something") {
-}
-
-bool Game::ObjectAction::runAction(boost::shared_ptr<Object> actor, boost::shared_ptr<Object> target) {
-	// TODO: Run the action.
-	return false;
-}

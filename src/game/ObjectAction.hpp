@@ -2,6 +2,7 @@
  * Object action class definition.
  *
  * Copyright 2011 Petri Österman
+ * Copyright 2011 Lauri Kenttä
  *
  * This file is part of PutkaRTS.
  *
@@ -23,7 +24,6 @@
 #define PUTKARTS_Game_ObjectAction_HPP
 
 #include <string>
-#include <iostream>
 #include <boost/shared_ptr.hpp>
 
 namespace Game {
@@ -35,8 +35,7 @@ namespace Game {
 /**
  * This class describes object action.
  */
-class Game::ObjectAction {
-public:
+struct Game::ObjectAction {
 	typedef std::string IdType;
 
 	/** Predefined action "new". */
@@ -49,17 +48,10 @@ public:
 	static const IdType MOVE;
 
 	/** An unique identifier for this action. */
-	const IdType id;
+	IdType id;
 
-private:
 	/** The name to tell the users. */
 	std::string name;
-
-public:
-	/**
-	 * Constructor.
-	 */
-	ObjectAction();
 
 	/**
 	 * Run object action.
@@ -68,7 +60,10 @@ public:
 	 * @param target Target of the action.
 	 * @return Whether it was possible to run the action.
 	 */
-	bool runAction(boost::shared_ptr<Object> actor, boost::shared_ptr<Object> target);
+	bool runAction(boost::shared_ptr<Object> actor, boost::shared_ptr<Object> target) {
+		// TODO: Run the action.
+		return false;
+	}
 };
 
 #endif

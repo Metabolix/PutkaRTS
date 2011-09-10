@@ -34,14 +34,11 @@ namespace Game {
 /**
  * This class describes object type.
  */
-class Game::ObjectType {
-public:
+struct Game::ObjectType {
 	typedef std::string IdType;
 
 	/** An unique identifier for this type. */
-	const IdType id;
-
-private:
+	IdType id;
 
 	/** The name to tell the users. */
 	std::string name;
@@ -60,12 +57,6 @@ private:
 
 	/** Maximum hit points. */
 	int maxHitPoints;
-
-public:
-	/**
-	 * Constructor.
-	 */
-	ObjectType();
 
 	/**
 	 * Get the radius.

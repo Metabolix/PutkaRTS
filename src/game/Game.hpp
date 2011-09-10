@@ -52,10 +52,10 @@ public:
 	typedef boost::unordered_map<Player::IdType, boost::shared_ptr<Player> > PlayerContainerType;
 
 	/** Type for storing the game's object types. */
-	typedef boost::unordered_map<ObjectType::IdType, boost::shared_ptr<ObjectType> > ObjectTypeContainerType;
+	typedef boost::unordered_map<ObjectType::IdType, boost::shared_ptr<const ObjectType> > ObjectTypeContainerType;
 
 	/** Type for storing the game's object actions. */
-	typedef boost::unordered_map<ObjectAction::IdType, boost::shared_ptr<ObjectAction> > ObjectActionContainerType;
+	typedef boost::unordered_map<ObjectAction::IdType, boost::shared_ptr<const ObjectAction> > ObjectActionContainerType;
 
 	/** Object type for storing the game's objects. */
 	typedef boost::unordered_map<Object::IdType, boost::shared_ptr<Object> > ObjectContainerType;
