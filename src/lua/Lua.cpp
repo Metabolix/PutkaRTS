@@ -139,6 +139,10 @@ template <> boost::any Lua::get<boost::any>(int index) const {
 	}
 }
 
+template <> void Lua::push<Lua::Boolean>(const Boolean& value) {
+	lua_pushboolean(state, value);
+}
+
 template <> void Lua::push<Lua::Integer>(const Integer& value) {
 	lua_pushinteger(state, value);
 }
