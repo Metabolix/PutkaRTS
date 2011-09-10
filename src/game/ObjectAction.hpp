@@ -39,6 +39,15 @@ class Game::ObjectAction {
 public:
 	typedef std::string IdType;
 
+	/** Predefined action "new". */
+	static const IdType NEW;
+
+	/** Predefined action "delete". */
+	static const IdType DELETE;
+
+	/** Predefined action "move". */
+	static const IdType MOVE;
+
 	/** An unique identifier for this action. */
 	const IdType id;
 

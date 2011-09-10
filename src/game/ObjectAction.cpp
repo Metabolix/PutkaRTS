@@ -22,6 +22,10 @@
 #include "ObjectAction.hpp"
 #include "Object.hpp"
 
+const Game::ObjectAction::IdType Game::ObjectAction::NEW = "new";
+const Game::ObjectAction::IdType Game::ObjectAction::DELETE = "delete";
+const Game::ObjectAction::IdType Game::ObjectAction::MOVE = "move";
+
 Game::ObjectAction::ObjectAction():
 	id("dummy"),
 	name("Do something") {
