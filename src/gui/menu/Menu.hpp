@@ -23,13 +23,13 @@
 #ifndef PUTKARTS_GUI_Menu_HPP
 #define PUTKARTS_GUI_Menu_HPP
 
-#include <SFML/Graphics.hpp>
 #include <boost/shared_ptr.hpp>
 
 #include "gui/graphics/ImageCache.hpp"
-
 #include "gui/widget/Widget.hpp"
 #include "gui/widget/Container.hpp"
+
+#include <SFML/Graphics.hpp>
 
 namespace GUI {
 	namespace Menu{

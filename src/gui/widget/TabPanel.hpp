@@ -22,11 +22,11 @@
 #ifndef PUTKARTS_GUI_Widget_TabPanel_HPP
 #define PUTKARTS_GUI_Widget_TabPanel_HPP
 
+#include <string>
+#include <boost/shared_ptr.hpp>
+
 #include "gui/widget/TabManager.hpp"
 #include "gui/widget/Button.hpp"
-
-#include <boost/shared_ptr.hpp>
-#include <string>
 
 namespace GUI {
 	namespace Widget {

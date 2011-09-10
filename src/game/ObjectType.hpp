@@ -23,9 +23,9 @@
 #ifndef PUTKARTS_Game_ObjectType_HPP
 #define PUTKARTS_Game_ObjectType_HPP
 
-#include "util/Scalar.hpp"
 #include <string>
-#include <iostream>
+
+#include "util/Scalar.hpp"
 
 namespace Game {
 	class ObjectType;

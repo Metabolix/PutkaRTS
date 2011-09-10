@@ -19,9 +19,9 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Button.hpp"
-
 #include <algorithm>
+
+#include "Button.hpp"
 
 GUI::Widget::Button::Button(const std::string& text, float x, float y, float width, float height, CallbackType callback):
 	Widget(x, y, width, height),

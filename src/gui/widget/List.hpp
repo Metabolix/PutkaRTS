@@ -23,11 +23,11 @@
 #ifndef PUTKARTS_GUI_Widget_List_HPP
 #define PUTKARTS_GUI_Widget_List_HPP
 
-#include "Widget.hpp"
-#include "Slider.hpp"
-
 #include <list>
 #include <boost/function.hpp>
+
+#include "Widget.hpp"
+#include "Slider.hpp"
 
 namespace GUI {
 	namespace Widget {

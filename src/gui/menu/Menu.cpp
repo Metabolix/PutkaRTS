@@ -20,12 +20,12 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Menu.hpp"
+#include <boost/bind.hpp>
 
-#include "gui/GUI.hpp"
 #include "util/Path.hpp"
 
-#include <boost/bind.hpp>
+#include "Menu.hpp"
+#include "gui/GUI.hpp"
 
 GUI::ImageCache GUI::Menu::Menu::images;
 

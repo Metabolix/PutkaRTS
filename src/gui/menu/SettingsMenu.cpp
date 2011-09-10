@@ -20,6 +20,13 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <boost/bind.hpp>
+#include <boost/shared_ptr.hpp>
+#include <boost/format.hpp>
+#include <boost/lexical_cast.hpp>
+
+#include "util/Path.hpp"
+
 #include "SettingsMenu.hpp"
 #include "gui/GUI.hpp"
 
@@ -28,13 +35,6 @@
 #include "gui/widget/DropDown.hpp"
 #include "gui/widget/Slider.hpp"
 #include "gui/widget/Label.hpp"
-
-#include "util/Path.hpp"
-
-#include <boost/bind.hpp>
-#include <boost/shared_ptr.hpp>
-#include <boost/format.hpp>
-#include <boost/lexical_cast.hpp>
 
 GUI::Menu::SettingsMenu::SettingsMenu(sf::RenderWindow& window, boost::shared_ptr<Widget> parent_) :
 	Menu(parent_),

@@ -20,9 +20,9 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Checkbox.hpp"
-
 #include <algorithm>
+
+#include "Checkbox.hpp"
 
 GUI::Widget::Checkbox::Checkbox(float x, float y, float width, float height, bool initialState, CallbackType callback):
 	Widget(x, y, width, height),

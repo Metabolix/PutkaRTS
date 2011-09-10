@@ -19,9 +19,9 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "GameObject.hpp"
-
 #include "game/Object.hpp"
+
+#include "GameObject.hpp"
 
 GUI::GameObject::GameObject(boost::shared_ptr<const Game::Object> object_):
 	object(object_) {

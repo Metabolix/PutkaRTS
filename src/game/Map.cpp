@@ -21,14 +21,13 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "util/Path.hpp"
+#include <sstream>
+#include <boost/bind.hpp>
 
+#include "util/Path.hpp"
 #include "Game.hpp"
 #include "Map.hpp"
 #include "Object.hpp"
-
-#include <sstream>
-#include <boost/bind.hpp>
 
 Game::Map::Map() {
 	bind("tile", boost::bind(&Map::luaSetTileInfo, this));

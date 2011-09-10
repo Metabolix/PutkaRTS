@@ -23,9 +23,9 @@
 #ifndef PUTKARTS_GUI_MainMenu_HPP
 #define PUTKARTS_GUI_MainMenu_HPP
 
-#include <SFML/Graphics.hpp>
-
 #include "gui/menu/Menu.hpp"
+
+#include <SFML/Graphics.hpp>
 
 namespace GUI {
 	namespace Menu {

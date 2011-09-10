@@ -22,10 +22,11 @@
 #ifndef PUTKARTS_GUI_HPP
 #define PUTKARTS_GUI_HPP
 
+#include <boost/shared_ptr.hpp>
+
 #include "util/Configuration.hpp"
 #include "gui/widget/Widget.hpp"
 
-#include <boost/shared_ptr.hpp>
 #include <SFML/Graphics.hpp>
 
 /**

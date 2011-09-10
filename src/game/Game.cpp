@@ -19,11 +19,11 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Game.hpp"
-
-#include <boost/bind.hpp>
 #include <stdexcept>
 #include <vector>
+#include <boost/bind.hpp>
+
+#include "Game.hpp"
 
 Game::Game::Game(boost::shared_ptr<Map> map_):
 	map(map_),

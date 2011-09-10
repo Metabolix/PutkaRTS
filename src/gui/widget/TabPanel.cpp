@@ -19,9 +19,9 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "TabPanel.hpp"
-
 #include <boost/bind.hpp>
+
+#include "TabPanel.hpp"
 
 GUI::Widget::TabPanel::TabPanel(float x, float y, float width, float height):
 	TabManager(x, y, width, height) {
@@ -74,7 +74,7 @@ void GUI::Widget::TabPanel::resizeButtons() {
 	int count = 0;
 
 	for (ButtonListType::iterator i = buttons.begin(); i != buttons.end(); ++i) {
-		i->button->setPosition(position.Left + count * buttonWidth, position.Top, buttonWidth, position.GetHeight()); 
+		i->button->setPosition(position.Left + count * buttonWidth, position.Top, buttonWidth, position.GetHeight());
 		count++;
 	}
 }
@@ -90,7 +90,7 @@ void GUI::Widget::TabPanel::updateState(sf::RenderWindow& window) {
 GUI::Widget::TabPanel::TabContainerPtrType GUI::Widget::TabPanel::addTab(const TabKeyType& key, const std::string& title, TabContainerPtrType container) {
 	TabContainerPtrType ret = TabManager::addTab(key, container);
 	addButton(title, key);
-	
+
 	return ret;
 }
 

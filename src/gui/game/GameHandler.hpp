@@ -23,7 +23,6 @@
 #ifndef PUTKARTS_GUI_GameHandler_HPP
 #define PUTKARTS_GUI_GameHandler_HPP
 
-#include <SFML/Graphics.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/unordered_map.hpp>
 #include <boost/unordered_set.hpp>
@@ -34,6 +33,8 @@
 #include "gui/menu/SettingsMenu.hpp"
 #include "gui/game/ScrollingView.hpp"
 #include "gui/game/MouseTracker.hpp"
+
+#include <SFML/Graphics.hpp>
 
 namespace GUI {
 	class GameHandler;

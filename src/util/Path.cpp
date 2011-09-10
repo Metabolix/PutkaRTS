@@ -19,17 +19,17 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <string>
+#include <fstream>
+#include <boost/filesystem.hpp>
+
+#include "Path.hpp"
+
 #if defined(_WIN32)
 	#define UNICODE
 	#include <windows.h>
 	#include <shlobj.h>
 #endif
-
-#include "Path.hpp"
-
-#include <boost/filesystem.hpp>
-#include <string>
-#include <fstream>
 
 namespace Path {
 	/** Global data directory, often /usr/share/PutkaRTS */

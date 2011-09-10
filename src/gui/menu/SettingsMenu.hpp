@@ -23,14 +23,13 @@
 #ifndef PUTKARTS_GUI_SettingsMenu_HPP
 #define PUTKARTS_GUI_SettingsMenu_HPP
 
-#include <SFML/Graphics.hpp>
-
 #include "gui/menu/Menu.hpp"
 
 #include "gui/widget/Widget.hpp"
 #include "gui/widget/List.hpp"
 #include "gui/widget/TabPanel.hpp"
 
+#include <SFML/Graphics.hpp>
 
 namespace GUI {
 	namespace Menu {

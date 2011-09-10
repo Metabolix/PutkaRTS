@@ -22,10 +22,10 @@
 #ifndef PUTKARTS_Vector2_HPP
 #define PUTKARTS_Vector2_HPP
 
+#include <cmath>
+
 #include "SIUnit.hpp"
 #include "Scalar.hpp"
-
-#include <cmath>
 
 template <typename U1 = SIUnit::Unit<> >
 struct Vector2 {

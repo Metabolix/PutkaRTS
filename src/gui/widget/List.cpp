@@ -20,11 +20,11 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "List.hpp"
-#include "Label.hpp"
-
 #include <algorithm>
 #include <boost/bind.hpp>
+
+#include "List.hpp"
+#include "Label.hpp"
 
 GUI::Widget::List::Item GUI::Widget::List::invalidItem = {"", ""};
 

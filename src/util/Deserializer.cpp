@@ -19,10 +19,10 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Deserializer.hpp"
-
 #include <stdexcept>
 #include <vector>
+
+#include "Deserializer.hpp"
 
 static void finishValue(std::istream& data) {
 	if (!data || data.get() != '\n') {

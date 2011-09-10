@@ -20,22 +20,24 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "gui/GUI.hpp"
+#include <algorithm>
+#include <cmath>
+#include <boost/bind.hpp>
+
 #include "util/Path.hpp"
+
+#include "game/Game.hpp"
+#include "game/Map.hpp"
+#include "connection/Client.hpp"
+
+#include "gui/GUI.hpp"
 
 #include "GameHandler.hpp"
 #include "GameObject.hpp"
-#include "connection/Client.hpp"
-#include "game/Game.hpp"
-#include "game/Map.hpp"
 
 #include "gui/widget/Button.hpp"
 
 #include <SFML/Graphics.hpp>
-
-#include <algorithm>
-#include <cmath>
-#include <boost/bind.hpp>
 
 GUI::GameHandler::GameHandler(boost::shared_ptr<Connection::Client> connection_, sf::RenderWindow& window):
 	guiView(window.GetDefaultView()),

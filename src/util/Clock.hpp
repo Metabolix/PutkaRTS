@@ -22,8 +22,9 @@
 #ifndef PUTKARTS_Clock_HPP
 #define PUTKARTS_Clock_HPP
 
-#include "Scalar.hpp"
 #include <memory>
+
+#include "Scalar.hpp"
 
 /**
  * Class for handling time.

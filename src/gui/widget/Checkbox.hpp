@@ -23,9 +23,9 @@
 #ifndef PUTKARTS_GUI_Widget_Checkbox_HPP
 #define PUTKARTS_GUI_Widget_Checkbox_HPP
 
-#include "Widget.hpp"
-
 #include <boost/function.hpp>
+
+#include "Widget.hpp"
 
 namespace GUI {
 	namespace Widget {

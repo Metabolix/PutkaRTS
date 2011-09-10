@@ -22,11 +22,11 @@
 #ifndef PUTKARTS_Deserializer_HPP
 #define PUTKARTS_Deserializer_HPP
 
-#include "Scalar.hpp"
-#include "Vector2.hpp"
-
 #include <sstream>
 #include <string>
+
+#include "Scalar.hpp"
+#include "Vector2.hpp"
 
 /**
  * Class for deserializing data.

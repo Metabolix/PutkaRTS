@@ -20,13 +20,12 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "DropDown.hpp"
-#include "Container.hpp"
-#include "Label.hpp"
-
 #include <algorithm>
 #include <boost/bind.hpp>
 
+#include "DropDown.hpp"
+#include "Container.hpp"
+#include "Label.hpp"
 
 GUI::Widget::DropDown::DropDown(float x, float y, float width, float height, float dropDownMaxHeight_, CallbackType callback):
 	Widget(x, y, width, height),

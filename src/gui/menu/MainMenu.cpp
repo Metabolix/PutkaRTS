@@ -20,20 +20,19 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "MainMenu.hpp"
+#include <algorithm>
+#include <boost/bind.hpp>
+#include <boost/shared_ptr.hpp>
 
+#include "game/Game.hpp"
+#include "connection/Local.hpp"
+
+#include "MainMenu.hpp"
 
 #include "gui/GUI.hpp"
 #include "gui/widget/Button.hpp"
 #include "gui/menu/SettingsMenu.hpp"
 #include "gui/game/GameHandler.hpp"
-
-#include "connection/Local.hpp"
-#include "game/Game.hpp"
-
-#include <algorithm>
-#include <boost/bind.hpp>
-#include <boost/shared_ptr.hpp>
 
 GUI::Menu::MainMenu::MainMenu(sf::RenderWindow& window):
 	Menu() {

@@ -19,13 +19,13 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "ImageCache.hpp"
-
-#include <SFML/Graphics.hpp>
-
 #include <stdexcept>
 #include <string>
 #include <map>
+
+#include "ImageCache.hpp"
+
+#include <SFML/Graphics.hpp>
 
 /**
  * Structure to hold an image and its reference count.

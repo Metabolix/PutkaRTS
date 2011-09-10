@@ -19,9 +19,9 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "TabManager.hpp"
-
 #include <stdexcept>
+
+#include "TabManager.hpp"
 
 GUI::Widget::TabManager::TabManager() {
 }

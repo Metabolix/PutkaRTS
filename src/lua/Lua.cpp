@@ -19,9 +19,9 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Lua.hpp"
-
 #include <boost/bind.hpp>
+
+#include "Lua.hpp"
 
 extern "C" {
 	#include <lua.h>

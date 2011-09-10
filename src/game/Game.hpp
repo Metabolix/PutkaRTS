@@ -22,6 +22,11 @@
 #ifndef PUTKARTS_Game_Game_HPP
 #define PUTKARTS_Game_Game_HPP
 
+#include <queue>
+#include <boost/unordered_map.hpp>
+#include <boost/shared_ptr.hpp>
+#include <boost/function.hpp>
+
 #include "util/Scalar.hpp"
 #include "lua/Lua.hpp"
 #include "Message.hpp"
@@ -30,12 +35,6 @@
 #include "ObjectType.hpp"
 #include "ObjectAction.hpp"
 #include "Object.hpp"
-
-#include <queue>
-#include <boost/unordered_map.hpp>
-#include <boost/shared_ptr.hpp>
-
-#include <boost/function.hpp>
 
 namespace Game {
 	class Game;

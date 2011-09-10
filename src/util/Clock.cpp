@@ -19,8 +19,9 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Clock.hpp"
 #include <boost/chrono.hpp>
+
+#include "Clock.hpp"
 
 /**
  * A clock implementation using boost::chrono.

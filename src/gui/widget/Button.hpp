@@ -22,10 +22,10 @@
 #ifndef PUTKARTS_GUI_Widget_Button_HPP
 #define PUTKARTS_GUI_Widget_Button_HPP
 
+#include <boost/function.hpp>
+
 #include "Widget.hpp"
 #include "Label.hpp"
-
-#include <boost/function.hpp>
 
 namespace GUI {
 	namespace Widget {

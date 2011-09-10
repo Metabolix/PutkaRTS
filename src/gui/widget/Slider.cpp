@@ -20,9 +20,9 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Slider.hpp"
-
 #include <algorithm>
+
+#include "Slider.hpp"
 
 GUI::Widget::Slider::Slider(float x, float y, float length, float thickness, bool _vertical, CallbackType callback, float rangeMin_, float rangeMax_, float initialValue):
 	Widget(x, y, (_vertical ? thickness : length), (_vertical ? length : thickness)),

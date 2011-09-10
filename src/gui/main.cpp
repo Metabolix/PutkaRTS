@@ -22,14 +22,14 @@
 #include <iostream>
 #include <stdexcept>
 
-#include <SFML/Graphics.hpp>
+#include "util/Path.hpp"
 
 #include "GUI.hpp"
 
-#include "util/Path.hpp"
-
 #include "menu/MainMenu.hpp"
 #include "game/GameHandler.hpp"
+
+#include <SFML/Graphics.hpp>
 
 namespace GUI {
 	int main(int argc, char **argv);

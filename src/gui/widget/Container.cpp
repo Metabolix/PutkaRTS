@@ -19,10 +19,10 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Container.hpp"
-
 #include <algorithm>
 #include <boost/bind.hpp>
+
+#include "Container.hpp"
 
 GUI::Widget::Container::~Container() {
 	clear();

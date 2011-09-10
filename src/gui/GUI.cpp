@@ -19,8 +19,9 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "GUI.hpp"
 #include "ProgramInfo.hpp"
+
+#include "GUI.hpp"
 
 Configuration GUI::config;
 

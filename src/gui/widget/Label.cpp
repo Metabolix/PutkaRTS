@@ -20,10 +20,10 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Label.hpp"
 #include <limits>
 #include <algorithm>
 
+#include "Label.hpp"
 
 GUI::Widget::Label::Label(const std::string& text, float x, float y, float height):
 	Widget(x, y, std::numeric_limits<float>::infinity(), height),

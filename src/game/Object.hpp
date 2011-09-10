@@ -22,11 +22,11 @@
 #ifndef PUTKARTS_Game_Object_HPP
 #define PUTKARTS_Game_Object_HPP
 
+#include <boost/shared_ptr.hpp>
+
 #include "util/Vector2.hpp"
 #include "ObjectType.hpp"
 #include "Player.hpp"
-
-#include <boost/shared_ptr.hpp>
 
 namespace Game {
 	class Game;

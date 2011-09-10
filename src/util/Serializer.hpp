@@ -22,11 +22,11 @@
 #ifndef PUTKARTS_Serializer_HPP
 #define PUTKARTS_Serializer_HPP
 
-#include "Scalar.hpp"
-#include "Vector2.hpp"
-
 #include <sstream>
 #include <string>
+
+#include "Scalar.hpp"
+#include "Vector2.hpp"
 
 /**
  * Functions for serializing and unserializing data.

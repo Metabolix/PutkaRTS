@@ -22,11 +22,11 @@
 #ifndef PUTKARTS_Scalar_HPP
 #define PUTKARTS_Scalar_HPP
 
-#include "Math.hpp"
-#include "SIUnit.hpp"
-
 #include <cmath>
 #include <limits>
+
+#include "Math.hpp"
+#include "SIUnit.hpp"
 
 template <typename U1 = SIUnit::Unit<> >
 struct Scalar {

@@ -23,11 +23,11 @@
 #ifndef PUTKARTS_GUI_Widget_DropDown_HPP
 #define PUTKARTS_GUI_Widget_DropDown_HPP
 
+#include <boost/function.hpp>
+
 #include "Widget.hpp"
 #include "Button.hpp"
 #include "List.hpp"
-
-#include <boost/function.hpp>
 
 namespace GUI {
 	namespace Widget {

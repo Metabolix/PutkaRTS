@@ -22,10 +22,10 @@
 #ifndef PUTKARTS_GUI_Widget_Container_HPP
 #define PUTKARTS_GUI_Widget_Container_HPP
 
-#include "Widget.hpp"
-
 #include <list>
 #include <boost/shared_ptr.hpp>
+
+#include "Widget.hpp"
 
 namespace GUI {
 	namespace Widget {

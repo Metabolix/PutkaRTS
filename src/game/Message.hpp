@@ -22,13 +22,13 @@
 #ifndef PUTKARTS_Game_Message_HPP
 #define PUTKARTS_Game_Message_HPP
 
+#include <list>
+
 #include "util/Scalar.hpp"
 #include "util/Vector2.hpp"
 
 #include "Object.hpp"
 #include "ObjectAction.hpp"
-
-#include <list>
 
 namespace Game {
 	class Message;

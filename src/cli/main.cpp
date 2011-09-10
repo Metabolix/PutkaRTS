@@ -19,10 +19,11 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "ProgramInfo.hpp"
-#include "util/Path.hpp"
 #include <iostream>
 #include <stdexcept>
+
+#include "ProgramInfo.hpp"
+#include "util/Path.hpp"
 
 /**
  * Main function for the command-line interface.

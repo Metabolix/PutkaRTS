@@ -22,11 +22,12 @@
 #ifndef PUTKARTS_GUI_ImageCache_HPP
 #define PUTKARTS_GUI_ImageCache_HPP
 
-#include <SFML/Graphics.hpp>
-#include <boost/shared_ptr.hpp>
-#include <boost/weak_ptr.hpp>
 #include <string>
 #include <map>
+#include <boost/shared_ptr.hpp>
+#include <boost/weak_ptr.hpp>
+
+#include <SFML/Graphics.hpp>
 
 namespace GUI {
 	class ImageCache;
