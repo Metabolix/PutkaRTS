@@ -120,7 +120,7 @@ private:
 	static int luaThunk(lua_State* state);
 
 	/**
-	 *
+	 * Lua callback: include another file.
 	 */
 	void luaInclude();
 public:
