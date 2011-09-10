@@ -26,6 +26,7 @@
 #include "util/Vector2.hpp"
 
 #include "Object.hpp"
+#include "ObjectAction.hpp"
 
 #include <list>
 
@@ -40,6 +41,9 @@ class Game::Message {
 public:
 	/** The timestamp for handling the message. */
 	Scalar<SIUnit::Time> timestamp;
+
+	/** The action. */
+	ObjectAction::IdType action;
 
 	/** The position associated with this message; mostly used for moving and such. */
 	Vector2<SIUnit::Position> position;

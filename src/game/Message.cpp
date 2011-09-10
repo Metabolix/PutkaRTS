@@ -26,6 +26,7 @@
 Game::Message::Message(std::string data) {
 	Deserializer input(data);
 	input.get(timestamp);
+	input.get(action);
 	input.get(position);
 	Object::IdType id;
 	while (input.get(id), id != 0) {
@@ -36,6 +37,7 @@ Game::Message::Message(std::string data) {
 std::string Game::Message::serialize() const {
 	Serializer output;
 	output.put(timestamp);
+	output.put(action);
 	output.put(position);
 	for (std::list<Object::IdType>::const_iterator i = actors.begin(); i != actors.end(); ++i) {
 		output.put(*i);
