@@ -49,11 +49,6 @@ void Game::Object::setExperience(int experience_) {
 	}
 }
 
-void Game::Object::handleMessage(const Message& message, const Game& game) {
-	// TODO: Handle the message properly!
-	targetPosition = message.position;
-}
-
 bool Game::Object::runStep(Scalar<SIUnit::Time> dt, Game& game) {
 	// TODO: Handle whatever the object is doing.
 	// TODO: Check collisions before moving!

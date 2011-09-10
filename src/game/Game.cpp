@@ -94,18 +94,35 @@ bool Game::Game::handleMessage(Message& message) {
 		return false;
 	}
 
-	// Remove actors that do not exist.
-	for (std::list<Object::IdType>::iterator j, i = message.actors.begin(); i != message.actors.end();) {
-		j = i++;
-		if (objects.find(*j) == objects.end()) {
-			i = message.actors.erase(j);
+	// Collect actors that exist.
+	ObjectContainerType actors;
+	for (std::list<Object::IdType>::iterator i = message.actors.begin(); i != message.actors.end(); ++i) {
+		if (objects.find(*i) != objects.end()) {
+			actors.insert(*objects.find(*i));
 		}
 	}
 
-	// TODO: Handle the message properly!
-	for (std::list<Object::IdType>::const_iterator i = message.actors.begin(); i != message.actors.end(); ++i) {
-		objects[*i]->handleMessage(message, *this);
+	// Hard-coded action: NEW.
+	if (message.action == ObjectAction::NEW) {
+		return true;
 	}
+
+	// Hard-coded action: DELETE.
+	if (message.action == ObjectAction::DELETE) {
+		for (ObjectContainerType::iterator i = actors.begin(); i != actors.end(); ++i) {
+			objects.erase(i->first);
+		}
+		return true;
+	}
+
+	// Hard-coded action: MOVE.
+	if (message.action == ObjectAction::MOVE) {
+		for (ObjectContainerType::iterator i = actors.begin(); i != actors.end(); ++i) {
+			i->second->targetPosition = message.position;
+		}
+		return true;
+	}
+
 	return true;
 }
 

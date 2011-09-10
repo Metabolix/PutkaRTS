@@ -40,6 +40,7 @@ namespace Game {
  */
 class Game::Object {
 public:
+	friend class Game;
 	friend class ObjectAction;
 	typedef unsigned int IdType;
 
@@ -142,14 +143,6 @@ public:
 	const boost::shared_ptr<const Player> getOwner() const {
 		return owner;
 	}
-
-	/**
-	 * Handle a message.
-	 *
-	 * @param message The message to handle.
-	 * @param game The current game, if the message requires additional information.
-	 */
-	void handleMessage(const Message& message, const Game& game);
 
 	/**
 	 * Move the unit one step in time.
