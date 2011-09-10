@@ -21,6 +21,7 @@
 
 #include "Game.hpp"
 
+#include <boost/bind.hpp>
 #include <stdexcept>
 #include <vector>
 
@@ -31,9 +32,23 @@ Game::Game::Game(boost::shared_ptr<Map> map_):
 		throw std::logic_error("Game::Game: Map is NULL!");
 	}
 
+	// Function for defining object types, and a wrapper for simpler syntax.
+	bind("newObjectType", boost::bind(&Game::luaNewObjectType, this));
+	run<void>(
+		"function type(t) return newObjectType("
+		"t.id or 'dummy', "
+		"t.name or 'Unknown', "
+		"t.immutable or false, "
+		"t.radius or 0.5, "
+		"t.maxVelocity or 0, "
+		"t.lineOfSight or 10, "
+		"t.maxHitPoints or 0"
+		") end"
+	);
+
 	// Create some units for testing.
-	boost::shared_ptr<ObjectType> testObjectType(new ObjectType());
-	objectTypes[testObjectType->id] = testObjectType;
+	run<void>("type({id = 'test', name = 'Test type', maxVelocity = 2.5})");
+	boost::shared_ptr<const ObjectType> testObjectType(objectTypes.begin()->second);
 
 	const Map::PlayerContainerType& mapPlayers = map->getPlayers();
 	for (Map::PlayerContainerType::const_iterator i = mapPlayers.begin(); i != mapPlayers.end(); ++i) {
@@ -141,4 +156,16 @@ void Game::Game::handleMessages(MessageCallbackType messageCallback) {
 void Game::Game::insertPlayer(boost::shared_ptr<Player> player) {
 	player->id = players.size() + 1;
 	players.insert(std::make_pair(player->id, player));
+}
+
+void Game::Game::luaNewObjectType() {
+	boost::shared_ptr<ObjectType> tmp(new ObjectType);
+	tmp->id = get<String>(1);
+	tmp->name = get<String>(2);
+	tmp->immutable = get<Boolean>(3);
+	tmp->radius = get<Number>(4);
+	tmp->maxVelocity = get<Number>(5);
+	tmp->lineOfSight = get<Number>(6);
+	tmp->maxHitPoints = get<Number>(7);
+	objectTypes[tmp->id] = tmp;
 }

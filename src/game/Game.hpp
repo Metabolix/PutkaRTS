@@ -23,6 +23,7 @@
 #define PUTKARTS_Game_Game_HPP
 
 #include "util/Scalar.hpp"
+#include "lua/Lua.hpp"
 #include "Message.hpp"
 #include "Map.hpp"
 #include "Player.hpp"
@@ -43,7 +44,7 @@ namespace Game {
 /**
  * The root of all game logic.
  */
-class Game::Game {
+class Game::Game: protected Lua {
 	friend class Map;
 	friend class ObjectAction;
 
@@ -162,6 +163,11 @@ protected:
 	 * @param player Pointer to the player object to be added.
 	 */
 	void insertPlayer(boost::shared_ptr<Player> player);
+
+	/**
+	 * Lua callback: Add an object type.
+	 */
+	void luaNewObjectType();
 };
 
 #endif
