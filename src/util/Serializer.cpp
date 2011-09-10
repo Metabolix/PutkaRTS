@@ -28,3 +28,10 @@ void Serializer::put(const unsigned int& value) {
 void Serializer::put(const Scalar<>& value) {
 	data << value.getDouble() << '\n';
 }
+
+void Serializer::put(const std::string& value) {
+	unsigned int size = value.size();
+	put(size);
+	data.write(value.c_str(), size);
+	data << '\n';
+}

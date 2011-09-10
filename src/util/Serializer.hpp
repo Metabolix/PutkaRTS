@@ -60,6 +60,13 @@ public:
 	void put(const Scalar<>& value);
 
 	/**
+	 * Serialize a string.
+	 *
+	 * @param value The value to serialize.
+	 */
+	void put(const std::string& value);
+
+	/**
 	 * Serialize any kind of Scalar<T>.
 	 *
 	 * @param value The value to serialize.

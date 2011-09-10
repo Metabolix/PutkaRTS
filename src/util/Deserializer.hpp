@@ -58,6 +58,13 @@ public:
 	void get(Scalar<>& value);
 
 	/**
+	 * Deserialize a string.
+	 *
+	 * @param value Reference to the object that shall hold the value.
+	 */
+	void get(std::string& value);
+
+	/**
 	 * Deserialize any kind of Scalar<T> object.
 	 *
 	 * @param value Reference to the object that shall hold the value.
