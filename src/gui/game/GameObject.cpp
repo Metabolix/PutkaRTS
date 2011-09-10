@@ -38,7 +38,7 @@ void GUI::GameObject::draw(sf::RenderWindow& window, bool selected) {
 		tmp.AddPoint(-0.8, +0.4);
 	}
 	Vector2<SIUnit::Position> pos = object->getPosition();
-	double r = object->getObjectType()->getRadius().getDouble();
+	double r = object->getObjectType()->radius.getDouble();
 	if (selected) {
 		window.Draw(sf::Shape::Circle(pos.x.getDouble(), pos.y.getDouble(), r, sf::Color(128, 128, 255, 96), 0.1f, sf::Color(192, 192, 255)));
 	}

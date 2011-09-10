@@ -57,42 +57,6 @@ struct Game::ObjectType {
 
 	/** Maximum hit points. */
 	int maxHitPoints;
-
-	/**
-	 * Get the radius.
-	 *
-	 * @return The radius.
-	 */
-	Scalar<SIUnit::Length> getRadius() const {
-		return radius;
-	}
-
-	/**
-	 * Get the maximum velocity.
-	 *
-	 * @return The radius.
-	 */
-	Scalar<SIUnit::Velocity> getMaxVelocity() const {
-		return maxVelocity;
-	}
-
-	/**
-	 * Get the line of sight radius.
-	 *
-	 * @return The line of sight.
-	 */
-	Scalar<SIUnit::Length> getLineOfSight() const {
-		return lineOfSight;
-	}
-
-	/**
-	 * Return object type's maximum hit points.
-	 *
-	 * @return Object type's maximum hit points.
-	 */
-	int getMaxHitPoints() const {
-		return maxHitPoints;
-	}
 };
 
 #endif

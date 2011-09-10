@@ -132,7 +132,7 @@ public:
 	 * @return True if object is within the given range of the given point.
 	 */
 	bool isNear(const Vector2<SIUnit::Position> &pos, const Scalar<SIUnit::Length> &range = Scalar<SIUnit::Length>(0)) const {
-		return (position - pos).pow2() < (objectType->getRadius() + range).pow2();
+		return (position - pos).pow2() < (objectType->radius + range).pow2();
 	}
 
 	/**

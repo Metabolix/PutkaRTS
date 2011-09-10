@@ -29,14 +29,14 @@ Game::Object::Object(const boost::shared_ptr<const ObjectType> objectType_, boos
 	position(position_),
 	direction(0),
 	targetPosition(position_),
-	hitPoints(objectType_->getMaxHitPoints()),
+	hitPoints(objectType_->maxHitPoints),
 	experience(0) {
 }
 
 void Game::Object::setHitPoints(int hitPoints_) {
 	hitPoints = hitPoints_;
-	if (hitPoints > objectType->getMaxHitPoints()) {
-		hitPoints = objectType->getMaxHitPoints();
+	if (hitPoints > objectType->maxHitPoints) {
+		hitPoints = objectType->maxHitPoints;
 	} else if (hitPoints < 0) {
 		hitPoints = 0;
 	}
@@ -55,7 +55,7 @@ bool Game::Object::runStep(Scalar<SIUnit::Time> dt, Game& game) {
 	if (position != targetPosition) {
 		Vector2<SIUnit::Position> old = position;
 		direction = (targetPosition - position).toAngle();
-		position += Vector2<>::fromAngle(direction) * objectType->getMaxVelocity() * dt;
+		position += Vector2<>::fromAngle(direction) * objectType->maxVelocity * dt;
 		if ((targetPosition - old).dot(targetPosition - position).isNegative()) {
 			position = targetPosition;
 		}
