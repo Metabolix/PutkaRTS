@@ -29,7 +29,7 @@ GUI::Game::Object::Object(boost::shared_ptr<const ::Game::Object> object_):
 
 void GUI::Game::Object::draw(sf::RenderWindow& window, boost::shared_ptr<const ::Game::Player> viewer, bool selected) {
 	// TODO: Load real graphics and track animations.
-	static sf::Shape tmp;
+	static sf::Shape tmp, circle;
 	if (!tmp.GetNbPoints()) {
 		tmp.AddPoint(-0.8, -0.4);
 		tmp.AddPoint(-0.0, -0.4);
@@ -38,12 +38,29 @@ void GUI::Game::Object::draw(sf::RenderWindow& window, boost::shared_ptr<const :
 		tmp.AddPoint(-0.0, +0.8);
 		tmp.AddPoint(-0.0, +0.4);
 		tmp.AddPoint(-0.8, +0.4);
+		tmp.SetOutlineWidth(0.15);
 	}
+	if (!circle.GetNbPoints()) {
+		circle = sf::Shape::Circle(0, 0, 1, sf::Color(0xff, 0xff, 0xff, 0x44), 0.2, sf::Color(0xff, 0xff, 0xff, 0xdd));
+	}
+
 	Vector2<SIUnit::Position> pos = object->getPosition();
 	double r = object->getObjectType()->radius.getDouble();
-	if (selected) {
-		window.Draw(sf::Shape::Circle(pos.x.getDouble(), pos.y.getDouble(), r, sf::Color(128, 128, 255, 96), 0.1f, sf::Color(192, 192, 255)));
+
+	if (object->getOwner() == viewer) {
+		circle.SetColor(sf::Color(0x33, 0x33, 0xcc));
+		tmp.SetColor(sf::Color(0x33, 0x33, 0xcc));
+	} else {
+		circle.SetColor(sf::Color(0xcc, 0x33, 0x00));
+		tmp.SetColor(sf::Color(0xdd, 0x00, 0x00));
 	}
+
+	if (selected) {
+		circle.SetScale(r, r);
+		circle.SetPosition(pos.x.getDouble(), pos.y.getDouble());
+		window.Draw(circle);
+	}
+
 	tmp.SetScale(r, r);
 	tmp.SetPosition(pos.x.getDouble(), pos.y.getDouble());
 	tmp.SetRotation(-Math::toDegrees(object->getDirection().getDouble()));
