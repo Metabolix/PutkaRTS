@@ -32,14 +32,14 @@
 
 #include "gui/GUI.hpp"
 
-#include "GameHandler.hpp"
-#include "GameObject.hpp"
+#include "gui/game/Game.hpp"
+#include "gui/game/Object.hpp"
 
 #include "gui/widget/Button.hpp"
 
 #include <SFML/Graphics.hpp>
 
-GUI::GameHandler::GameHandler(boost::shared_ptr<Connection::Client> connection_, sf::RenderWindow& window):
+GUI::Game::Game::Game(boost::shared_ptr<Connection::Client> connection_, sf::RenderWindow& window):
 	guiView(window.GetDefaultView()),
 	connection(connection_),
 	gameView(window, sf::Vector2f(connection->getGame().getMap().getSizeX(), connection->getGame().getMap().getSizeY()), 32) {
@@ -52,35 +52,35 @@ GUI::GameHandler::GameHandler(boost::shared_ptr<Connection::Client> connection_,
 		connection->getGame().getMap().getSizeY() / 2
 	);
 
-	insert(new GUI::Widget::Button("X", window.GetWidth() - 24, 0, 24, 24, boost::bind(&GUI::GameHandler::exit, this)));
-	insert(new GUI::Widget::Button("S", window.GetWidth() - 48, 0, 24, 24, boost::bind(&GUI::GameHandler::openSettingsMenu, this, boost::ref(window))));
+	insert(new GUI::Widget::Button("X", window.GetWidth() - 24, 0, 24, 24, boost::bind(&Game::exit, this)));
+	insert(new GUI::Widget::Button("S", window.GetWidth() - 48, 0, 24, 24, boost::bind(&Game::openSettingsMenu, this, boost::ref(window))));
 
 	connection->setReadyToStart();
 }
 
-void GUI::GameHandler::loadMapData() {
-	const Game::Map& map = connection->getGame().getMap();
-	const Game::Map::TileInfoMap& tileInfoMap = map.getTileInfoMap();
+void GUI::Game::Game::loadMapData() {
+	const ::Game::Map& map = connection->getGame().getMap();
+	const ::Game::Map::TileInfoMap& tileInfoMap = map.getTileInfoMap();
 
-	for (Game::Map::TileInfoMap::const_iterator i = tileInfoMap.begin(); i != tileInfoMap.end(); ++i) {
-		const Game::Map::TileInfo& info = i->second;
+	for (::Game::Map::TileInfoMap::const_iterator i = tileInfoMap.begin(); i != tileInfoMap.end(); ++i) {
+		const ::Game::Map::TileInfo& info = i->second;
 		images.get(info.texture, Path::findDataPath(map.getDirectory(), "", info.texture));
 	}
 }
 
-void GUI::GameHandler::drawGame(sf::RenderWindow& window) const {
-	const Game::Game& game = connection->getGame();
-	const Game::Map& map = game.getMap();
+void GUI::Game::Game::drawGame(sf::RenderWindow& window) const {
+	const ::Game::Game& game = connection->getGame();
+	const ::Game::Map& map = game.getMap();
 
 	//calculate which tiles are on the screen.
-	Game::Map::SizeType beginY = std::max(0.0f, gameView.GetRect().Top);
-	Game::Map::SizeType endY = std::min<Game::Map::SizeType>(map.getSizeY(), std::max(0.0f, std::ceil(gameView.GetRect().Bottom)));
-	Game::Map::SizeType beginX = std::max(0.0f, gameView.GetRect().Left);
-	Game::Map::SizeType endX = std::min<Game::Map::SizeType>(map.getSizeX(), std::max(0.0f, std::ceil(gameView.GetRect().Right)));
+	::Game::Map::SizeType beginY = std::max(0.0f, gameView.GetRect().Top);
+	::Game::Map::SizeType endY = std::min< ::Game::Map::SizeType>(map.getSizeY(), std::max(0.0f, std::ceil(gameView.GetRect().Bottom)));
+	::Game::Map::SizeType beginX = std::max(0.0f, gameView.GetRect().Left);
+	::Game::Map::SizeType endX = std::min< ::Game::Map::SizeType>(map.getSizeX(), std::max(0.0f, std::ceil(gameView.GetRect().Right)));
 
 	// TODO: Check what parts the player can see!
-	for (Game::Map::SizeType y = beginY; y < endY; ++y) {
-		for (Game::Map::SizeType x = beginX; x < endX; ++x) {
+	for (::Game::Map::SizeType y = beginY; y < endY; ++y) {
+		for (::Game::Map::SizeType x = beginX; x < endX; ++x) {
 			sf::Sprite sprite(images.get(map(x, y).texture));
 			sprite.Resize(1, 1);
 			sprite.SetPosition(x, y);
@@ -89,20 +89,20 @@ void GUI::GameHandler::drawGame(sf::RenderWindow& window) const {
 	}
 
 	// TODO: Get only visible objects! Maybe use something like game.forEachObject(rectangle, callback).
-	const Game::Game::ObjectContainerType& objects = game.getObjects();
-	for (Game::Game::ObjectContainerType::const_iterator i = objects.begin(); i != objects.end(); ++i) {
-		boost::shared_ptr<GameObject> object(getGameObject(i->second));
+	const ::Game::Game::ObjectContainerType& objects = game.getObjects();
+	for (::Game::Game::ObjectContainerType::const_iterator i = objects.begin(); i != objects.end(); ++i) {
+		boost::shared_ptr<Object> object(getObject(i->second));
 		object->draw(window, selectedObjects.find(object) != selectedObjects.end());
 	}
 }
 
-void GUI::GameHandler::exit() {
+void GUI::Game::Game::exit() {
 	if (GUI::currentWidget.get() == this) {
 		GUI::currentWidget.reset();
 	}
 }
 
-bool GUI::GameHandler::handleEvent(const sf::Event& e, const sf::RenderWindow& window) {
+bool GUI::Game::Game::handleEvent(const sf::Event& e, const sf::RenderWindow& window) {
 	if (settingsMenu) {
 		bool ret = settingsMenu->handleEvent(e, window);
 		if (!settingsMenu->isOpen()) {
@@ -158,8 +158,8 @@ bool GUI::GameHandler::handleEvent(const sf::Event& e, const sf::RenderWindow& w
 		// Command units only if the mouse hasn't moved much.
 		if (e.MouseButton.Button == sf::Mouse::Right && (mouse.getPosition() - oldPosition).pow2() < 0.2) {
 			//Testing movement
-			Game::Message msg;
-			msg.action = Game::ObjectAction::MOVE;
+			::Game::Message msg;
+			msg.action = ::Game::ObjectAction::MOVE;
 			msg.position = mouse.getPosition();
 			for (ObjectSetType::const_iterator i = selectedObjects.begin(); i != selectedObjects.end(); ++i) {
 				msg.actors.push_back((*i)->getObject()->id);
@@ -172,7 +172,7 @@ bool GUI::GameHandler::handleEvent(const sf::Event& e, const sf::RenderWindow& w
 	return false;
 }
 
-void GUI::GameHandler::updateState(sf::RenderWindow& window) {
+void GUI::Game::Game::updateState(sf::RenderWindow& window) {
 	connection->runUntilNow();
 
 	if (!settingsMenu) {
@@ -181,7 +181,7 @@ void GUI::GameHandler::updateState(sf::RenderWindow& window) {
 	}
 }
 
-void GUI::GameHandler::draw(sf::RenderWindow& window) {
+void GUI::Game::Game::draw(sf::RenderWindow& window) {
 	window.Clear();
 
 	if (settingsMenu) {
@@ -194,30 +194,30 @@ void GUI::GameHandler::draw(sf::RenderWindow& window) {
 	}
 }
 
-void GUI::GameHandler::openSettingsMenu(sf::RenderWindow& window) {
+void GUI::Game::Game::openSettingsMenu(sf::RenderWindow& window) {
 	settingsMenu.reset(new Menu::SettingsMenu(window));
 }
 
-boost::shared_ptr<GUI::GameObject> GUI::GameHandler::getGameObject(const boost::shared_ptr<const Game::Object>& object) const {
+boost::shared_ptr<GUI::Game::Object> GUI::Game::Game::getObject(const boost::shared_ptr<const ::Game::Object>& object) const {
 	const void* key = object.get();
-	ObjectMapType::iterator i = gameObjects.find(key);
+	ObjectMapType::iterator i = objects.find(key);
 
-	if (i == gameObjects.end()) {
-		gameObjects[key].reset(new GUI::GameObject(object));
-		return gameObjects[key];
+	if (i == objects.end()) {
+		objects[key].reset(new Object(object));
+		return objects[key];
 	}
 
 	return i->second;
 }
 
-GUI::GameHandler::ObjectSetType GUI::GameHandler::getObjectsWithinRange(Vector2<SIUnit::Position> position, Scalar<SIUnit::Length> range, int howMany) {
-	const Game::Game& game = connection->getGame();
-	const Game::Game::ObjectContainerType& objects = game.getObjects();
+GUI::Game::Game::ObjectSetType GUI::Game::Game::getObjectsWithinRange(Vector2<SIUnit::Position> position, Scalar<SIUnit::Length> range, int howMany) {
+	const ::Game::Game& game = connection->getGame();
+	const ::Game::Game::ObjectContainerType& objects = game.getObjects();
 
 	ObjectSetType result;
-	for (Game::Game::ObjectContainerType::const_iterator i = objects.begin(); i != objects.end(); ++i) {
+	for (::Game::Game::ObjectContainerType::const_iterator i = objects.begin(); i != objects.end(); ++i) {
 		if (i->second->isNear(position, range)) {
-			result.insert(getGameObject(i->second));
+			result.insert(getObject(i->second));
 			if (howMany && !--howMany) {
 				break;
 			}

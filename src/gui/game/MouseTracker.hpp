@@ -19,21 +19,23 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PUTKARTS_GUI_MouseTracker_HPP
-#define PUTKARTS_GUI_MouseTracker_HPP
+#ifndef PUTKARTS_GUI_Game_MouseTracker_HPP
+#define PUTKARTS_GUI_Game_MouseTracker_HPP
 
 #include "util/Vector2.hpp"
 
 #include <SFML/Graphics.hpp>
 
 namespace GUI {
-	class MouseTracker;
+	namespace Game {
+		class MouseTracker;
+	}
 }
 
 /**
  * Class for keeping track of mouse state.
  */
-class GUI::MouseTracker {
+class GUI::Game::MouseTracker {
 	/** Screen coordinates. */
 	unsigned int x, y;
 

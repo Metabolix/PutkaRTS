@@ -21,13 +21,13 @@
 
 #include "game/Object.hpp"
 
-#include "GameObject.hpp"
+#include "gui/game/Object.hpp"
 
-GUI::GameObject::GameObject(boost::shared_ptr<const Game::Object> object_):
+GUI::Game::Object::Object(boost::shared_ptr<const ::Game::Object> object_):
 	object(object_) {
 }
 
-void GUI::GameObject::draw(sf::RenderWindow& window, bool selected) {
+void GUI::Game::Object::draw(sf::RenderWindow& window, bool selected) {
 	// TODO: Load real graphics and track animations.
 	static sf::Shape tmp;
 	if (!tmp.GetNbPoints()) {

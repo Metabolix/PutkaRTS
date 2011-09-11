@@ -20,14 +20,14 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PUTKARTS_GUI_GameHandler_HPP
-#define PUTKARTS_GUI_GameHandler_HPP
+#ifndef PUTKARTS_GUI_Game_Game_HPP
+#define PUTKARTS_GUI_Game_Game_HPP
 
 #include <boost/shared_ptr.hpp>
 #include <boost/unordered_map.hpp>
 #include <boost/unordered_set.hpp>
 
-#include "gui/game/GameObject.hpp"
+#include "gui/game/Object.hpp"
 #include "gui/widget/Container.hpp"
 #include "gui/graphics/ImageCache.hpp"
 #include "gui/menu/SettingsMenu.hpp"
@@ -37,7 +37,9 @@
 #include <SFML/Graphics.hpp>
 
 namespace GUI {
-	class GameHandler;
+	namespace Game {
+		class Game;
+	}
 }
 
 namespace Connection {
@@ -47,7 +49,7 @@ namespace Connection {
 /**
  * Class for the game GUI.
  */
-class GUI::GameHandler: public Widget::Container {
+class GUI::Game::Game: public Widget::Container {
 	/** The view used while rendering the GUI. */
 	sf::View guiView;
 
@@ -58,7 +60,7 @@ class GUI::GameHandler: public Widget::Container {
 	boost::shared_ptr<Connection::Client> connection;
 
 	/** Camera position and zoom */
-	GUI::ScrollingView gameView;
+	ScrollingView gameView;
 
 	/** Mouse position */
 	MouseTracker mouse;
@@ -73,24 +75,24 @@ class GUI::GameHandler: public Widget::Container {
 	boost::shared_ptr<Menu::SettingsMenu> settingsMenu;
 
 	/** Container type for lists of objects. */
-	typedef boost::unordered_set<boost::shared_ptr<GameObject> > ObjectSetType;
+	typedef boost::unordered_set<boost::shared_ptr<Object> > ObjectSetType;
 
 	/** Container for keeping track of selected objects */
 	ObjectSetType selectedObjects;
 
 	/** Container type for mapping logical objects to GUI objects. */
-	typedef boost::unordered_map<const void*, boost::shared_ptr<GameObject> > ObjectMapType;
+	typedef boost::unordered_map<const void*, boost::shared_ptr<Object> > ObjectMapType;
 
-	/** Map to keep track of GameObjects. */
-	mutable ObjectMapType gameObjects;
+	/** Map to keep track of Objects. */
+	mutable ObjectMapType objects;
 
 	/**
-	 * Get a GameObject for the given object.
+	 * Get GUI::Game::Object for the given Game::Object.
 	 *
 	 * @param object The logical object.
 	 * @return The GUI object.
 	 */
-	boost::shared_ptr<GameObject> getGameObject(const boost::shared_ptr<const Game::Object>& object) const;
+	boost::shared_ptr<Object> getObject(const boost::shared_ptr<const ::Game::Object>& object) const;
 
 	/**
 	 * Get a list of the objects within the given range of the given coordinates.
@@ -109,7 +111,7 @@ public:
 	 * @param connection The game connection to use.
 	 * @param window The window to use for input and rendering.
 	 */
-	GameHandler(boost::shared_ptr<Connection::Client> connection, sf::RenderWindow& window);
+	Game(boost::shared_ptr<Connection::Client> connection, sf::RenderWindow& window);
 
 	/**
 	 * Load map graphics etc.

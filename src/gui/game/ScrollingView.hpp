@@ -20,19 +20,21 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PUTKARTS_GUI_ScrollingView_HPP
-#define PUTKARTS_GUI_ScrollingView_HPP
+#ifndef PUTKARTS_GUI_Game_ScrollingView_HPP
+#define PUTKARTS_GUI_Game_ScrollingView_HPP
 
 #include <SFML/Graphics.hpp>
 
 namespace GUI {
-	class ScrollingView;
+	namespace Game {
+		class ScrollingView;
+	}
 }
 
 /**
  * Class for scrolling.
  */
-class GUI::ScrollingView: public sf::View {
+class GUI::Game::ScrollingView: public sf::View {
 	/** Size of the scrollable area. */
 	const sf::Vector2f contentSize;
 

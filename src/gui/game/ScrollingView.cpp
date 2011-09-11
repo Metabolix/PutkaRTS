@@ -24,21 +24,21 @@
 
 #include "gui/GUI.hpp"
 
-GUI::ScrollingView::ScrollingView(sf::RenderWindow& window, sf::Vector2f contentSize_, std::size_t pixelsPerUnit_):
+GUI::Game::ScrollingView::ScrollingView(sf::RenderWindow& window, sf::Vector2f contentSize_, std::size_t pixelsPerUnit_):
 	contentSize(contentSize_),
 	pixelsPerUnit(pixelsPerUnit_),
 	mouseDragging(false) {
 	reset(window);
 }
 
-void GUI::ScrollingView::reset(sf::RenderWindow& window) {
+void GUI::Game::ScrollingView::reset(sf::RenderWindow& window) {
 	sf::Vector2f location = GetCenter();
 	static_cast<sf::View&>(*this) = window.GetDefaultView();
 	SetCenter(location);
 	Zoom(pixelsPerUnit);
 }
 
-void GUI::ScrollingView::update(sf::RenderWindow& window) {
+void GUI::Game::ScrollingView::update(sf::RenderWindow& window) {
 	float time = window.GetFrameTime();
 	const sf::Input & input = window.GetInput();
 

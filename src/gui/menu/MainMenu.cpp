@@ -32,7 +32,7 @@
 #include "gui/GUI.hpp"
 #include "gui/widget/Button.hpp"
 #include "gui/menu/SettingsMenu.hpp"
-#include "gui/game/GameHandler.hpp"
+#include "gui/game/Game.hpp"
 
 GUI::Menu::MainMenu::MainMenu(sf::RenderWindow& window):
 	Menu() {
@@ -46,7 +46,7 @@ void GUI::Menu::MainMenu::startGame(sf::RenderWindow& window) {
 	boost::shared_ptr<Connection::Local> connection(new Connection::Local());
 
 	connection->setReadyToInit();
-	GUI::currentWidget.reset(new GameHandler(connection, window));
+	GUI::currentWidget.reset(new GUI::Game::Game(connection, window));
 }
 
 void GUI::Menu::MainMenu::gotoSettings(sf::RenderWindow& window) {

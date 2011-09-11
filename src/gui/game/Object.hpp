@@ -19,15 +19,17 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PUTKARTS_GUI_GameObject_HPP
-#define PUTKARTS_GUI_GameObject_HPP
+#ifndef PUTKARTS_GUI_Game_Object_HPP
+#define PUTKARTS_GUI_Game_Object_HPP
 
 #include <boost/shared_ptr.hpp>
 
 #include <SFML/Graphics.hpp>
 
 namespace GUI {
-	class GameObject;
+	namespace Game {
+		class Object;
+	}
 }
 
 namespace Game {
@@ -37,9 +39,9 @@ namespace Game {
 /**
  * GUI class that wraps a game object and handles drawing it.
  */
-class GUI::GameObject {
+class GUI::Game::Object {
 	/** The real object in the game. */
-	boost::shared_ptr<const Game::Object> object;
+	boost::shared_ptr<const ::Game::Object> object;
 
 public:
 	/**
@@ -47,10 +49,10 @@ public:
 	 *
 	 * @param object The real object in the game.
 	 */
-	GameObject(boost::shared_ptr<const Game::Object> object);
+	Object(boost::shared_ptr<const ::Game::Object> object);
 
 	/* Access the object. */
-	const boost::shared_ptr<const Game::Object>& getObject() const {
+	const boost::shared_ptr<const ::Game::Object>& getObject() const {
 		return object;
 	}
 

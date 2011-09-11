@@ -27,7 +27,6 @@
 #include "GUI.hpp"
 
 #include "menu/MainMenu.hpp"
-#include "game/GameHandler.hpp"
 
 #include <SFML/Graphics.hpp>
 
