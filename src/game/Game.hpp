@@ -134,6 +134,13 @@ public:
 	}
 
 	/**
+	 * Get players.
+	 */
+	const PlayerContainerType& getPlayers() const {
+		return players;
+	}
+
+	/**
 	 * Run the game up to the given time.
 	 *
 	 * @param time The time.
