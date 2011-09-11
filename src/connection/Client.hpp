@@ -30,6 +30,10 @@ namespace Connection {
 	class Client;
 }
 
+namespace Game {
+	class Player;
+}
+
 /**
  * Base class for game clients.
  */
@@ -51,6 +55,11 @@ public:
 	 * Mark the client as ready for initialising the game ("all set, start the clock").
 	 */
 	virtual void setReadyToStart() = 0;
+
+	/**
+	 * Get the player that this client represents.
+	 */
+	boost::shared_ptr<const Game::Player> getPlayer() const;
 };
 
 #endif
