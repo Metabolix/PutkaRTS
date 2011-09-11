@@ -27,7 +27,7 @@ GUI::Game::Object::Object(boost::shared_ptr<const ::Game::Object> object_):
 	object(object_) {
 }
 
-void GUI::Game::Object::draw(sf::RenderWindow& window, bool selected) {
+void GUI::Game::Object::draw(sf::RenderWindow& window, boost::shared_ptr<const ::Game::Player> viewer, bool selected) {
 	// TODO: Load real graphics and track animations.
 	static sf::Shape tmp;
 	if (!tmp.GetNbPoints()) {

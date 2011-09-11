@@ -60,9 +60,10 @@ public:
 	 * Draw the object.
 	 *
 	 * @param window The window to use for rendering.
+	 * @param viewer The current player.
 	 * @param selected Is this object selected?
 	 */
-	void draw(sf::RenderWindow& window, bool selected = false);
+	void draw(sf::RenderWindow& window, boost::shared_ptr<const ::Game::Player> viewer, bool selected = false);
 };
 
 #endif
