@@ -145,9 +145,23 @@ public:
 	 * @return The return value of the Lua code.
 	 * @throw Exception Thrown if anything goes wrong.
 	 */
-	template <typename T> T run(const std::string& code, const std::string& context = "evaluated code") {
+	template <typename T> T run(const std::string& code, const std::string& context) {
 		boost::any result(run<boost::any>(code, context));
 		return boost::any_cast<T>(result);
+	}
+
+	/**
+	 * Run some Lua code.
+	 *
+	 * The template parameter must be one of the following:
+	 * Boolean, Integer, Number, String, boost::any, void.
+	 *
+	 * @param code The Lua code.
+	 * @return The return value of the Lua code.
+	 * @throw Exception Thrown if anything goes wrong.
+	 */
+	template <typename T> T run(const std::string& code) {
+		return run<T>(code, "evaluated code");
 	}
 
 	/**
