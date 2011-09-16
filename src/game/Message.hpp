@@ -73,14 +73,15 @@ public:
 	std::string serialize() const;
 
 	/**
-	 * Compare this message to another; order by timestamps.
+	 * Compare this message to another. The greatest message is the one
+	 * with greatest priority (i.e. the smallest timestamp).
 	 *
 	 * @param m2 The other message
-	 * @return true if this message has earlier timestamp than the other.
+	 * @return true if this message is less important than the other.
 	 */
 	bool operator < (const Message& m2) const {
 		const Message& m1 = *this;
-		return m1.timestamp < m2.timestamp;
+		return m1.timestamp > m2.timestamp;
 	}
 };
 
