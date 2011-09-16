@@ -25,7 +25,8 @@
 #include <boost/shared_ptr.hpp>
 
 #include "game/Game.hpp"
-#include "connection/Local.hpp"
+#include "connection/Server.hpp"
+#include "connection/Client.hpp"
 
 #include "MainMenu.hpp"
 
@@ -43,10 +44,11 @@ GUI::Menu::MainMenu::MainMenu(sf::RenderWindow& window):
 }
 
 void GUI::Menu::MainMenu::startGame(sf::RenderWindow& window) {
-	boost::shared_ptr<Connection::Local> connection(new Connection::Local());
+	boost::shared_ptr<Connection::Server> server(new Connection::Server());
+	boost::shared_ptr<Connection::Client> client(server->createLocalClient());
 
-	connection->setReadyToInit();
-	GUI::currentWidget.reset(new GUI::Game::Game(connection, window));
+	client->setReadyToInit();
+	GUI::currentWidget.reset(new GUI::Game::Game(client, window));
 }
 
 void GUI::Menu::MainMenu::gotoSettings(sf::RenderWindow& window) {

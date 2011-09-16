@@ -27,3 +27,17 @@ boost::shared_ptr<const Game::Player> Connection::Client::getPlayer() const {
 	// TODO: Implement properly!
 	return game->getPlayers().begin()->second;
 }
+
+void Connection::Client::runUntilNow() {
+	Game::Message msg;
+	std::string data;
+	while (connection->receivePacket(data)) {
+		msg = Game::Message(data);
+		game->insertMessage(msg);
+	}
+	game->runUntil(msg.timestamp);
+}
+
+void Connection::Client::sendMessage(const Game::Message& message) {
+	connection->sendPacket(message.serialize());
+}

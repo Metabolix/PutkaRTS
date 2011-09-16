@@ -23,25 +23,65 @@
 #define PUTKARTS_Connection_Server_HPP
 
 #include <string>
+#include <map>
+#include <boost/enable_shared_from_this.hpp>
 
 #include "connection/Base.hpp"
+#include "connection/EndPoint.hpp"
 #include "util/Clock.hpp"
 
 namespace Connection {
 	class Server;
+	class Client;
 }
 
 /**
  * Base class for game servers.
  */
-class Connection::Server: virtual public Connection::Base {
+class Connection::Server: virtual public Connection::Base, public boost::enable_shared_from_this<Connection::Server> {
+	/** Server side class for handling clients. */
+	class Client;
+
+	/** Class for local clients. */
+	class LocalClient;
+
+	/** Type for client container. Use std::map for consistent order. */
+	typedef std::map<int, boost::shared_ptr<Client> > ClientContainerType;
+
+	/** List of connected clients. */
+	ClientContainerType clients;
+
 	/** The clock used for timing the game. */
 	Clock clock;
 
+	/**
+	 * Insert a new client.
+	 *
+	 * @param client The client.
+	 */
+	void addClient(boost::shared_ptr<Client> client);
+
 public:
 	/**
-	 * Run the game up to this moment.
+	 * Create a local client.
 	 */
+	boost::shared_ptr<Connection::Client> createLocalClient();
+
+	/**
+	 * Insert a new client.
+	 *
+	 * @param connection The channel of communication.
+	 */
+	void addClient(boost::shared_ptr<EndPoint> connection);
+
+	/**
+	 * Send a message to all clients.
+	 *
+	 * @param msg The message.
+	 */
+	void sendMessage(const Game::Message& msg);
+
+	/** @copydoc Base::runUntilNow */
 	void runUntilNow();
 
 	/**

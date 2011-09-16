@@ -25,6 +25,7 @@
 #include <string>
 
 #include "connection/Base.hpp"
+#include "connection/EndPoint.hpp"
 
 namespace Connection {
 	class Client;
@@ -38,13 +39,28 @@ namespace Game {
  * Base class for game clients.
  */
 class Connection::Client: virtual public Connection::Base {
+	/** Connection to the server. */
+	boost::shared_ptr<EndPoint> connection;
+
 public:
+	/**
+	 * Construct a new client with the specified connection.
+	 *
+	 * @param conn Connection to a server.
+	 */
+	Client(boost::shared_ptr<EndPoint> conn):
+		connection(conn) {
+	}
+
 	/**
 	 * Send a message describing a player action.
 	 *
 	 * @param message The message to send.
 	 */
-	virtual void sendMessage(const Game::Message& message) = 0;
+	virtual void sendMessage(const Game::Message& message);
+
+	/** @copydoc Base::runUntilNow */
+	virtual void runUntilNow();
 
 	/**
 	 * Mark the client as ready for initialising the game ("settings ok, let's play").
