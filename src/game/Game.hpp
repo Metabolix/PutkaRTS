@@ -120,6 +120,13 @@ public:
 	Game(boost::shared_ptr<Map> map);
 
 	/**
+	 * Get the current time.
+	 */
+	Scalar<SIUnit::Time> getTime() const {
+		return clock;
+	}
+
+	/**
 	 * Get the map.
 	 */
 	const Map& getMap() const {
