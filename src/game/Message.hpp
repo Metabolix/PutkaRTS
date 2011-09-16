@@ -63,7 +63,7 @@ public:
 	 *
 	 * @param data The bytes representing a message.
 	 */
-	Message(std::string data);
+	Message(const std::string& data);
 
 	/**
 	 * Serialize the message for sending it over the network.

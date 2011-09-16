@@ -23,7 +23,7 @@
 #include "util/Serializer.hpp"
 #include "util/Deserializer.hpp"
 
-Game::Message::Message(std::string data) {
+Game::Message::Message(const std::string& data) {
 	Deserializer input(data);
 	input.get(timestamp);
 	input.get(action);
