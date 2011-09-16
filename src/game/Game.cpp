@@ -67,7 +67,7 @@ Game::Game::Game(boost::shared_ptr<Map> map_):
 
 void Game::Game::runUntil(Scalar<SIUnit::Time> time, MessageCallbackType messageCallback) {
 	const Scalar<SIUnit::Time> dt = 1.0 / 32;
-	while (clock + dt < time) {
+	while (clock + dt <= time) {
 		runStep(dt, messageCallback);
 	}
 }
