@@ -75,21 +75,6 @@ public:
 		server(server_) {
 	}
 
-	/** @copydoc Client::setReadyToInit */
-	void setReadyToInit() {
-		if (!server->game.get()) {
-			server->initGame();
-			Base::initGame();
-		}
-	}
-
-	/** @copydoc Client::setReadyToStart */
-	void setReadyToStart() {
-		if (server->game.get()) {
-			server->startGame();
-		}
-	}
-
 	/**
 	 * Update both the server and the client.
 	 *
@@ -128,15 +113,56 @@ void Connection::Server::update() {
 		EndPoint& endPoint = *client.connection;
 		std::string data;
 		while (endPoint.receivePacket(data)) {
-			game->insertMessage(Game::Message(data));
+			if (data.empty()) {
+				continue;
+			}
+			if (data[0] == 'm') {
+				if (game) {
+					data.erase(data.begin());
+					game->insertMessage(Game::Message(data));
+				}
+				continue;
+			}
+			if (data[0] == 'i') {
+				if (client.readyToInit) {
+					continue;
+				}
+				client.readyToInit = true;
+				bool readyToInit = true;
+				for (ClientContainerType::iterator j = clients.begin(); readyToInit && j != clients.end(); ++j) {
+					readyToInit &= i->second->readyToInit;
+				}
+				if (readyToInit) {
+					sendPacket("i");
+					initGame();
+				}
+				continue;
+			}
+			if (data[0] == 's') {
+				if (client.readyToStart) {
+					continue;
+				}
+				client.readyToStart = true;
+				bool readyToStart = true;
+				for (ClientContainerType::iterator j = clients.begin(); readyToStart && j != clients.end(); ++j) {
+					readyToStart &= i->second->readyToStart;
+				}
+				if (readyToStart) {
+					sendPacket("s");
+					startGame();
+				}
+				continue;
+			}
 		}
 	}
-	game->runUntil(clock.getTime(), boost::bind(&Server::sendMessage, this, _1));
+	if (game) {
+		game->runUntil(clock.getTime(), boost::bind(&Server::sendMessage, this, _1));
 
-	// PING
-	Game::Message msg;
-	msg.timestamp = game->getTime();
-	sendMessage(msg);
+		// PING
+		Game::Message msg;
+		msg.timestamp = game->getTime();
+		sendMessage(msg);
+	}
 }
 
 void Connection::Server::sendPacket(const std::string& data) {
@@ -146,5 +172,5 @@ void Connection::Server::sendPacket(const std::string& data) {
 }
 
 void Connection::Server::sendMessage(const Game::Message& msg) {
-	sendPacket(msg.serialize());
+	sendPacket("m" + msg.serialize());
 }

@@ -32,12 +32,38 @@ void Connection::Client::update() {
 	Game::Message msg;
 	std::string data;
 	while (connection->receivePacket(data)) {
-		msg = Game::Message(data);
-		game->insertMessage(msg);
+		if (data.empty()) {
+			continue;
+		}
+		if (data[0] == 'm') {
+			if (game) {
+				data.erase(data.begin());
+				msg = Game::Message(data);
+				game->insertMessage(msg);
+			}
+			continue;
+		}
+		if (data[0] == 'i') {
+			initGame();
+			continue;
+		}
+		if (data[0] == 's') {
+			continue;
+		}
 	}
-	game->runUntil(msg.timestamp);
+	if (game) {
+		game->runUntil(msg.timestamp);
+	}
 }
 
 void Connection::Client::sendMessage(const Game::Message& message) {
-	connection->sendPacket(message.serialize());
+	connection->sendPacket("m" + message.serialize());
+}
+
+void Connection::Client::setReadyToInit() {
+	connection->sendPacket("i");
+}
+
+void Connection::Client::setReadyToStart() {
+	connection->sendPacket("s");
 }

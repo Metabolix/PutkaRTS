@@ -67,12 +67,12 @@ public:
 	/**
 	 * Mark the client as ready for initialising the game ("settings ok, let's play").
 	 */
-	virtual void setReadyToInit() = 0;
+	void setReadyToInit();
 
 	/**
 	 * Mark the client as ready for initialising the game ("all set, start the clock").
 	 */
-	virtual void setReadyToStart() = 0;
+	void setReadyToStart();
 
 	/**
 	 * Get the player that this client represents.

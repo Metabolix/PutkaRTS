@@ -48,6 +48,8 @@ void GUI::Menu::MainMenu::startGame(sf::RenderWindow& window) {
 	boost::shared_ptr<Connection::Client> client(server->createLocalClient());
 
 	client->setReadyToInit();
+	server->update();
+	client->update();
 	GUI::currentWidget.reset(new GUI::Game::Game(client, window));
 }
 
