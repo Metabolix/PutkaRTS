@@ -39,27 +39,27 @@
 
 #include <SFML/Graphics.hpp>
 
-GUI::Game::Game::Game(boost::shared_ptr<Connection::Client> connection_, sf::RenderWindow& window):
+GUI::Game::Game::Game(boost::shared_ptr<Connection::Client> client_, sf::RenderWindow& window):
 	guiView(window.GetDefaultView()),
-	connection(connection_),
-	gameView(window, sf::Vector2f(connection->getGame().getMap().getSizeX(), connection->getGame().getMap().getSizeY()), 32) {
+	client(client_),
+	gameView(window, sf::Vector2f(client->getGame().getMap().getSizeX(), client->getGame().getMap().getSizeY()), 32) {
 
 	loadMapData();
 
 	// TODO: Center at the player start position or something.
 	gameView.SetCenter(
-		connection->getGame().getMap().getSizeX() / 2,
-		connection->getGame().getMap().getSizeY() / 2
+		client->getGame().getMap().getSizeX() / 2,
+		client->getGame().getMap().getSizeY() / 2
 	);
 
 	insert(new GUI::Widget::Button("X", window.GetWidth() - 24, 0, 24, 24, boost::bind(&Game::exit, this)));
 	insert(new GUI::Widget::Button("S", window.GetWidth() - 48, 0, 24, 24, boost::bind(&Game::openSettingsMenu, this, boost::ref(window))));
 
-	connection->setReadyToStart();
+	client->setReadyToStart();
 }
 
 void GUI::Game::Game::loadMapData() {
-	const ::Game::Map& map = connection->getGame().getMap();
+	const ::Game::Map& map = client->getGame().getMap();
 	const ::Game::Map::TileInfoMap& tileInfoMap = map.getTileInfoMap();
 
 	for (::Game::Map::TileInfoMap::const_iterator i = tileInfoMap.begin(); i != tileInfoMap.end(); ++i) {
@@ -69,7 +69,7 @@ void GUI::Game::Game::loadMapData() {
 }
 
 void GUI::Game::Game::drawGame(sf::RenderWindow& window) const {
-	const ::Game::Game& game = connection->getGame();
+	const ::Game::Game& game = client->getGame();
 	const ::Game::Map& map = game.getMap();
 
 	//calculate which tiles are on the screen.
@@ -93,7 +93,7 @@ void GUI::Game::Game::drawGame(sf::RenderWindow& window) const {
 	for (::Game::Game::ObjectContainerType::const_iterator i = objects.begin(); i != objects.end(); ++i) {
 		boost::shared_ptr<Object> object(getObject(i->second));
 		bool selected = selectedObjects.find(object) != selectedObjects.end();
-		object->draw(window, connection->getPlayer(), selected);
+		object->draw(window, client->getPlayer(), selected);
 	}
 }
 
@@ -165,7 +165,7 @@ bool GUI::Game::Game::handleEvent(const sf::Event& e, const sf::RenderWindow& wi
 			for (ObjectSetType::const_iterator i = selectedObjects.begin(); i != selectedObjects.end(); ++i) {
 				msg.actors.push_back((*i)->getObject()->id);
 			}
-			connection->sendMessage(msg);
+			client->sendMessage(msg);
 			return true;
 		}
 	}
@@ -174,7 +174,7 @@ bool GUI::Game::Game::handleEvent(const sf::Event& e, const sf::RenderWindow& wi
 }
 
 void GUI::Game::Game::updateState(sf::RenderWindow& window) {
-	connection->update();
+	client->update();
 
 	if (!settingsMenu) {
 		gameView.update(window);
@@ -212,7 +212,7 @@ boost::shared_ptr<GUI::Game::Object> GUI::Game::Game::getObject(const boost::sha
 }
 
 GUI::Game::Game::ObjectSetType GUI::Game::Game::getObjectsWithinRange(Vector2<SIUnit::Position> position, Scalar<SIUnit::Length> range, int howMany) {
-	const ::Game::Game& game = connection->getGame();
+	const ::Game::Game& game = client->getGame();
 	const ::Game::Game::ObjectContainerType& objects = game.getObjects();
 
 	ObjectSetType result;

@@ -57,7 +57,7 @@ class GUI::Game::Game: public Widget::Container {
 	ImageCache images;
 
 	/** The game connection to use. */
-	boost::shared_ptr<Connection::Client> connection;
+	boost::shared_ptr<Connection::Client> client;
 
 	/** Camera position and zoom */
 	ScrollingView gameView;
@@ -108,10 +108,10 @@ public:
 	/**
 	 * Constructor.
 	 *
-	 * @param connection The game connection to use.
+	 * @param client The game connection to use.
 	 * @param window The window to use for input and rendering.
 	 */
-	Game(boost::shared_ptr<Connection::Client> connection, sf::RenderWindow& window);
+	Game(boost::shared_ptr<Connection::Client> client, sf::RenderWindow& window);
 
 	/**
 	 * Load map graphics etc.
