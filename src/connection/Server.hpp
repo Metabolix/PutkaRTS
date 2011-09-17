@@ -61,6 +61,20 @@ class Connection::Server: virtual public Connection::Base, public boost::enable_
 	 */
 	void addClient(boost::shared_ptr<Client> client);
 
+	/**
+	 * Send a packet to all clients.
+	 *
+	 * @param data The data.
+	 */
+	void sendPacket(const std::string& data);
+
+	/**
+	 * Send a message to all clients.
+	 *
+	 * @param msg The message.
+	 */
+	void sendMessage(const Game::Message& msg);
+
 public:
 	/**
 	 * Create a local client.
@@ -73,13 +87,6 @@ public:
 	 * @param connection The channel of communication.
 	 */
 	void addClient(boost::shared_ptr<EndPoint> connection);
-
-	/**
-	 * Send a message to all clients.
-	 *
-	 * @param msg The message.
-	 */
-	void sendMessage(const Game::Message& msg);
 
 	/**
 	 * Handle data from the clients, and update the game state.

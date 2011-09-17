@@ -139,8 +139,12 @@ void Connection::Server::update() {
 	sendMessage(msg);
 }
 
-void Connection::Server::sendMessage(const Game::Message& msg) {
+void Connection::Server::sendPacket(const std::string& data) {
 	for (ClientContainerType::iterator i = clients.begin(); i != clients.end(); ++i) {
-		i->second->connection->sendPacket(msg.serialize());
+		i->second->connection->sendPacket(data);
 	}
+}
+
+void Connection::Server::sendMessage(const Game::Message& msg) {
+	sendPacket(msg.serialize());
 }
