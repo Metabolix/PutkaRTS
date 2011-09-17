@@ -59,8 +59,10 @@ public:
 	 */
 	virtual void sendMessage(const Game::Message& message);
 
-	/** @copydoc Base::runUntilNow */
-	virtual void runUntilNow();
+	/**
+	 * Handle data from the server, and update the game state.
+	 */
+	virtual void update();
 
 	/**
 	 * Mark the client as ready for initialising the game ("settings ok, let's play").

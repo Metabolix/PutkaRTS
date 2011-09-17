@@ -90,10 +90,15 @@ public:
 		}
 	}
 
-	/** @copydoc Client::runUntilNow */
-	void runUntilNow() {
-		server->runUntilNow();
-		Client::runUntilNow();
+	/**
+	 * Update both the server and the client.
+	 *
+	 * @see Server::update
+	 * @see Client::update
+	 */
+	void update() {
+		server->update();
+		Client::update();
 	}
 };
 
@@ -117,7 +122,7 @@ void Connection::Server::addClient(boost::shared_ptr<EndPoint> connection) {
 	return addClient(boost::shared_ptr<Client>(new Client(connection)));
 }
 
-void Connection::Server::runUntilNow() {
+void Connection::Server::update() {
 	for (ClientContainerType::iterator i = clients.begin(); i != clients.end(); ++i) {
 		Client& client = *i->second;
 		EndPoint& endPoint = *client.connection;

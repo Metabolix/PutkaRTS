@@ -69,7 +69,7 @@ public:
 	/**
 	 * Run the game up to this moment.
 	 */
-	virtual void runUntilNow() = 0;
+	virtual void update() = 0;
 };
 
 #endif

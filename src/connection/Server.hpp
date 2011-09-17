@@ -81,8 +81,10 @@ public:
 	 */
 	void sendMessage(const Game::Message& msg);
 
-	/** @copydoc Base::runUntilNow */
-	void runUntilNow();
+	/**
+	 * Handle data from the clients, and update the game state.
+	 */
+	virtual void update();
 
 	/**
 	 * Start the clock.

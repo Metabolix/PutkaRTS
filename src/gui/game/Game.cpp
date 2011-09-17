@@ -174,7 +174,7 @@ bool GUI::Game::Game::handleEvent(const sf::Event& e, const sf::RenderWindow& wi
 }
 
 void GUI::Game::Game::updateState(sf::RenderWindow& window) {
-	connection->runUntilNow();
+	connection->update();
 
 	if (!settingsMenu) {
 		gameView.update(window);

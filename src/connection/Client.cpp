@@ -28,7 +28,7 @@ boost::shared_ptr<const Game::Player> Connection::Client::getPlayer() const {
 	return game->getPlayers().begin()->second;
 }
 
-void Connection::Client::runUntilNow() {
+void Connection::Client::update() {
 	Game::Message msg;
 	std::string data;
 	while (connection->receivePacket(data)) {
