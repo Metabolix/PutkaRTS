@@ -21,9 +21,12 @@
 
 #include <iostream>
 #include <stdexcept>
+#include <boost/make_shared.hpp>
 
 #include "ProgramInfo.hpp"
 #include "util/Path.hpp"
+#include "connection/Server.hpp"
+#include "connection/TCPListener.hpp"
 
 /**
  * Main function for the command-line interface.
@@ -33,6 +36,11 @@ try {
 	Path::init(argc ? argv[0] : "./bin/unknown.exe");
 	std::string title = ProgramInfo::name + " (version " + ProgramInfo::version + ", CLI)";
 	std::cout << title << std::endl;
+	boost::shared_ptr<Connection::Server> server(new Connection::Server());
+	server->addListener(boost::make_shared<Connection::TCPListener>(boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), 6667)));
+	while (true) {
+		server->update();
+	}
 	return 0;
 } catch (std::exception& e) {
 	std::cerr << "Fatal exception: " << e.what() << std::endl;
