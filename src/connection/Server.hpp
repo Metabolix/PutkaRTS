@@ -104,6 +104,15 @@ private:
 	 */
 	void sendMessage(const Game::Message& msg);
 
+	/**
+	 * Handle a packet.
+	 *
+	 * @param client The sender of the packet.
+	 * @param data The packet.
+	 * @return false if the client should be removed, true otherwise.
+	 */
+	bool handlePacket(Client& client, std::string& data);
+
 public:
 	/**
 	 * Create a local client.

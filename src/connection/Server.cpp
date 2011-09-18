@@ -111,6 +111,49 @@ void Connection::Server::addListener(boost::shared_ptr<Listener> listener) {
 	listeners.insert(listener);
 }
 
+bool Connection::Server::handlePacket(Client& client, std::string& data) {
+	if (data[0] == 'm') {
+		if (game) {
+			data.erase(data.begin());
+			game->insertMessage(Game::Message(data));
+		}
+		return true;
+	}
+	if (data[0] == 'i') {
+		if (client.readyToInit) {
+			return true;
+		}
+		client.readyToInit = true;
+		bool readyToInit = true;
+		for (ClientContainerType::iterator i = clients.begin(); readyToInit && i != clients.end(); ++i) {
+			readyToInit &= i->second->readyToInit;
+		}
+		if (readyToInit) {
+			sendPacket("i");
+			initGame();
+			listeners.clear();
+		}
+		return true;
+	}
+	if (data[0] == 's') {
+		if (client.readyToStart) {
+			return true;
+		}
+		client.readyToStart = true;
+		bool readyToStart = true;
+		for (ClientContainerType::iterator i = clients.begin(); readyToStart && i != clients.end(); ++i) {
+			readyToStart &= i->second->readyToStart;
+		}
+		if (readyToStart) {
+			sendPacket("s");
+			startGame();
+		}
+		return true;
+	}
+	// Invalid packet.
+	return false;
+}
+
 void Connection::Server::update() {
 	for (ListenerContainerType::iterator i = listeners.begin(); i != listeners.end();) {
 		ListenerContainerType::iterator j = i++;
@@ -119,51 +162,24 @@ void Connection::Server::update() {
 			listeners.erase(j);
 		}
 	}
-	for (ClientContainerType::iterator i = clients.begin(); i != clients.end(); ++i) {
-		Client& client = *i->second;
+	for (ClientContainerType::iterator i = clients.begin(); i != clients.end();) {
+		ClientContainerType::iterator j = i++;
+		Client& client = *j->second;
 		EndPoint& endPoint = *client.connection;
 		std::string data;
-		while (endPoint.receivePacket(data)) {
-			if (data.empty()) {
-				continue;
+		while (true) {
+			try {
+				if (!endPoint.receivePacket(data)) {
+					break;
+				}
+			} catch (...) {
+				clients.erase(j);
+				break;
 			}
-			if (data[0] == 'm') {
-				if (game) {
-					data.erase(data.begin());
-					game->insertMessage(Game::Message(data));
+			if (!data.empty()) {
+				if (!handlePacket(client, data)) {
+					clients.erase(j);
 				}
-				continue;
-			}
-			if (data[0] == 'i') {
-				if (client.readyToInit) {
-					continue;
-				}
-				client.readyToInit = true;
-				bool readyToInit = true;
-				for (ClientContainerType::iterator j = clients.begin(); readyToInit && j != clients.end(); ++j) {
-					readyToInit &= i->second->readyToInit;
-				}
-				if (readyToInit) {
-					sendPacket("i");
-					initGame();
-					listeners.clear();
-				}
-				continue;
-			}
-			if (data[0] == 's') {
-				if (client.readyToStart) {
-					continue;
-				}
-				client.readyToStart = true;
-				bool readyToStart = true;
-				for (ClientContainerType::iterator j = clients.begin(); readyToStart && j != clients.end(); ++j) {
-					readyToStart &= i->second->readyToStart;
-				}
-				if (readyToStart) {
-					sendPacket("s");
-					startGame();
-				}
-				continue;
 			}
 		}
 	}
@@ -178,8 +194,13 @@ void Connection::Server::update() {
 }
 
 void Connection::Server::sendPacket(const std::string& data) {
-	for (ClientContainerType::iterator i = clients.begin(); i != clients.end(); ++i) {
-		i->second->connection->sendPacket(data);
+	for (ClientContainerType::iterator i = clients.begin(); i != clients.end();) {
+		ClientContainerType::iterator j = i++;
+		try {
+			j->second->connection->sendPacket(data);
+		} catch (...) {
+			clients.erase(j);
+		}
 	}
 }
 
