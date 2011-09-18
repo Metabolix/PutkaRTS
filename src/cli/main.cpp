@@ -22,6 +22,7 @@
 #include <iostream>
 #include <stdexcept>
 #include <boost/make_shared.hpp>
+#include <boost/thread.hpp>
 
 #include "ProgramInfo.hpp"
 #include "util/Path.hpp"
@@ -40,6 +41,7 @@ try {
 	server->addListener(boost::make_shared<Connection::TCPListener>(boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), 6667)));
 	while (true) {
 		server->update();
+		boost::this_thread::sleep(boost::posix_time::milliseconds(5));
 	}
 	return 0;
 } catch (std::exception& e) {
