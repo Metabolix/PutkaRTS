@@ -107,7 +107,18 @@ void Connection::Server::addClient(boost::shared_ptr<EndPoint> connection) {
 	return addClient(boost::shared_ptr<Client>(new Client(connection)));
 }
 
+void Connection::Server::addListener(boost::shared_ptr<Listener> listener) {
+	listeners.insert(listener);
+}
+
 void Connection::Server::update() {
+	for (ListenerContainerType::iterator i = listeners.begin(); i != listeners.end();) {
+		ListenerContainerType::iterator j = i++;
+		Listener& listener = **j;
+		if (!listener.update(*this)) {
+			listeners.erase(j);
+		}
+	}
 	for (ClientContainerType::iterator i = clients.begin(); i != clients.end(); ++i) {
 		Client& client = *i->second;
 		EndPoint& endPoint = *client.connection;
@@ -135,6 +146,7 @@ void Connection::Server::update() {
 				if (readyToInit) {
 					sendPacket("i");
 					initGame();
+					listeners.clear();
 				}
 				continue;
 			}

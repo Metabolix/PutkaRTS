@@ -23,8 +23,10 @@
 #define PUTKARTS_Connection_Server_HPP
 
 #include <string>
+#include <set>
 #include <map>
 #include <boost/enable_shared_from_this.hpp>
+#include <boost/utility.hpp>
 
 #include "connection/Base.hpp"
 #include "connection/EndPoint.hpp"
@@ -39,14 +41,41 @@ namespace Connection {
  * Base class for game servers.
  */
 class Connection::Server: virtual public Connection::Base, public boost::enable_shared_from_this<Connection::Server> {
+public:
+	/** Interface for listeners. */
+	class Listener: boost::noncopyable {
+	public:
+		/**
+		 * Virtual destructor.
+		 */
+		virtual ~Listener() {
+			// Nothing to do.
+		}
+
+		/**
+		 * Inform the server about changes.
+		 *
+		 * @param server The server.
+		 * @return false if this Listener should be removed, true otherwise.
+		 */
+		virtual bool update(Server& server) = 0;
+	};
+
+private:
 	/** Server side class for handling clients. */
 	class Client;
 
 	/** Class for local clients. */
 	class LocalClient;
 
+	/** Type for listener container. Use std::map for consistent order. */
+	typedef std::set<boost::shared_ptr<Listener> > ListenerContainerType;
+
 	/** Type for client container. Use std::map for consistent order. */
 	typedef std::map<int, boost::shared_ptr<Client> > ClientContainerType;
+
+	/** Listeners that wait for connections. */
+	ListenerContainerType listeners;
 
 	/** List of connected clients. */
 	ClientContainerType clients;
@@ -87,6 +116,13 @@ public:
 	 * @param connection The channel of communication.
 	 */
 	void addClient(boost::shared_ptr<EndPoint> connection);
+
+	/**
+	 * Insert a new listener.
+	 *
+	 * @param listener The listener.
+	 */
+	void addListener(boost::shared_ptr<Listener> listener);
 
 	/**
 	 * Handle data from the clients, and update the game state.
