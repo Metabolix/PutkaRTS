@@ -37,6 +37,12 @@ namespace GUI {
  * Main class for the game menu.
  */
 class GUI::Menu::MainMenu: public Menu {
+	/**
+	 * Connect to a multiplayer game.
+	 *
+	 * @param window The window to use for input and rendering.
+	 */
+	void startMultiGame(sf::RenderWindow& window);
 
 	/**
 	 * Start a new game.
@@ -51,6 +57,7 @@ class GUI::Menu::MainMenu: public Menu {
 	 * @param window The window used for input and rendering.
 	 */
 	void gotoSettings(sf::RenderWindow& window);
+
 public:
 	/**
 	 * Constructor.

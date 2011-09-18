@@ -23,10 +23,12 @@
 #include <algorithm>
 #include <boost/bind.hpp>
 #include <boost/shared_ptr.hpp>
+#include <boost/make_shared.hpp>
 
 #include "game/Game.hpp"
 #include "connection/Server.hpp"
 #include "connection/Client.hpp"
+#include "connection/TCPEndPoint.hpp"
 
 #include "MainMenu.hpp"
 
@@ -38,9 +40,27 @@
 GUI::Menu::MainMenu::MainMenu(sf::RenderWindow& window):
 	Menu() {
 	// Build the main menu GUI.
-	insert(new GUI::Widget::Button("New game", 200, 100, 240, 50, boost::bind(&GUI::Menu::MainMenu::startGame, this, boost::ref(window))));
-	insert(new GUI::Widget::Button("Settings", 250, 170, 140, 50, boost::bind(&GUI::Menu::MainMenu::gotoSettings, this, boost::ref(window))));
-	insert(new GUI::Widget::Button("Exit", 250, 240, 140, 50, boost::bind(&sf::RenderWindow::Close, boost::ref(window))));
+	insert(new GUI::Widget::Button("New game", 200, 100 + 0 * 70, 240, 50, boost::bind(&GUI::Menu::MainMenu::startGame, this, boost::ref(window))));
+	insert(new GUI::Widget::Button("Connect",  200, 100 + 1 * 70, 240, 50, boost::bind(&GUI::Menu::MainMenu::startMultiGame, this, boost::ref(window))));
+	insert(new GUI::Widget::Button("Settings", 250, 100 + 2 * 70, 140, 50, boost::bind(&GUI::Menu::MainMenu::gotoSettings, this, boost::ref(window))));
+	insert(new GUI::Widget::Button("Exit",     250, 100 + 3 * 70, 140, 50, boost::bind(&sf::RenderWindow::Close, boost::ref(window))));
+}
+
+void GUI::Menu::MainMenu::startMultiGame(sf::RenderWindow& window) {
+	boost::shared_ptr<Connection::Client> client(new Connection::Client(boost::make_shared<Connection::TCPEndPoint>("127.0.0.1", 6667)));
+
+	client->setReadyToInit();
+
+	// HACK! Wait for the initGame message.
+	while (true) {
+		client->update();
+		try {
+			client->getGame();
+			break;
+		} catch (...) {
+		}
+	}
+	GUI::currentWidget.reset(new GUI::Game::Game(client, window));
 }
 
 void GUI::Menu::MainMenu::startGame(sf::RenderWindow& window) {
