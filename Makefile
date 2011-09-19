@@ -22,6 +22,7 @@ GUI_LIBS := $(CLI_LIBS) -lsfml-system -lsfml-window -lsfml-graphics -lsfml-audio
 # Hack for OS differences.
 # On Windows, echo '1' produces literally '1' instead of 1.
 ifeq "$(shell echo '1')" "'1'"
+  WIN32 := 1
   mkdir = $(shell mkdir $(subst /,\,$(1)/dummy.mkdir) && rmdir $(subst /,\,$(1)/dummy.mkdir))
   rm_rf = $(foreach F,$(subst /,\,$(1)),$(shell rmdir /Q /S $(F) 2>NUL >NUL || del /Q /S $(F) 2>NUL >NUL)) $(1)
 
@@ -42,11 +43,17 @@ else
     GUI_LIBS := $(patsubst -l%,-framework %,$(GUI_LIBS))
   endif
 
-  # MinGW needs .exe suffices.
   ifeq "$(findstring mingw,$(CXX))" "mingw"
-    CLI_BIN := $(CLI_BIN).exe
-    GUI_BIN := $(GUI_BIN).exe
+    WIN32 := 1
   endif
+endif
+
+ifdef WIN32
+  CLI_BIN := $(CLI_BIN).exe
+  GUI_BIN := $(GUI_BIN).exe
+  CLI_LIBS := $(CLI_LIBS) -lws2_32
+  GUI_LIBS := $(GUI_LIBS) -lws2_32
+  CXXFLAGS2 := -D_WIN32_WINNT=0x0501
 endif
 
 # Abstract build rules.
@@ -87,13 +94,13 @@ $(CLI_BIN):
 build/%.dep: src/%
 	@echo [DEPEND] $<
 	@$(call mkdir,$(dir $@))
-	@$(CXX) $(CXXFLAGS) $(INCLUDE_DIRS) $(CXX_VER) -MM $< -MT $@ -MP > $@
+	@$(CXX) $(CXXFLAGS) $(CXXFLAGS2) $(INCLUDE_DIRS) $(CXX_VER) -MM $< -MT $@ -MP > $@
 
 # Compilation
 build/%.o: src/% build/%.dep
 	@echo [CXX] $<
 	@$(call mkdir,$(dir $@))
-	@$(CXX) $(CXXFLAGS) $(INCLUDE_DIRS) $(CXX_VER) $< -c -o $@
+	@$(CXX) $(CXXFLAGS) $(CXXFLAGS2) $(INCLUDE_DIRS) $(CXX_VER) $< -c -o $@
 
 # Always regenerate program version string
 build/ProgramInfo.cpp.o: $(FILES_CPP) $(FILES_HPP)
