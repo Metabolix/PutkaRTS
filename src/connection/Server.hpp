@@ -115,6 +115,11 @@ private:
 
 public:
 	/**
+	 * Run until the game ends or all clients disconnect.
+	 */
+	void run();
+
+	/**
 	 * Create a local client.
 	 */
 	boost::shared_ptr<Connection::Client> createLocalClient();

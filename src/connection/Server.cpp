@@ -19,8 +19,9 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "boost/weak_ptr.hpp"
-#include "boost/bind.hpp"
+#include <boost/weak_ptr.hpp>
+#include <boost/bind.hpp>
+#include <boost/thread.hpp>
 
 #include "Server.hpp"
 #include "Client.hpp"
@@ -86,6 +87,17 @@ public:
 		Client::update();
 	}
 };
+
+void Connection::Server::run() {
+	boost::weak_ptr<Server> weak(shared_from_this());
+	while (boost::shared_ptr<Server> ptr = weak.lock()) {
+		if (state == END) {
+			return;
+		}
+		update();
+		boost::this_thread::sleep(boost::posix_time::milliseconds(5));
+	}
+}
 
 boost::shared_ptr<Connection::Client> Connection::Server::createLocalClient() {
 	PipePair p;
