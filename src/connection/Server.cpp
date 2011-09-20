@@ -156,6 +156,12 @@ bool Connection::Server::handlePacket(Client& client, std::string& data) {
 }
 
 void Connection::Server::update() {
+	if (state != SETUP) {
+		if (clients.empty()) {
+			state = END;
+			return;
+		}
+	}
 	for (ListenerContainerType::iterator i = listeners.begin(); i != listeners.end();) {
 		ListenerContainerType::iterator j = i++;
 		Listener& listener = **j;
