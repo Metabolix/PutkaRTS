@@ -48,6 +48,7 @@ void Connection::Client::update() {
 			continue;
 		}
 		if (data[0] == 's') {
+			startGame();
 			continue;
 		}
 	}

@@ -94,6 +94,7 @@ boost::shared_ptr<Connection::Client> Connection::Server::createLocalClient() {
 }
 
 void Connection::Server::startGame() {
+	Base::startGame();
 	clock.reset();
 	clock.unpause();
 }

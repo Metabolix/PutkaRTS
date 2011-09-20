@@ -28,6 +28,11 @@
 
 namespace Connection {
 	class Base;
+
+	/** The current state. */
+	enum State {
+		SETUP, INIT, PLAY, END
+	};
 }
 
 namespace Game {
@@ -40,6 +45,9 @@ namespace Game {
  */
 class Connection::Base {
 protected:
+	/** The current state. */
+	State state;
+
 	/** The current game. */
 	boost::shared_ptr<Game::Game> game;
 
@@ -48,12 +56,33 @@ protected:
 	 */
 	virtual void initGame();
 
+	/**
+	 * Start the game.
+	 */
+	virtual void startGame();
+
 public:
+	/**
+	 * Constructor.
+	 */
+	Base():
+		state(SETUP) {
+	}
+
 	/**
 	 * Virtual base destructor.
 	 */
 	virtual ~Base() {
 		// Nothing to do.
+	}
+
+	/**
+	 * Get the current state.
+	 *
+	 * @return The current state.
+	 */
+	State getState() const {
+		return state;
 	}
 
 	/**
