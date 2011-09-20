@@ -27,6 +27,7 @@
 #include <map>
 #include <boost/enable_shared_from_this.hpp>
 #include <boost/utility.hpp>
+#include <boost/thread.hpp>
 
 #include "connection/Base.hpp"
 #include "connection/EndPoint.hpp"
@@ -40,7 +41,7 @@ namespace Connection {
 /**
  * Base class for game servers.
  */
-class Connection::Server: virtual public Connection::Base, public boost::enable_shared_from_this<Connection::Server> {
+class Connection::Server: virtual public Connection::Base, public boost::enable_shared_from_this<Connection::Server>, private boost::recursive_mutex {
 public:
 	/** Interface for listeners. */
 	class Listener: boost::noncopyable {

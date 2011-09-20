@@ -112,6 +112,7 @@ void Connection::Server::startGame() {
 }
 
 void Connection::Server::addClient(boost::shared_ptr<Client> client) {
+	boost::lock_guard<boost::recursive_mutex> lock(*this);
 	for (client->id = 1; clients.find(client->id) != clients.end(); ++client->id);
 	clients[client->id] = client;
 }
@@ -121,6 +122,7 @@ void Connection::Server::addClient(boost::shared_ptr<EndPoint> connection) {
 }
 
 void Connection::Server::addListener(boost::shared_ptr<Listener> listener) {
+	boost::lock_guard<boost::recursive_mutex> lock(*this);
 	listeners.insert(listener);
 }
 
@@ -168,6 +170,7 @@ bool Connection::Server::handlePacket(Client& client, std::string& data) {
 }
 
 void Connection::Server::update() {
+	boost::lock_guard<boost::recursive_mutex> lock(*this);
 	if (state != SETUP) {
 		if (clients.empty()) {
 			state = END;
