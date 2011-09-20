@@ -39,10 +39,7 @@ try {
 	std::cout << title << std::endl;
 	boost::shared_ptr<Connection::Server> server(new Connection::Server());
 	server->addListener(boost::make_shared<Connection::TCPListener>(boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), 6667)));
-	while (true) {
-		server->update();
-		boost::this_thread::sleep(boost::posix_time::milliseconds(5));
-	}
+	server->run();
 	return 0;
 } catch (std::exception& e) {
 	std::cerr << "Fatal exception: " << e.what() << std::endl;
