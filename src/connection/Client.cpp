@@ -52,7 +52,7 @@ void Connection::Client::update() {
 			continue;
 		}
 	}
-	if (game) {
+	if (state == PLAY) {
 		game->runUntil(msg.timestamp);
 	}
 }

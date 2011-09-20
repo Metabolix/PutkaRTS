@@ -205,7 +205,7 @@ void Connection::Server::update() {
 			}
 		}
 	}
-	if (game) {
+	if (state == PLAY) {
 		game->runUntil(clock.getTime(), boost::bind(&Server::sendMessage, this, _1));
 
 		// PING
