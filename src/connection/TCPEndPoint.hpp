@@ -68,6 +68,18 @@ public:
 	TCPEndPoint(const std::string& address, int port):
 		socket(service),
 		recvSize(0) {
+		connect(address, boost::lexical_cast<std::string>(port));
+	}
+
+	/**
+	 * Connect to an address.
+	 *
+	 * @param address The address.
+	 * @param port The port.
+	 */
+	TCPEndPoint(const std::string& address, const std::string& port):
+		socket(service),
+		recvSize(0) {
 		connect(address, port);
 	}
 
@@ -77,9 +89,9 @@ public:
 	 * @param address The address.
 	 * @param port The port.
 	 */
-	void connect(const std::string& address, int port) {
+	void connect(const std::string& address, const std::string& port) {
 		boost::asio::ip::tcp::resolver resolver(service);
-		boost::asio::ip::tcp::resolver::query query(address, boost::lexical_cast<std::string>(port));
+		boost::asio::ip::tcp::resolver::query query(address, port);
 		boost::asio::connect(socket, resolver.resolve(query));
 	}
 
