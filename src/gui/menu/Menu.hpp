@@ -20,8 +20,8 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PUTKARTS_GUI_Menu_HPP
-#define PUTKARTS_GUI_Menu_HPP
+#ifndef PUTKARTS_GUI_Menu_Menu_HPP
+#define PUTKARTS_GUI_Menu_Menu_HPP
 
 #include <boost/shared_ptr.hpp>
 
@@ -32,7 +32,7 @@
 #include <SFML/Graphics.hpp>
 
 namespace GUI {
-	namespace Menu{
+	namespace Menu {
 		class Menu;
 	}
 }
@@ -60,9 +60,9 @@ protected:
 	/**
 	 * Set parent and flag the menu as open.
 	 *
-	 * @param parent_ Pointer to the parent object. Control is returned to parent when menu is closed.
+	 * @param parent Pointer to the parent object. Control is returned to parent when menu is closed.
 	 */
-	void openMenu(boost::shared_ptr<Widget> parent_ = boost::shared_ptr<Widget>());
+	void openMenu(boost::shared_ptr<Widget> parent = boost::shared_ptr<Widget>());
 
 	/**
 	 * Return control to parent if one is specified and flag the menu as closed.
@@ -73,9 +73,9 @@ public:
 	/**
 	 * Constructor.
 	 *
-	 * @param parent_ Pointer to the parent object. Control is returned to parent when menu is closed.
+	 * @param parent Pointer to the parent object. Control is returned to parent when menu is closed.
 	 */
-	Menu(boost::shared_ptr<Widget> parent_ = boost::shared_ptr<Widget>());
+	Menu(boost::shared_ptr<Widget> parent = boost::shared_ptr<Widget>());
 
 	/**
 	 * Draw the widget.

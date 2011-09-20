@@ -36,7 +36,7 @@
 #include "gui/widget/Slider.hpp"
 #include "gui/widget/Label.hpp"
 
-GUI::Menu::SettingsMenu::SettingsMenu(sf::RenderWindow& window, boost::shared_ptr<Widget> parent_) :
+GUI::Menu::SettingsMenu::SettingsMenu(boost::shared_ptr<Widget> parent_, sf::RenderWindow& window) :
 	Menu(parent_),
 	tabManager(new GUI::Widget::TabPanel(50, 100, 200, 16)) {
 

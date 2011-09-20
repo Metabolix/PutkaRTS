@@ -20,8 +20,8 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PUTKARTS_GUI_MainMenu_HPP
-#define PUTKARTS_GUI_MainMenu_HPP
+#ifndef PUTKARTS_GUI_Menu_MainMenu_HPP
+#define PUTKARTS_GUI_Menu_MainMenu_HPP
 
 #include "gui/menu/Menu.hpp"
 

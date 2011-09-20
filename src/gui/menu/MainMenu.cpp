@@ -74,5 +74,5 @@ void GUI::Menu::MainMenu::startGame(sf::RenderWindow& window) {
 }
 
 void GUI::Menu::MainMenu::gotoSettings(sf::RenderWindow& window) {
-	GUI::currentWidget.reset(new GUI::Menu::SettingsMenu(window, GUI::currentWidget));
+	GUI::currentWidget.reset(new GUI::Menu::SettingsMenu(GUI::currentWidget, window));
 }

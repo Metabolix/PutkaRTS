@@ -20,8 +20,8 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PUTKARTS_GUI_SettingsMenu_HPP
-#define PUTKARTS_GUI_SettingsMenu_HPP
+#ifndef PUTKARTS_GUI_Menu_SettingsMenu_HPP
+#define PUTKARTS_GUI_Menu_SettingsMenu_HPP
 
 #include "gui/menu/Menu.hpp"
 
@@ -109,12 +109,10 @@ class GUI::Menu::SettingsMenu: public Menu {
 
 public:
 	/**
-	 * Constructor.
-	 *
+	 * @copydoc Menu::Menu
 	 * @param window The window to use for input and rendering.
-	 * @param parent_ Pointer to parent object. Control is returned to parent when menu is closed.
 	 */
-	SettingsMenu(sf::RenderWindow& window, boost::shared_ptr<Widget> parent_ = boost::shared_ptr<Widget>());
+	SettingsMenu(boost::shared_ptr<Widget> parent, sf::RenderWindow& window);
 };
 
 #endif

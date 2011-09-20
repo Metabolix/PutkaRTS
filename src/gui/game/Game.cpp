@@ -196,7 +196,7 @@ void GUI::Game::Game::draw(sf::RenderWindow& window) {
 }
 
 void GUI::Game::Game::openSettingsMenu(sf::RenderWindow& window) {
-	settingsMenu.reset(new Menu::SettingsMenu(window));
+	settingsMenu.reset(new Menu::SettingsMenu(boost::shared_ptr<Widget>(), window));
 }
 
 boost::shared_ptr<GUI::Game::Object> GUI::Game::Game::getObject(const boost::shared_ptr<const ::Game::Object>& object) const {
