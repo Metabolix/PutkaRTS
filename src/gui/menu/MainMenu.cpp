@@ -20,12 +20,11 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <algorithm>
 #include <boost/bind.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/make_shared.hpp>
+#include <boost/thread.hpp>
 
-#include "game/Game.hpp"
 #include "connection/Server.hpp"
 #include "connection/Client.hpp"
 #include "connection/TCPEndPoint.hpp"
@@ -35,7 +34,7 @@
 #include "gui/GUI.hpp"
 #include "gui/widget/Button.hpp"
 #include "gui/menu/SettingsMenu.hpp"
-#include "gui/game/Game.hpp"
+#include "gui/menu/StartGame.hpp"
 
 GUI::Menu::MainMenu::MainMenu(sf::RenderWindow& window):
 	Menu() {
@@ -48,29 +47,14 @@ GUI::Menu::MainMenu::MainMenu(sf::RenderWindow& window):
 
 void GUI::Menu::MainMenu::startMultiGame(sf::RenderWindow& window) {
 	boost::shared_ptr<Connection::Client> client(new Connection::Client(boost::make_shared<Connection::TCPEndPoint>("127.0.0.1", 6667)));
-
-	client->setReadyToInit();
-
-	// HACK! Wait for the initGame message.
-	while (true) {
-		client->update();
-		try {
-			client->getGame();
-			break;
-		} catch (...) {
-		}
-	}
-	GUI::currentWidget.reset(new GUI::Game::Game(client, window));
+	GUI::currentWidget.reset(new GUI::Menu::StartGame(GUI::currentWidget, client));
 }
 
 void GUI::Menu::MainMenu::startGame(sf::RenderWindow& window) {
 	boost::shared_ptr<Connection::Server> server(new Connection::Server());
 	boost::shared_ptr<Connection::Client> client(server->createLocalClient());
-
-	client->setReadyToInit();
-	server->update();
-	client->update();
-	GUI::currentWidget.reset(new GUI::Game::Game(client, window));
+	boost::thread(boost::bind(&Connection::Server::run, server));
+	GUI::currentWidget.reset(new GUI::Menu::StartGame(GUI::currentWidget, client));
 }
 
 void GUI::Menu::MainMenu::gotoSettings(sf::RenderWindow& window) {
