@@ -36,6 +36,8 @@ namespace Connection {
  * TCP listener.
  */
 class Connection::TCPListener: public Connection::Listener {
+	friend class Address;
+
 	/** Boost IO service. */
 	boost::asio::io_service service;
 
