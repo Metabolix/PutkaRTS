@@ -1,7 +1,7 @@
 CXX := c++
 CXXFLAGS := -O -g -std=c++98 -Wall -pedantic
 LINKFLAGS := -O -g
-INCLUDE_DIRS := -Isrc -Iext/include
+INCLUDE_DIRS := -Isrc -isystem ext/include
 LIB_DIRS := -Lext/lib
 
 PUTKARTS_VERSION :=
