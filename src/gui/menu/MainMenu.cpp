@@ -27,7 +27,7 @@
 
 #include "connection/Server.hpp"
 #include "connection/Client.hpp"
-#include "connection/TCPEndPoint.hpp"
+#include "connection/Address.hpp"
 
 #include "MainMenu.hpp"
 
@@ -46,7 +46,7 @@ GUI::Menu::MainMenu::MainMenu(sf::RenderWindow& window):
 }
 
 void GUI::Menu::MainMenu::startMultiGame(sf::RenderWindow& window) {
-	boost::shared_ptr<Connection::Client> client(new Connection::Client(boost::make_shared<Connection::TCPEndPoint>("127.0.0.1", 6667)));
+	boost::shared_ptr<Connection::Client> client(new Connection::Client(Connection::Address::connect("tcp4://127.0.0.1:6667")));
 	GUI::currentWidget.reset(new GUI::Menu::StartGame(GUI::currentWidget, client));
 }
 
