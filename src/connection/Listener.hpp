@@ -1,5 +1,5 @@
 /*
- * TCP listener.
+ * Interface for listeners.
  *
  * Copyright 2011 Lauri Kenttä
  *
@@ -19,42 +19,35 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PUTKARTS_Connection_TCPListener_HPP
-#define PUTKARTS_Connection_TCPListener_HPP
+#ifndef PUTKARTS_Connection_Listener_HPP
+#define PUTKARTS_Connection_Listener_HPP
 
-#include <boost/shared_ptr.hpp>
-#include <boost/asio.hpp>
-
-#include "connection/Server.hpp"
-#include "connection/TCPEndPoint.hpp"
+#include <boost/utility.hpp>
 
 namespace Connection {
-	class TCPListener;
+	class Server;
+	class Listener;
 }
 
 /**
- * TCP listener.
+ * Interface for listeners.
  */
-class Connection::TCPListener: public Connection::Listener {
-	/** Boost IO service. */
-	boost::asio::io_service service;
-
-	/** The listening socket. */
-	boost::asio::ip::tcp::acceptor acceptor;
-
-	/** A placeholder for the next client. */
-	boost::shared_ptr<TCPEndPoint> next;
-
+class Connection::Listener: boost::noncopyable {
 public:
 	/**
-	 * Construct a new listener at the given address.
-	 *
-	 * @param address The address.
+	 * Virtual destructor.
 	 */
-	TCPListener(const boost::asio::ip::tcp::endpoint& address);
+	virtual ~Listener() {
+		// Nothing to do.
+	}
 
-	/** @copydoc Connection::Listener::update */
-	virtual bool update(Server& server);
+	/**
+	 * Inform the server about changes.
+	 *
+	 * @param server The server.
+	 * @return false if this Listener should be removed, true otherwise.
+	 */
+	virtual bool update(Server& server) = 0;
 };
 
 #endif

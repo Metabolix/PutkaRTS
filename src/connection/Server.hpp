@@ -31,6 +31,7 @@
 
 #include "connection/Base.hpp"
 #include "connection/EndPoint.hpp"
+#include "connection/Listener.hpp"
 #include "util/Clock.hpp"
 
 namespace Connection {
@@ -42,27 +43,6 @@ namespace Connection {
  * Base class for game servers.
  */
 class Connection::Server: virtual public Connection::Base, public boost::enable_shared_from_this<Connection::Server>, private boost::recursive_mutex {
-public:
-	/** Interface for listeners. */
-	class Listener: boost::noncopyable {
-	public:
-		/**
-		 * Virtual destructor.
-		 */
-		virtual ~Listener() {
-			// Nothing to do.
-		}
-
-		/**
-		 * Inform the server about changes.
-		 *
-		 * @param server The server.
-		 * @return false if this Listener should be removed, true otherwise.
-		 */
-		virtual bool update(Server& server) = 0;
-	};
-
-private:
 	/** Server side class for handling clients. */
 	class Client;
 
