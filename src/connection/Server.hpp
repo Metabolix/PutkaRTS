@@ -49,7 +49,7 @@ class Connection::Server: virtual public Connection::Base, public boost::enable_
 	/** Class for local clients. */
 	class LocalClient;
 
-	/** Type for listener container. Use std::map for consistent order. */
+	/** Type for listener container. */
 	typedef std::set<boost::shared_ptr<Listener> > ListenerContainerType;
 
 	/** Type for client container. Use std::map for consistent order. */

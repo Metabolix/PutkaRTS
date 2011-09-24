@@ -132,14 +132,16 @@ void Connection::Server::addListener(boost::shared_ptr<Listener> listener) {
 }
 
 bool Connection::Server::handlePacket(Client& client, std::string& data) {
-	if (data[0] == 'm') {
+	char type = *data.begin();
+	data.erase(data.begin());
+
+	if (type == 'm') {
 		if (game) {
-			data.erase(data.begin());
 			game->insertMessage(Game::Message(data));
 		}
 		return true;
 	}
-	if (data[0] == 'i') {
+	if (type == 'i') {
 		if (client.readyToInit) {
 			return true;
 		}
@@ -155,7 +157,7 @@ bool Connection::Server::handlePacket(Client& client, std::string& data) {
 		}
 		return true;
 	}
-	if (data[0] == 's') {
+	if (type == 's') {
 		if (client.readyToStart) {
 			return true;
 		}
