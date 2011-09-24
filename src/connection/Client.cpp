@@ -29,9 +29,10 @@ boost::shared_ptr<const Game::Player> Connection::Client::getPlayer() const {
 }
 
 void Connection::Client::handlePacket(std::string& data) {
-	if (data[0] == 'm') {
+	char type = *data.begin();
+	data.erase(data.begin());
+	if (type == 'm') {
 		if (game) {
-			data.erase(data.begin());
 			Game::Message msg(data);
 			if (msg.timestamp > lastMessageTimestamp) {
 				prevMessageTimestamp = lastMessageTimestamp;
@@ -41,11 +42,11 @@ void Connection::Client::handlePacket(std::string& data) {
 		}
 		return;
 	}
-	if (data[0] == 'i') {
+	if (type == 'i') {
 		initGame();
 		return;
 	}
-	if (data[0] == 's') {
+	if (type == 's') {
 		startGame();
 		return;
 	}
