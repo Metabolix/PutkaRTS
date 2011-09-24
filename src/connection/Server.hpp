@@ -94,6 +94,11 @@ class Connection::Server: virtual public Connection::Base, public boost::enable_
 	 */
 	bool handlePacket(Client& client, std::string& data);
 
+	/**
+	 * Remove a client.
+	 */
+	void removeClient(int id);
+
 public:
 	/**
 	 * Run until the game ends or all clients disconnect.

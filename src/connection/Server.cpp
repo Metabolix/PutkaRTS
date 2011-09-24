@@ -121,6 +121,11 @@ void Connection::Server::addClient(boost::shared_ptr<EndPoint> connection) {
 	return addClient(boost::shared_ptr<Client>(new Client(connection)));
 }
 
+void Connection::Server::removeClient(int id) {
+	boost::lock_guard<boost::recursive_mutex> lock(*this);
+	clients.erase(id);
+}
+
 void Connection::Server::addListener(boost::shared_ptr<Listener> listener) {
 	boost::lock_guard<boost::recursive_mutex> lock(*this);
 	listeners.insert(listener);
@@ -195,12 +200,13 @@ void Connection::Server::update() {
 					break;
 				}
 			} catch (...) {
-				clients.erase(j);
+				removeClient(j->first);
 				break;
 			}
 			if (!data.empty()) {
 				if (!handlePacket(client, data)) {
-					clients.erase(j);
+					removeClient(j->first);
+					break;
 				}
 			}
 		}
@@ -221,7 +227,7 @@ void Connection::Server::sendPacket(const std::string& data) {
 		try {
 			j->second->connection->sendPacket(data);
 		} catch (...) {
-			clients.erase(j);
+			removeClient(j->first);
 		}
 	}
 }
