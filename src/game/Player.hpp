@@ -19,8 +19,8 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PUTKARTS_Player_HPP
-#define PUTKARTS_Player_HPP
+#ifndef PUTKARTS_Game_Player_HPP
+#define PUTKARTS_Game_Player_HPP
 
 #include <string>
 
