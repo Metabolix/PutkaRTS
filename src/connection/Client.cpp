@@ -28,32 +28,46 @@ boost::shared_ptr<const Game::Player> Connection::Client::getPlayer() const {
 	return game->getPlayers().begin()->second;
 }
 
-void Connection::Client::update() {
-	Game::Message msg;
-	std::string data;
-	while (connection->receivePacket(data)) {
-		if (data.empty()) {
-			continue;
-		}
-		if (data[0] == 'm') {
-			if (game) {
-				data.erase(data.begin());
-				msg = Game::Message(data);
-				game->insertMessage(msg);
+void Connection::Client::handlePacket(std::string& data) {
+	if (data[0] == 'm') {
+		if (game) {
+			data.erase(data.begin());
+			Game::Message msg(data);
+			if (msg.timestamp > lastMessageTimestamp) {
+				prevMessageTimestamp = lastMessageTimestamp;
+				lastMessageTimestamp = msg.timestamp;
 			}
-			continue;
+			game->insertMessage(msg);
 		}
-		if (data[0] == 'i') {
-			initGame();
-			continue;
+		return;
+	}
+	if (data[0] == 'i') {
+		initGame();
+		return;
+	}
+	if (data[0] == 's') {
+		startGame();
+		return;
+	}
+}
+
+void Connection::Client::update() {
+	std::string data;
+	while (true) {
+		try {
+			if (!connection->receivePacket(data)) {
+				break;
+			}
+		} catch (...) {
+			throw std::runtime_error("Disconnected unexpectedly!");
+			break;
 		}
-		if (data[0] == 's') {
-			startGame();
-			continue;
+		if (!data.empty()) {
+			handlePacket(data);
 		}
 	}
 	if (state == PLAY) {
-		game->runUntil(msg.timestamp);
+		game->runUntil(prevMessageTimestamp);
 	}
 }
 

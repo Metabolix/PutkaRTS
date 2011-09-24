@@ -24,6 +24,7 @@
 
 #include <string>
 
+#include "util/Scalar.hpp"
 #include "connection/Base.hpp"
 #include "connection/EndPoint.hpp"
 
@@ -41,6 +42,20 @@ namespace Game {
 class Connection::Client: virtual public Connection::Base {
 	/** Connection to the server. */
 	boost::shared_ptr<EndPoint> connection;
+
+	/** The greatest message timestamp. */
+	Scalar<SIUnit::Time> lastMessageTimestamp;
+
+	/** The greatest message timestamp before lastMessageTimestamp. */
+	Scalar<SIUnit::Time> prevMessageTimestamp;
+
+protected:
+	/**
+	 * Handle a received packet.
+	 *
+	 * @param data The packet.
+	 */
+	void handlePacket(std::string& data);
 
 public:
 	/**
