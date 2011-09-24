@@ -51,6 +51,20 @@ public:
 	void get(unsigned int& value);
 
 	/**
+	 * Deserialize an integer.
+	 *
+	 * @param value Reference to the object that shall hold the value.
+	 */
+	void get(int& value);
+
+	/**
+	 * Deserialize a boolean.
+	 *
+	 * @param value Reference to the object that shall hold the value.
+	 */
+	void get(bool& value);
+
+	/**
 	 * Deserialize a Scalar<> object.
 	 *
 	 * @param value Reference to the object that shall hold the value.

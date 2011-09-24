@@ -35,6 +35,16 @@ void Deserializer::get(unsigned int& value) {
 	finishValue(data);
 }
 
+void Deserializer::get(int& value) {
+	data >> value;
+	finishValue(data);
+}
+
+void Deserializer::get(bool& value) {
+	value = (data.get() == '1');
+	finishValue(data);
+}
+
 void Deserializer::get(Scalar<>& value) {
 	data >> value.value;
 	finishValue(data);

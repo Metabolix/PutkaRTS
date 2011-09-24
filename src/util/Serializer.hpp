@@ -53,6 +53,20 @@ public:
 	void put(const unsigned int& value);
 
 	/**
+	 * Serialize an integer.
+	 *
+	 * @param value The value to serialize.
+	 */
+	void put(const int& value);
+
+	/**
+	 * Serialize a boolean.
+	 *
+	 * @param value The value to serialize.
+	 */
+	void put(const bool& value);
+
+	/**
 	 * Serialize a Scalar<> object.
 	 *
 	 * @param value The value to serialize.

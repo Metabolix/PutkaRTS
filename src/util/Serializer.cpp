@@ -25,6 +25,14 @@ void Serializer::put(const unsigned int& value) {
 	data << value << '\n';
 }
 
+void Serializer::put(const int& value) {
+	data << value << '\n';
+}
+
+void Serializer::put(const bool& value) {
+	data << (value ? 1 : 0) << '\n';
+}
+
 void Serializer::put(const Scalar<>& value) {
 	data << value.getDouble() << '\n';
 }
