@@ -46,6 +46,16 @@ struct Connection::ClientInfo {
 	 */
 	virtual ~ClientInfo() {}
 
+	/**
+	 * Create a client info from string.
+	 */
+	ClientInfo(const std::string& data);
+
+	/**
+	 * Conver a client info to string.
+	 */
+	std::string serialize() const;
+
 	/** The client id set by the server. */
 	int id;
 
