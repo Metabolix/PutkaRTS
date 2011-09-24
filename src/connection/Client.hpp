@@ -43,6 +43,9 @@ class Connection::Client: virtual public Connection::Base {
 	/** Connection to the server. */
 	boost::shared_ptr<EndPoint> connection;
 
+	/** The client id of this client. */
+	int ownId;
+
 	/** The greatest message timestamp. */
 	Scalar<SIUnit::Time> lastMessageTimestamp;
 

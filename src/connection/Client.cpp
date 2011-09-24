@@ -19,6 +19,9 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <boost/lexical_cast.hpp>
+#include <boost/make_shared.hpp>
+
 #include "Client.hpp"
 
 #include "game/Game.hpp"
@@ -31,6 +34,18 @@ boost::shared_ptr<const Game::Player> Connection::Client::getPlayer() const {
 void Connection::Client::handlePacket(std::string& data) {
 	char type = *data.begin();
 	data.erase(data.begin());
+	if (type == 'c') {
+		ClientInfo info(data);
+		clients[info.id] = boost::make_shared<ClientInfo>(info);
+		if (clients.size() == 1) {
+			ownId = info.id;
+		}
+		return;
+	}
+	if (type == 'd') {
+		clients.erase(boost::lexical_cast<int>(data));
+		return;
+	}
 	if (type == 'm') {
 		if (game) {
 			Game::Message msg(data);

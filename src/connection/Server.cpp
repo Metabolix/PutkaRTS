@@ -22,6 +22,7 @@
 #include <boost/weak_ptr.hpp>
 #include <boost/bind.hpp>
 #include <boost/thread.hpp>
+#include <boost/lexical_cast.hpp>
 
 #include "Server.hpp"
 #include "Client.hpp"
@@ -115,6 +116,14 @@ void Connection::Server::addClient(boost::shared_ptr<Client> client) {
 	boost::lock_guard<boost::recursive_mutex> lock(*this);
 	for (client->id = 1; clients.find(client->id) != clients.end(); ++client->id);
 	clients[client->id] = client;
+
+	// Send the new client to all, and send all other clients to the new one.
+	sendPacket("c" + client->serialize());
+	for (ClientInfoContainerType::iterator i = clients.begin(); i != clients.end(); ++i) {
+		if (i->first != client->id) {
+			client->connection->sendPacket("c" + i->second->serialize());
+		}
+	}
 }
 
 void Connection::Server::addClient(boost::shared_ptr<EndPoint> connection) {
@@ -123,7 +132,9 @@ void Connection::Server::addClient(boost::shared_ptr<EndPoint> connection) {
 
 void Connection::Server::removeClient(int id) {
 	boost::lock_guard<boost::recursive_mutex> lock(*this);
-	clients.erase(id);
+	if (clients.erase(id)) {
+		sendPacket("d" + boost::lexical_cast<std::string>(id));
+	}
 }
 
 void Connection::Server::addListener(boost::shared_ptr<Listener> listener) {
