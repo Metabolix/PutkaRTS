@@ -24,7 +24,6 @@
 
 #include <string>
 #include <set>
-#include <map>
 #include <boost/enable_shared_from_this.hpp>
 #include <boost/utility.hpp>
 #include <boost/thread.hpp>
@@ -52,14 +51,8 @@ class Connection::Server: virtual public Connection::Base, public boost::enable_
 	/** Type for listener container. */
 	typedef std::set<boost::shared_ptr<Listener> > ListenerContainerType;
 
-	/** Type for client container. Use std::map for consistent order. */
-	typedef std::map<int, boost::shared_ptr<Client> > ClientContainerType;
-
 	/** Listeners that wait for connections. */
 	ListenerContainerType listeners;
-
-	/** List of connected clients. */
-	ClientContainerType clients;
 
 	/** The clock used for timing the game. */
 	Clock clock;

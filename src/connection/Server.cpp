@@ -147,7 +147,7 @@ bool Connection::Server::handlePacket(Client& client, std::string& data) {
 		}
 		client.readyToInit = true;
 		bool readyToInit = true;
-		for (ClientContainerType::iterator i = clients.begin(); readyToInit && i != clients.end(); ++i) {
+		for (ClientInfoContainerType::iterator i = clients.begin(); readyToInit && i != clients.end(); ++i) {
 			readyToInit &= i->second->readyToInit;
 		}
 		if (readyToInit) {
@@ -163,7 +163,7 @@ bool Connection::Server::handlePacket(Client& client, std::string& data) {
 		}
 		client.readyToStart = true;
 		bool readyToStart = true;
-		for (ClientContainerType::iterator i = clients.begin(); readyToStart && i != clients.end(); ++i) {
+		for (ClientInfoContainerType::iterator i = clients.begin(); readyToStart && i != clients.end(); ++i) {
 			readyToStart &= i->second->readyToStart;
 		}
 		if (readyToStart) {
@@ -191,9 +191,9 @@ void Connection::Server::update() {
 			listeners.erase(j);
 		}
 	}
-	for (ClientContainerType::iterator i = clients.begin(); i != clients.end();) {
-		ClientContainerType::iterator j = i++;
-		Client& client = *j->second;
+	for (ClientInfoContainerType::iterator i = clients.begin(); i != clients.end();) {
+		ClientInfoContainerType::iterator j = i++;
+		Client& client = dynamic_cast<Client&>(*j->second);
 		EndPoint& endPoint = *client.connection;
 		std::string data;
 		while (true) {
@@ -224,10 +224,11 @@ void Connection::Server::update() {
 }
 
 void Connection::Server::sendPacket(const std::string& data) {
-	for (ClientContainerType::iterator i = clients.begin(); i != clients.end();) {
-		ClientContainerType::iterator j = i++;
+	for (ClientInfoContainerType::iterator i = clients.begin(); i != clients.end();) {
+		ClientInfoContainerType::iterator j = i++;
+		Client& client = dynamic_cast<Client&>(*j->second);
 		try {
-			j->second->connection->sendPacket(data);
+			client.connection->sendPacket(data);
 		} catch (...) {
 			removeClient(j->first);
 		}

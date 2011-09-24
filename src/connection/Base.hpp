@@ -24,7 +24,10 @@
 
 #include <string>
 #include <stdexcept>
+#include <map>
 #include <boost/shared_ptr.hpp>
+
+#include "connection/ClientInfo.hpp"
 
 namespace Connection {
 	class Base;
@@ -45,6 +48,12 @@ namespace Game {
  */
 class Connection::Base {
 protected:
+	/** Type for client container. Use std::map for consistent order. */
+	typedef std::map<int, boost::shared_ptr<ClientInfo> > ClientInfoContainerType;
+
+	/** List of clients (players) in this session. */
+	ClientInfoContainerType clients;
+
 	/** The current state. */
 	State state;
 
