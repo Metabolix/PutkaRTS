@@ -41,6 +41,11 @@ struct Connection::ClientInfo {
 		readyToStart(false) {
 	}
 
+	/**
+	 * Virtual destructor.
+	 */
+	virtual ~ClientInfo() {}
+
 	/** The client id set by the server. */
 	int id;
 
