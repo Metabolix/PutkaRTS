@@ -1,5 +1,5 @@
 /*
- * Information about one client.
+ * Client class definition.
  *
  * Copyright 2011 Lauri Kenttä
  *
@@ -19,47 +19,45 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PUTKARTS_Connection_ClientInfo_HPP
-#define PUTKARTS_Connection_ClientInfo_HPP
+#ifndef PUTKARTS_Game_Client_HPP
+#define PUTKARTS_Game_Client_HPP
 
 #include <string>
 
-#include "game/Client.hpp"
-
-namespace Connection {
-	struct ClientInfo;
+namespace Game {
+	class Client;
 }
 
 /**
- * Information about one client.
+ * A source of commands in the game.
+ *
+ * Each person playing the game has one instance of Game::Client. As such, the
+ * clients are not managed in Game::Game but in Connection::Base instead.
  */
-struct Connection::ClientInfo: Game::Client {
-	/** Is this client ready to init the game? */
-	bool readyToInit;
+struct Game::Client {
+	/** Type for client's id */
+	typedef int IdType;
 
-	/** Is this client ready to start playing? */
-	bool readyToStart;
+	/** The client id set by the server. */
+	IdType id;
+
+	/** The name of this client. */
+	std::string name;
+
+	/** Is this a computer player? */
+	bool ai;
 
 	/** Constructor; sets the default values. */
-	ClientInfo():
-		readyToInit(false),
-		readyToStart(false) {
+	Client():
+		id(0),
+		name("Unknown"),
+		ai(false) {
 	}
 
 	/**
 	 * Virtual destructor.
 	 */
-	virtual ~ClientInfo() {}
-
-	/**
-	 * Create a client info from string.
-	 */
-	ClientInfo(const std::string& data);
-
-	/**
-	 * Conver a client info to string.
-	 */
-	std::string serialize() const;
+	virtual ~Client() {}
 };
 
 #endif
