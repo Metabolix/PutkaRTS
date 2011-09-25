@@ -25,6 +25,7 @@
 
 Game::Message::Message(const std::string& data) {
 	Deserializer input(data);
+	input.get(client);
 	input.get(timestamp);
 	input.get(action);
 	input.get(position);
@@ -36,6 +37,7 @@ Game::Message::Message(const std::string& data) {
 
 std::string Game::Message::serialize() const {
 	Serializer output;
+	output.put(client);
 	output.put(timestamp);
 	output.put(action);
 	output.put(position);

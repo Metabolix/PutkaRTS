@@ -27,6 +27,7 @@
 #include "util/Scalar.hpp"
 #include "util/Vector2.hpp"
 
+#include "Client.hpp"
 #include "Object.hpp"
 #include "ObjectAction.hpp"
 
@@ -39,6 +40,9 @@ namespace Game {
  */
 class Game::Message {
 public:
+	/** The client who sent this message. */
+	Client::IdType client;
+
 	/** The timestamp for handling the message. */
 	Scalar<SIUnit::Time> timestamp;
 
