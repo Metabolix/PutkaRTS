@@ -83,6 +83,13 @@ public:
 	virtual void update();
 
 	/**
+	 * Get the client info for this client.
+	 */
+	boost::shared_ptr<const ClientInfo> getClientInfo() const {
+		return clients.find(ownId)->second;
+	}
+
+	/**
 	 * Mark the client as ready for initialising the game ("settings ok, let's play").
 	 */
 	void setReadyToInit();
