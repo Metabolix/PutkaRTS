@@ -98,11 +98,6 @@ public:
 	 * Mark the client as ready for initialising the game ("all set, start the clock").
 	 */
 	void setReadyToStart();
-
-	/**
-	 * Get the player that this client represents.
-	 */
-	boost::shared_ptr<const Game::Player> getPlayer() const;
 };
 
 #endif

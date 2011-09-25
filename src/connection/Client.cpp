@@ -26,11 +26,6 @@
 
 #include "game/Game.hpp"
 
-boost::shared_ptr<const Game::Player> Connection::Client::getPlayer() const {
-	// TODO: Implement properly!
-	return game->getPlayers().begin()->second;
-}
-
 void Connection::Client::handlePacket(std::string& data) {
 	char type = *data.begin();
 	data.erase(data.begin());
