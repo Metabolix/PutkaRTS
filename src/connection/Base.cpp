@@ -28,6 +28,10 @@ void Connection::Base::initGame() {
 	boost::shared_ptr<Game::Map> map(new Game::Map());
 	map->load("maps/testmap");
 	game.reset(new Game::Game(map));
+
+	for (ClientInfoContainerType::iterator i = clients.begin(); i != clients.end(); ++i) {
+		game->insertClient(i->second);
+	}
 }
 
 void Connection::Base::startGame() {
