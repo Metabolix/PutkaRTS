@@ -93,7 +93,7 @@ void GUI::Game::Game::drawGame(sf::RenderWindow& window) const {
 	for (::Game::Game::ObjectContainerType::const_iterator i = objects.begin(); i != objects.end(); ++i) {
 		boost::shared_ptr<Object> object(getObject(i->second));
 		bool selected = selectedObjects.find(object) != selectedObjects.end();
-		object->draw(window, client->getPlayer(), selected);
+		object->draw(window, client->getClientInfo(), selected);
 	}
 }
 

@@ -33,6 +33,7 @@ namespace GUI {
 }
 
 namespace Game {
+	class Client;
 	class Object;
 }
 
@@ -63,7 +64,7 @@ public:
 	 * @param viewer The current player.
 	 * @param selected Is this object selected?
 	 */
-	void draw(sf::RenderWindow& window, boost::shared_ptr<const ::Game::Player> viewer, bool selected = false);
+	void draw(sf::RenderWindow& window, boost::shared_ptr<const ::Game::Client> viewer, bool selected = false);
 };
 
 #endif

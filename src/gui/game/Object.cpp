@@ -19,6 +19,7 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "game/Client.hpp"
 #include "game/Object.hpp"
 
 #include "gui/game/Object.hpp"
@@ -27,7 +28,7 @@ GUI::Game::Object::Object(boost::shared_ptr<const ::Game::Object> object_):
 	object(object_) {
 }
 
-void GUI::Game::Object::draw(sf::RenderWindow& window, boost::shared_ptr<const ::Game::Player> viewer, bool selected) {
+void GUI::Game::Object::draw(sf::RenderWindow& window, boost::shared_ptr<const ::Game::Client> viewer, bool selected) {
 	// TODO: Load real graphics and track animations.
 	static sf::Shape tmp, circle;
 	if (!tmp.GetNbPoints()) {
@@ -47,7 +48,7 @@ void GUI::Game::Object::draw(sf::RenderWindow& window, boost::shared_ptr<const :
 	Vector2<SIUnit::Position> pos = object->getPosition();
 	double r = object->getObjectType()->radius.getDouble();
 
-	if (object->getOwner() == viewer) {
+	if (viewer->players.find(object->getOwner()->id) != viewer->players.end()) {
 		circle.SetColor(sf::Color(0x33, 0x33, 0xcc));
 		tmp.SetColor(sf::Color(0x33, 0x33, 0xcc));
 	} else {
