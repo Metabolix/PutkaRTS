@@ -103,18 +103,23 @@ void Game::Game::runStep(Scalar<SIUnit::Time> dt, MessageCallbackType messageCal
 }
 
 bool Game::Game::handleMessage(Message& message) {
-	// TODO: Check that the message is valid!
-	bool notValid = false;
-	if (notValid) {
+	// Check the sender of the message.
+	if (clients.find(message.client) == clients.end()) {
 		return false;
 	}
+	boost::shared_ptr<Client> client(clients[message.client]);
 
-	// Collect actors that exist.
+	// Collect actors that exist and are allowed.
 	ObjectContainerType actors;
 	for (std::list<Object::IdType>::iterator i = message.actors.begin(); i != message.actors.end(); ++i) {
-		if (objects.find(*i) != objects.end()) {
-			actors.insert(*objects.find(*i));
+		if (objects.find(*i) == objects.end()) {
+			continue;
 		}
+		boost::shared_ptr<Object> object(objects[*i]);
+		if (client->players.find(object->owner->id) == client->players.end()) {
+			continue;
+		}
+		actors[object->id] = object;
 	}
 
 	// Hard-coded action: NEW.
