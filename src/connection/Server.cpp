@@ -148,7 +148,9 @@ bool Connection::Server::handlePacket(Client& client, std::string& data) {
 
 	if (type == 'm') {
 		if (game) {
-			game->insertMessage(Game::Message(data));
+			Game::Message msg(data);
+			msg.client = client.id;
+			game->insertMessage(msg);
 		}
 		return true;
 	}
