@@ -19,6 +19,8 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <boost/foreach.hpp>
+
 #include "util/Serializer.hpp"
 #include "util/Deserializer.hpp"
 #include "ClientInfo.hpp"
@@ -28,6 +30,15 @@ Connection::ClientInfo::ClientInfo(const std::string& data) {
 	input.get(id);
 	input.get(name);
 	input.get(ai);
+
+	int n;
+	input.get(n);
+	while (n--) {
+		int id;
+		input.get(id);
+		players.insert(id);
+	}
+
 	input.get(readyToInit);
 	input.get(readyToStart);
 }
@@ -37,6 +48,12 @@ std::string Connection::ClientInfo::serialize() const {
 	output.put(id);
 	output.put(name);
 	output.put(ai);
+
+	output.put((int) players.size());
+	BOOST_FOREACH(Game::Player::IdType id, players) {
+		output.put(id);
+	}
+
 	output.put(readyToInit);
 	output.put(readyToStart);
 	return output.getData();
