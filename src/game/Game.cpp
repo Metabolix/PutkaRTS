@@ -158,6 +158,14 @@ void Game::Game::insertPlayer(boost::shared_ptr<Player> player) {
 	players.insert(std::make_pair(player->id, player));
 }
 
+void Game::Game::insertClient(boost::shared_ptr<Client> client) {
+	clients[client->id] = client;
+}
+
+void Game::Game::eraseClient(int id) {
+	clients.erase(id);
+}
+
 void Game::Game::luaNewObjectType() {
 	boost::shared_ptr<ObjectType> tmp(new ObjectType);
 	tmp->id = get<String>(1);

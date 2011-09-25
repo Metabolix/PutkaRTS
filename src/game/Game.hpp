@@ -31,6 +31,7 @@
 #include "lua/Lua.hpp"
 #include "Message.hpp"
 #include "Map.hpp"
+#include "Client.hpp"
 #include "Player.hpp"
 #include "ObjectType.hpp"
 #include "ObjectAction.hpp"
@@ -48,6 +49,9 @@ class Game::Game: protected Lua {
 	friend class ObjectAction;
 
 public:
+	/** Type for client container. */
+	typedef boost::unordered_map<Client::IdType, boost::shared_ptr<Client> > ClientContainerType;
+
 	/** Type for player container */
 	typedef boost::unordered_map<Player::IdType, boost::shared_ptr<Player> > PlayerContainerType;
 
@@ -73,7 +77,10 @@ private:
 	/** The map on which the game is played. */
 	boost::shared_ptr<Map> map;
 
-	/** Players. */
+	/** Clients (physical people in the game). */
+	ClientContainerType clients;
+
+	/** Players (logical people on the map). */
 	PlayerContainerType players;
 
 	/** Object types. */
@@ -161,6 +168,18 @@ public:
 	 * @param message The message.
 	 */
 	void insertMessage(const Message& message);
+
+	/**
+	 * Insert a new client.
+	 *
+	 * @param client The client.
+	 */
+	void insertClient(boost::shared_ptr<Client> client);
+
+	/**
+	 * Remove a client.
+	 */
+	void eraseClient(int id);
 
 protected:
 	/**
