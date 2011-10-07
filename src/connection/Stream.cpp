@@ -1,5 +1,5 @@
 /*
- * TCP connection.
+ * Connection helper that wraps packets into a stream.
  *
  * Copyright 2011 Lauri Kenttä
  *
@@ -21,17 +21,30 @@
 
 #include <boost/format.hpp>
 
-#include "TCPEndPoint.hpp"
+#include "Stream.hpp"
 
-void Connection::TCPEndPoint::sendData(const std::string& data) {
-	boost::asio::write(socket, boost::asio::buffer(data));
+void Connection::Stream::sendPacket(const std::string& data) {
+	sendData((boost::format("%08x") % data.size()).str());
+	sendData(data);
 }
 
-void Connection::TCPEndPoint::receiveData(size_t size) {
-	if (!socket.available()) {
-		return;
+bool Connection::Stream::receivePacket(std::string& data) {
+	while (!recvSize) {
+		receiveData(8 - recvBuf.size());
+		if (recvBuf.size() < 8) {
+			return false;
+		}
+		recvBuf.push_back(0);
+		recvSize = std::strtoul(&recvBuf[0], 0, 16);
+		recvBuf.clear();
+		recvBuf.reserve(recvSize);
 	}
-	size_t old = recvBuf.size();
-	recvBuf.resize(old + size);
-	recvBuf.resize(old + socket.read_some(boost::asio::buffer(&recvBuf[old], size)));
+	receiveData(recvSize - recvBuf.size());
+	if (recvBuf.size() < recvSize) {
+		return false;
+	}
+	data.assign(recvBuf.begin(), recvBuf.end());
+	recvBuf.clear();
+	recvSize = 0;
+	return true;
 }

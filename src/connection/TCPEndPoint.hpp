@@ -26,7 +26,7 @@
 #include <boost/asio.hpp>
 #include <boost/lexical_cast.hpp>
 
-#include "connection/EndPoint.hpp"
+#include "connection/Stream.hpp"
 
 namespace Connection {
 	class TCPEndPoint;
@@ -35,7 +35,7 @@ namespace Connection {
 /**
  * Connection end point.
  */
-class Connection::TCPEndPoint: public Connection::EndPoint {
+class Connection::TCPEndPoint: public Connection::Stream {
 	friend class TCPListener;
 
 	/** The io service. */
@@ -44,19 +44,12 @@ class Connection::TCPEndPoint: public Connection::EndPoint {
 	/** The TCP stream. */
 	boost::asio::ip::tcp::socket socket;
 
-	/** Number of bytes missing from the next packet. */
-	size_t recvSize;
-
-	/** The buffer for receiving data. */
-	std::vector<char> recvBuf;
-
 public:
 	/**
 	 * Default constructor for use with TCPListener.
 	 */
 	TCPEndPoint():
-		socket(service),
-		recvSize(0) {
+		socket(service) {
 	}
 
 	/**
@@ -66,8 +59,7 @@ public:
 	 * @param port The port.
 	 */
 	TCPEndPoint(const std::string& address, int port):
-		socket(service),
-		recvSize(0) {
+		socket(service) {
 		connect(address, boost::lexical_cast<std::string>(port));
 	}
 
@@ -78,8 +70,7 @@ public:
 	 * @param port The port.
 	 */
 	TCPEndPoint(const std::string& address, const std::string& port):
-		socket(service),
-		recvSize(0) {
+		socket(service) {
 		connect(address, port);
 	}
 
@@ -95,11 +86,12 @@ public:
 		boost::asio::connect(socket, resolver.resolve(query));
 	}
 
-	/** @copydoc EndPoint::sendPacket */
-	virtual void sendPacket(const std::string& data);
+protected:
+	/** @copydoc Stream::sendData */
+	virtual void sendData(const std::string& data);
 
-	/** @copydoc EndPoint::receivePacket */
-	virtual bool receivePacket(std::string& data);
+	/** @copydoc Stream::receiveData */
+	virtual void receiveData(size_t size);
 };
 
 #endif
