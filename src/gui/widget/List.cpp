@@ -65,7 +65,7 @@ bool GUI::Widget::List::handleEvent(const sf::Event& e, const sf::RenderWindow& 
 				selected++;
 			}
 
-			if (action) {
+			if (action && selected != items.end()) {
 				action(*selected);
 			}
 
