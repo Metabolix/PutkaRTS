@@ -35,6 +35,7 @@
 #include "gui/widget/Button.hpp"
 #include "gui/menu/SettingsMenu.hpp"
 #include "gui/menu/StartGame.hpp"
+#include "gui/menu/JoinGame.hpp"
 
 GUI::Menu::MainMenu::MainMenu(sf::RenderWindow& window):
 	Menu() {
@@ -46,8 +47,7 @@ GUI::Menu::MainMenu::MainMenu(sf::RenderWindow& window):
 }
 
 void GUI::Menu::MainMenu::startMultiGame(sf::RenderWindow& window) {
-	boost::shared_ptr<Connection::Client> client(new Connection::Client(Connection::Address::connect("tcp4://127.0.0.1:6667")));
-	GUI::currentWidget.reset(new GUI::Menu::StartGame(GUI::currentWidget, client));
+	GUI::currentWidget.reset(new GUI::Menu::JoinGame(GUI::currentWidget));
 }
 
 void GUI::Menu::MainMenu::startGame(sf::RenderWindow& window) {
