@@ -28,6 +28,9 @@ Connection::TCPListener::TCPListener(const boost::asio::ip::tcp::endpoint& addre
 	next(new TCPEndPoint()) {
 	acceptor.open(address.protocol());
 	acceptor.set_option(boost::asio::ip::tcp::acceptor::reuse_address(true));
+	if (address.address().is_v6()) {
+		acceptor.set_option(boost::asio::ip::v6_only(true));
+	}
 	acceptor.non_blocking(true);
 	acceptor.bind(address);
 	acceptor.listen();
