@@ -153,6 +153,11 @@ public:
 	virtual void eraseItem(const KeyType& key);
 
 	/**
+	 * Erase all items.
+	 */
+	virtual void clear();
+
+	/**
 	 * Get the borderWidth
 	 *
 	 * @return Returns the border width.

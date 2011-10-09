@@ -219,6 +219,11 @@ void GUI::Widget::List::eraseItem(const GUI::Widget::List::KeyType& key) {
 	}
 }
 
+void GUI::Widget::List::clear() {
+	items.clear();
+	selected = items.end();
+}
+
 float GUI::Widget::List::getBorderWidth() const {
 	return borderWidth;
 }
