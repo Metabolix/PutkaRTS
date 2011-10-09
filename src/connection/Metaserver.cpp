@@ -138,14 +138,24 @@ bool Connection::Metaserver::http(const std::string& postData) {
 
 	// HTTP/1.0 200 OK\r\n
 	std::string data;
-	int status;
+	int status = 0;
 	stream >> data >> status;
 	std::getline(stream, data, '\n');
+
+	if (!stream) {
+		if (stream.expires_from_now() < boost::posix_time::seconds(0)) {
+			throw std::runtime_error("Connection timed out.");
+		}
+		throw std::runtime_error(stream.error().message());
+	}
 
 	if (status >= 400 || status < 200) {
 		boost::trim(data);
 		throw std::runtime_error((boost::format("HTTP error: %d %s") % status % data).str());
 	}
+
+	// Reset the timer, there shouldn't be a timeout anymore.
+	stream.expires_from_now(boost::posix_time::seconds(3));
 
 	// Header-Name: value\r\n
 	bool chunked = false;
