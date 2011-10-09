@@ -31,6 +31,7 @@
 #include "connection/Base.hpp"
 #include "connection/EndPoint.hpp"
 #include "connection/Listener.hpp"
+#include "connection/Metaserver.hpp"
 #include "util/Clock.hpp"
 
 namespace Connection {
@@ -42,6 +43,8 @@ namespace Connection {
  * Base class for game servers.
  */
 class Connection::Server: virtual public Connection::Base, public boost::enable_shared_from_this<Connection::Server>, private boost::recursive_mutex {
+	friend class Metaserver;
+
 	/** Server side class for handling clients. */
 	class Client;
 
