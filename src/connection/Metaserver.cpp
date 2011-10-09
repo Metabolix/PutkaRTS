@@ -35,10 +35,32 @@ void Connection::Metaserver::luaLocation() {
 	url = get<String>(1);
 }
 
+void Connection::Metaserver::luaGame() {
+	Game game;
+	game.id = get<Integer>(1);
+	game.version = get<String>(2);
+	game.name = get<String>(3);
+	games[game.id] = game;
+}
+
+void Connection::Metaserver::luaGameAddress() {
+	Integer id = get<Integer>(1);
+	String address = get<String>(2);
+	games[id].addresses.push_back(address);
+}
+
 Connection::Metaserver::Metaserver(const std::string& url_):
 	url(url_) {
 	bind("location", boost::bind(&Metaserver::luaLocation, this));
-	run<void>("function game() end");
+	bind("gameImpl", boost::bind(&Metaserver::luaGame, this));
+	bind("gameAddressImpl", boost::bind(&Metaserver::luaGameAddress, this));
+	run<void>(
+		"function game(info)\n"
+		"	gameImpl(info.id, info.version or 'DummyVersion', info.name or 'DummyName')\n"
+		"	t = info.address or {}\n"
+		"	for i = 1, # t do gameAddressImpl(info.id, t[i]) end\n"
+		"end\n"
+	);
 }
 
 bool Connection::Metaserver::sendGame(const Server& server) {
@@ -60,6 +82,17 @@ bool Connection::Metaserver::sendGame(const Server& server) {
 		}
 	}
 	return send ? http(data) : false;
+}
+
+bool Connection::Metaserver::getGames() {
+	// Refuse to fetch if the ttl has not expired.
+	if (ttl.getTime() < 0) {
+		return false;
+	}
+	ttl.reset(-5);
+
+	games.clear();
+	return http();
 }
 
 void Connection::Metaserver::extractUrlComponents(std::string& host, std::string& port, std::string& httpHost, std::string& httpPath) const {

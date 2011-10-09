@@ -41,6 +41,23 @@ public:
 	/** The default url of the metaserver. */
 	static const std::string defaultUrl;
 
+	/**
+	 * A class that describes a game.
+	 */
+	struct Game {
+		/** The id, as assigned by the metaserver. */
+		int id;
+
+		/** The version of the game server. */
+		std::string version;
+
+		/** The name of the game. */
+		std::string name;
+
+		/** The addresses for the game. */
+		std::list<std::string> addresses;
+	};
+
 	/** The url of the metaserver. */
 	std::string url;
 
@@ -52,6 +69,9 @@ public:
 
 	/** A clock for counting down the TTL. */
 	Clock ttl;
+
+	/** The list of games received from the metaserver. */
+	std::map<int, Game> games;
 
 	/**
 	 * Constructor.
@@ -68,6 +88,14 @@ public:
 	 * @throw std::runtime_error Thrown if something goes wrong.
 	 */
 	bool sendGame(const Server& server);
+
+	/**
+	 * Get the list of games.
+	 *
+	 * @return True if the list was updated, false if nothing changed.
+	 * @throw std::runtime_error Thrown if something goes wrong.
+	 */
+	bool getGames();
 
 private:
 	/**
@@ -93,6 +121,16 @@ private:
 	 * Lua callback: Set the metaserver url.
 	 */
 	void luaLocation();
+
+	/**
+	 * Lua callback: Set game info for a game.
+	 */
+	void luaGame();
+
+	/**
+	 * Lua callback: Add an address for a game.
+	 */
+	void luaGameAddress();
 };
 
 #endif
