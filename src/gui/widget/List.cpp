@@ -210,7 +210,7 @@ void GUI::Widget::List::eraseItem(const GUI::Widget::List::KeyType& key) {
 	for (ItemContainerType::iterator i = items.begin(); i != items.end(); ++i) {
 		if (i->key == key) {
 			if (selected == i) {
-				selected == items.end();
+				selected = items.end();
 			}
 
 			items.erase(i);
