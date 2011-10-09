@@ -54,6 +54,9 @@ class Connection::Server: virtual public Connection::Base, public boost::enable_
 	/** Type for listener container. */
 	typedef std::set<boost::shared_ptr<Listener> > ListenerContainerType;
 
+	/** Connection to the metaserver. */
+	Metaserver metaserver;
+
 	/** Listeners that wait for connections. */
 	ListenerContainerType listeners;
 

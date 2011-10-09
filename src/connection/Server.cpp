@@ -197,6 +197,13 @@ void Connection::Server::update() {
 			return;
 		}
 	}
+	if (state == SETUP && !listeners.empty()) {
+		try {
+			metaserver.sendGame(*this);
+		} catch (...) {
+			// FIXME: Something went wrong, log it and tell the user!
+		}
+	}
 	for (ListenerContainerType::iterator i = listeners.begin(); i != listeners.end();) {
 		ListenerContainerType::iterator j = i++;
 		Listener& listener = **j;
