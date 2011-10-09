@@ -39,6 +39,10 @@ GUI::Widget::Label::Label(const std::string& text, float x, float y, float width
 	label.SetColor(Color::text);
 }
 
+void GUI::Widget::Label::setText(const std::string& text) {
+	label = sf::String(text);
+}
+
 void GUI::Widget::Label::draw(sf::RenderWindow& window) {
 	const sf::Unicode::UTF32String& data = label.GetText();
 	if (data.empty()) {

@@ -66,6 +66,13 @@ public:
 	Label(const std::string& text, float x, float y, float width, float height);
 
 	/**
+	 * Set the text.
+	 *
+	 * @param text The text.
+	 */
+	virtual void setText(const std::string& text);
+
+	/**
 	 * Set whether the text is centered or aligned to left.
 	 *
 	 * @param isCentered_ Is the text centered?
