@@ -85,6 +85,10 @@ void Game::Game::insertObject(boost::shared_ptr<Object> object) {
 	objects.insert(std::make_pair(object->id, object));
 }
 
+void Game::Game::eraseObject(boost::shared_ptr<Object> object) {
+	objects.erase(object->id);
+}
+
 void Game::Game::runStep(Scalar<SIUnit::Time> dt, MessageCallbackType messageCallback) {
 	clock += dt;
 	handleMessages(messageCallback);
@@ -98,7 +102,7 @@ void Game::Game::runStep(Scalar<SIUnit::Time> dt, MessageCallbackType messageCal
 	for (ObjectVectorType::iterator i = tmp.begin(); i != tmp.end(); ++i) {
 		Object& object = **i;
 		if (!object.runStep(dt, *this)) {
-			objects.erase(object.id);
+			eraseObject(*i);
 		}
 	}
 }
@@ -131,7 +135,7 @@ bool Game::Game::handleMessage(Message& message) {
 	// Hard-coded action: DELETE.
 	if (message.action == ObjectAction::DELETE) {
 		for (ObjectContainerType::iterator i = actors.begin(); i != actors.end(); ++i) {
-			objects.erase(i->first);
+			eraseObject(i->second);
 		}
 		return true;
 	}

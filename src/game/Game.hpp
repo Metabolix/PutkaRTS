@@ -190,6 +190,13 @@ protected:
 	void insertObject(boost::shared_ptr<Object> object);
 
 	/**
+	 * Remove an object from the game.
+	 *
+	 * @param object Object to remove.
+	 */
+	void eraseObject(boost::shared_ptr<Object> object);
+
+	/**
 	 * Add new player.
 	 *
 	 * @param player Pointer to the player object to be added.
