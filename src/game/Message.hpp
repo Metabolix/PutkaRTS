@@ -85,7 +85,30 @@ public:
 	 */
 	bool operator < (const Message& m2) const {
 		const Message& m1 = *this;
-		return m1.timestamp > m2.timestamp;
+		if (m1.timestamp != m2.timestamp) {
+			return m1.timestamp > m2.timestamp;
+		}
+		if (m1.client != m2.client) {
+			return m1.client < m2.client;
+		}
+		if (m1.action != m1.action) {
+			return m1.action < m2.action;
+		}
+		if (m1.position.x != m2.position.x) {
+			return m1.position.x < m2.position.x;
+		}
+		if (m1.position.y != m2.position.y) {
+			return m1.position.y < m2.position.y;
+		}
+		if (m1.actors.size() != m2.actors.size()) {
+			return m1.actors.size() < m2.actors.size();
+		}
+		for (std::list<Object::IdType>::const_iterator i = m1.actors.begin(), j = m2.actors.begin(); i != m1.actors.end(); ++i, ++j) {
+			if (*i != *j) {
+				return *i < *j;
+			}
+		}
+		return m1.serialize() < m2.serialize();
 	}
 };
 
