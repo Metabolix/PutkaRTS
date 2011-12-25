@@ -37,6 +37,10 @@ else
   # Get the version number from git
   PUTKARTS_VERSION := $(strip $(shell git describe 2>/dev/null))
 
+  # Something needs pthread.
+  CLI_LIBS += -lpthread
+  GUI_LIBS += -lpthread
+
   # Mac OS X needs different libraries
   ifeq "$(shell uname -s)" "Darwin"
     CLI_LIBS := $(patsubst -l%,-framework %,$(CLI_LIBS))
