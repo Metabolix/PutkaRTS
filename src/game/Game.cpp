@@ -34,6 +34,7 @@ Game::Game::Game(boost::shared_ptr<Map> map_):
 
 	// Initialise the Lua interface.
 	bind("luaNewObjectType", boost::bind(&Game::luaNewObjectType, this));
+	bind("luaNewObjectAction", boost::bind(&Game::luaNewObjectAction, this));
 	runFile<void>(Path::findDataPath("lua/Game.lua"));
 
 	// Create some units for testing.
@@ -179,4 +180,11 @@ void Game::Game::luaNewObjectType() {
 	tmp->lineOfSight = get<Number>(6);
 	tmp->maxHitPoints = get<Number>(7);
 	objectTypes[tmp->id] = tmp;
+}
+
+void Game::Game::luaNewObjectAction() {
+	boost::shared_ptr<ObjectAction> tmp(new ObjectAction);
+	tmp->id = get<String>(1);
+	tmp->name = get<String>(2);
+	objectActions[tmp->id] = tmp;
 }

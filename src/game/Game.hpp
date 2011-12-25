@@ -207,6 +207,11 @@ protected:
 	 * Lua callback: Add an object type.
 	 */
 	void luaNewObjectType();
+
+	/**
+	 * Lua callback: Add an object action.
+	 */
+	void luaNewObjectAction();
 };
 
 #endif

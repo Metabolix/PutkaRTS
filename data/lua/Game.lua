@@ -22,6 +22,9 @@ Game = {
 	--- Table of object types.
 	objectTypes = {},
 
+	--- Table of object actions.
+	objectActions = {},
+
 	--- The counter for getFreeId.
 	freeIdCounter = 0,
 
@@ -50,6 +53,21 @@ ObjectType = {
 			nil
 		)
 		Game.objectTypes[t.id] = t
+		return t
+	end,
+}
+
+--- Methods related to the ObjectAction class.
+ObjectAction = {
+	--- Add a new object action.
+	new = function(t)
+		t.id = t.id or Game.getFreeId()
+		luaNewObjectAction(
+			t.id,
+			t.name or "Unknown",
+			nil
+		)
+		Game.objectActions[t.id] = t
 		return t
 	end,
 }
