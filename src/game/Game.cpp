@@ -32,22 +32,12 @@ Game::Game::Game(boost::shared_ptr<Map> map_):
 		throw std::logic_error("Game::Game: Map is NULL!");
 	}
 
-	// Function for defining object types, and a wrapper for simpler syntax.
-	bind("newObjectType", boost::bind(&Game::luaNewObjectType, this));
-	run<void>(
-		"function type(t) return newObjectType("
-		"t.id or 'dummy', "
-		"t.name or 'Unknown', "
-		"t.immutable or false, "
-		"t.radius or 0.5, "
-		"t.maxVelocity or 0, "
-		"t.lineOfSight or 10, "
-		"t.maxHitPoints or 0"
-		") end"
-	);
+	// Initialise the Lua interface.
+	bind("luaNewObjectType", boost::bind(&Game::luaNewObjectType, this));
+	runFile<void>(Path::findDataPath("lua/Game.lua"));
 
 	// Create some units for testing.
-	run<void>("type({id = 'test', name = 'Test type', maxVelocity = 2.5})");
+	run<void>("ObjectType.new{id = 'test', name = 'Test type', maxVelocity = 2.5}");
 	boost::shared_ptr<const ObjectType> testObjectType(objectTypes.begin()->second);
 
 	const Map::PlayerContainerType& mapPlayers = map->getPlayers();
