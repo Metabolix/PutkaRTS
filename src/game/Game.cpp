@@ -35,6 +35,8 @@ Game::Game::Game(boost::shared_ptr<Map> map_):
 	// Initialise the Lua interface.
 	bind("luaNewObjectType", boost::bind(&Game::luaNewObjectType, this));
 	bind("luaNewObjectAction", boost::bind(&Game::luaNewObjectAction, this));
+	bind("luaNewObject", boost::bind(&Game::luaNewObject, this));
+	bind("luaDeleteObject", boost::bind(&Game::luaDeleteObject, this));
 	runFile<void>(Path::findDataPath("lua/Game.lua"));
 
 	// Create some units for testing.
@@ -51,10 +53,12 @@ Game::Game::Game(boost::shared_ptr<Map> map_):
 
 		for (int dx = -1; dx <= 1; ++dx) {
 			for (int dy = -1; dy <= 1; ++dy) {
-				boost::shared_ptr<Object> tmp(new Object(p.startPosition + Vector2<SIUnit::Position>(dx, dy)));
-				tmp->objectType = testObjectType;
-				tmp->owner = testPlayer;
-				insertObject(tmp);
+				load("local t = {...}; Object.new({objectTypeId = t[1], playerId = t[2], x = t[3], y = t[4]});");
+				push<Lua::String>(testObjectType->id);
+				push<Lua::Number>(testPlayer->id);
+				push<Lua::Number>((p.startPosition.x + dx).getDouble());
+				push<Lua::Number>((p.startPosition.y + dy).getDouble());
+				call(4, 0);
 			}
 		}
 	}
@@ -71,16 +75,10 @@ void Game::Game::insertMessage(const Message& message) {
 	messages.push(message);
 }
 
-void Game::Game::insertObject(boost::shared_ptr<Object> object) {
-	if (freeObjectId <= 0) {
-		throw std::runtime_error("FIXME: freeObjectId has overflown!");
-	}
-	object->id = freeObjectId++;
-	objects.insert(std::make_pair(object->id, object));
-}
-
 void Game::Game::eraseObject(boost::shared_ptr<Object> object) {
-	objects.erase(object->id);
+	load("if Game.objects[...] then Object.delete(Game.objects[...]) end");
+	push<Lua::Number>(object->id);
+	call(1, 0);
 }
 
 void Game::Game::runStep(Scalar<SIUnit::Time> dt, MessageCallbackType messageCallback) {
@@ -187,4 +185,21 @@ void Game::Game::luaNewObjectAction() {
 	tmp->id = get<String>(1);
 	tmp->name = get<String>(2);
 	objectActions[tmp->id] = tmp;
+}
+
+void Game::Game::luaNewObject() {
+	if (freeObjectId <= 0) {
+		throw std::runtime_error("FIXME: freeObjectId has overflown!");
+	}
+
+	boost::shared_ptr<Object> tmp(new Object(Vector2<SIUnit::Position>(get<Number>(3), get<Number>(4))));
+	tmp->objectType = objectTypes[get<String>(1)],
+	tmp->owner = players[get<Number>(2)],
+	tmp->id = freeObjectId++;
+	objects[tmp->id] = tmp;
+	push<Number>(tmp->id);
+}
+
+void Game::Game::luaDeleteObject() {
+	objects.erase(get<Number>(1));
 }

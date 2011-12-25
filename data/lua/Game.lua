@@ -25,6 +25,9 @@ Game = {
 	--- Table of object actions.
 	objectActions = {},
 
+	--- Table of objects.
+	objects = {},
+
 	--- The counter for getFreeId.
 	freeIdCounter = 0,
 
@@ -69,5 +72,41 @@ ObjectAction = {
 		)
 		Game.objectActions[t.id] = t
 		return t
+	end,
+}
+
+--- Methods related to the Object class.
+Object = {
+	--- Create a new object.
+	new = function(t)
+		if t.objectTypeId then
+			t.objectType = Game.objectTypes[t.objectTypeId]
+			t.objectTypeId = nil
+		end
+		-- If t.id is set, the native Object already exists.
+		t.id = t.id or luaNewObject(
+			t.objectType.id,
+			t.playerId,
+			t.x,
+			t.y,
+			nil
+		)
+		Game.objects[t.id] = t
+		if t.objectType.new then
+			t.objectType.new(t)
+		end
+		return t
+	end,
+
+	--- Delete an existing object.
+	delete = function(t)
+		if t.objectType.delete then
+			t.objectType.delete(t)
+		end
+		if t.id then
+			luaDeleteObject(t.id)
+			Game.objects[t.id] = nil
+			t.id = nil
+		end
 	end,
 }

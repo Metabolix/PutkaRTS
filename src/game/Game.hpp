@@ -183,13 +183,6 @@ public:
 
 protected:
 	/**
-	 * Add object to game.
-	 *
-	 * @param object Object to add.
-	 */
-	void insertObject(boost::shared_ptr<Object> object);
-
-	/**
 	 * Remove an object from the game.
 	 *
 	 * @param object Object to remove.
@@ -212,6 +205,16 @@ protected:
 	 * Lua callback: Add an object action.
 	 */
 	void luaNewObjectAction();
+
+	/**
+	 * Lua callback: Add an object.
+	 */
+	void luaNewObject();
+
+	/**
+	 * Lua callback: Delete an object.
+	 */
+	void luaDeleteObject();
 };
 
 #endif
