@@ -100,8 +100,6 @@ protected:
 	 *
 	 * The template parameter must be one of the following:
 	 * Boolean, Integer, Number, String, boost::any, void.
-	 *
-	 * @param count The number of values to pop.
 	 */
 	template <typename T> T pop() {
 		return boost::any_cast<T>(pop<boost::any>());
