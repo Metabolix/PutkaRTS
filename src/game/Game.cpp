@@ -60,7 +60,10 @@ Game::Game::Game(boost::shared_ptr<Map> map_):
 
 		for (int dx = -1; dx <= 1; ++dx) {
 			for (int dy = -1; dy <= 1; ++dy) {
-				insertObject(boost::shared_ptr<Object>(new Object(testObjectType, testPlayer, p.startPosition + Vector2<SIUnit::Position>(dx, dy))));
+				boost::shared_ptr<Object> tmp(new Object(p.startPosition + Vector2<SIUnit::Position>(dx, dy)));
+				tmp->objectType = testObjectType;
+				tmp->owner = testPlayer;
+				insertObject(tmp);
 			}
 		}
 	}

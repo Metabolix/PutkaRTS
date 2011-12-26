@@ -73,11 +73,9 @@ public:
 	/**
 	 * Constructor.
 	 *
-	 * @param objectType Object's type.
-	 * @param owner Object's owner.
 	 * @param position Object's starting position.
 	 */
-	Object(const boost::shared_ptr<const ObjectType> objectType, boost::shared_ptr<const Player> owner, const Vector2<SIUnit::Position>& position);
+	Object(const Vector2<SIUnit::Position>& position);
 
 	/**
 	 * Return object's Object type.
