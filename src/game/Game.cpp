@@ -39,10 +39,26 @@ Game::Game::Game(boost::shared_ptr<Map> map_):
 	bind("luaDeleteObject", boost::bind(&Game::luaDeleteObject, this));
 	runFile<void>(Path::findDataPath("lua/Game.lua"));
 
-	// Create some units for testing.
-	run<void>("ObjectType.new{id = 'test', name = 'Test type', maxVelocity = 2.5}");
-	boost::shared_ptr<const ObjectType> testObjectType(objectTypes.begin()->second);
+	// TODO: Read the tech tree.
+	run<void>("\
+		ObjectType.new({\
+			id = 'testStart',\
+			name = 'Test starting position',\
+			new = function(t)\
+				for dx = -1, 1 do for dy = -1, 1 do Object.new({\
+					objectTypeId = (dx == 0 and dy == 0 and 'testUnit2') or 'testUnit',\
+					playerId = t.playerId,\
+					x = t.x + dx,\
+					y = t.y + dy,\
+				}) end end\
+				Object.delete(t)\
+			end\
+		})\
+		ObjectType.new({id = 'testUnit', name = 'Test unit', radius = 0.4, maxVelocity = 2.5})\
+		ObjectType.new({id = 'testUnit2', name = 'Bigger test unit', radius = 0.6, maxVelocity = 3.5})\
+	");
 
+	// Initialise players.
 	const Map::PlayerContainerType& mapPlayers = map->getPlayers();
 	for (Map::PlayerContainerType::const_iterator i = mapPlayers.begin(); i != mapPlayers.end(); ++i) {
 		const Map::Player& p = i->second;
@@ -51,16 +67,12 @@ Game::Game::Game(boost::shared_ptr<Map> map_):
 		testPlayer->name = std::string("Player ") + (char)('1' + players.size());
 		insertPlayer(testPlayer);
 
-		for (int dx = -1; dx <= 1; ++dx) {
-			for (int dy = -1; dy <= 1; ++dy) {
-				load("local t = {...}; Object.new({objectTypeId = t[1], playerId = t[2], x = t[3], y = t[4]});");
-				push<Lua::String>(testObjectType->id);
-				push<Lua::Number>(testPlayer->id);
-				push<Lua::Number>((p.startPosition.x + dx).getDouble());
-				push<Lua::Number>((p.startPosition.y + dy).getDouble());
-				call(4, 0);
-			}
-		}
+		// Create starting position.
+		load("local t = {...}; Object.new({objectTypeId = 'testStart', playerId = t[1], x = t[2], y = t[3]});");
+		push<Lua::Number>(testPlayer->id);
+		push<Lua::Number>(p.startPosition.x.getDouble());
+		push<Lua::Number>(p.startPosition.y.getDouble());
+		call(3, 0);
 	}
 }
 
