@@ -96,6 +96,18 @@ protected:
 	}
 
 	/**
+	 * Pop one value from the Lua stack.
+	 *
+	 * The template parameter must be one of the following:
+	 * Boolean, Integer, Number, String, boost::any, void.
+	 *
+	 * @param count The number of values to pop.
+	 */
+	template <typename T> T pop() {
+		return boost::any_cast<T>(pop<boost::any>());
+	}
+
+	/**
 	 * Bind a function.
 	 *
 	 * @param name A name for the function.
@@ -110,6 +122,24 @@ protected:
 	 */
 	void unbind(const std::string& name);
 
+	/**
+	 * Load some Lua code on the stack.
+	 *
+	 * @param code The Lua code.
+	 * @param context The indentifier used in error reporting.
+	 * @throw Exception Thrown if anything goes wrong.
+	 */
+	void load(const std::string& code, const std::string& context = "evaluated code");
+
+	/**
+	 * Call a Lua function that is already in the stack.
+	 *
+	 * @param nargs The number of arguments on the stack.
+	 * @param nresults The number of results.
+	 * @throw Exception Thrown if anything goes wrong.
+	 */
+	void call(int nargs, int nresults);
+
 private:
 	/**
 	 * This function forwards calls from Lua to the actual Function object.
@@ -123,6 +153,7 @@ private:
 	 * Lua callback: include another file.
 	 */
 	void luaInclude();
+
 public:
 	/**
 	 * Constructor.
@@ -146,8 +177,9 @@ public:
 	 * @throw Exception Thrown if anything goes wrong.
 	 */
 	template <typename T> T run(const std::string& code, const std::string& context) {
-		boost::any result(run<boost::any>(code, context));
-		return boost::any_cast<T>(result);
+		load(code, context);
+		call(0, 1);
+		return pop<T>();
 	}
 
 	/**
@@ -191,16 +223,15 @@ template <> void Lua::push<Lua::Integer>(const Integer& value);
 template <> void Lua::push<Lua::Number>(const Number& value);
 template <> void Lua::push<Lua::String>(const String& value);
 
-template <> boost::any Lua::run<boost::any>(const std::string& code, const std::string& context);
-template <> inline Lua::Number Lua::run<Lua::Number>(const std::string& code, const std::string& context) {
-	boost::any result(Lua::run<boost::any>(code, context));
+template <> boost::any Lua::pop<boost::any>();
+template <> void Lua::pop<void>();
+
+template <> inline Lua::Number Lua::pop<Lua::Number>() {
+	boost::any result(Lua::pop<boost::any>());
 	if (boost::any_cast<Lua::Integer>(&result)) {
 		return boost::any_cast<Lua::Integer>(result);
 	}
 	return boost::any_cast<Lua::Number>(result);
-}
-template <> inline void Lua::run<void>(const std::string& code, const std::string& context) {
-	Lua::run<boost::any>(code, context);
 }
 /** @endcond */
 

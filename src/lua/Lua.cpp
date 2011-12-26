@@ -155,26 +155,26 @@ template <> void Lua::push<Lua::String>(const String& value) {
 	lua_pushlstring(state, value.c_str(), value.size());
 }
 
-template <> boost::any Lua::run<boost::any>(const std::string& code, const std::string& context) {
-	int ret;
-	std::string str;
-	ret = luaL_loadbuffer(state, code.c_str(), code.size(), context.c_str());
-	if (ret != 0) {
-		str = get<String>(lua_gettop(state));
-		lua_pop(state, 1);
-		switch (ret) {
-			case LUA_ERRSYNTAX:
-				throw Exception("LUA_ERRSYNTAX: " + str);
-			case LUA_ERRMEM:
-				throw Exception("LUA_ERRMEM: " + str);
-			default:
-				throw Exception(str);
-		}
-	}
+template <> void Lua::pop() {
+	lua_pop(state, 1);
+}
 
-	ret = lua_pcall(state, 0, 1, 0);
+template <> boost::any Lua::pop() {
+	boost::any result;
+	try {
+		result = get<boost::any>(lua_gettop(state));
+	} catch (...) {
+		lua_pop(state, 1);
+		throw;
+	}
+	lua_pop(state, 1);
+	return result;
+}
+
+void Lua::call(int nargs, int nresults) {
+	int ret = lua_pcall(state, nargs, nresults, 0);
 	if (ret != 0) {
-		str = get<String>(lua_gettop(state));
+		std::string str = get<String>(lua_gettop(state));
 		lua_pop(state, 1);
 		switch (ret) {
 			case LUA_ERRRUN:
@@ -187,13 +187,20 @@ template <> boost::any Lua::run<boost::any>(const std::string& code, const std::
 				throw Exception(str);
 		}
 	}
-	boost::any result;
-	try {
-		result = get<boost::any>(lua_gettop(state));
-	} catch (...) {
+}
+
+void Lua::load(const std::string& code, const std::string& context) {
+	int ret = luaL_loadbuffer(state, code.c_str(), code.size(), context.c_str());
+	if (ret != 0) {
+		std::string str = get<String>(lua_gettop(state));
 		lua_pop(state, 1);
-		throw;
+		switch (ret) {
+			case LUA_ERRSYNTAX:
+				throw Exception("LUA_ERRSYNTAX: " + str);
+			case LUA_ERRMEM:
+				throw Exception("LUA_ERRMEM: " + str);
+			default:
+				throw Exception(str);
+		}
 	}
-	lua_pop(state, 1);
-	return result;
 }
