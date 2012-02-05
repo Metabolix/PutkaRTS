@@ -170,6 +170,17 @@ bool GUI::Game::Game::handleEvent(const sf::Event& e, const sf::RenderWindow& wi
 		}
 	}
 
+	// Pressing delete destroys any selected units.
+	if (e.Type == sf::Event::KeyPressed && e.Key.Code == sf::Key::Delete && !selectedObjects.empty()) {
+		::Game::Message msg;
+		msg.action = ::Game::ObjectAction::DELETE;
+		for (ObjectSetType::const_iterator i = selectedObjects.begin(); i != selectedObjects.end(); ++i) {
+			msg.actors.push_back((*i)->getObject()->id);
+		}
+		client->sendMessage(msg);
+		return true;
+	}
+
 	return false;
 }
 
