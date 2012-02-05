@@ -31,6 +31,7 @@
 namespace Game {
 	class Game;
 	class Message;
+	class Task;
 	class Object;
 	class ObjectAction;
 }
@@ -54,14 +55,17 @@ private:
 	/** Object's owner. */
 	boost::shared_ptr<const Player> owner;
 
+	/** Set if the object is dead (i.e. ready to be removed from the game). */
+	bool dead;
+
 	/** Object's position. */
 	Vector2<SIUnit::Position> position;
 
 	/** Direction the object is looking. */
 	Scalar<SIUnit::Angle> direction;
 
-	/** Object's target position, if applicable. */
-	Vector2<SIUnit::Position> targetPosition;
+	/** The current task of the object. */
+	boost::shared_ptr<Task> task;
 
 	/** Object's hit points. */
 	int hitPoints;

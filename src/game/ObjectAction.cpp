@@ -22,6 +22,5 @@
 
 #include "ObjectAction.hpp"
 
-const Game::ObjectAction::IdType Game::ObjectAction::NEW = "new";
 const Game::ObjectAction::IdType Game::ObjectAction::DELETE = "delete";
 const Game::ObjectAction::IdType Game::ObjectAction::MOVE = "move";

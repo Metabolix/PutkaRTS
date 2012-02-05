@@ -33,6 +33,9 @@ Game::Message::Message(const std::string& data) {
 	while (input.get(id), id != 0) {
 		actors.push_back(id);
 	}
+	while (input.get(id), id != 0) {
+		targets.push_back(id);
+	}
 }
 
 std::string Game::Message::serialize() const {
@@ -42,6 +45,10 @@ std::string Game::Message::serialize() const {
 	output.put(action);
 	output.put(position);
 	for (std::list<Object::IdType>::const_iterator i = actors.begin(); i != actors.end(); ++i) {
+		output.put(*i);
+	}
+	output.put(Object::IdType(0));
+	for (std::list<Object::IdType>::const_iterator i = targets.begin(); i != targets.end(); ++i) {
 		output.put(*i);
 	}
 	output.put(Object::IdType(0));

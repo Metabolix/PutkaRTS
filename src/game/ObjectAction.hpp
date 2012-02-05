@@ -38,9 +38,6 @@ namespace Game {
 struct Game::ObjectAction {
 	typedef std::string IdType;
 
-	/** Predefined action "new". */
-	static const IdType NEW;
-
 	/** Predefined action "delete". */
 	static const IdType DELETE;
 

@@ -19,14 +19,18 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <boost/foreach.hpp>
+
 #include "Object.hpp"
-#include "Message.hpp"
+#include "ObjectAction.hpp"
+#include "Task.hpp"
+#include "Game.hpp"
 
 Game::Object::Object(const Vector2<SIUnit::Position>& position_):
 	id(0),
+	dead(false),
 	position(position_),
 	direction(0),
-	targetPosition(position_),
 	hitPoints(0),
 	experience(0) {
 }
@@ -48,14 +52,39 @@ void Game::Object::setExperience(int experience_) {
 }
 
 bool Game::Object::runStep(Scalar<SIUnit::Time> dt, Game& game) {
+	if (dead) {
+		return false;
+	}
+	if (!task) {
+		return true;
+	}
+
+	// Find the closest target.
+	boost::shared_ptr<Object> target;
+	BOOST_FOREACH(boost::weak_ptr<Object> objectWeak, task->targets) {
+		boost::shared_ptr<Object> object(objectWeak.lock());
+		if (!object || object->dead) {
+			continue;
+		}
+		if (!target || (position - object->position).pow2() < (position - target->position).pow2()) {
+			target = object;
+		}
+	}
+
+	// If no target is found, the task is finished.
+	if (!target) {
+		task.reset();
+		return true;
+	}
+
 	// TODO: Handle whatever the object is doing.
 	// TODO: Check collisions before moving!
-	if (position != targetPosition) {
+	if (position != target->position) {
 		Vector2<SIUnit::Position> old = position;
-		direction = (targetPosition - position).toAngle();
+		direction = (target->position - position).toAngle();
 		position += Vector2<>::fromAngle(direction) * objectType->maxVelocity * dt;
-		if ((targetPosition - old).dot(targetPosition - position).isNegative()) {
-			position = targetPosition;
+		if ((target->position - old).dot(target->position - position).isNegative()) {
+			position = target->position;
 		}
 	}
 	return true;

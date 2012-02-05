@@ -30,6 +30,7 @@
 #include "util/Scalar.hpp"
 #include "lua/Lua.hpp"
 #include "Message.hpp"
+#include "Task.hpp"
 #include "Map.hpp"
 #include "Client.hpp"
 #include "Player.hpp"
@@ -95,6 +96,10 @@ private:
 	/** Objects in the game */
 	ObjectContainerType objects;
 
+	/** A task for idle units. */
+	const boost::shared_ptr<Task> idleTask;
+
+private:
 	/**
 	 * Run the game one step forward.
 	 *

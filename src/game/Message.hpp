@@ -55,6 +55,9 @@ public:
 	/** The actor objects. */
 	std::list<Object::IdType> actors;
 
+	/** The target objects. */
+	std::list<Object::IdType> targets;
+
 	/**
 	 * Default constructor.
 	 */
@@ -104,6 +107,14 @@ public:
 			return m1.actors.size() < m2.actors.size();
 		}
 		for (std::list<Object::IdType>::const_iterator i = m1.actors.begin(), j = m2.actors.begin(); i != m1.actors.end(); ++i, ++j) {
+			if (*i != *j) {
+				return *i < *j;
+			}
+		}
+		if (m1.targets.size() != m2.targets.size()) {
+			return m1.targets.size() < m2.targets.size();
+		}
+		for (std::list<Object::IdType>::const_iterator i = m1.targets.begin(), j = m2.targets.begin(); i != m1.targets.end(); ++i, ++j) {
 			if (*i != *j) {
 				return *i < *j;
 			}

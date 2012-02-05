@@ -22,6 +22,7 @@
 #include <stdexcept>
 #include <vector>
 #include <boost/bind.hpp>
+#include <boost/foreach.hpp>
 
 #include "Game.hpp"
 
@@ -116,40 +117,56 @@ bool Game::Game::handleMessage(Message& message) {
 	if (clients.find(message.client) == clients.end()) {
 		return false;
 	}
+
 	boost::shared_ptr<Client> client(clients[message.client]);
+	boost::shared_ptr<Task> task(new Task);
+
+	// Create a dummy target for moving, if needed.
+	if (message.action == ObjectAction::MOVE && message.targets.empty()) {
+		task->dummy.reset(new Object(message.position));
+		task->targets.push_back(task->dummy);
+	}
+
+	// Check the action.
+	if (objectActions.find(message.action) != objectActions.end()) {
+		task->action = objectActions[message.action];
+	}
+	if (!task->action && message.action != ObjectAction::MOVE && message.action != ObjectAction::DELETE) {
+		return false;
+	}
 
 	// Collect actors that exist and are allowed.
-	ObjectContainerType actors;
-	for (std::list<Object::IdType>::iterator i = message.actors.begin(); i != message.actors.end(); ++i) {
-		if (objects.find(*i) == objects.end()) {
+	BOOST_FOREACH(Object::IdType id, message.actors) {
+		if (objects.find(id) == objects.end()) {
 			continue;
 		}
-		boost::shared_ptr<Object> object(objects[*i]);
+		boost::shared_ptr<Object> object(objects[id]);
 		if (client->players.find(object->owner->id) == client->players.end()) {
 			continue;
 		}
-		actors[object->id] = object;
-	}
-
-	// Hard-coded action: NEW.
-	if (message.action == ObjectAction::NEW) {
-		return true;
-	}
-
-	// Hard-coded action: DELETE.
-	if (message.action == ObjectAction::DELETE) {
-		for (ObjectContainerType::iterator i = actors.begin(); i != actors.end(); ++i) {
-			eraseObject(i->second);
+		// Replace the current task with the new one.
+		if (object->task) {
+			for (std::list<boost::weak_ptr<Object> >::iterator i = object->task->actors.begin(); i != object->task->actors.end(); ++i) {
+				if (i->lock() == object) {
+					object->task->actors.erase(i);
+					break;
+				}
+			}
 		}
-		return true;
+		object->task = task;
+		task->actors.push_back(object);
 	}
 
-	// Hard-coded action: MOVE.
-	if (message.action == ObjectAction::MOVE) {
-		for (ObjectContainerType::iterator i = actors.begin(); i != actors.end(); ++i) {
-			i->second->targetPosition = message.position;
+	if (task->actors.empty()) {
+		return false;
+	}
+
+	// Collect targets.
+	BOOST_FOREACH(Object::IdType id, message.targets) {
+		if (objects.find(id) == objects.end()) {
+			continue;
 		}
-		return true;
+		task->targets.push_back(objects[id]);
 	}
 
 	return true;
@@ -213,5 +230,10 @@ void Game::Game::luaNewObject() {
 }
 
 void Game::Game::luaDeleteObject() {
-	objects.erase(get<Number>(1));
+	Object::IdType id = get<Number>(1);
+	if (objects.find(id) == objects.end()) {
+		return;
+	}
+	objects[id]->dead = true;
+	objects.erase(id);
 }
