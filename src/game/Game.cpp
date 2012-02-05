@@ -169,6 +169,22 @@ bool Game::Game::handleMessage(Message& message) {
 		task->targets.push_back(objects[id]);
 	}
 
+	// Moving doesn't involve Lua.
+	if (message.action == ObjectAction::MOVE) {
+		return true;
+	}
+
+	// Other actions are handled in Lua code.
+	load("Game.handleMessage(...)");
+	push<Lua::String>(message.action);
+	BOOST_FOREACH(boost::weak_ptr<const Object> objectWeak, task->actors) {
+		boost::shared_ptr<const Object> object(objectWeak.lock());
+		if (object) {
+			push<Lua::Number>(object->id);
+		}
+	}
+	call(1 + task->actors.size(), 0);
+
 	return true;
 }
 

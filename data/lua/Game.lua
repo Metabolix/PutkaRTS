@@ -38,6 +38,33 @@ Game = {
 		Game.freeIdCounter = Game.freeIdCounter + 1
 		return Game.freeIdCounter
 	end,
+
+	--- Run any Lua actions associated with a message.
+	handleMessage = function(...)
+		local message = Message.fromValues(...)
+		local delete = (message.action == "delete")
+		for i = 1, #message.actors do
+			local object = Game.objects[message.actors[i]]
+			if not object then
+				-- nothing
+			elseif delete then
+				Object.delete(object)
+			elseif object.objectType[action] then
+				object.objectType[action](object)
+			end
+		end
+	end,
+}
+
+--- Methods related to the Message class.
+Message = {
+	--- Make a message from the given values.
+	fromValues = function(action, ...)
+		return {
+			action = action,
+			actors = {...},
+		}
+	end,
 }
 
 --- Methods related to the ObjectType class.
