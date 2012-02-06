@@ -28,37 +28,15 @@ namespace Game {
 	class Player;
 }
 
-class Game::Player {
-public:
+struct Game::Player {
 	/** Type for player's id */
 	typedef int IdType;
 
 	/** Id of the player */
 	IdType id;
 
-private:
 	/** Name of the player */
 	std::string name;
-
-public:
-	/**
-	 * Constructor.
-	 *
-	 * @param name_ Name of the player.
-	 */
-	Player(const std::string &name_) :
-		id(0),
-		name(name_) {
-	};
-
-	/**
-	 * Get the name of the player.
-	 *
-	 * @return Returns reference to the string containing player's name.
-	 */
-	const std::string& getName() const {
-		return name;
-	}
 };
 
 #endif

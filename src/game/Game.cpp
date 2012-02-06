@@ -54,7 +54,8 @@ Game::Game::Game(boost::shared_ptr<Map> map_):
 	for (Map::PlayerContainerType::const_iterator i = mapPlayers.begin(); i != mapPlayers.end(); ++i) {
 		const Map::Player& p = i->second;
 
-		boost::shared_ptr<Player> testPlayer(new Player(std::string("Player ") + (char)('1' + players.size())));
+		boost::shared_ptr<Player> testPlayer(new Player);
+		testPlayer->name = std::string("Player ") + (char)('1' + players.size());
 		insertPlayer(testPlayer);
 
 		for (int dx = -1; dx <= 1; ++dx) {
