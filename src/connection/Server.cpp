@@ -115,14 +115,13 @@ void Connection::Server::startGame() {
 void Connection::Server::addClient(boost::shared_ptr<Client> client) {
 	boost::lock_guard<boost::recursive_mutex> lock(*this);
 	for (client->id = 1; clients.find(client->id) != clients.end(); ++client->id);
-	clients[client->id] = client;
 
-	// Send the new client to all, and send all other clients to the new one.
-	sendPacket("c" + client->serialize());
-	for (ClientInfoContainerType::iterator i = clients.begin(); i != clients.end(); ++i) {
-		if (i->first != client->id) {
-			client->connection->sendPacket("c" + i->second->serialize());
-		}
+	// Send the new client to all, and send all old clients to the new one.
+	ClientInfoContainerType old = clients;
+	clients[client->id] = client;
+	sendPacket(clients, 'c' + client->serialize());
+	for (ClientInfoContainerType::iterator i = old.begin(); i != old.end(); ++i) {
+		sendPacket(*client, 'c' + i->second->serialize());
 	}
 }
 
@@ -133,7 +132,7 @@ void Connection::Server::addClient(boost::shared_ptr<EndPoint> connection) {
 void Connection::Server::removeClient(int id) {
 	boost::lock_guard<boost::recursive_mutex> lock(*this);
 	if (clients.erase(id)) {
-		sendPacket("d" + boost::lexical_cast<std::string>(id));
+		sendPacket(clients, 'd' + boost::lexical_cast<std::string>(id));
 	}
 }
 
@@ -146,6 +145,7 @@ bool Connection::Server::handlePacket(Client& client, std::string& data) {
 	char type = *data.begin();
 	data.erase(data.begin());
 
+	// Game::Message.
 	if (type == 'm') {
 		if (game) {
 			Game::Message msg(data);
@@ -154,6 +154,8 @@ bool Connection::Server::handlePacket(Client& client, std::string& data) {
 		}
 		return true;
 	}
+
+	// Ready to init.
 	if (type == 'i') {
 		if (client.readyToInit) {
 			return true;
@@ -164,12 +166,14 @@ bool Connection::Server::handlePacket(Client& client, std::string& data) {
 			readyToInit &= i->second->readyToInit;
 		}
 		if (readyToInit) {
-			sendPacket("i");
+			sendPacket(clients, "i");
 			initGame();
 			listeners.clear();
 		}
 		return true;
 	}
+
+	// Ready to start.
 	if (type == 's') {
 		if (client.readyToStart) {
 			return true;
@@ -180,11 +184,12 @@ bool Connection::Server::handlePacket(Client& client, std::string& data) {
 			readyToStart &= i->second->readyToStart;
 		}
 		if (readyToStart) {
-			sendPacket("s");
+			sendPacket(clients, "s");
 			startGame();
 		}
 		return true;
 	}
+
 	// Invalid packet.
 	return false;
 }
@@ -243,18 +248,22 @@ void Connection::Server::update() {
 	}
 }
 
-void Connection::Server::sendPacket(const std::string& data) {
-	for (ClientInfoContainerType::iterator i = clients.begin(); i != clients.end();) {
-		ClientInfoContainerType::iterator j = i++;
-		Client& client = dynamic_cast<Client&>(*j->second);
-		try {
-			client.connection->sendPacket(data);
-		} catch (...) {
-			removeClient(j->first);
-		}
+void Connection::Server::sendPacket(Client& client, const std::string& data) {
+	try {
+		client.connection->sendPacket(data);
+	} catch (...) {
+		removeClient(client.id);
+	}
+}
+
+void Connection::Server::sendPacket(const ClientInfoContainerType& clients, const std::string& data) {
+	for (ClientInfoContainerType::const_iterator i = clients.begin(); i != clients.end();) {
+		// Handle the iterator carefully, clients may be erased.
+		ClientInfoContainerType::const_iterator j = i++;
+		sendPacket(dynamic_cast<Client&>(*j->second), data);
 	}
 }
 
 void Connection::Server::sendMessage(const Game::Message& msg) {
-	sendPacket("m" + msg.serialize());
+	sendPacket(clients, 'm' + msg.serialize());
 }

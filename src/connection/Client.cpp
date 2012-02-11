@@ -29,6 +29,8 @@
 void Connection::Client::handlePacket(std::string& data) {
 	char type = *data.begin();
 	data.erase(data.begin());
+
+	// A client has joined.
 	if (type == 'c') {
 		ClientInfo info(data);
 		clients[info.id] = boost::make_shared<ClientInfo>(info);
@@ -37,10 +39,14 @@ void Connection::Client::handlePacket(std::string& data) {
 		}
 		return;
 	}
+
+	// A client has left.
 	if (type == 'd') {
 		clients.erase(boost::lexical_cast<int>(data));
 		return;
 	}
+
+	// Game::Message.
 	if (type == 'm') {
 		if (game) {
 			Game::Message msg(data);
@@ -52,10 +58,14 @@ void Connection::Client::handlePacket(std::string& data) {
 		}
 		return;
 	}
+
+	// Init the game.
 	if (type == 'i') {
 		initGame();
 		return;
 	}
+
+	// Start the game.
 	if (type == 's') {
 		startGame();
 		return;

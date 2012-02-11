@@ -71,11 +71,20 @@ class Connection::Server: virtual public Connection::Base, public boost::enable_
 	void addClient(boost::shared_ptr<Client> client);
 
 	/**
-	 * Send a packet to all clients.
+	 * Send a packet to one client.
 	 *
+	 * @param client The client.
 	 * @param data The data.
 	 */
-	void sendPacket(const std::string& data);
+	void sendPacket(Client& client, const std::string& data);
+
+	/**
+	 * Send a packet to a group of clients.
+	 *
+	 * @param clients The clients.
+	 * @param data The data.
+	 */
+	void sendPacket(const ClientInfoContainerType& clients, const std::string& data);
 
 	/**
 	 * Send a message to all clients.

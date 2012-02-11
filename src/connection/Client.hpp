@@ -52,7 +52,6 @@ class Connection::Client: virtual public Connection::Base {
 	/** The greatest message timestamp before lastMessageTimestamp. */
 	Scalar<SIUnit::Time> prevMessageTimestamp;
 
-protected:
 	/**
 	 * Handle a received packet.
 	 *
