@@ -30,7 +30,7 @@ extern "C" {
 }
 
 Lua::Lua() {
-	state = lua_open();
+	state = luaL_newstate();
 	bind("include", boost::bind(&Lua::luaInclude, this));
 }
 
