@@ -70,11 +70,11 @@ void GUI::Widget::TabPanel::resizeButtons() {
 		return;
 	}
 
-	float buttonWidth = position.GetWidth() / buttons.size();
+	float buttonWidth = position.width / buttons.size();
 	int count = 0;
 
 	for (ButtonListType::iterator i = buttons.begin(); i != buttons.end(); ++i) {
-		i->button->setPosition(position.Left + count * buttonWidth, position.Top, buttonWidth, position.GetHeight());
+		i->button->setPosition(position.left + count * buttonWidth, position.top, buttonWidth, position.height);
 		count++;
 	}
 }

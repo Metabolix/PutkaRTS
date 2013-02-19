@@ -29,7 +29,9 @@ boost::shared_ptr<GUI::Widget::Widget> GUI::currentWidget;
 
 sf::RenderWindow GUI::window;
 
-const sf::VideoMode GUI::desktopMode = sf::VideoMode::GetDesktopMode();
+const sf::VideoMode GUI::desktopMode = sf::VideoMode::getDesktopMode();
+
+float GUI::frameTime;
 
 void GUI::createWindow() {
 	sf::VideoMode mode = sf::VideoMode(
@@ -40,17 +42,17 @@ void GUI::createWindow() {
 
 	if (GUI::config.getBool("window.fullscreen", false)) {
 		style = sf::Style::Fullscreen;
-		if (!mode.IsValid()) {
+		if (!mode.isValid()) {
 			mode = desktopMode;
 		}
-	} else if (mode.Width > desktopMode.Width || mode.Height > desktopMode.Height) {
+	} else if (mode.width > desktopMode.width || mode.height > desktopMode.height) {
 		//Scale down the window size if larger than desktop resolution.
-		float scale = std::max((float)mode.Width / desktopMode.Width, (float)mode.Height / desktopMode.Height);
-		mode.Width /= scale;
-		mode.Height /= scale;
+		float scale = std::max((float)mode.width / desktopMode.width, (float)mode.height / desktopMode.height);
+		mode.width /= scale;
+		mode.height /= scale;
 	}
 
 	std::string title = ProgramInfo::name + " (version " + ProgramInfo::version + ", GUI)";
-	window.Create(mode, title, style);
-	window.SetFramerateLimit(GUI::config.getInt("window.framerate", 60));
+	window.create(mode, title, style);
+	window.setFramerateLimit(GUI::config.getInt("window.framerate", 60));
 }

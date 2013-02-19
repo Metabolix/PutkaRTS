@@ -53,7 +53,12 @@ try {
 
 	GUI::createWindow();
 
-	while (window.IsOpened()) {
+	if (!GUI::Widget::font.loadFromFile(GUI::config.getString("font", "/usr/share/fonts/TTF/DejaVuSerif.ttf"))) {
+		throw std::runtime_error("Font not found! Set font=path/to/some.ttf in " + configPath + ".");
+	}
+
+	sf::Clock clock;
+	while (window.isOpen()) {
 		// If nothing is running, start the menu.
 		if (!currentWidget) {
 			currentWidget.reset(new Menu::MainMenu(window));
@@ -63,18 +68,19 @@ try {
 		boost::shared_ptr<Widget::Widget> widget(currentWidget);
 
 		sf::Event e;
-		if (window.GetEvent(e)) {
+		if (window.pollEvent(e)) {
 			if (widget->handleEvent(e, window)) {
 				continue;
 			}
-			if (e.Type == sf::Event::Closed || (e.Type == sf::Event::KeyPressed && e.Key.Code == sf::Key::Escape)) {
-				window.Close();
+			if (e.type == sf::Event::Closed || (e.type == sf::Event::KeyPressed && e.key.code == sf::Keyboard::Escape)) {
+				window.close();
 				continue;
 			}
 		} else {
 			widget->updateState(window);
 			widget->draw(window);
-			window.Display();
+			window.display();
+			GUI::frameTime = clock.restart().asSeconds();
 		}
 	}
 	currentWidget.reset();

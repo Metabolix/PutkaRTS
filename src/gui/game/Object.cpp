@@ -30,40 +30,41 @@ GUI::Game::Object::Object(boost::shared_ptr<const ::Game::Object> object_):
 
 void GUI::Game::Object::draw(sf::RenderWindow& window, boost::shared_ptr<const ::Game::Client> viewer, bool selected) {
 	// TODO: Load real graphics and track animations.
-	static sf::Shape tmp, circle;
-	if (!tmp.GetNbPoints()) {
-		tmp.AddPoint(-0.8, -0.4);
-		tmp.AddPoint(-0.0, -0.4);
-		tmp.AddPoint(-0.0, -0.8);
-		tmp.AddPoint(+0.8, -0.0);
-		tmp.AddPoint(-0.0, +0.8);
-		tmp.AddPoint(-0.0, +0.4);
-		tmp.AddPoint(-0.8, +0.4);
-		tmp.SetOutlineWidth(0.15);
-	}
-	if (!circle.GetNbPoints()) {
-		circle = sf::Shape::Circle(0, 0, 1, sf::Color(0xff, 0xff, 0xff, 0x44), 0.2, sf::Color(0xff, 0xff, 0xff, 0xdd));
-	}
+	sf::ConvexShape arrow;
+	sf::CircleShape circle;
+	arrow.setPointCount(4);
+	arrow.setPoint(0, sf::Vector2f(+0.9, -0.0));
+	arrow.setPoint(1, sf::Vector2f(-0.4, -0.6));
+	arrow.setPoint(2, sf::Vector2f(-0.7, -0.0));
+	arrow.setPoint(3, sf::Vector2f(-0.4, +0.6));
+	arrow.setOutlineColor(sf::Color(0, 0, 0, 0xff));
+	arrow.setOutlineThickness(0.15);
+	circle.setPointCount(12);
+	circle.setRadius(1);
+	circle.setOrigin(1, 1);
+	circle.setFillColor(sf::Color(0xff, 0xff, 0xff, 0x44));
+	circle.setOutlineThickness(0.2);
+	circle.setOutlineColor(sf::Color(0xff, 0xff, 0xff, 0xdd));
 
 	Vector2<SIUnit::Position> pos = object->getPosition();
 	double r = object->getObjectType()->radius.getDouble();
 
 	if (viewer->players.find(object->getOwner()->id) != viewer->players.end()) {
-		circle.SetColor(sf::Color(0x33, 0x33, 0xcc));
-		tmp.SetColor(sf::Color(0x33, 0x33, 0xcc));
+		circle.setFillColor(sf::Color(0x33, 0x33, 0xcc));
+		arrow.setFillColor(sf::Color(0x33, 0x33, 0xcc));
 	} else {
-		circle.SetColor(sf::Color(0xcc, 0x33, 0x00));
-		tmp.SetColor(sf::Color(0xdd, 0x00, 0x00));
+		circle.setFillColor(sf::Color(0xcc, 0x33, 0x00));
+		arrow.setFillColor(sf::Color(0xdd, 0x00, 0x00));
 	}
 
 	if (selected) {
-		circle.SetScale(r, r);
-		circle.SetPosition(pos.x.getDouble(), pos.y.getDouble());
-		window.Draw(circle);
+		circle.setScale(r, r);
+		circle.setPosition(pos.x.getDouble(), pos.y.getDouble());
+		window.draw(circle);
 	}
 
-	tmp.SetScale(r, r);
-	tmp.SetPosition(pos.x.getDouble(), pos.y.getDouble());
-	tmp.SetRotation(-Math::toDegrees(object->getDirection().getDouble()));
-	window.Draw(tmp);
+	arrow.setScale(r, r);
+	arrow.setPosition(pos.x.getDouble(), pos.y.getDouble());
+	arrow.setRotation(Math::toDegrees(object->getDirection().getDouble()));
+	window.draw(arrow);
 }

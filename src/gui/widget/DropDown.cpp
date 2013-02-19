@@ -59,7 +59,7 @@ void GUI::Widget::DropDown::calculateDropDownSize() {
 	height *= dropList.getLineHeight();
 	height += 2 * dropList.getBorderWidth();
 
-	dropList.setSize(position.GetWidth(), height);
+	dropList.setSize(position.width, height);
 }
 
 bool GUI::Widget::DropDown::handleEvent(const sf::Event& e, const sf::RenderWindow& window) {
@@ -70,7 +70,7 @@ bool GUI::Widget::DropDown::handleEvent(const sf::Event& e, const sf::RenderWind
 	if (open) {
 		if (dropList.handleEvent(e, window)) {
 			return true;
-		} else if (e.Type == sf::Event::MouseButtonPressed && e.MouseButton.Button == sf::Mouse::Left) {
+		} else if (e.type == sf::Event::MouseButtonPressed && e.mouseButton.button == sf::Mouse::Left) {
 			open = false;
 			return true;
 		}
@@ -82,24 +82,20 @@ bool GUI::Widget::DropDown::handleEvent(const sf::Event& e, const sf::RenderWind
 void GUI::Widget::DropDown::draw(sf::RenderWindow& window) {
 	float bw = dropList.getBorderWidth();
 
-	window.Draw(
-		sf::Shape::Rectangle(
-			position.Left + bw,
-			position.Top + bw,
-			position.Right - bw,
-			position.Bottom - bw,
-			Color::background,
-			bw,
-			Color::border
-		)
-	);
+	sf::RectangleShape tmp;
+	tmp.setSize(sf::Vector2f(position.width - 2 * bw, position.height - 2 * bw));
+	tmp.setPosition(position.left + bw, position.top + bw);
+	tmp.setFillColor(Color::background);
+	tmp.setOutlineColor(Color::border);
+	tmp.setOutlineThickness(bw);
+	window.draw(tmp);
 
 	Label tmpText(
 		dropList.getSelectedText(),
-		position.Left + 2 * bw,
-		position.Top + bw,
-		position.GetWidth() - 4 * bw,
-		position.GetHeight() - 2 * bw
+		position.left + 2 * bw,
+		position.top + bw,
+		position.width - 4 * bw,
+		position.height - 2 * bw
 	);
 	tmpText.draw(window);
 	dropButton.draw(window);

@@ -39,7 +39,7 @@ GUI::Widget::List::List(float x, float y, float width, float height, CallbackTyp
 }
 
 bool GUI::Widget::List::handleEvent(const sf::Event& e, const sf::RenderWindow& window) {
-	const int lines = (position.GetHeight() - 2 * borderWidth) / lineHeight;
+	const int lines = (position.height - 2 * borderWidth) / lineHeight;
 
 	if ((int)items.size() > lines) {
 		if (scrollbar.handleEvent(e, window)) {
@@ -48,17 +48,17 @@ bool GUI::Widget::List::handleEvent(const sf::Event& e, const sf::RenderWindow& 
 		}
 	}
 
-	if (e.Type == sf::Event::MouseButtonPressed && e.MouseButton.Button == sf::Mouse::Left) {
-		sf::Vector2f mouse(window.ConvertCoords(e.MouseButton.X, e.MouseButton.Y));
+	if (e.type == sf::Event::MouseButtonPressed && e.mouseButton.button == sf::Mouse::Left) {
+		sf::Vector2f mouse(window.mapPixelToCoords(sf::Vector2i(e.mouseButton.x, e.mouseButton.y)));
 
 		sf::FloatRect itemArea = position;
-		itemArea.Right -= borderWidth;
-		itemArea.Left += borderWidth;
-		itemArea.Top += borderWidth;
-		itemArea.Bottom -= borderWidth;
+		itemArea.left += borderWidth;
+		itemArea.top += borderWidth;
+		itemArea.width -= 2 * borderWidth;
+		itemArea.height -= 2 * borderWidth;
 
-		if (itemArea.Contains(mouse.x, mouse.y)) {
-			int itemIndex = scrollPosition + (mouse.y - itemArea.Top) / lineHeight;
+		if (itemArea.contains(mouse)) {
+			int itemIndex = scrollPosition + (mouse.y - itemArea.top) / lineHeight;
 
 			selected = items.begin();
 			for (int i = 0; i < itemIndex && selected != items.end(); i++) {
@@ -71,18 +71,17 @@ bool GUI::Widget::List::handleEvent(const sf::Event& e, const sf::RenderWindow& 
 
 			return true;
 		}
-	} else if (e.Type == sf::Event::MouseWheelMoved) {
-		const sf::Input& input = window.GetInput();
-		sf::Vector2f mouse(window.ConvertCoords(input.GetMouseX(), input.GetMouseY()));
+	} else if (e.type == sf::Event::MouseWheelMoved) {
+		sf::Vector2f mouse(window.mapPixelToCoords(sf::Mouse::getPosition(window)));
 
 		sf::FloatRect itemArea = position;
-		itemArea.Right -= borderWidth;
-		itemArea.Left += borderWidth;
-		itemArea.Top += borderWidth;
-		itemArea.Bottom -= borderWidth;
+		itemArea.left += borderWidth;
+		itemArea.top += borderWidth;
+		itemArea.width -= 2 * borderWidth;
+		itemArea.height -= 2 * borderWidth;
 
-		if (itemArea.Contains(mouse.x, mouse.y)) {
-			scroll(-e.MouseWheel.Delta);
+		if (itemArea.contains(mouse)) {
+			scroll(-e.mouseWheel.delta);
 			scrollbar.setScrollPosition((float)scrollPosition / (items.size() - lines));
 			return true;
 		}
@@ -92,68 +91,47 @@ bool GUI::Widget::List::handleEvent(const sf::Event& e, const sf::RenderWindow& 
 }
 
 void GUI::Widget::List::draw(sf::RenderWindow& window) {
-	int lines = (position.GetHeight() - 2 * borderWidth) / lineHeight;
+	int lines = (position.height - 2 * borderWidth) / lineHeight;
 
-	window.Draw(
-		sf::Shape::Rectangle(
-			position.Left + borderWidth,
-			position.Top + borderWidth,
-			position.Right - borderWidth,
-			position.Bottom - borderWidth,
-			Color::background,
-			borderWidth,
-			Color::border
-		)
-	);
-
-	int counter = 0;
-
-	const sf::Input& input = window.GetInput();
-	sf::Vector2f mouse(window.ConvertCoords(input.GetMouseX(), input.GetMouseY()));
-
-	int hoverIndex = -1;
+	const int bw = borderWidth;
+	sf::RectangleShape tmp;
+	tmp.setSize(sf::Vector2f(position.width - 2 * bw, position.height - 2 * bw));
+	tmp.setPosition(position.left + bw, position.top + bw);
+	tmp.setFillColor(Color::background);
+	tmp.setOutlineColor(Color::border);
+	tmp.setOutlineThickness(bw);
+	window.draw(tmp);
 
 	sf::FloatRect itemArea = position;
-	itemArea.Right -= borderWidth + 16;
-	itemArea.Left += borderWidth;
-	itemArea.Top += borderWidth;
-	itemArea.Bottom -= borderWidth;
+	itemArea.left += borderWidth;
+	itemArea.top += borderWidth;
+	itemArea.width -= 2 * borderWidth + 16;
+	itemArea.height -= 2 * borderWidth;
 
-	if (itemArea.Contains(mouse.x, mouse.y)) {
-		hoverIndex = scrollPosition + (mouse.y - itemArea.Top) / lineHeight;
+	sf::Vector2f mouse(window.mapPixelToCoords(sf::Mouse::getPosition(window)));
+	int hoverIndex = -1;
+	if (itemArea.contains(mouse)) {
+		hoverIndex = scrollPosition + (mouse.y - itemArea.top) / lineHeight;
 	}
 
+	int counter = 0;
 	for (ItemContainerType::const_iterator i = items.begin(); i != items.end() && counter < lines + scrollPosition; ++i, ++counter) {
 		if (counter < scrollPosition) {
 			continue;
 		}
 
-		if (selected == i) {
-			window.Draw(
-				sf::Shape::Rectangle(
-					position.Left + borderWidth,
-					position.Top + borderWidth + (counter - scrollPosition) * lineHeight,
-					position.Right - borderWidth,
-					position.Top + borderWidth + (counter + 1 - scrollPosition) * lineHeight,
-					Color::backgroundHover
-				)
-			);
-		} else if (counter == hoverIndex) {
-			window.Draw(
-				sf::Shape::Rectangle(
-					position.Left + borderWidth,
-					position.Top + borderWidth + (counter - scrollPosition) * lineHeight,
-					position.Right - borderWidth,
-					position.Top + borderWidth + (counter + 1 - scrollPosition) * lineHeight,
-					Color::backgroundHover
-				)
-			);
+		if (selected == i || counter == hoverIndex) {
+			sf::RectangleShape tmp;
+			tmp.setSize(sf::Vector2f(position.width - 2 * borderWidth, lineHeight));
+			tmp.setPosition(position.left + borderWidth, position.top + borderWidth + (counter - scrollPosition) * lineHeight);
+			tmp.setFillColor(Color::backgroundHover);
+			window.draw(tmp);
 		}
 
 		Label tmpText(
 			i->text,
-			position.Left + 2 * borderWidth,
-			position.Top + borderWidth + (counter - scrollPosition) * lineHeight,
+			position.left + 2 * borderWidth,
+			position.top + borderWidth + (counter - scrollPosition) * lineHeight,
 			lineHeight
 		);
 		tmpText.draw(window);
@@ -165,7 +143,7 @@ void GUI::Widget::List::draw(sf::RenderWindow& window) {
 }
 
 void GUI::Widget::List::setScrollPosition(int pos) {
-	int lines = (position.GetHeight() - 2 * borderWidth) / lineHeight;
+	int lines = (position.height - 2 * borderWidth) / lineHeight;
 
 	pos = std::max(0, std::min(pos, (int)(items.size()-lines)));
 	scrollPosition = pos;
@@ -233,7 +211,7 @@ float GUI::Widget::List::getLineHeight() const {
 }
 
 void GUI::Widget::List::setLineHeight(float lineHeight_) {
-	lineHeight = std::max(1.0f, std::min(lineHeight_, position.GetHeight() - 2 * borderWidth));
+	lineHeight = std::max(1.0f, std::min(lineHeight_, position.height - 2 * borderWidth));
 }
 
 unsigned GUI::Widget::List::countItems() const {
@@ -246,7 +224,7 @@ void GUI::Widget::List::move(float dx, float dy) {
 }
 
 void GUI::Widget::List::setSize(float width, float height) {
-	scrollbar.move(width - position.GetWidth(), 0);
+	scrollbar.move(width - position.width, 0);
 	scrollbar.setSize(16, height - 2 * getBorderWidth());
 	Widget::setSize(width, height);
 }

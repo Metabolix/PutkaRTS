@@ -40,20 +40,20 @@
 #include <SFML/Graphics.hpp>
 
 GUI::Game::Game::Game(boost::shared_ptr<Connection::Client> client_, sf::RenderWindow& window):
-	guiView(window.GetDefaultView()),
+	guiView(window.getDefaultView()),
 	client(client_),
 	gameView(window, sf::Vector2f(client->getGame().getMap().getSizeX(), client->getGame().getMap().getSizeY()), 32) {
 
 	loadMapData();
 
 	// TODO: Center at the player start position or something.
-	gameView.SetCenter(
+	gameView.setCenter(
 		client->getGame().getMap().getSizeX() / 2,
 		client->getGame().getMap().getSizeY() / 2
 	);
 
-	insert(new GUI::Widget::Button("X", window.GetWidth() - 24, 0, 24, 24, boost::bind(&Game::exit, this)));
-	insert(new GUI::Widget::Button("S", window.GetWidth() - 48, 0, 24, 24, boost::bind(&Game::openSettingsMenu, this, boost::ref(window))));
+	insert(new GUI::Widget::Button("X", window.getSize().x - 24, 0, 24, 24, boost::bind(&Game::exit, this)));
+	insert(new GUI::Widget::Button("S", window.getSize().x - 48, 0, 24, 24, boost::bind(&Game::openSettingsMenu, this, boost::ref(window))));
 
 	client->setReadyToStart();
 }
@@ -64,7 +64,7 @@ void GUI::Game::Game::loadMapData() {
 
 	for (::Game::Map::TileInfoMap::const_iterator i = tileInfoMap.begin(); i != tileInfoMap.end(); ++i) {
 		const ::Game::Map::TileInfo& info = i->second;
-		images.get(info.texture, Path::findDataPath(map.getDirectory(), "", info.texture));
+		textures.get(info.texture, Path::findDataPath(map.getDirectory(), "", info.texture));
 	}
 }
 
@@ -73,18 +73,20 @@ void GUI::Game::Game::drawGame(sf::RenderWindow& window) const {
 	const ::Game::Map& map = game.getMap();
 
 	//calculate which tiles are on the screen.
-	::Game::Map::SizeType beginY = std::max(0.0f, gameView.GetRect().Top);
-	::Game::Map::SizeType endY = std::min< ::Game::Map::SizeType>(map.getSizeY(), std::max(0.0f, std::ceil(gameView.GetRect().Bottom)));
-	::Game::Map::SizeType beginX = std::max(0.0f, gameView.GetRect().Left);
-	::Game::Map::SizeType endX = std::min< ::Game::Map::SizeType>(map.getSizeX(), std::max(0.0f, std::ceil(gameView.GetRect().Right)));
+	sf::Vector2f xy0 = gameView.getCenter() - gameView.getSize() * 0.5f;
+	sf::Vector2f xy1 = xy0 + gameView.getSize();
+	::Game::Map::SizeType beginY = std::max(0.0f, xy0.y);
+	::Game::Map::SizeType endY = std::min< ::Game::Map::SizeType>(map.getSizeY(), std::max(0.0f, std::ceil(xy1.y)));
+	::Game::Map::SizeType beginX = std::max(0.0f, xy0.x);
+	::Game::Map::SizeType endX = std::min< ::Game::Map::SizeType>(map.getSizeX(), std::max(0.0f, std::ceil(xy1.x)));
 
 	// TODO: Check what parts the player can see!
 	for (::Game::Map::SizeType y = beginY; y < endY; ++y) {
 		for (::Game::Map::SizeType x = beginX; x < endX; ++x) {
-			sf::Sprite sprite(images.get(map(x, y).texture));
-			sprite.Resize(1, 1);
-			sprite.SetPosition(x, y);
-			window.Draw(sprite);
+			sf::Sprite sprite(textures.get(map(x, y).texture));
+			sprite.setScale(1 / sprite.getLocalBounds().width, 1 / sprite.getLocalBounds().height);
+			sprite.setPosition(x, y);
+			window.draw(sprite);
 		}
 	}
 
@@ -111,16 +113,16 @@ bool GUI::Game::Game::handleEvent(const sf::Event& e, const sf::RenderWindow& wi
 		}
 		return ret;
 	}
-	if (e.Type == sf::Event::KeyPressed && e.Key.Code == sf::Key::Escape) {
+	if (e.type == sf::Event::KeyPressed && e.key.code == sf::Keyboard::Escape) {
 		exit();
 		return true;
 	}
 
 	// Update mouse position.
-	if (e.Type == sf::Event::MouseButtonPressed || e.Type == sf::Event::MouseButtonReleased) {
-		mouse.update(window, gameView, e.MouseButton.X, e.MouseButton.Y);
-	} else if (e.Type == sf::Event::MouseMoved) {
-		mouse.update(window, gameView, e.MouseMove.X, e.MouseMove.Y);
+	if (e.type == sf::Event::MouseButtonPressed || e.type == sf::Event::MouseButtonReleased) {
+		mouse.update(window, gameView, e.mouseButton.x, e.mouseButton.y);
+	} else if (e.type == sf::Event::MouseMoved) {
+		mouse.update(window, gameView, e.mouseMove.x, e.mouseMove.y);
 	}
 
 	// Handle buttons etc.
@@ -129,19 +131,19 @@ bool GUI::Game::Game::handleEvent(const sf::Event& e, const sf::RenderWindow& wi
 	}
 
 	// Store mouse position when button is pressed.
-	if (e.Type == sf::Event::MouseButtonPressed) {
-		mouseDownPosition[e.MouseButton.Button] = mouse.getPosition();
+	if (e.type == sf::Event::MouseButtonPressed) {
+		mouseDownPosition[e.mouseButton.button] = mouse.getPosition();
 	}
 
 	// Handle release only if the press was stored.
-	if (e.Type == sf::Event::MouseButtonReleased && mouseDownPosition.find(e.MouseButton.Button) != mouseDownPosition.end()) {
+	if (e.type == sf::Event::MouseButtonReleased && mouseDownPosition.find(e.mouseButton.button) != mouseDownPosition.end()) {
 		// Extract and erase the remembered position.
-		Vector2<SIUnit::Position> oldPosition = mouseDownPosition[e.MouseButton.Button];
-		mouseDownPosition.erase(e.MouseButton.Button);
+		Vector2<SIUnit::Position> oldPosition = mouseDownPosition[e.mouseButton.button];
+		mouseDownPosition.erase(e.mouseButton.button);
 
-		if (e.MouseButton.Button == sf::Mouse::Left) {
+		if (e.mouseButton.button == sf::Mouse::Left) {
 			// Select units (add to old selection if holding ctrl).
-			bool ctrl = window.GetInput().IsKeyDown(sf::Key::LControl) || window.GetInput().IsKeyDown(sf::Key::RControl);
+			bool ctrl = sf::Keyboard::isKeyPressed(sf::Keyboard::LControl) || sf::Keyboard::isKeyPressed(sf::Keyboard::RControl);
 			if (!ctrl) {
 				selectedObjects.clear();
 			}
@@ -157,7 +159,7 @@ bool GUI::Game::Game::handleEvent(const sf::Event& e, const sf::RenderWindow& wi
 			}
 		}
 		// Command units only if the mouse hasn't moved much.
-		if (e.MouseButton.Button == sf::Mouse::Right && (mouse.getPosition() - oldPosition).pow2() < 0.2) {
+		if (e.mouseButton.button == sf::Mouse::Right && (mouse.getPosition() - oldPosition).pow2() < 0.2) {
 			//Testing movement
 			::Game::Message msg;
 			msg.action = ::Game::ObjectAction::MOVE;
@@ -171,7 +173,7 @@ bool GUI::Game::Game::handleEvent(const sf::Event& e, const sf::RenderWindow& wi
 	}
 
 	// Pressing delete destroys any selected units.
-	if (e.Type == sf::Event::KeyPressed && e.Key.Code == sf::Key::Delete && !selectedObjects.empty()) {
+	if (e.type == sf::Event::KeyPressed && e.key.code == sf::Keyboard::Delete && !selectedObjects.empty()) {
 		::Game::Message msg;
 		msg.action = ::Game::ObjectAction::DELETE;
 		for (ObjectSetType::const_iterator i = selectedObjects.begin(); i != selectedObjects.end(); ++i) {
@@ -194,14 +196,14 @@ void GUI::Game::Game::updateState(sf::RenderWindow& window) {
 }
 
 void GUI::Game::Game::draw(sf::RenderWindow& window) {
-	window.Clear();
+	window.clear();
 
 	if (settingsMenu) {
 		settingsMenu->draw(window);
 	} else {
-		window.SetView(gameView);
+		window.setView(gameView);
 		drawGame(window);
-		window.SetView(guiView);
+		window.setView(guiView);
 		Container::draw(window);
 	}
 }

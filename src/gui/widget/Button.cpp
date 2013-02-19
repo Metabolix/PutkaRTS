@@ -31,13 +31,13 @@ GUI::Widget::Button::Button(const std::string& text, float x, float y, float wid
 }
 
 bool GUI::Widget::Button::handleEvent(const sf::Event& e, const sf::RenderWindow& window) {
-	if (e.Type != sf::Event::MouseButtonPressed || e.MouseButton.Button != sf::Mouse::Left) {
+	if (e.type != sf::Event::MouseButtonPressed || e.mouseButton.button != sf::Mouse::Left) {
 		return false;
 	}
 
-	sf::Vector2f mouse(window.ConvertCoords(e.MouseButton.X, e.MouseButton.Y));
+	sf::Vector2f mouse(window.mapPixelToCoords(sf::Vector2i(e.mouseButton.x, e.mouseButton.y)));
 
-	if (position.Contains(mouse.x, mouse.y)) {
+	if (position.contains(mouse)) {
 		action();
 		return true;
 	}
@@ -46,18 +46,17 @@ bool GUI::Widget::Button::handleEvent(const sf::Event& e, const sf::RenderWindow
 }
 
 void GUI::Widget::Button::draw(sf::RenderWindow& window, bool highlight) {
-	const int bw = (std::min(position.GetWidth(), position.GetHeight()) < 40 ? 2 : 4); // Border width
-	const sf::Input& input(window.GetInput());
-	sf::Vector2f mouse(window.ConvertCoords(input.GetMouseX(), input.GetMouseY()));
+	const int bw = (std::min(position.width, position.height) < 40 ? 2 : 4); // Border width
+	sf::Vector2f mouse(window.mapPixelToCoords(sf::Mouse::getPosition(window)));
 
-	sf::Color background(Color::background);
+	sf::RectangleShape tmp;
+	tmp.setSize(sf::Vector2f(position.width - 2 * bw, position.height - 2 * bw));
+	tmp.setPosition(position.left + bw, position.top + bw);
+	tmp.setFillColor((highlight || position.contains(mouse)) ? Color::backgroundHover : Color::background);
+	tmp.setOutlineColor(Color::border);
+	tmp.setOutlineThickness(bw);
+	window.draw(tmp);
 
-	if (position.Contains(mouse.x, mouse.y) || highlight) {
-		background = Color::backgroundHover;
-	}
-
-	window.Draw(sf::Shape::Rectangle(position.Left + bw, position.Top + bw, position.Right - bw, position.Bottom - bw, background, bw, Color::border));
-
-	label.setPosition(position.Left + 2 * bw, position.Top + 2 * bw, position.GetWidth() - 4 * bw, position.GetHeight() - 4 * bw);
+	label.setPosition(position.left + 2 * bw, position.top + 2 * bw, position.width - 4 * bw, position.height - 4 * bw);
 	label.draw(window);
 }

@@ -45,7 +45,7 @@ class GUI::Game::ScrollingView: public sf::View {
 	bool mouseDragging;
 
 	/** Window coordinates for drag origin */
-	sf::Vector2f dragOrigin;
+	sf::Vector2i dragOrigin;
 
 public:
 	/**

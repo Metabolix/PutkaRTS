@@ -55,26 +55,26 @@ void GUI::Menu::SettingsMenu::buildGraphicsTab(const GUI::Widget::TabPanel::TabK
 
 	//List video modes.
 	boost::shared_ptr<GUI::Widget::DropDown> videoModeList(new GUI::Widget::DropDown(100, 200, 200, 25, 200, boost::bind(&GUI::Menu::SettingsMenu::setVideoMode, this, _1)));
-	for (unsigned i = 0; i < sf::VideoMode::GetModesCount(); i++) {
-		const sf::VideoMode& mode = sf::VideoMode::GetMode(i);
+	for (unsigned i = 0; i < sf::VideoMode::getFullscreenModes().size(); i++) {
+		const sf::VideoMode& mode = sf::VideoMode::getFullscreenModes().at(i);
 
-		if (mode.BitsPerPixel != 32) {
+		if (mode.bitsPerPixel != 32) {
 			continue;
 		}
 
-		if (mode.Width > desktopMode.Width || mode.Height > desktopMode.Height) {
+		if (mode.width > desktopMode.width || mode.height > desktopMode.height) {
 			continue;
 		}
 
 		boost::format text("%1%x%2%");
-		text % mode.Width % mode.Height;
+		text % mode.width % mode.height;
 
 		boost::format key("%1%");
 		key % i;
 
 		videoModeList->insertItem(key.str(), text.str());
 
-		if (mode.Width == window.GetWidth() && mode.Height == window.GetHeight()) {
+		if (mode.width == window.getSize().x && mode.height == window.getSize().y) {
 			videoModeList->selectItem(key.str());
 			videoMode = atoi(key.str().c_str());
 		}
@@ -116,25 +116,31 @@ void GUI::Menu::SettingsMenu::buildInputTab(const GUI::Widget::TabPanel::TabKeyT
 }
 
 void GUI::Menu::SettingsMenu::applyChanges(sf::RenderWindow& window) {
-	sf::VideoMode mode = sf::VideoMode::GetMode(videoMode);
+	sf::VideoMode mode;
+	try {
+		mode = sf::VideoMode::getFullscreenModes().at(videoMode);
+	} catch (std::out_of_range& e) {
+		// TODO: What about current mode in windowed mode?
+	}
 
-	if (!mode.IsValid()) {
+	if (!mode.isValid()) {
 		fullscreen = false;
 	}
 
-	if (mode.Width != window.GetWidth() || mode.Height != window.GetHeight()) {
-		GUI::config.setInt("window.size.x", mode.Width);
-		GUI::config.setInt("window.size.y", mode.Height);
+	bool changed = false;
+	if (mode.width != window.getSize().x || mode.height != window.getSize().y) {
+		GUI::config.setInt("window.size.x", mode.width);
+		GUI::config.setInt("window.size.y", mode.height);
+		changed = true;
 	}
 
 	if (fullscreen || GUI::config.getBool("window.fullscreen", false)) {
 		GUI::config.setBool("window.fullscreen", fullscreen);
-		GUI::createWindow();
+		changed = true;
 	}
 
-	if (mode.Width != window.GetWidth() || mode.Height != window.GetHeight()) {
-		window.SetSize(mode.Width, mode.Height);
-		window.GetDefaultView().SetFromRect(sf::FloatRect(0, 0, mode.Width, mode.Height));
+	if (changed) {
+		GUI::createWindow();
 	}
 
 	GUI::config.setDouble("gameUI.zoomSpeed", zoomSpeed);

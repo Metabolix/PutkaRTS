@@ -1,5 +1,5 @@
 /*
- * Image caching system.
+ * Texture caching system.
  *
  * Copyright 2011 Lauri Kenttä
  *
@@ -23,72 +23,72 @@
 #include <string>
 #include <map>
 
-#include "ImageCache.hpp"
+#include "TextureCache.hpp"
 
 #include <SFML/Graphics.hpp>
 
 /**
- * Structure to hold an image and its reference count.
+ * Structure to hold an Texture and its reference count.
  */
-struct GUI::ImageCache::Node {
+struct GUI::TextureCache::Node {
 	std::string file;
-	sf::Image image;
+	sf::Texture texture;
 	Node(std::string file_): file(file_) {
-		if (!image.LoadFromFile(file)) {
+		if (!texture.loadFromFile(file)) {
 			throw std::runtime_error(file + " could not be loaded!");
 		}
 	}
 };
 
-/** All the images that are currently loaded, listed by file name. */
-std::map<std::string, boost::weak_ptr<GUI::ImageCache::Node> > GUI::ImageCache::known;
+/** All the textures that are currently loaded, listed by file name. */
+std::map<std::string, boost::weak_ptr<GUI::TextureCache::Node> > GUI::TextureCache::known;
 
-const sf::Image& GUI::ImageCache::get(const std::string& id, const std::string& file) {
-	// Check if the image is already loaded.
+const sf::Texture& GUI::TextureCache::get(const std::string& id, const std::string& file) {
+	// Check if the Texture is already loaded.
 	if (loaded.find(id) != loaded.end()) {
 		const Node& node = *loaded.find(id)->second;
 		if (node.file != file) {
-			throw std::runtime_error("ImageCache already contains '" + id + "' (loaded from " + node.file + "), can't load " + file + "!");
+			throw std::runtime_error("TextureCache already contains '" + id + "' (loaded from " + node.file + "), can't load " + file + "!");
 		}
-		return node.image;
+		return node.texture;
 	}
 
 	boost::shared_ptr<Node> node;
 
-	// Check if some other cache already has the image.
+	// Check if some other cache already has the texture.
 	if (known.find(file) != known.end()) {
 		node = known.find(file)->second.lock();
 	}
 
-	// Load the image and store a weak reference.
+	// Load the texture and store a weak reference.
 	if (!node) {
 		node.reset(new Node(file));
 		known[file] = node;
 	}
 	loaded[id] = node;
 
-	return node->image;
+	return node->texture;
 }
 
-const sf::Image& GUI::ImageCache::get(const std::string& fileOrId) {
+const sf::Texture& GUI::TextureCache::get(const std::string& fileOrId) {
 	if (loaded.find(fileOrId) != loaded.end()) {
-		return loaded.find(fileOrId)->second->image;
+		return loaded.find(fileOrId)->second->texture;
 	}
 	return get(fileOrId, fileOrId);
 }
 
-const sf::Image& GUI::ImageCache::get(const std::string& id) const {
+const sf::Texture& GUI::TextureCache::get(const std::string& id) const {
 	if (loaded.find(id) != loaded.end()) {
-		return loaded.find(id)->second->image;
+		return loaded.find(id)->second->texture;
 	}
-	throw std::runtime_error("ImageCache does not contain '" + id + "'!");
+	throw std::runtime_error("TextureCache does not contain '" + id + "'!");
 }
 
-void GUI::ImageCache::clear() {
+void GUI::TextureCache::clear() {
 	loaded.clear();
 }
 
-GUI::ImageCache& GUI::ImageCache::operator = (const ImageCache& other) {
+GUI::TextureCache& GUI::TextureCache::operator = (const TextureCache& other) {
 	if (this != &other) {
 		loaded = other.loaded;
 	}

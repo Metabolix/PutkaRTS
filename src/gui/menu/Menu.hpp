@@ -25,7 +25,7 @@
 
 #include <boost/shared_ptr.hpp>
 
-#include "gui/graphics/ImageCache.hpp"
+#include "gui/graphics/TextureCache.hpp"
 #include "gui/widget/Widget.hpp"
 #include "gui/widget/Container.hpp"
 
@@ -54,8 +54,8 @@ class GUI::Menu::Menu: public Widget::Container {
 	bool menuIsOpen;
 
 protected:
-	/** Menu images. */
-	static ImageCache images;
+	/** Menu textures. */
+	static TextureCache textures;
 
 	/**
 	 * Set parent and flag the menu as open.

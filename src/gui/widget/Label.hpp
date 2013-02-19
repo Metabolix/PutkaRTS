@@ -38,7 +38,7 @@ namespace GUI {
  */
 class GUI::Widget::Label: public Widget {
 	/** Text for the label. */
-	sf::String label;
+	sf::Text label;
 
 	/** Is the label centered? */
 	bool isCentered;

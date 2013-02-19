@@ -31,13 +31,13 @@ GUI::Widget::Checkbox::Checkbox(float x, float y, float width, float height, boo
 }
 
 bool GUI::Widget::Checkbox::handleEvent(const sf::Event& e, const sf::RenderWindow& window) {
-	if (e.Type != sf::Event::MouseButtonPressed || e.MouseButton.Button != sf::Mouse::Left) {
+	if (e.type != sf::Event::MouseButtonPressed || e.mouseButton.button != sf::Mouse::Left) {
 		return false;
 	}
 
-	sf::Vector2f mouse(window.ConvertCoords(e.MouseButton.X, e.MouseButton.Y));
+	sf::Vector2f mouse(window.mapPixelToCoords(sf::Vector2i(e.mouseButton.x, e.mouseButton.y)));
 
-	if (position.Contains(mouse.x, mouse.y)) {
+	if (position.contains(mouse)) {
 		isChecked = !isChecked;
 		if (action) {
 			action(isChecked);
@@ -49,13 +49,26 @@ bool GUI::Widget::Checkbox::handleEvent(const sf::Event& e, const sf::RenderWind
 }
 
 void GUI::Widget::Checkbox::draw(sf::RenderWindow& window) {
-	const int bw = (std::min(position.GetWidth(), position.GetHeight()) < 40 ? 2 : 4); // Border width
+	const int bw = (std::min(position.width, position.height) < 40 ? 2 : 4); // Border width
 
-	window.Draw(sf::Shape::Rectangle(position.Left + bw, position.Top + bw, position.Right - bw, position.Bottom - bw, Color::background, bw, Color::border));
+	sf::RectangleShape tmp;
+	tmp.setSize(sf::Vector2f(position.width - 2 * bw, position.height - 2 * bw));
+	tmp.setPosition(position.left + bw, position.top + bw);
+	tmp.setFillColor(Color::background);
+	tmp.setOutlineColor(Color::border);
+	tmp.setOutlineThickness(bw);
+	window.draw(tmp);
 
 	if (isChecked) {
-		window.Draw(sf::Shape::Line(position.Left + 2 * bw, position.Top + 2 * bw, position.Right - 2 * bw, position.Bottom - 2 * bw, bw, Color::text));
-		window.Draw(sf::Shape::Line(position.Right - 2 * bw, position.Top + 2 * bw, position.Left + 2 * bw, position.Bottom - 2 * bw, bw, Color::text));
+		sf::RectangleShape tmp;
+		tmp.setSize(sf::Vector2f(1.41421 * (position.width - 4 * bw), bw));
+		tmp.setOrigin(tmp.getSize() * 0.5f);
+		tmp.setPosition(position.left + position.width / 2, position.top + position.height / 2);
+		tmp.setFillColor(Color::text);
+		tmp.rotate(45);
+		window.draw(tmp);
+		tmp.rotate(90);
+		window.draw(tmp);
 	}
 }
 

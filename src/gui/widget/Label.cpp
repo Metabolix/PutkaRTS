@@ -27,52 +27,52 @@
 
 GUI::Widget::Label::Label(const std::string& text, float x, float y, float height):
 	Widget(x, y, std::numeric_limits<float>::infinity(), height),
-	label(text),
+	label(stringFromUtf8(text), font),
 	isCentered(false) {
-	label.SetColor(Color::text);
+	label.setColor(Color::text);
 }
 
 GUI::Widget::Label::Label(const std::string& text, float x, float y, float width, float height):
 	Widget(x, y, width, height),
-	label(text),
+	label(stringFromUtf8(text), font),
 	isCentered(false) {
-	label.SetColor(Color::text);
+	label.setColor(Color::text);
 }
 
 void GUI::Widget::Label::setText(const std::string& text) {
-	label = sf::String(text);
+	label = sf::Text(stringFromUtf8(text), font);
 }
 
 void GUI::Widget::Label::draw(sf::RenderWindow& window) {
-	const sf::Unicode::UTF32String& data = label.GetText();
-	if (data.empty()) {
+	const sf::String& data = label.getString();
+	if (data.isEmpty()) {
 		return;
 	}
-	size_t lineCount = std::count(data.begin(), data.end(), '\n') + (*data.rbegin() == '\n' ? 0 : 1);
+	size_t lineCount = std::count(data.begin(), data.end(), '\n') + (*(data.end() - 1) == '\n' ? 0 : 1);
 
 	static float lineHeightForSize1;
 	if (!lineHeightForSize1) {
-		sf::String maxHeightString("|");
-		lineHeightForSize1 = 1.05 * maxHeightString.GetRect().GetHeight() / maxHeightString.GetSize();
+		sf::Text maxHeightString("|gY", font);
+		lineHeightForSize1 = 1.25 * maxHeightString.getLocalBounds().height / maxHeightString.getCharacterSize();
 	}
 
-	label.SetColor(Color::text);
-	label.SetScale(1, 1);
+	label.setColor(Color::text);
+	label.setScale(1, 1);
 
-	// Calculate height; using label.GetRect().GetHeight() makes different strings have different sizes.
-	float lineHeight = label.GetSize() * lineHeightForSize1;
+	// Calculate height; using label.getRect().height makes different strings have different sizes.
+	float lineHeight = label.getCharacterSize() * lineHeightForSize1;
 	float height = lineHeight * lineCount;
-	float scaleY = position.GetHeight() / height;
-	float scaleX = position.GetWidth() / label.GetRect().GetWidth();
+	float scaleY = position.height / height;
+	float scaleX = position.width / label.getLocalBounds().width;
 	float scale = std::min(scaleX, scaleY);
 
 	if (isCentered) {
-		label.SetCenter(label.GetRect().GetWidth() / 2, 0);
-		label.SetPosition(position.Left + position.GetWidth() / 2, position.Top);
+		label.setOrigin(label.getLocalBounds().width / 2, 0);
+		label.setPosition(position.left + position.width / 2, position.top);
 	} else {
-		label.SetCenter(0, 0);
-		label.SetPosition(position.Left, position.Top);
+		label.setOrigin(0, 0);
+		label.setPosition(position.left, position.top);
 	}
-	label.SetScale(scale, scale);
-	window.Draw(label);
+	label.setScale(scale, scale);
+	window.draw(label);
 }

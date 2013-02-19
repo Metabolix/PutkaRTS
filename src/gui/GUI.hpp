@@ -45,6 +45,9 @@ namespace GUI {
 	/** The current desktop video mode. Hope it doesn't change. */
 	extern const sf::VideoMode desktopMode;
 
+	/** The time spent in the previous frame. */
+	extern float frameTime;
+
 	/**
 	 * Create (or recreate) the main window.
 	 */

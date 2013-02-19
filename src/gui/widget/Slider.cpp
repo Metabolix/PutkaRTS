@@ -36,12 +36,12 @@ GUI::Widget::Slider::Slider(float x, float y, float length, float thickness, boo
 }
 
 bool GUI::Widget::Slider::handleEvent(const sf::Event& e, const sf::RenderWindow& window) {
-	if (e.Type == sf::Event::MouseButtonPressed && e.MouseButton.Button == sf::Mouse::Left) {
-		sf::Vector2f mouse(window.ConvertCoords(e.MouseButton.X, e.MouseButton.Y));
+	if (e.type == sf::Event::MouseButtonPressed && e.mouseButton.button == sf::Mouse::Left) {
+		sf::Vector2f mouse(window.mapPixelToCoords(sf::Vector2i(e.mouseButton.x, e.mouseButton.y)));
 
-		if (position.Contains(mouse.x, mouse.y)) {
+		if (position.contains(mouse)) {
 
-			float mousePos = (vertical?mouse.y - position.Top:mouse.x - position.Left);
+			float mousePos = (vertical ? mouse.y - position.top : mouse.x - position.left);
 
 			if (mousePos >= sliderPosition && mousePos < sliderPosition + getSliderLength()) {
 				//slider pressed
@@ -51,14 +51,14 @@ bool GUI::Widget::Slider::handleEvent(const sf::Event& e, const sf::RenderWindow
 
 			return true;
 		}
-	} else if (e.Type == sf::Event::MouseButtonReleased && e.MouseButton.Button == sf::Mouse::Left) {
+	} else if (e.type == sf::Event::MouseButtonReleased && e.mouseButton.button == sf::Mouse::Left) {
 		isDragged = false;
 		return false;
-	} else if (isDragged && e.Type == sf::Event::MouseMoved) {
-		sf::Vector2f mouse(window.ConvertCoords(e.MouseMove.X, e.MouseMove.Y));
+	} else if (isDragged && e.type == sf::Event::MouseMoved) {
+		sf::Vector2f mouse(window.mapPixelToCoords(sf::Vector2i(e.mouseMove.x, e.mouseMove.y)));
 
 		sliderPosition += (vertical ? mouse.y : mouse.x) - oldMouseCoordinate;
-		sliderPosition = std::max(0.0f, std::min(sliderPosition, (vertical ? position.GetHeight() : position.GetWidth()) - getSliderLength()));
+		sliderPosition = std::max(0.0f, std::min(sliderPosition, (vertical ? position.height : position.width) - getSliderLength()));
 
 		oldMouseCoordinate = (vertical ? mouse.y : mouse.x);
 
@@ -73,50 +73,39 @@ bool GUI::Widget::Slider::handleEvent(const sf::Event& e, const sf::RenderWindow
 
 void GUI::Widget::Slider::draw(sf::RenderWindow& window) {
 	const int bw = 2; // Border width
-	const sf::Input& input(window.GetInput());
-	sf::Vector2f mouse(window.ConvertCoords(input.GetMouseX(), input.GetMouseY()));
+	sf::Vector2f mouse(window.mapPixelToCoords(sf::Mouse::getPosition(window)));
 
-	//bg
-	window.Draw(sf::Shape::Rectangle(position.Left, position.Top, position.Right, position.Bottom, Color::background));
+	sf::RectangleShape bg;
+	bg.setSize(sf::Vector2f(position.width, position.height));
+	bg.setPosition(position.left, position.top);
+	bg.setFillColor(Color::background);
+	window.draw(bg);
 
+	sf::RectangleShape handle;
+	handle.setFillColor(Color::backgroundHover);
+	handle.setOutlineColor(Color::border);
+	handle.setOutlineThickness(bw);
 	if (vertical) {
-		window.Draw(
-			sf::Shape::Rectangle(
-				position.Left + bw,
-				position.Top + sliderPosition + bw,
-				position.Right - bw,
-				position.Top + sliderPosition + getSliderLength() - bw,
-				Color::backgroundHover,
-				bw,
-				Color::border
-			)
-		);
+		handle.setSize(sf::Vector2f(position.width - 2 * bw, getSliderLength() - bw));
+		handle.setPosition(position.left + bw, position.top + sliderPosition + bw);
 	} else {
-		window.Draw(
-			sf::Shape::Rectangle(
-				position.Left + sliderPosition + bw,
-				position.Top + bw,
-				position.Left + sliderPosition + getSliderLength() - bw,
-				position.Bottom - bw,
-				Color::backgroundHover,
-				bw,
-				Color::border
-			)
-		);
+		handle.setSize(sf::Vector2f(getSliderLength() - bw, position.height - 2 * bw));
+		handle.setPosition(position.left + sliderPosition + bw, position.top + bw);
 	}
+	window.draw(handle);
 }
 
 void GUI::Widget::Slider::setScrollPosition(float v) {
 	v = inverseTransformValue(v, rangeMin, rangeMax);
-	sliderPosition = v * ((vertical ? position.GetHeight() : position.GetWidth()) - getSliderLength());
+	sliderPosition = v * ((vertical ? position.height : position.width) - getSliderLength());
 }
 
 float GUI::Widget::Slider::getScrollPosition() const {
-	return transformValue(sliderPosition / ((vertical ? position.GetHeight() : position.GetWidth()) - getSliderLength()), rangeMin, rangeMax);
+	return transformValue(sliderPosition / ((vertical ? position.height : position.width) - getSliderLength()), rangeMin, rangeMax);
 }
 
 float GUI::Widget::Slider::getSliderLength() const {
-	return 0.2 * (vertical ? position.GetHeight() : position.GetWidth());
+	return 0.2 * (vertical ? position.height : position.width);
 }
 
 float GUI::Widget::Slider::transformValue(float raw, float min, float max) {

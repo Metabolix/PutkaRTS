@@ -29,7 +29,7 @@
 
 #include "gui/game/Object.hpp"
 #include "gui/widget/Container.hpp"
-#include "gui/graphics/ImageCache.hpp"
+#include "gui/graphics/TextureCache.hpp"
 #include "gui/menu/SettingsMenu.hpp"
 #include "gui/game/ScrollingView.hpp"
 #include "gui/game/MouseTracker.hpp"
@@ -53,8 +53,8 @@ class GUI::Game::Game: public Widget::Container {
 	/** The view used while rendering the GUI. */
 	sf::View guiView;
 
-	/** All images needed for rendering. */
-	ImageCache images;
+	/** All textures needed for rendering. */
+	TextureCache textures;
 
 	/** The game connection to use. */
 	boost::shared_ptr<Connection::Client> client;

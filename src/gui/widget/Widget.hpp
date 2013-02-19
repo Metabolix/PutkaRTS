@@ -2,6 +2,7 @@
  * Base widget class definition.
  *
  * Copyright 2011 Jaakko Puntila
+ * Copyright 2014 Lauri Kenttä
  *
  * This file is part of PutkaRTS.
  *
@@ -28,12 +29,24 @@ namespace GUI {
 	namespace Widget {
 		class Widget;
 		class Container;
+
+		/** The default font. */
+		extern sf::Font font;
+
 		namespace Color {
 			extern const sf::Color background;
 			extern const sf::Color backgroundHover;
 			extern const sf::Color border;
 			extern const sf::Color text;
 		}
+
+		/**
+		 * Convert a string of UTF-8 characters to sf::String.
+		 *
+		 * @param s The UTF-8 string.
+		 * @return the string converted to sf::String.
+		 */
+		sf::String stringFromUtf8(const std::string& s);
 	}
 }
 
@@ -67,7 +80,7 @@ public:
 	 * Constructor with position parameters.
 	 */
 	Widget(float x, float y, float width, float height):
-		position(x, y, x + width, y + height),
+		position(x, y, width, height),
 		container(NULL) {
 
 	}

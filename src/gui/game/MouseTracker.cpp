@@ -28,7 +28,7 @@ void GUI::Game::MouseTracker::update(const sf::RenderWindow& window, const sf::V
 }
 
 void GUI::Game::MouseTracker::update(const sf::RenderWindow& window, const sf::View& view) {
-	sf::Vector2f tmp = window.ConvertCoords(x, y, &view);
+	sf::Vector2f tmp = window.mapPixelToCoords(sf::Vector2i(x, y), view);
 	position.x = tmp.x;
 	position.y = tmp.y;
 }

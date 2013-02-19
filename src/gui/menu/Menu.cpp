@@ -27,13 +27,13 @@
 #include "Menu.hpp"
 #include "gui/GUI.hpp"
 
-GUI::ImageCache GUI::Menu::Menu::images;
+GUI::TextureCache GUI::Menu::Menu::textures;
 
 GUI::Menu::Menu::Menu(boost::shared_ptr<Widget> parent_) {
-	const sf::Image& logoImage(images.get(Path::findDataPath("graphics/logo.png")));
-	logoSprite.SetImage(logoImage);
-	logoSprite.SetCenter(logoImage.GetWidth() / 2, 0);
-	logoSprite.SetPosition(320, 1);
+	const sf::Texture& logoTexture(textures.get(Path::findDataPath("graphics/logo.png")));
+	logoSprite.setTexture(logoTexture);
+	logoSprite.setOrigin(logoTexture.getSize().x / 2, 0);
+	logoSprite.setPosition(320, 1);
 
 	openMenu(parent_);
 }
@@ -52,12 +52,12 @@ void GUI::Menu::Menu::closeMenu() {
 
 void GUI::Menu::Menu::draw(sf::RenderWindow& window) {
 	// Make view that is as close to 640x480 as possible and centered.
-	view = window.GetDefaultView();
-	view.Zoom(std::min(view.GetRect().GetWidth() / 640, view.GetRect().GetHeight() / 480));
-	view.SetCenter(320, 240);
-	window.SetView(view);
+	view = window.getDefaultView();
+	view.zoom(1.0f / std::min(view.getSize().x / 640, view.getSize().y / 480));
+	view.setCenter(320, 240);
+	window.setView(view);
 
-	window.Clear(sf::Color(0xcc, 0x66, 0x33));
+	window.clear(sf::Color(0xcc, 0x66, 0x33));
 	Container::draw(window);
-	window.Draw(logoSprite);
+	window.draw(logoSprite);
 }

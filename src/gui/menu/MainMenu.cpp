@@ -43,7 +43,7 @@ GUI::Menu::MainMenu::MainMenu(sf::RenderWindow& window):
 	insert(new GUI::Widget::Button("New game", 200, 100 + 0 * 70, 240, 50, boost::bind(&GUI::Menu::MainMenu::startGame, this, boost::ref(window))));
 	insert(new GUI::Widget::Button("Connect",  200, 100 + 1 * 70, 240, 50, boost::bind(&GUI::Menu::MainMenu::startMultiGame, this, boost::ref(window))));
 	insert(new GUI::Widget::Button("Settings", 250, 100 + 2 * 70, 140, 50, boost::bind(&GUI::Menu::MainMenu::gotoSettings, this, boost::ref(window))));
-	insert(new GUI::Widget::Button("Exit",     250, 100 + 3 * 70, 140, 50, boost::bind(&sf::RenderWindow::Close, boost::ref(window))));
+	insert(new GUI::Widget::Button("Exit",     250, 100 + 3 * 70, 140, 50, boost::bind(&sf::RenderWindow::close, boost::ref(window))));
 }
 
 void GUI::Menu::MainMenu::startMultiGame(sf::RenderWindow& window) {
