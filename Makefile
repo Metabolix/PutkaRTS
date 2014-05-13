@@ -1,5 +1,5 @@
 CXX := c++
-CXXFLAGS := -O -g -std=c++98 -Wall -pedantic
+CXXFLAGS := -O -g -std=c++11 -Wall -pedantic
 LINKFLAGS := -O -g
 INCLUDE_DIRS := -Isrc -isystem ext/include
 LIB_DIRS := -Lext/lib
