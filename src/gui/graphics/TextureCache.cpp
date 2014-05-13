@@ -41,7 +41,7 @@ struct GUI::TextureCache::Node {
 };
 
 /** All the textures that are currently loaded, listed by file name. */
-std::map<std::string, boost::weak_ptr<GUI::TextureCache::Node> > GUI::TextureCache::known;
+std::map<std::string, std::weak_ptr<GUI::TextureCache::Node> > GUI::TextureCache::known;
 
 const sf::Texture& GUI::TextureCache::get(const std::string& id, const std::string& file) {
 	// Check if the Texture is already loaded.
@@ -53,7 +53,7 @@ const sf::Texture& GUI::TextureCache::get(const std::string& id, const std::stri
 		return node.texture;
 	}
 
-	boost::shared_ptr<Node> node;
+	std::shared_ptr<Node> node;
 
 	// Check if some other cache already has the texture.
 	if (known.find(file) != known.end()) {

@@ -23,7 +23,7 @@
 #define PUTKARTS_GUI_Widget_Container_HPP
 
 #include <list>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 #include "Widget.hpp"
 
@@ -39,7 +39,7 @@ namespace GUI {
 class GUI::Widget::Container: public Widget {
 protected:
 	/** The list type to hold object pointers. */
-	typedef std::list<boost::shared_ptr<Widget> > WidgetListType;
+	typedef std::list<std::shared_ptr<Widget> > WidgetListType;
 
 	/** List of the objects in this container. */
 	WidgetListType objects;
@@ -52,14 +52,14 @@ public:
 	 *
 	 * @param object The object to insert.
 	 */
-	virtual void insert(const boost::shared_ptr<Widget>& object);
+	virtual void insert(const std::shared_ptr<Widget>& object);
 
 	/**
 	 * Erase a previously added object.
 	 *
 	 * @param object The object to insert.
 	 */
-	virtual void erase(const boost::shared_ptr<Widget>& object);
+	virtual void erase(const std::shared_ptr<Widget>& object);
 
 	/**
 	 * Insert another object.
@@ -69,7 +69,7 @@ public:
 	 * @param object The object to insert.
 	 */
 	void insert(Widget* object) {
-		return insert(boost::shared_ptr<Widget>(object));
+		return insert(std::shared_ptr<Widget>(object));
 	}
 
 	/**

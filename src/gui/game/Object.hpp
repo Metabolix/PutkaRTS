@@ -22,7 +22,7 @@
 #ifndef PUTKARTS_GUI_Game_Object_HPP
 #define PUTKARTS_GUI_Game_Object_HPP
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 #include <SFML/Graphics.hpp>
 
@@ -42,7 +42,7 @@ namespace Game {
  */
 class GUI::Game::Object {
 	/** The real object in the game. */
-	boost::shared_ptr<const ::Game::Object> object;
+	std::shared_ptr<const ::Game::Object> object;
 
 public:
 	/**
@@ -50,10 +50,10 @@ public:
 	 *
 	 * @param object The real object in the game.
 	 */
-	Object(boost::shared_ptr<const ::Game::Object> object);
+	Object(std::shared_ptr<const ::Game::Object> object);
 
 	/* Access the object. */
-	const boost::shared_ptr<const ::Game::Object>& getObject() const {
+	const std::shared_ptr<const ::Game::Object>& getObject() const {
 		return object;
 	}
 
@@ -64,7 +64,7 @@ public:
 	 * @param viewer The current player.
 	 * @param selected Is this object selected?
 	 */
-	void draw(sf::RenderWindow& window, boost::shared_ptr<const ::Game::Client> viewer, bool selected = false);
+	void draw(sf::RenderWindow& window, std::shared_ptr<const ::Game::Client> viewer, bool selected = false);
 };
 
 #endif

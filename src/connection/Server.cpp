@@ -19,7 +19,7 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <boost/weak_ptr.hpp>
+#include <memory>
 #include <boost/bind.hpp>
 #include <boost/thread.hpp>
 #include <boost/lexical_cast.hpp>
@@ -39,7 +39,7 @@ class Connection::Server::Client: public Connection::ClientInfo {
 	friend class Server;
 
 	/** Connection to the client. */
-	boost::shared_ptr<EndPoint> connection;
+	std::shared_ptr<EndPoint> connection;
 
 public:
 	/**
@@ -47,7 +47,7 @@ public:
 	 *
 	 * @param conn Connection to the client.
 	 */
-	Client(boost::shared_ptr<EndPoint> conn):
+	Client(std::shared_ptr<EndPoint> conn):
 		connection(conn) {
 	}
 
@@ -63,7 +63,7 @@ public:
  */
 class Connection::Server::LocalClient: public Connection::Client {
 	/** Shared pointer to the server. LocalClient keeps it alive. */
-	boost::shared_ptr<Server> server;
+	std::shared_ptr<Server> server;
 
 public:
 	/**
@@ -72,7 +72,7 @@ public:
 	 * @param server_ The server.
 	 * @param endPoint The connection (one end of a pipe).
 	 */
-	LocalClient(boost::shared_ptr<Server> server_, boost::shared_ptr<EndPoint> endPoint):
+	LocalClient(std::shared_ptr<Server> server_, std::shared_ptr<EndPoint> endPoint):
 		Connection::Client(endPoint),
 		server(server_) {
 	}
@@ -90,8 +90,8 @@ public:
 };
 
 void Connection::Server::run() {
-	boost::weak_ptr<Server> weak(shared_from_this());
-	while (boost::shared_ptr<Server> ptr = weak.lock()) {
+	std::weak_ptr<Server> weak(shared_from_this());
+	while (std::shared_ptr<Server> ptr = weak.lock()) {
 		if (state == END) {
 			return;
 		}
@@ -100,10 +100,10 @@ void Connection::Server::run() {
 	}
 }
 
-boost::shared_ptr<Connection::Client> Connection::Server::createLocalClient() {
+std::shared_ptr<Connection::Client> Connection::Server::createLocalClient() {
 	PipePair p;
 	addClient(p.getEnd1());
-	return boost::shared_ptr<Connection::Client>(new LocalClient(shared_from_this(), p.getEnd2()));
+	return std::shared_ptr<Connection::Client>(new LocalClient(shared_from_this(), p.getEnd2()));
 }
 
 void Connection::Server::startGame() {
@@ -112,7 +112,7 @@ void Connection::Server::startGame() {
 	clock.unpause();
 }
 
-void Connection::Server::addClient(boost::shared_ptr<Client> client) {
+void Connection::Server::addClient(std::shared_ptr<Client> client) {
 	boost::lock_guard<boost::recursive_mutex> lock(*this);
 	for (client->id = 1; clients.find(client->id) != clients.end(); ++client->id);
 
@@ -125,8 +125,8 @@ void Connection::Server::addClient(boost::shared_ptr<Client> client) {
 	}
 }
 
-void Connection::Server::addClient(boost::shared_ptr<EndPoint> connection) {
-	return addClient(boost::shared_ptr<Client>(new Client(connection)));
+void Connection::Server::addClient(std::shared_ptr<EndPoint> connection) {
+	return addClient(std::shared_ptr<Client>(new Client(connection)));
 }
 
 void Connection::Server::removeClient(int id) {
@@ -136,7 +136,7 @@ void Connection::Server::removeClient(int id) {
 	}
 }
 
-void Connection::Server::addListener(boost::shared_ptr<Listener> listener) {
+void Connection::Server::addListener(std::shared_ptr<Listener> listener) {
 	boost::lock_guard<boost::recursive_mutex> lock(*this);
 	listeners.insert(listener);
 }

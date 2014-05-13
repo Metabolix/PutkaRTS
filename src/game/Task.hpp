@@ -23,8 +23,7 @@
 #define PUTKARTS_Game_Task_HPP
 
 #include <list>
-#include <boost/weak_ptr.hpp>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 namespace Game {
 	class Task;
@@ -37,16 +36,16 @@ namespace Game {
  */
 struct Game::Task {
 	/** The action. */
-	boost::shared_ptr<const ObjectAction> action;
+	std::shared_ptr<const ObjectAction> action;
 
 	/** The actor objects. */
-	std::list<boost::weak_ptr<Object> > actors;
+	std::list<std::weak_ptr<Object> > actors;
 
 	/** The target objects. */
-	std::list<boost::weak_ptr<Object> > targets;
+	std::list<std::weak_ptr<Object> > targets;
 
 	/** A dummy target. This is used if there aren't any real targets, e.g. when moving to a location. */
-	boost::shared_ptr<Object> dummy;
+	std::shared_ptr<Object> dummy;
 };
 
 #endif

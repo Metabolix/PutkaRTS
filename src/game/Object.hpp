@@ -22,7 +22,7 @@
 #ifndef PUTKARTS_Game_Object_HPP
 #define PUTKARTS_Game_Object_HPP
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 #include "util/Vector2.hpp"
 #include "ObjectType.hpp"
@@ -50,10 +50,10 @@ public:
 
 private:
 	/** Pointer to object's type. */
-	boost::shared_ptr<const ObjectType> objectType;
+	std::shared_ptr<const ObjectType> objectType;
 
 	/** Object's owner. */
-	boost::shared_ptr<const Player> owner;
+	std::shared_ptr<const Player> owner;
 
 	/** Set if the object is dead (i.e. ready to be removed from the game). */
 	bool dead;
@@ -65,7 +65,7 @@ private:
 	Scalar<SIUnit::Angle> direction;
 
 	/** The current task of the object. */
-	boost::shared_ptr<Task> task;
+	std::shared_ptr<Task> task;
 
 	/** Object's hit points. */
 	int hitPoints;
@@ -86,7 +86,7 @@ public:
 	 *
 	 * @return Object's object type.
 	 */
-	const boost::shared_ptr<const ObjectType> getObjectType() const {
+	const std::shared_ptr<const ObjectType> getObjectType() const {
 		return objectType;
 	}
 
@@ -142,7 +142,7 @@ public:
 	 *
 	 * @return Returns a pointer to the owner of this object.
 	 */
-	const boost::shared_ptr<const Player> getOwner() const {
+	const std::shared_ptr<const Player> getOwner() const {
 		return owner;
 	}
 

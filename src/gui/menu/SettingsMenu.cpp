@@ -20,8 +20,8 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <memory>
 #include <boost/bind.hpp>
-#include <boost/shared_ptr.hpp>
 #include <boost/format.hpp>
 #include <boost/lexical_cast.hpp>
 
@@ -36,7 +36,7 @@
 #include "gui/widget/Slider.hpp"
 #include "gui/widget/Label.hpp"
 
-GUI::Menu::SettingsMenu::SettingsMenu(boost::shared_ptr<Widget> parent_, sf::RenderWindow& window) :
+GUI::Menu::SettingsMenu::SettingsMenu(std::shared_ptr<Widget> parent_, sf::RenderWindow& window) :
 	Menu(parent_),
 	tabManager(new GUI::Widget::TabPanel(50, 100, 200, 16)) {
 
@@ -54,7 +54,7 @@ void GUI::Menu::SettingsMenu::buildGraphicsTab(const GUI::Widget::TabPanel::TabK
 	fullscreen = GUI::config.getBool("window.fullscreen", false);
 
 	//List video modes.
-	boost::shared_ptr<GUI::Widget::DropDown> videoModeList(new GUI::Widget::DropDown(100, 200, 200, 25, 200, boost::bind(&GUI::Menu::SettingsMenu::setVideoMode, this, _1)));
+	std::shared_ptr<GUI::Widget::DropDown> videoModeList(new GUI::Widget::DropDown(100, 200, 200, 25, 200, boost::bind(&GUI::Menu::SettingsMenu::setVideoMode, this, _1)));
 	for (unsigned i = 0; i < sf::VideoMode::getFullscreenModes().size(); i++) {
 		const sf::VideoMode& mode = sf::VideoMode::getFullscreenModes().at(i);
 

@@ -23,7 +23,7 @@
 #define PUTKARTS_GUI_Widget_TabManager_HPP
 
 #include <map>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 #include "gui/widget/Widget.hpp"
 #include "gui/widget/Container.hpp"
@@ -43,7 +43,7 @@ public:
 	typedef int TabKeyType;
 
 	/** Typedef for tab container. */
-	typedef boost::shared_ptr<GUI::Widget::Container> TabContainerPtrType;
+	typedef std::shared_ptr<GUI::Widget::Container> TabContainerPtrType;
 
 	/** Typedef for the tab list*/
 	typedef std::map<TabKeyType, TabContainerPtrType> TabListType;

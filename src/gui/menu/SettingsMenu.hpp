@@ -42,7 +42,7 @@ namespace GUI {
  */
 class GUI::Menu::SettingsMenu: public Menu {
 	/** Manager for the tabs. */
-	boost::shared_ptr<GUI::Widget::TabPanel> tabManager;
+	std::shared_ptr<GUI::Widget::TabPanel> tabManager;
 
 	/** Index for the selected video mode. */
 	std::size_t videoMode;
@@ -112,7 +112,7 @@ public:
 	 * @copydoc Menu::Menu
 	 * @param window The window to use for input and rendering.
 	 */
-	SettingsMenu(boost::shared_ptr<Widget> parent, sf::RenderWindow& window);
+	SettingsMenu(std::shared_ptr<Widget> parent, sf::RenderWindow& window);
 };
 
 #endif

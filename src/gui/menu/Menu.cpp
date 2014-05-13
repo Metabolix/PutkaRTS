@@ -29,7 +29,7 @@
 
 GUI::TextureCache GUI::Menu::Menu::textures;
 
-GUI::Menu::Menu::Menu(boost::shared_ptr<Widget> parent_) {
+GUI::Menu::Menu::Menu(std::shared_ptr<Widget> parent_) {
 	const sf::Texture& logoTexture(textures.get(Path::findDataPath("graphics/logo.png")));
 	logoSprite.setTexture(logoTexture);
 	logoSprite.setOrigin(logoTexture.getSize().x / 2, 0);
@@ -38,7 +38,7 @@ GUI::Menu::Menu::Menu(boost::shared_ptr<Widget> parent_) {
 	openMenu(parent_);
 }
 
-void GUI::Menu::Menu::openMenu(boost::shared_ptr<Widget> parent_) {
+void GUI::Menu::Menu::openMenu(std::shared_ptr<Widget> parent_) {
 	menuIsOpen = true;
 	parent = parent_;
 }

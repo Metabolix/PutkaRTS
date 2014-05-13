@@ -28,12 +28,12 @@ GUI::Widget::Container::~Container() {
 	clear();
 }
 
-void GUI::Widget::Container::insert(const boost::shared_ptr<Widget>& object) {
+void GUI::Widget::Container::insert(const std::shared_ptr<Widget>& object) {
 	object->setContainer(this);
 	objects.push_back(object);
 }
 
-void GUI::Widget::Container::erase(const boost::shared_ptr<Widget>& object) {
+void GUI::Widget::Container::erase(const std::shared_ptr<Widget>& object) {
 	WidgetListType::iterator i = std::find(objects.begin(), objects.end(), object);
 	if (i != objects.end()) {
 		i->get()->setContainer(NULL);
@@ -56,7 +56,7 @@ void GUI::Widget::Container::updateState(sf::RenderWindow& window) {
 void GUI::Widget::Container::activate(const Widget * widget) {
 	for (WidgetListType::iterator i = objects.begin(); i != objects.end(); ++i) {
 		if (i->get() == widget) {
-			boost::shared_ptr<Widget> tmp = *i;
+			std::shared_ptr<Widget> tmp = *i;
 			objects.erase(i);
 			objects.push_front(tmp);
 			return;

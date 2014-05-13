@@ -25,7 +25,7 @@
 
 Configuration GUI::config;
 
-boost::shared_ptr<GUI::Widget::Widget> GUI::currentWidget;
+std::shared_ptr<GUI::Widget::Widget> GUI::currentWidget;
 
 sf::RenderWindow GUI::window;
 

@@ -26,7 +26,7 @@
 
 #include <string>
 #include <map>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 #include "util/Array2D.hpp"
 #include "lua/Lua.hpp"

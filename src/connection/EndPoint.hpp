@@ -23,7 +23,7 @@
 #define PUTKARTS_Connection_EndPoint_HPP
 
 #include <string>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 namespace Connection {
 	class EndPoint;

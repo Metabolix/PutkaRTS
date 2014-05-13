@@ -57,7 +57,7 @@ public:
  * A class that takes two EndPoints and uses one for input and the other for output.
  */
 class Connection::PipePair::Mixer: public Connection::EndPoint {
-	boost::shared_ptr<EndPoint> input, output;
+	std::shared_ptr<EndPoint> input, output;
 
 public:
 	/**
@@ -66,7 +66,7 @@ public:
 	 * @param i The input stream.
 	 * @param o The output stream.
 	 */
-	Mixer(boost::shared_ptr<EndPoint> i, boost::shared_ptr<EndPoint> o):
+	Mixer(std::shared_ptr<EndPoint> i, std::shared_ptr<EndPoint> o):
 		input(i),
 		output(o) {
 	}
@@ -83,8 +83,8 @@ public:
 };
 
 Connection::PipePair::PipePair() {
-	boost::shared_ptr<Pipe> p1(new Pipe());
-	boost::shared_ptr<Pipe> p2(new Pipe());
+	std::shared_ptr<Pipe> p1(new Pipe());
+	std::shared_ptr<Pipe> p2(new Pipe());
 	end1.reset(new Mixer(p1, p2));
 	end2.reset(new Mixer(p2, p1));
 }

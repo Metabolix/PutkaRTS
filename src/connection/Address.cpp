@@ -20,7 +20,7 @@
  */
 
 #include <stdexcept>
-#include <boost/make_shared.hpp>
+#include <memory>
 #include <boost/format.hpp>
 
 #include "Address.hpp"
@@ -28,12 +28,12 @@
 #include "TCPListener.hpp"
 #include "TCPEndPoint.hpp"
 
-boost::shared_ptr<Connection::EndPoint> Connection::Address::connect(const std::string& str) {
+std::shared_ptr<Connection::EndPoint> Connection::Address::connect(const std::string& str) {
 	if (str.substr(0, 7) == "tcp4://") {
-		return boost::make_shared<TCPEndPoint>(str.substr(7, str.rfind(':') - 7), str.substr(str.rfind(':') + 1));
+		return std::make_shared<TCPEndPoint>(str.substr(7, str.rfind(':') - 7), str.substr(str.rfind(':') + 1));
 	}
 	if (str.substr(0, 7) == "tcp6://") {
-		return boost::make_shared<TCPEndPoint>(str.substr(8, str.rfind(':') - 9), str.substr(str.rfind(':') + 1));
+		return std::make_shared<TCPEndPoint>(str.substr(8, str.rfind(':') - 9), str.substr(str.rfind(':') + 1));
 	}
 	throw std::runtime_error("Unknown address type!");
 }

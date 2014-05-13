@@ -20,9 +20,8 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <memory>
 #include <boost/bind.hpp>
-#include <boost/shared_ptr.hpp>
-#include <boost/make_shared.hpp>
 #include <boost/thread.hpp>
 
 #include "connection/Server.hpp"
@@ -51,8 +50,8 @@ void GUI::Menu::MainMenu::startMultiGame(sf::RenderWindow& window) {
 }
 
 void GUI::Menu::MainMenu::startGame(sf::RenderWindow& window) {
-	boost::shared_ptr<Connection::Server> server(new Connection::Server());
-	boost::shared_ptr<Connection::Client> client(server->createLocalClient());
+	std::shared_ptr<Connection::Server> server(new Connection::Server());
+	std::shared_ptr<Connection::Client> client(server->createLocalClient());
 	boost::thread(boost::bind(&Connection::Server::run, server));
 	GUI::currentWidget.reset(new GUI::Menu::StartGame(GUI::currentWidget, client));
 }

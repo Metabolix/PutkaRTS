@@ -39,7 +39,7 @@
 
 #include <SFML/Graphics.hpp>
 
-GUI::Game::Game::Game(boost::shared_ptr<Connection::Client> client_, sf::RenderWindow& window):
+GUI::Game::Game::Game(std::shared_ptr<Connection::Client> client_, sf::RenderWindow& window):
 	guiView(window.getDefaultView()),
 	client(client_),
 	gameView(window, sf::Vector2f(client->getGame().getMap().getSizeX(), client->getGame().getMap().getSizeY()), 32) {
@@ -93,7 +93,7 @@ void GUI::Game::Game::drawGame(sf::RenderWindow& window) const {
 	// TODO: Get only visible objects! Maybe use something like game.forEachObject(rectangle, callback).
 	const ::Game::Game::ObjectContainerType& objects = game.getObjects();
 	for (::Game::Game::ObjectContainerType::const_iterator i = objects.begin(); i != objects.end(); ++i) {
-		boost::shared_ptr<Object> object(getObject(i->second));
+		std::shared_ptr<Object> object(getObject(i->second));
 		bool selected = selectedObjects.find(object) != selectedObjects.end();
 		object->draw(window, client->getClientInfo(), selected);
 	}
@@ -209,10 +209,10 @@ void GUI::Game::Game::draw(sf::RenderWindow& window) {
 }
 
 void GUI::Game::Game::openSettingsMenu(sf::RenderWindow& window) {
-	settingsMenu.reset(new Menu::SettingsMenu(boost::shared_ptr<Widget>(), window));
+	settingsMenu.reset(new Menu::SettingsMenu(std::shared_ptr<Widget>(), window));
 }
 
-boost::shared_ptr<GUI::Game::Object> GUI::Game::Game::getObject(const boost::shared_ptr<const ::Game::Object>& object) const {
+std::shared_ptr<GUI::Game::Object> GUI::Game::Game::getObject(const std::shared_ptr<const ::Game::Object>& object) const {
 	const void* key = object.get();
 	ObjectMapType::iterator i = objects.find(key);
 

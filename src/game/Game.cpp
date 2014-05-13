@@ -26,7 +26,7 @@
 
 #include "Game.hpp"
 
-Game::Game::Game(boost::shared_ptr<Map> map_):
+Game::Game::Game(std::shared_ptr<Map> map_):
 	map(map_),
 	freeObjectId(1) {
 	if (!map.get()) {
@@ -64,7 +64,7 @@ Game::Game::Game(boost::shared_ptr<Map> map_):
 	for (Map::PlayerContainerType::const_iterator i = mapPlayers.begin(); i != mapPlayers.end(); ++i) {
 		const Map::Player& p = i->second;
 
-		boost::shared_ptr<Player> testPlayer(new Player);
+		std::shared_ptr<Player> testPlayer(new Player);
 		testPlayer->name = std::string("Player ") + (char)('1' + players.size());
 		insertPlayer(testPlayer);
 
@@ -88,7 +88,7 @@ void Game::Game::insertMessage(const Message& message) {
 	messages.push(message);
 }
 
-void Game::Game::eraseObject(boost::shared_ptr<Object> object) {
+void Game::Game::eraseObject(std::shared_ptr<Object> object) {
 	load("if Game.objects[...] then Object.delete(Game.objects[...]) end");
 	push<Lua::Number>(object->id);
 	call(1, 0);
@@ -98,7 +98,7 @@ void Game::Game::runStep(Scalar<SIUnit::Time> dt, MessageCallbackType messageCal
 	clock += dt;
 	handleMessages(messageCallback);
 
-	typedef std::vector<boost::shared_ptr<Object> > ObjectVectorType;
+	typedef std::vector<std::shared_ptr<Object> > ObjectVectorType;
 	ObjectVectorType tmp;
 	tmp.reserve(objects.size());
 	for (ObjectContainerType::iterator i = objects.begin(); i != objects.end(); ++i) {
@@ -118,8 +118,8 @@ bool Game::Game::handleMessage(Message& message) {
 		return false;
 	}
 
-	boost::shared_ptr<Client> client(clients[message.client]);
-	boost::shared_ptr<Task> task(new Task);
+	std::shared_ptr<Client> client(clients[message.client]);
+	std::shared_ptr<Task> task(new Task);
 
 	// Create a dummy target for moving, if needed.
 	if (message.action == ObjectAction::MOVE && message.targets.empty()) {
@@ -140,13 +140,13 @@ bool Game::Game::handleMessage(Message& message) {
 		if (objects.find(id) == objects.end()) {
 			continue;
 		}
-		boost::shared_ptr<Object> object(objects[id]);
+		std::shared_ptr<Object> object(objects[id]);
 		if (client->players.find(object->owner->id) == client->players.end()) {
 			continue;
 		}
 		// Replace the current task with the new one.
 		if (object->task) {
-			for (std::list<boost::weak_ptr<Object> >::iterator i = object->task->actors.begin(); i != object->task->actors.end(); ++i) {
+			for (std::list<std::weak_ptr<Object> >::iterator i = object->task->actors.begin(); i != object->task->actors.end(); ++i) {
 				if (i->lock() == object) {
 					object->task->actors.erase(i);
 					break;
@@ -177,8 +177,8 @@ bool Game::Game::handleMessage(Message& message) {
 	// Other actions are handled in Lua code.
 	load("Game.handleMessage(...)");
 	push<Lua::String>(message.action);
-	BOOST_FOREACH(boost::weak_ptr<const Object> objectWeak, task->actors) {
-		boost::shared_ptr<const Object> object(objectWeak.lock());
+	BOOST_FOREACH(std::weak_ptr<const Object> objectWeak, task->actors) {
+		std::shared_ptr<const Object> object(objectWeak.lock());
 		if (object) {
 			push<Lua::Number>(object->id);
 		}
@@ -200,12 +200,12 @@ void Game::Game::handleMessages(MessageCallbackType messageCallback) {
 	}
 }
 
-void Game::Game::insertPlayer(boost::shared_ptr<Player> player) {
+void Game::Game::insertPlayer(std::shared_ptr<Player> player) {
 	player->id = players.size() + 1;
 	players.insert(std::make_pair(player->id, player));
 }
 
-void Game::Game::insertClient(boost::shared_ptr<Client> client) {
+void Game::Game::insertClient(std::shared_ptr<Client> client) {
 	clients[client->id] = client;
 }
 
@@ -214,7 +214,7 @@ void Game::Game::eraseClient(int id) {
 }
 
 void Game::Game::luaNewObjectType() {
-	boost::shared_ptr<ObjectType> tmp(new ObjectType);
+	std::shared_ptr<ObjectType> tmp(new ObjectType);
 	tmp->id = get<String>(1);
 	tmp->name = get<String>(2);
 	tmp->immutable = get<Boolean>(3);
@@ -226,7 +226,7 @@ void Game::Game::luaNewObjectType() {
 }
 
 void Game::Game::luaNewObjectAction() {
-	boost::shared_ptr<ObjectAction> tmp(new ObjectAction);
+	std::shared_ptr<ObjectAction> tmp(new ObjectAction);
 	tmp->id = get<String>(1);
 	tmp->name = get<String>(2);
 	objectActions[tmp->id] = tmp;
@@ -237,7 +237,7 @@ void Game::Game::luaNewObject() {
 		throw std::runtime_error("FIXME: freeObjectId has overflown!");
 	}
 
-	boost::shared_ptr<Object> tmp(new Object(Vector2<SIUnit::Position>(get<Number>(3), get<Number>(4))));
+	std::shared_ptr<Object> tmp(new Object(Vector2<SIUnit::Position>(get<Number>(3), get<Number>(4))));
 	tmp->objectType = objectTypes[get<String>(1)],
 	tmp->owner = players[get<Number>(2)],
 	tmp->id = freeObjectId++;

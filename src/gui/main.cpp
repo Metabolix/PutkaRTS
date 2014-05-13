@@ -65,7 +65,7 @@ try {
 		}
 
 		// Make another pointer to avoid deleting the widget prematurely.
-		boost::shared_ptr<Widget::Widget> widget(currentWidget);
+		std::shared_ptr<Widget::Widget> widget(currentWidget);
 
 		sf::Event e;
 		if (window.pollEvent(e)) {

@@ -23,7 +23,7 @@
 #ifndef PUTKARTS_GUI_Menu_Menu_HPP
 #define PUTKARTS_GUI_Menu_Menu_HPP
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 #include "gui/graphics/TextureCache.hpp"
 #include "gui/widget/Widget.hpp"
@@ -45,7 +45,7 @@ class GUI::Menu::Menu: public Widget::Container {
 	sf::View view;
 
 	/** Pointer to parent widget. */
-	boost::shared_ptr<Widget> parent;
+	std::shared_ptr<Widget> parent;
 
 	/** Menu top logo. */
 	sf::Sprite logoSprite;
@@ -62,7 +62,7 @@ protected:
 	 *
 	 * @param parent Pointer to the parent object. Control is returned to parent when menu is closed.
 	 */
-	void openMenu(boost::shared_ptr<Widget> parent = boost::shared_ptr<Widget>());
+	void openMenu(std::shared_ptr<Widget> parent = std::shared_ptr<Widget>());
 
 	/**
 	 * Return control to parent if one is specified and flag the menu as closed.
@@ -75,7 +75,7 @@ public:
 	 *
 	 * @param parent Pointer to the parent object. Control is returned to parent when menu is closed.
 	 */
-	Menu(boost::shared_ptr<Widget> parent = boost::shared_ptr<Widget>());
+	Menu(std::shared_ptr<Widget> parent = std::shared_ptr<Widget>());
 
 	/**
 	 * Draw the widget.

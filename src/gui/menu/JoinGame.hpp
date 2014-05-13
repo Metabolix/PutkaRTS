@@ -44,19 +44,19 @@ class GUI::Menu::JoinGame: public Menu {
 	Connection::Metaserver metaserver;
 
 	/** The game list widget. */
-	boost::shared_ptr<GUI::Widget::List> gameList;
+	std::shared_ptr<GUI::Widget::List> gameList;
 
 	/** The selected game id. */
 	int selectedId;
 
 	/** A label for the status text. */
-	boost::shared_ptr<GUI::Widget::Label> statusLabel;
+	std::shared_ptr<GUI::Widget::Label> statusLabel;
 
 public:
 	/**
 	 * @copydoc Menu::Menu
 	 */
-	JoinGame(boost::shared_ptr<Widget> parent);
+	JoinGame(std::shared_ptr<Widget> parent);
 
 	/**
 	 * @copydoc Menu::updateState

@@ -22,7 +22,7 @@
 #ifndef PUTKARTS_GUI_HPP
 #define PUTKARTS_GUI_HPP
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 #include "util/Configuration.hpp"
 #include "gui/widget/Widget.hpp"
@@ -37,7 +37,7 @@ namespace GUI {
 	extern Configuration config;
 
 	/** The current Widget. */
-	extern boost::shared_ptr<Widget::Widget> currentWidget;
+	extern std::shared_ptr<Widget::Widget> currentWidget;
 
 	/** The window for the game */
 	extern sf::RenderWindow window;

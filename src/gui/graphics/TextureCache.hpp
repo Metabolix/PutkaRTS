@@ -24,8 +24,7 @@
 
 #include <string>
 #include <map>
-#include <boost/shared_ptr.hpp>
-#include <boost/weak_ptr.hpp>
+#include <memory>
 
 #include <SFML/Graphics.hpp>
 
@@ -41,10 +40,10 @@ class GUI::TextureCache {
 	struct Node;
 
 	/** List of currently loaded textures and their file names. */
-	static std::map<std::string, boost::weak_ptr<Node> > known;
+	static std::map<std::string, std::weak_ptr<Node> > known;
 
 	/** List of currently loaded textures and their file names. */
-	std::map<std::string, boost::shared_ptr<Node> > loaded;
+	std::map<std::string, std::shared_ptr<Node> > loaded;
 public:
 	/**
 	 * Fetch a texture from the cache.

@@ -22,7 +22,7 @@
 #ifndef PUTKARTS_Connection_TCPListener_HPP
 #define PUTKARTS_Connection_TCPListener_HPP
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include <boost/asio.hpp>
 
 #include "connection/Server.hpp"
@@ -45,7 +45,7 @@ class Connection::TCPListener: public Connection::Listener {
 	boost::asio::ip::tcp::acceptor acceptor;
 
 	/** A placeholder for the next client. */
-	boost::shared_ptr<TCPEndPoint> next;
+	std::shared_ptr<TCPEndPoint> next;
 
 public:
 	/**

@@ -23,7 +23,7 @@
 #define PUTKARTS_Connection_Address_HPP
 
 #include <string>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 namespace Connection {
 	class EndPoint;
@@ -43,7 +43,7 @@ public:
 	 * @return A pointer to the connection.
 	 * @throw std::exception Thrown if something goes wrong.
 	 */
-	static boost::shared_ptr<Connection::EndPoint> connect(const std::string& address);
+	static std::shared_ptr<Connection::EndPoint> connect(const std::string& address);
 
 	/**
 	 * Get the address of a listener.

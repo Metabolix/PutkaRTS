@@ -21,7 +21,6 @@
 
 #include <iostream>
 #include <stdexcept>
-#include <boost/make_shared.hpp>
 #include <boost/thread.hpp>
 
 #include "ProgramInfo.hpp"
@@ -37,12 +36,12 @@ try {
 	Path::init(argc ? argv[0] : "./bin/unknown.exe");
 	std::string title = ProgramInfo::name + " (version " + ProgramInfo::version + ", CLI)";
 	std::cout << title << std::endl;
-	boost::shared_ptr<Connection::Server> server(new Connection::Server());
+	std::shared_ptr<Connection::Server> server(new Connection::Server());
 
 	int listeners = 0;
 	try {
 		std::cout << "Starting TCP listener on IPv6... ";
-		server->addListener(boost::make_shared<Connection::TCPListener>(boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v6(), 6667)));
+		server->addListener(std::make_shared<Connection::TCPListener>(boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v6(), 6667)));
 		std::cout << "OK!\n";
 		++listeners;
 	} catch (std::runtime_error& e) {
@@ -50,7 +49,7 @@ try {
 	}
 	try {
 		std::cout << "Starting TCP listener on IPv4... ";
-		server->addListener(boost::make_shared<Connection::TCPListener>(boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), 6667)));
+		server->addListener(std::make_shared<Connection::TCPListener>(boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), 6667)));
 		std::cout << "OK!\n";
 		++listeners;
 	} catch (std::runtime_error& e) {

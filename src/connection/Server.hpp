@@ -24,7 +24,7 @@
 
 #include <string>
 #include <set>
-#include <boost/enable_shared_from_this.hpp>
+#include <memory>
 #include <boost/utility.hpp>
 #include <boost/thread.hpp>
 
@@ -42,7 +42,7 @@ namespace Connection {
 /**
  * Base class for game servers.
  */
-class Connection::Server: virtual public Connection::Base, public boost::enable_shared_from_this<Connection::Server>, private boost::recursive_mutex {
+class Connection::Server: virtual public Connection::Base, public std::enable_shared_from_this<Connection::Server>, private boost::recursive_mutex {
 	friend class Metaserver;
 
 	/** Server side class for handling clients. */
@@ -52,7 +52,7 @@ class Connection::Server: virtual public Connection::Base, public boost::enable_
 	class LocalClient;
 
 	/** Type for listener container. */
-	typedef std::set<boost::shared_ptr<Listener> > ListenerContainerType;
+	typedef std::set<std::shared_ptr<Listener> > ListenerContainerType;
 
 	/** Connection to the metaserver. */
 	Metaserver metaserver;
@@ -68,7 +68,7 @@ class Connection::Server: virtual public Connection::Base, public boost::enable_
 	 *
 	 * @param client The client.
 	 */
-	void addClient(boost::shared_ptr<Client> client);
+	void addClient(std::shared_ptr<Client> client);
 
 	/**
 	 * Send a packet to one client.
@@ -116,21 +116,21 @@ public:
 	/**
 	 * Create a local client.
 	 */
-	boost::shared_ptr<Connection::Client> createLocalClient();
+	std::shared_ptr<Connection::Client> createLocalClient();
 
 	/**
 	 * Insert a new client.
 	 *
 	 * @param connection The channel of communication.
 	 */
-	void addClient(boost::shared_ptr<EndPoint> connection);
+	void addClient(std::shared_ptr<EndPoint> connection);
 
 	/**
 	 * Insert a new listener.
 	 *
 	 * @param listener The listener.
 	 */
-	void addListener(boost::shared_ptr<Listener> listener);
+	void addListener(std::shared_ptr<Listener> listener);
 
 	/**
 	 * Handle data from the clients, and update the game state.

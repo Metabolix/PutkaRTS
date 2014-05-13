@@ -19,8 +19,8 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <memory>
 #include <boost/lexical_cast.hpp>
-#include <boost/make_shared.hpp>
 
 #include "Client.hpp"
 
@@ -33,7 +33,7 @@ void Connection::Client::handlePacket(std::string& data) {
 	// A client has joined.
 	if (type == 'c') {
 		ClientInfo info(data);
-		clients[info.id] = boost::make_shared<ClientInfo>(info);
+		clients[info.id] = std::make_shared<ClientInfo>(info);
 		if (clients.size() == 1) {
 			ownId = info.id;
 		}

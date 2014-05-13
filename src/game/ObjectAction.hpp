@@ -24,7 +24,7 @@
 #define PUTKARTS_Game_ObjectAction_HPP
 
 #include <string>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 namespace Game {
 	class Game;
@@ -57,7 +57,7 @@ struct Game::ObjectAction {
 	 * @param target Target of the action.
 	 * @return Whether it was possible to run the action.
 	 */
-	bool runAction(boost::shared_ptr<Object> actor, boost::shared_ptr<Object> target) {
+	bool runAction(std::shared_ptr<Object> actor, std::shared_ptr<Object> target) {
 		// TODO: Run the action.
 		return false;
 	}

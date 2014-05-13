@@ -41,7 +41,7 @@ namespace Game {
  */
 class Connection::Client: virtual public Connection::Base {
 	/** Connection to the server. */
-	boost::shared_ptr<EndPoint> connection;
+	std::shared_ptr<EndPoint> connection;
 
 	/** The client id of this client. */
 	int ownId;
@@ -65,7 +65,7 @@ public:
 	 *
 	 * @param conn Connection to a server.
 	 */
-	Client(boost::shared_ptr<EndPoint> conn):
+	Client(std::shared_ptr<EndPoint> conn):
 		connection(conn) {
 	}
 
@@ -84,7 +84,7 @@ public:
 	/**
 	 * Get the client info for this client.
 	 */
-	boost::shared_ptr<const ClientInfo> getClientInfo() const {
+	std::shared_ptr<const ClientInfo> getClientInfo() const {
 		return clients.find(ownId)->second;
 	}
 

@@ -39,14 +39,14 @@ namespace GUI {
  */
 class GUI::Menu::StartGame: public Menu {
 	/** Our client. */
-	boost::shared_ptr<Connection::Client> client;
+	std::shared_ptr<Connection::Client> client;
 
 public:
 	/**
 	 * @copydoc Menu::Menu
 	 * @param client The client.
 	 */
-	StartGame(boost::shared_ptr<Widget> parent, boost::shared_ptr<Connection::Client> client);
+	StartGame(std::shared_ptr<Widget> parent, std::shared_ptr<Connection::Client> client);
 
 	/**
 	 * @copydoc Menu::updateState

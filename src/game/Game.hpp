@@ -23,8 +23,8 @@
 #define PUTKARTS_Game_Game_HPP
 
 #include <queue>
+#include <memory>
 #include <boost/unordered_map.hpp>
-#include <boost/shared_ptr.hpp>
 #include <boost/function.hpp>
 
 #include "util/Scalar.hpp"
@@ -51,19 +51,19 @@ class Game::Game: protected Lua {
 
 public:
 	/** Type for client container. */
-	typedef boost::unordered_map<Client::IdType, boost::shared_ptr<Client> > ClientContainerType;
+	typedef boost::unordered_map<Client::IdType, std::shared_ptr<Client> > ClientContainerType;
 
 	/** Type for player container */
-	typedef boost::unordered_map<Player::IdType, boost::shared_ptr<Player> > PlayerContainerType;
+	typedef boost::unordered_map<Player::IdType, std::shared_ptr<Player> > PlayerContainerType;
 
 	/** Type for storing the game's object types. */
-	typedef boost::unordered_map<ObjectType::IdType, boost::shared_ptr<const ObjectType> > ObjectTypeContainerType;
+	typedef boost::unordered_map<ObjectType::IdType, std::shared_ptr<const ObjectType> > ObjectTypeContainerType;
 
 	/** Type for storing the game's object actions. */
-	typedef boost::unordered_map<ObjectAction::IdType, boost::shared_ptr<const ObjectAction> > ObjectActionContainerType;
+	typedef boost::unordered_map<ObjectAction::IdType, std::shared_ptr<const ObjectAction> > ObjectActionContainerType;
 
 	/** Object type for storing the game's objects. */
-	typedef boost::unordered_map<Object::IdType, boost::shared_ptr<Object> > ObjectContainerType;
+	typedef boost::unordered_map<Object::IdType, std::shared_ptr<Object> > ObjectContainerType;
 
 	/** Type for specifying an external callback for message handling. */
 	typedef boost::function<void(const Message&)> MessageCallbackType;
@@ -76,7 +76,7 @@ private:
 	std::priority_queue<Message> messages;
 
 	/** The map on which the game is played. */
-	boost::shared_ptr<Map> map;
+	std::shared_ptr<Map> map;
 
 	/** Clients (physical people in the game). */
 	ClientContainerType clients;
@@ -97,7 +97,7 @@ private:
 	ObjectContainerType objects;
 
 	/** A task for idle units. */
-	const boost::shared_ptr<Task> idleTask;
+	const std::shared_ptr<Task> idleTask;
 
 private:
 	/**
@@ -129,7 +129,7 @@ public:
 	 *
 	 * @param map The map.
 	 */
-	Game(boost::shared_ptr<Map> map);
+	Game(std::shared_ptr<Map> map);
 
 	/**
 	 * Get the current time.
@@ -179,7 +179,7 @@ public:
 	 *
 	 * @param client The client.
 	 */
-	void insertClient(boost::shared_ptr<Client> client);
+	void insertClient(std::shared_ptr<Client> client);
 
 	/**
 	 * Remove a client.
@@ -192,14 +192,14 @@ protected:
 	 *
 	 * @param object Object to remove.
 	 */
-	void eraseObject(boost::shared_ptr<Object> object);
+	void eraseObject(std::shared_ptr<Object> object);
 
 	/**
 	 * Add new player.
 	 *
 	 * @param player Pointer to the player object to be added.
 	 */
-	void insertPlayer(boost::shared_ptr<Player> player);
+	void insertPlayer(std::shared_ptr<Player> player);
 
 	/**
 	 * Lua callback: Add an object type.

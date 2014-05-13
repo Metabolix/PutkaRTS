@@ -23,7 +23,7 @@
 #ifndef PUTKARTS_GUI_Game_Game_HPP
 #define PUTKARTS_GUI_Game_Game_HPP
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include <boost/unordered_map.hpp>
 #include <boost/unordered_set.hpp>
 
@@ -57,7 +57,7 @@ class GUI::Game::Game: public Widget::Container {
 	TextureCache textures;
 
 	/** The game connection to use. */
-	boost::shared_ptr<Connection::Client> client;
+	std::shared_ptr<Connection::Client> client;
 
 	/** Camera position and zoom */
 	ScrollingView gameView;
@@ -72,16 +72,16 @@ class GUI::Game::Game: public Widget::Container {
 	bool gameClosed;
 
 	/** The settings menu, if opened. */
-	boost::shared_ptr<Menu::SettingsMenu> settingsMenu;
+	std::shared_ptr<Menu::SettingsMenu> settingsMenu;
 
 	/** Container type for lists of objects. */
-	typedef boost::unordered_set<boost::shared_ptr<Object> > ObjectSetType;
+	typedef boost::unordered_set<std::shared_ptr<Object> > ObjectSetType;
 
 	/** Container for keeping track of selected objects */
 	ObjectSetType selectedObjects;
 
 	/** Container type for mapping logical objects to GUI objects. */
-	typedef boost::unordered_map<const void*, boost::shared_ptr<Object> > ObjectMapType;
+	typedef boost::unordered_map<const void*, std::shared_ptr<Object> > ObjectMapType;
 
 	/** Map to keep track of Objects. */
 	mutable ObjectMapType objects;
@@ -92,7 +92,7 @@ class GUI::Game::Game: public Widget::Container {
 	 * @param object The logical object.
 	 * @return The GUI object.
 	 */
-	boost::shared_ptr<Object> getObject(const boost::shared_ptr<const ::Game::Object>& object) const;
+	std::shared_ptr<Object> getObject(const std::shared_ptr<const ::Game::Object>& object) const;
 
 	/**
 	 * Get a list of the objects within the given range of the given coordinates.
@@ -111,7 +111,7 @@ public:
 	 * @param client The game connection to use.
 	 * @param window The window to use for input and rendering.
 	 */
-	Game(boost::shared_ptr<Connection::Client> client, sf::RenderWindow& window);
+	Game(std::shared_ptr<Connection::Client> client, sf::RenderWindow& window);
 
 	/**
 	 * Load map graphics etc.

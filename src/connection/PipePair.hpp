@@ -35,7 +35,7 @@ class Connection::PipePair {
 	class Pipe;
 	class Mixer;
 
-	boost::shared_ptr<EndPoint> end1, end2;
+	std::shared_ptr<EndPoint> end1, end2;
 
 public:
 	/**
@@ -46,14 +46,14 @@ public:
 	/**
 	 * Get one end of the pipe pair.
 	 */
-	boost::shared_ptr<EndPoint> getEnd1() {
+	std::shared_ptr<EndPoint> getEnd1() {
 		return end1;
 	}
 
 	/**
 	 * Get another end of the pipe pair.
 	 */
-	boost::shared_ptr<EndPoint> getEnd2() {
+	std::shared_ptr<EndPoint> getEnd2() {
 		return end2;
 	}
 };

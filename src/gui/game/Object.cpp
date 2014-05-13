@@ -24,11 +24,11 @@
 
 #include "gui/game/Object.hpp"
 
-GUI::Game::Object::Object(boost::shared_ptr<const ::Game::Object> object_):
+GUI::Game::Object::Object(std::shared_ptr<const ::Game::Object> object_):
 	object(object_) {
 }
 
-void GUI::Game::Object::draw(sf::RenderWindow& window, boost::shared_ptr<const ::Game::Client> viewer, bool selected) {
+void GUI::Game::Object::draw(sf::RenderWindow& window, std::shared_ptr<const ::Game::Client> viewer, bool selected) {
 	// TODO: Load real graphics and track animations.
 	sf::ConvexShape arrow;
 	sf::CircleShape circle;

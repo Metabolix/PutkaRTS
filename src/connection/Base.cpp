@@ -25,7 +25,7 @@
 
 void Connection::Base::initGame() {
 	state = INIT;
-	boost::shared_ptr<Game::Map> map(new Game::Map());
+	std::shared_ptr<Game::Map> map(new Game::Map());
 	map->load("maps/testmap");
 	game.reset(new Game::Game(map));
 

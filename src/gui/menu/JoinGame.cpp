@@ -32,7 +32,7 @@
 #include "gui/menu/JoinGame.hpp"
 #include "gui/menu/StartGame.hpp"
 
-GUI::Menu::JoinGame::JoinGame(boost::shared_ptr<Widget> parent_):
+GUI::Menu::JoinGame::JoinGame(std::shared_ptr<Widget> parent_):
 	Menu(parent_),
 	gameList(new GUI::Widget::List(100, 200, 200, 200, boost::bind(&GUI::Menu::JoinGame::selectGame, this, _1))),
 	selectedId(0),
@@ -71,7 +71,7 @@ void GUI::Menu::JoinGame::joinGame() {
 	if (metaserver.games.find(selectedId) == metaserver.games.end()) {
 		return; // Invalid selection.
 	}
-	boost::shared_ptr<Connection::EndPoint> connection;
+	std::shared_ptr<Connection::EndPoint> connection;
 	std::string error;
 	BOOST_FOREACH(const std::string& address, metaserver.games[selectedId].addresses) {
 		try {
@@ -87,7 +87,7 @@ void GUI::Menu::JoinGame::joinGame() {
 	if (!connection) {
 		statusLabel->setText(error);
 	} else {
-		boost::shared_ptr<Connection::Client> client(new Connection::Client(connection));
+		std::shared_ptr<Connection::Client> client(new Connection::Client(connection));
 		GUI::currentWidget.reset(new GUI::Menu::StartGame(GUI::currentWidget, client));
 	}
 }

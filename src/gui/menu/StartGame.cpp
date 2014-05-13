@@ -27,7 +27,7 @@
 #include "gui/widget/Button.hpp"
 #include "gui/game/Game.hpp"
 
-GUI::Menu::StartGame::StartGame(boost::shared_ptr<Widget> parent_, boost::shared_ptr<Connection::Client> client_):
+GUI::Menu::StartGame::StartGame(std::shared_ptr<Widget> parent_, std::shared_ptr<Connection::Client> client_):
 	Menu(parent_),
 	client(client_) {
 

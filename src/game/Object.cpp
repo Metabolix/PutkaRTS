@@ -60,9 +60,9 @@ bool Game::Object::runStep(Scalar<SIUnit::Time> dt, Game& game) {
 	}
 
 	// Find the closest target.
-	boost::shared_ptr<Object> target;
-	BOOST_FOREACH(boost::weak_ptr<Object> objectWeak, task->targets) {
-		boost::shared_ptr<Object> object(objectWeak.lock());
+	std::shared_ptr<Object> target;
+	BOOST_FOREACH(std::weak_ptr<Object> objectWeak, task->targets) {
+		std::shared_ptr<Object> object(objectWeak.lock());
 		if (!object || object->dead) {
 			continue;
 		}

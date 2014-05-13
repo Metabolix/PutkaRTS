@@ -23,7 +23,7 @@
 #define PUTKARTS_GUI_Widget_TabPanel_HPP
 
 #include <string>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 #include "gui/widget/TabManager.hpp"
 #include "gui/widget/Button.hpp"
@@ -42,7 +42,7 @@ public:
 	/** Struct for buttons. */
 	struct Button {
 		GUI::Widget::TabManager::TabKeyType key;
-		boost::shared_ptr<GUI::Widget::Button> button;
+		std::shared_ptr<GUI::Widget::Button> button;
 	};
 
 	/** Typedef for button lists. */
