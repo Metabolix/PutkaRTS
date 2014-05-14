@@ -13,7 +13,7 @@ FILES_DEP := $(patsubst src/%,build/%.dep,$(FILES_CPP))
 
 CLI_SRC := $(filter-out src/gui/%,$(FILES_CPP))
 CLI_BIN := bin/PutkaRTS-cli
-CLI_LIBS := -lboost_chrono -lboost_filesystem -lboost_system -lboost_thread -llua
+CLI_LIBS := -lboost_filesystem -lboost_system -llua
 
 GUI_SRC := $(filter-out src/cli/%,$(FILES_CPP))
 GUI_BIN := bin/PutkaRTS
