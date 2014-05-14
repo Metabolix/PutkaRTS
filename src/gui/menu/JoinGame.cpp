@@ -20,7 +20,6 @@
  */
 
 #include <boost/bind.hpp>
-#include <boost/foreach.hpp>
 #include <boost/lexical_cast.hpp>
 
 #include "connection/Client.hpp"
@@ -56,7 +55,7 @@ void GUI::Menu::JoinGame::updateState(sf::RenderWindow& window) {
 	gameList->clear();
 
 	typedef std::pair<const int, Connection::Metaserver::Game> PairType;
-	BOOST_FOREACH(const PairType& pair, metaserver.games) {
+	for (const PairType& pair: metaserver.games) {
 		const Connection::Metaserver::Game& game(pair.second);
 		gameList->insertItem(boost::lexical_cast<std::string>(game.id), game.name);
 	}
@@ -73,7 +72,7 @@ void GUI::Menu::JoinGame::joinGame() {
 	}
 	std::shared_ptr<Connection::EndPoint> connection;
 	std::string error;
-	BOOST_FOREACH(const std::string& address, metaserver.games[selectedId].addresses) {
+	for (const std::string& address: metaserver.games[selectedId].addresses) {
 		try {
 			connection = Connection::Address::connect(address);
 			break;

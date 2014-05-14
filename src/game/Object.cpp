@@ -19,8 +19,6 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <boost/foreach.hpp>
-
 #include "Object.hpp"
 #include "ObjectAction.hpp"
 #include "Task.hpp"
@@ -61,7 +59,7 @@ bool Game::Object::runStep(Scalar<SIUnit::Time> dt, Game& game) {
 
 	// Find the closest target.
 	std::shared_ptr<Object> target;
-	BOOST_FOREACH(std::weak_ptr<Object> objectWeak, task->targets) {
+	for (std::weak_ptr<Object> objectWeak: task->targets) {
 		std::shared_ptr<Object> object(objectWeak.lock());
 		if (!object || object->dead) {
 			continue;

@@ -22,7 +22,6 @@
 #include <stdexcept>
 #include <vector>
 #include <boost/bind.hpp>
-#include <boost/foreach.hpp>
 
 #include "Game.hpp"
 
@@ -136,7 +135,7 @@ bool Game::Game::handleMessage(Message& message) {
 	}
 
 	// Collect actors that exist and are allowed.
-	BOOST_FOREACH(Object::IdType id, message.actors) {
+	for (Object::IdType id: message.actors) {
 		if (objects.find(id) == objects.end()) {
 			continue;
 		}
@@ -162,7 +161,7 @@ bool Game::Game::handleMessage(Message& message) {
 	}
 
 	// Collect targets.
-	BOOST_FOREACH(Object::IdType id, message.targets) {
+	for (Object::IdType id: message.targets) {
 		if (objects.find(id) == objects.end()) {
 			continue;
 		}
@@ -177,7 +176,7 @@ bool Game::Game::handleMessage(Message& message) {
 	// Other actions are handled in Lua code.
 	load("Game.handleMessage(...)");
 	push<Lua::String>(message.action);
-	BOOST_FOREACH(std::weak_ptr<const Object> objectWeak, task->actors) {
+	for (std::weak_ptr<const Object> objectWeak: task->actors) {
 		std::shared_ptr<const Object> object(objectWeak.lock());
 		if (object) {
 			push<Lua::Number>(object->id);

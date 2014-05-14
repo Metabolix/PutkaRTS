@@ -19,8 +19,6 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <boost/foreach.hpp>
-
 #include "util/Serializer.hpp"
 #include "util/Deserializer.hpp"
 #include "ClientInfo.hpp"
@@ -50,7 +48,7 @@ std::string Connection::ClientInfo::serialize() const {
 	output.put(ai);
 
 	output.put((int) players.size());
-	BOOST_FOREACH(Game::Player::IdType id, players) {
+	for (Game::Player::IdType id: players) {
 		output.put(id);
 	}
 
