@@ -26,7 +26,7 @@
 #include <stdexcept>
 #include <vector>
 #include <functional>
-#include <boost/unordered_map.hpp>
+#include <unordered_map>
 #include <boost/any.hpp>
 #include "util/Path.hpp"
 
@@ -63,7 +63,7 @@ private:
 	lua_State* state;
 
 	/** Allocated functions. */
-	boost::unordered_map<std::string, Function> functions;
+	std::unordered_map<std::string, Function> functions;
 
 protected:
 	/** Include directories. */

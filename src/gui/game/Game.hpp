@@ -24,8 +24,8 @@
 #define PUTKARTS_GUI_Game_Game_HPP
 
 #include <memory>
-#include <boost/unordered_map.hpp>
-#include <boost/unordered_set.hpp>
+#include <unordered_map>
+#include <unordered_set>
 
 #include "gui/game/Object.hpp"
 #include "gui/widget/Container.hpp"
@@ -75,13 +75,13 @@ class GUI::Game::Game: public Widget::Container {
 	std::shared_ptr<Menu::SettingsMenu> settingsMenu;
 
 	/** Container type for lists of objects. */
-	typedef boost::unordered_set<std::shared_ptr<Object> > ObjectSetType;
+	typedef std::unordered_set<std::shared_ptr<Object> > ObjectSetType;
 
 	/** Container for keeping track of selected objects */
 	ObjectSetType selectedObjects;
 
 	/** Container type for mapping logical objects to GUI objects. */
-	typedef boost::unordered_map<const void*, std::shared_ptr<Object> > ObjectMapType;
+	typedef std::unordered_map<const void*, std::shared_ptr<Object> > ObjectMapType;
 
 	/** Map to keep track of Objects. */
 	mutable ObjectMapType objects;

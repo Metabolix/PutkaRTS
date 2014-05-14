@@ -23,7 +23,7 @@
 #define PUTKARTS_Game_Client_HPP
 
 #include <string>
-#include <boost/unordered_set.hpp>
+#include <unordered_set>
 
 #include "game/Player.hpp"
 
@@ -51,7 +51,7 @@ struct Game::Client {
 	bool ai;
 
 	/** What players does this client command? */
-	boost::unordered_set<Player::IdType> players;
+	std::unordered_set<Player::IdType> players;
 
 	/** Constructor; sets the default values. */
 	Client():

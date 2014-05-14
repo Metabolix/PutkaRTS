@@ -25,7 +25,7 @@
 #include <queue>
 #include <memory>
 #include <functional>
-#include <boost/unordered_map.hpp>
+#include <unordered_map>
 
 #include "util/Scalar.hpp"
 #include "lua/Lua.hpp"
@@ -51,19 +51,19 @@ class Game::Game: protected Lua {
 
 public:
 	/** Type for client container. */
-	typedef boost::unordered_map<Client::IdType, std::shared_ptr<Client> > ClientContainerType;
+	typedef std::unordered_map<Client::IdType, std::shared_ptr<Client> > ClientContainerType;
 
 	/** Type for player container */
-	typedef boost::unordered_map<Player::IdType, std::shared_ptr<Player> > PlayerContainerType;
+	typedef std::unordered_map<Player::IdType, std::shared_ptr<Player> > PlayerContainerType;
 
 	/** Type for storing the game's object types. */
-	typedef boost::unordered_map<ObjectType::IdType, std::shared_ptr<const ObjectType> > ObjectTypeContainerType;
+	typedef std::unordered_map<ObjectType::IdType, std::shared_ptr<const ObjectType> > ObjectTypeContainerType;
 
 	/** Type for storing the game's object actions. */
-	typedef boost::unordered_map<ObjectAction::IdType, std::shared_ptr<const ObjectAction> > ObjectActionContainerType;
+	typedef std::unordered_map<ObjectAction::IdType, std::shared_ptr<const ObjectAction> > ObjectActionContainerType;
 
 	/** Object type for storing the game's objects. */
-	typedef boost::unordered_map<Object::IdType, std::shared_ptr<Object> > ObjectContainerType;
+	typedef std::unordered_map<Object::IdType, std::shared_ptr<Object> > ObjectContainerType;
 
 	/** Type for specifying an external callback for message handling. */
 	typedef std::function<void(const Message&)> MessageCallbackType;
