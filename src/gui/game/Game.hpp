@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include <unordered_set>
 
+#include "gui/game/Map.hpp"
 #include "gui/game/Object.hpp"
 #include "gui/widget/Container.hpp"
 #include "gui/graphics/TextureCache.hpp"
@@ -39,6 +40,9 @@ class GUI::Game::Game: public Widget::Container {
 
 	/** Camera position and zoom */
 	ScrollingView gameView;
+
+	/** Game map drawing */
+	Map map;
 
 	/** Mouse position */
 	MouseTracker mouse;
@@ -90,11 +94,6 @@ public:
 	 * @param window The window to use for input and rendering.
 	 */
 	Game(std::shared_ptr<Connection::Client> client, sf::RenderWindow& window);
-
-	/**
-	 * Load map graphics etc.
-	 */
-	void loadMapData();
 
 	/**
 	 * Draw the map and the units.

@@ -20,10 +20,8 @@
 GUI::Game::Game::Game(std::shared_ptr<Connection::Client> client_, sf::RenderWindow& window):
 	guiView(window.getDefaultView()),
 	client(client_),
-	gameView(window, sf::Vector2f(client->getGame().getMap().getSizeX(), client->getGame().getMap().getSizeY()), 32) {
-
-	loadMapData();
-
+	gameView(window, sf::Vector2f(client->getGame().getMap().getSizeX(), client->getGame().getMap().getSizeY()), 32),
+	map(client->getGame().getMap(), sf::Vector2u(32, 32)) {
 	// TODO: Center at the player start position or something.
 	gameView.setCenter(
 		client->getGame().getMap().getSizeX() / 2,
@@ -36,39 +34,11 @@ GUI::Game::Game::Game(std::shared_ptr<Connection::Client> client_, sf::RenderWin
 	client->setReadyToStart();
 }
 
-void GUI::Game::Game::loadMapData() {
-	const ::Game::Map& map = client->getGame().getMap();
-	const ::Game::Map::TileInfoMap& tileInfoMap = map.getTileInfoMap();
-
-	for (::Game::Map::TileInfoMap::const_iterator i = tileInfoMap.begin(); i != tileInfoMap.end(); ++i) {
-		const ::Game::Map::TileInfo& info = i->second;
-		textures.get(info.texture, Path::findDataPath(map.getDirectory(), "", info.texture));
-	}
-}
-
 void GUI::Game::Game::drawGame(sf::RenderWindow& window) const {
-	const ::Game::Game& game = client->getGame();
-	const ::Game::Map& map = game.getMap();
-
-	//calculate which tiles are on the screen.
-	sf::Vector2f xy0 = gameView.getCenter() - gameView.getSize() * 0.5f;
-	sf::Vector2f xy1 = xy0 + gameView.getSize();
-	::Game::Map::SizeType beginY = std::max(0.0f, xy0.y);
-	::Game::Map::SizeType endY = std::min< ::Game::Map::SizeType>(map.getSizeY(), std::max(0.0f, std::ceil(xy1.y)));
-	::Game::Map::SizeType beginX = std::max(0.0f, xy0.x);
-	::Game::Map::SizeType endX = std::min< ::Game::Map::SizeType>(map.getSizeX(), std::max(0.0f, std::ceil(xy1.x)));
-
-	// TODO: Check what parts the player can see!
-	for (::Game::Map::SizeType y = beginY; y < endY; ++y) {
-		for (::Game::Map::SizeType x = beginX; x < endX; ++x) {
-			sf::Sprite sprite(textures.get(map(x, y).texture));
-			sprite.setScale(1 / sprite.getLocalBounds().width, 1 / sprite.getLocalBounds().height);
-			sprite.setPosition(x, y);
-			window.draw(sprite);
-		}
-	}
+	window.draw(map);
 
 	// TODO: Get only visible objects! Maybe use something like game.forEachObject(rectangle, callback).
+	const ::Game::Game& game = client->getGame();
 	const ::Game::Game::ObjectContainerType& objects = game.getObjects();
 	for (::Game::Game::ObjectContainerType::const_iterator i = objects.begin(); i != objects.end(); ++i) {
 		std::shared_ptr<Object> object(getObject(i->second));
