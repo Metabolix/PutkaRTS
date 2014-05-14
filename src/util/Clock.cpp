@@ -19,12 +19,12 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <boost/chrono.hpp>
+#include <chrono>
 
 #include "Clock.hpp"
 
 /**
- * A clock implementation using boost::chrono.
+ * A clock implementation using std::chrono.
  */
 struct Clock::ClockImpl {
 	/** Is this clock running? */
@@ -34,7 +34,7 @@ struct Clock::ClockImpl {
 	const Scalar<SIUnit::Time> time0;
 
 	/** The real time when the clock was started. */
-	const boost::chrono::high_resolution_clock::time_point real0;
+	const std::chrono::high_resolution_clock::time_point real0;
 
 	/**
 	 * Constructor.
@@ -45,7 +45,7 @@ struct Clock::ClockImpl {
 	ClockImpl(Scalar<SIUnit::Time> time0_, bool running_ = true):
 		running(running_),
 		time0(time0_),
-		real0(boost::chrono::high_resolution_clock::now()) {
+		real0(std::chrono::high_resolution_clock::now()) {
 	}
 
 	/**
@@ -57,8 +57,8 @@ struct Clock::ClockImpl {
 		if (!running) {
 			return time0;
 		}
-		boost::chrono::high_resolution_clock::time_point real1(boost::chrono::high_resolution_clock::now());
-		boost::chrono::duration<double> dt(real1 - real0);
+		std::chrono::high_resolution_clock::time_point real1(std::chrono::high_resolution_clock::now());
+		std::chrono::duration<double> dt(real1 - real0);
 		return time0 + Scalar<SIUnit::Time>(dt.count());
 	}
 };
