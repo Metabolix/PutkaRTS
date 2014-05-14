@@ -22,7 +22,7 @@
 #ifndef PUTKARTS_GUI_Widget_Button_HPP
 #define PUTKARTS_GUI_Widget_Button_HPP
 
-#include <boost/function.hpp>
+#include <functional>
 
 #include "Widget.hpp"
 #include "Label.hpp"
@@ -39,7 +39,7 @@ namespace GUI {
 class GUI::Widget::Button: public Widget {
 public:
 	/** Callback function type. */
-	typedef boost::function<void()> CallbackType;
+	typedef std::function<void()> CallbackType;
 
 private:
 	/**

@@ -25,8 +25,8 @@
 #include <cstddef>
 #include <stdexcept>
 #include <vector>
+#include <functional>
 #include <boost/unordered_map.hpp>
-#include <boost/function.hpp>
 #include <boost/any.hpp>
 #include "util/Path.hpp"
 
@@ -56,7 +56,7 @@ public:
 
 protected:
 	/** Function type. */
-	typedef boost::function<void()> Function;
+	typedef std::function<void()> Function;
 
 private:
 	/** The Lua VM state. */

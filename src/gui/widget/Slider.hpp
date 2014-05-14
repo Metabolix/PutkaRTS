@@ -23,7 +23,7 @@
 #ifndef PUTKARTS_GUI_Widget_Slider_HPP
 #define PUTKARTS_GUI_Widget_Slider_HPP
 
-#include <boost/function.hpp>
+#include <functional>
 
 #include "Widget.hpp"
 
@@ -39,7 +39,7 @@ namespace GUI {
 class GUI::Widget::Slider: public Widget {
 public:
 	/** Callback function type. */
-	typedef boost::function<void(float)> CallbackType;
+	typedef std::function<void(float)> CallbackType;
 
 private:
 	/** Callback function for the button. */

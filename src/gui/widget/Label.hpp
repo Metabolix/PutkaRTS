@@ -23,8 +23,6 @@
 #ifndef PUTKARTS_GUI_Widget_Label_HPP
 #define PUTKARTS_GUI_Widget_Label_HPP
 
-#include <boost/function.hpp>
-
 #include "Widget.hpp"
 
 namespace GUI {

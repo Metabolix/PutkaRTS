@@ -23,7 +23,7 @@
 #ifndef PUTKARTS_GUI_Widget_Checkbox_HPP
 #define PUTKARTS_GUI_Widget_Checkbox_HPP
 
-#include <boost/function.hpp>
+#include <functional>
 
 #include "Widget.hpp"
 
@@ -39,7 +39,7 @@ namespace GUI {
 class GUI::Widget::Checkbox: public Widget {
 public:
 	/** Callback function type. */
-	typedef boost::function<void(bool)> CallbackType;
+	typedef std::function<void(bool)> CallbackType;
 
 private:
 	/**

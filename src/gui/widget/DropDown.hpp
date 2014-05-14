@@ -23,7 +23,7 @@
 #ifndef PUTKARTS_GUI_Widget_DropDown_HPP
 #define PUTKARTS_GUI_Widget_DropDown_HPP
 
-#include <boost/function.hpp>
+#include <functional>
 
 #include "Widget.hpp"
 #include "Button.hpp"
@@ -48,7 +48,7 @@ public:
 	bool open;
 
 	/** Callback function type. */
-	typedef boost::function<void(const List::Item&)> CallbackType;
+	typedef std::function<void(const List::Item&)> CallbackType;
 
 private:
 	/** Callback function */

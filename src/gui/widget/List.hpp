@@ -24,7 +24,7 @@
 #define PUTKARTS_GUI_Widget_List_HPP
 
 #include <list>
-#include <boost/function.hpp>
+#include <functional>
 
 #include "Widget.hpp"
 #include "Slider.hpp"
@@ -53,7 +53,7 @@ public:
 	typedef std::list<Item> ItemContainerType;
 
 	/** Callback function type. */
-	typedef boost::function<void(const Item&)> CallbackType;
+	typedef std::function<void(const Item&)> CallbackType;
 
 	/** Invalid item. Used when there is no valid one to use. */
 	static Item invalidItem;

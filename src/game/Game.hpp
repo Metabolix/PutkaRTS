@@ -24,8 +24,8 @@
 
 #include <queue>
 #include <memory>
+#include <functional>
 #include <boost/unordered_map.hpp>
-#include <boost/function.hpp>
 
 #include "util/Scalar.hpp"
 #include "lua/Lua.hpp"
@@ -66,7 +66,7 @@ public:
 	typedef boost::unordered_map<Object::IdType, std::shared_ptr<Object> > ObjectContainerType;
 
 	/** Type for specifying an external callback for message handling. */
-	typedef boost::function<void(const Message&)> MessageCallbackType;
+	typedef std::function<void(const Message&)> MessageCallbackType;
 
 private:
 	/** Keep track of game time. */
