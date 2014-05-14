@@ -20,21 +20,21 @@
  */
 
 #include <list>
-#include <boost/thread.hpp>
+#include <mutex>
 
 #include "PipePair.hpp"
 
 /**
  * An implementation of FIFO.
  */
-class Connection::PipePair::Pipe: public Connection::EndPoint, private boost::mutex {
+class Connection::PipePair::Pipe: public Connection::EndPoint, private std::mutex {
 	/** Internal buffer. */
 	std::list<std::string> buffer;
 
 public:
 	/** @copydoc EndPoint::sendPacket */
 	void sendPacket(const std::string& data) {
-		boost::lock_guard<boost::mutex> lock(*this);
+		std::lock_guard<std::mutex> lock(*this);
 		buffer.push_back(data);
 	}
 
@@ -43,7 +43,7 @@ public:
 		if (buffer.empty()) {
 			return false;
 		}
-		boost::lock_guard<boost::mutex> lock(*this);
+		std::lock_guard<std::mutex> lock(*this);
 		if (buffer.empty()) {
 			return false;
 		}

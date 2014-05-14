@@ -20,8 +20,9 @@
  */
 
 #include <memory>
+#include <mutex>
+#include <thread>
 #include <boost/bind.hpp>
-#include <boost/thread.hpp>
 #include <boost/lexical_cast.hpp>
 
 #include "Server.hpp"
@@ -96,7 +97,7 @@ void Connection::Server::run() {
 			return;
 		}
 		update();
-		boost::this_thread::sleep(boost::posix_time::milliseconds(5));
+		std::this_thread::sleep_for(std::chrono::milliseconds(5));
 	}
 }
 
@@ -113,7 +114,7 @@ void Connection::Server::startGame() {
 }
 
 void Connection::Server::addClient(std::shared_ptr<Client> client) {
-	boost::lock_guard<boost::recursive_mutex> lock(*this);
+	std::lock_guard<std::recursive_mutex> lock(*this);
 	for (client->id = 1; clients.find(client->id) != clients.end(); ++client->id);
 
 	// Send the new client to all, and send all old clients to the new one.
@@ -130,14 +131,14 @@ void Connection::Server::addClient(std::shared_ptr<EndPoint> connection) {
 }
 
 void Connection::Server::removeClient(int id) {
-	boost::lock_guard<boost::recursive_mutex> lock(*this);
+	std::lock_guard<std::recursive_mutex> lock(*this);
 	if (clients.erase(id)) {
 		sendPacket(clients, 'd' + boost::lexical_cast<std::string>(id));
 	}
 }
 
 void Connection::Server::addListener(std::shared_ptr<Listener> listener) {
-	boost::lock_guard<boost::recursive_mutex> lock(*this);
+	std::lock_guard<std::recursive_mutex> lock(*this);
 	listeners.insert(listener);
 }
 
@@ -195,7 +196,7 @@ bool Connection::Server::handlePacket(Client& client, std::string& data) {
 }
 
 void Connection::Server::update() {
-	boost::lock_guard<boost::recursive_mutex> lock(*this);
+	std::lock_guard<std::recursive_mutex> lock(*this);
 	if (state != SETUP) {
 		if (clients.empty()) {
 			state = END;

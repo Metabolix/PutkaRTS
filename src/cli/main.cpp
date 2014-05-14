@@ -21,7 +21,6 @@
 
 #include <iostream>
 #include <stdexcept>
-#include <boost/thread.hpp>
 
 #include "ProgramInfo.hpp"
 #include "util/Path.hpp"

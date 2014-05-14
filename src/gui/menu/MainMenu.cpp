@@ -21,8 +21,8 @@
  */
 
 #include <memory>
+#include <thread>
 #include <boost/bind.hpp>
-#include <boost/thread.hpp>
 
 #include "connection/Server.hpp"
 #include "connection/Client.hpp"
@@ -52,7 +52,8 @@ void GUI::Menu::MainMenu::startMultiGame(sf::RenderWindow& window) {
 void GUI::Menu::MainMenu::startGame(sf::RenderWindow& window) {
 	std::shared_ptr<Connection::Server> server(new Connection::Server());
 	std::shared_ptr<Connection::Client> client(server->createLocalClient());
-	boost::thread(boost::bind(&Connection::Server::run, server));
+	std::thread serverThread(boost::bind(&Connection::Server::run, server));
+	serverThread.detach();
 	GUI::currentWidget.reset(new GUI::Menu::StartGame(GUI::currentWidget, client));
 }
 

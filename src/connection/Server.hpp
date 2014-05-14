@@ -25,8 +25,7 @@
 #include <string>
 #include <set>
 #include <memory>
-#include <boost/utility.hpp>
-#include <boost/thread.hpp>
+#include <mutex>
 
 #include "connection/Base.hpp"
 #include "connection/EndPoint.hpp"
@@ -42,7 +41,7 @@ namespace Connection {
 /**
  * Base class for game servers.
  */
-class Connection::Server: virtual public Connection::Base, public std::enable_shared_from_this<Connection::Server>, private boost::recursive_mutex {
+class Connection::Server: virtual public Connection::Base, public std::enable_shared_from_this<Connection::Server>, private std::recursive_mutex {
 	friend class Metaserver;
 
 	/** Server side class for handling clients. */

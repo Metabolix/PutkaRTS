@@ -23,6 +23,7 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/format.hpp>
 #include <boost/asio.hpp>
+#include <boost/bind.hpp>
 
 #include "ProgramInfo.hpp"
 #include "Metaserver.hpp"
