@@ -22,7 +22,7 @@
  */
 
 #include <sstream>
-#include <boost/bind.hpp>
+#include <functional>
 
 #include "util/Path.hpp"
 #include "Game.hpp"
@@ -30,9 +30,9 @@
 #include "Object.hpp"
 
 Game::Map::Map() {
-	bind("tile", boost::bind(&Map::luaSetTileInfo, this));
-	bind("row", boost::bind(&Map::luaSetTileRow, this));
-	bind("player", boost::bind(&Map::luaSetPlayer, this));
+	bind("tile", std::bind(&Map::luaSetTileInfo, this));
+	bind("row", std::bind(&Map::luaSetTileRow, this));
+	bind("player", std::bind(&Map::luaSetPlayer, this));
 }
 
 void Game::Map::luaSetTileInfo() {

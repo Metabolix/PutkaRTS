@@ -21,7 +21,7 @@
  */
 
 #include <algorithm>
-#include <boost/bind.hpp>
+#include <functional>
 
 #include "List.hpp"
 #include "Label.hpp"

@@ -21,7 +21,7 @@
  */
 
 #include <algorithm>
-#include <boost/bind.hpp>
+#include <functional>
 
 #include "DropDown.hpp"
 #include "Container.hpp"
@@ -29,8 +29,8 @@
 
 GUI::Widget::DropDown::DropDown(float x, float y, float width, float height, float dropDownMaxHeight_, CallbackType callback):
 	Widget(x, y, width, height),
-	dropButton("V", x + width - height + 2, y + 2, height - 4, height - 4, boost::bind(&GUI::Widget::DropDown::dropButtonPressed, this)),
-	dropList(x, y + height, width, dropDownMaxHeight_, boost::bind(&GUI::Widget::DropDown::itemSelected, this, _1)),
+	dropButton("V", x + width - height + 2, y + 2, height - 4, height - 4, std::bind(&GUI::Widget::DropDown::dropButtonPressed, this)),
+	dropList(x, y + height, width, dropDownMaxHeight_, std::bind(&GUI::Widget::DropDown::itemSelected, this, std::placeholders::_1)),
 	open(false),
 	action(callback) {
 	dropList.setLineHeight(height - 2 * dropList.getBorderWidth());

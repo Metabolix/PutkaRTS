@@ -21,7 +21,7 @@
 
 #include <stdexcept>
 #include <vector>
-#include <boost/bind.hpp>
+#include <functional>
 
 #include "Game.hpp"
 
@@ -33,10 +33,10 @@ Game::Game::Game(std::shared_ptr<Map> map_):
 	}
 
 	// Initialise the Lua interface.
-	bind("luaNewObjectType", boost::bind(&Game::luaNewObjectType, this));
-	bind("luaNewObjectAction", boost::bind(&Game::luaNewObjectAction, this));
-	bind("luaNewObject", boost::bind(&Game::luaNewObject, this));
-	bind("luaDeleteObject", boost::bind(&Game::luaDeleteObject, this));
+	bind("luaNewObjectType", std::bind(&Game::luaNewObjectType, this));
+	bind("luaNewObjectAction", std::bind(&Game::luaNewObjectAction, this));
+	bind("luaNewObject", std::bind(&Game::luaNewObject, this));
+	bind("luaDeleteObject", std::bind(&Game::luaDeleteObject, this));
 	runFile<void>(Path::findDataPath("lua/Game.lua"));
 
 	// TODO: Read the tech tree.

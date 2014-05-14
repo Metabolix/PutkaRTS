@@ -19,7 +19,7 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <boost/bind.hpp>
+#include <functional>
 
 #include "Lua.hpp"
 
@@ -31,7 +31,7 @@ extern "C" {
 
 Lua::Lua() {
 	state = luaL_newstate();
-	bind("include", boost::bind(&Lua::luaInclude, this));
+	bind("include", std::bind(&Lua::luaInclude, this));
 }
 
 Lua::~Lua() {

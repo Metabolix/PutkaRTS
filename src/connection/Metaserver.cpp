@@ -19,11 +19,11 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <functional>
 #include <boost/algorithm/string.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/format.hpp>
 #include <boost/asio.hpp>
-#include <boost/bind.hpp>
 
 #include "ProgramInfo.hpp"
 #include "Metaserver.hpp"
@@ -52,9 +52,9 @@ void Connection::Metaserver::luaGameAddress() {
 
 Connection::Metaserver::Metaserver(const std::string& url_):
 	url(url_) {
-	bind("location", boost::bind(&Metaserver::luaLocation, this));
-	bind("gameImpl", boost::bind(&Metaserver::luaGame, this));
-	bind("gameAddressImpl", boost::bind(&Metaserver::luaGameAddress, this));
+	bind("location", std::bind(&Metaserver::luaLocation, this));
+	bind("gameImpl", std::bind(&Metaserver::luaGame, this));
+	bind("gameAddressImpl", std::bind(&Metaserver::luaGameAddress, this));
 	run<void>(
 		"function game(info)\n"
 		"	gameImpl(info.id, info.version or 'DummyVersion', info.name or 'DummyName')\n"

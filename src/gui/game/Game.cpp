@@ -22,7 +22,7 @@
 
 #include <algorithm>
 #include <cmath>
-#include <boost/bind.hpp>
+#include <functional>
 
 #include "util/Path.hpp"
 
@@ -52,8 +52,8 @@ GUI::Game::Game::Game(std::shared_ptr<Connection::Client> client_, sf::RenderWin
 		client->getGame().getMap().getSizeY() / 2
 	);
 
-	insert(new GUI::Widget::Button("X", window.getSize().x - 24, 0, 24, 24, boost::bind(&Game::exit, this)));
-	insert(new GUI::Widget::Button("S", window.getSize().x - 48, 0, 24, 24, boost::bind(&Game::openSettingsMenu, this, boost::ref(window))));
+	insert(new GUI::Widget::Button("X", window.getSize().x - 24, 0, 24, 24, std::bind(&Game::exit, this)));
+	insert(new GUI::Widget::Button("S", window.getSize().x - 48, 0, 24, 24, std::bind(&Game::openSettingsMenu, this, std::ref(window))));
 
 	client->setReadyToStart();
 }

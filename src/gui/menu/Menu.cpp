@@ -20,7 +20,7 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <boost/bind.hpp>
+#include <functional>
 
 #include "util/Path.hpp"
 

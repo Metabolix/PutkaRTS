@@ -20,7 +20,7 @@
  */
 
 #include <algorithm>
-#include <boost/bind.hpp>
+#include <functional>
 
 #include "Container.hpp"
 
@@ -42,15 +42,15 @@ void GUI::Widget::Container::erase(const std::shared_ptr<Widget>& object) {
 }
 
 void GUI::Widget::Container::draw(sf::RenderWindow& window) {
-	std::for_each(objects.rbegin(), objects.rend(), boost::bind(&Widget::draw, _1, boost::ref(window)));
+	std::for_each(objects.rbegin(), objects.rend(), std::bind(&Widget::draw, std::placeholders::_1, std::ref(window)));
 }
 
 bool GUI::Widget::Container::handleEvent(const sf::Event& event, const sf::RenderWindow& window) {
-	return std::find_if(objects.begin(), objects.end(), boost::bind(&Widget::handleEvent, _1, boost::cref(event), boost::cref(window))) != objects.end();
+	return std::find_if(objects.begin(), objects.end(), std::bind(&Widget::handleEvent, std::placeholders::_1, std::cref(event), std::cref(window))) != objects.end();
 }
 
 void GUI::Widget::Container::updateState(sf::RenderWindow& window) {
-	std::for_each(objects.rbegin(), objects.rend(), boost::bind(&Widget::updateState, _1, boost::ref(window)));
+	std::for_each(objects.rbegin(), objects.rend(), std::bind(&Widget::updateState, std::placeholders::_1, std::ref(window)));
 }
 
 void GUI::Widget::Container::activate(const Widget * widget) {

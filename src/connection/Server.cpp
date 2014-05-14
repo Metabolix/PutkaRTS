@@ -22,7 +22,7 @@
 #include <memory>
 #include <mutex>
 #include <thread>
-#include <boost/bind.hpp>
+#include <functional>
 #include <boost/lexical_cast.hpp>
 
 #include "Server.hpp"
@@ -240,7 +240,7 @@ void Connection::Server::update() {
 		}
 	}
 	if (state == PLAY) {
-		game->runUntil(clock.getTime(), boost::bind(&Server::sendMessage, this, _1));
+		game->runUntil(clock.getTime(), std::bind(&Server::sendMessage, this, std::placeholders::_1));
 
 		// PING
 		Game::Message msg;

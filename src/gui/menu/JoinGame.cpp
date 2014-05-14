@@ -19,7 +19,7 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <boost/bind.hpp>
+#include <functional>
 #include <boost/lexical_cast.hpp>
 
 #include "connection/Client.hpp"
@@ -33,13 +33,13 @@
 
 GUI::Menu::JoinGame::JoinGame(std::shared_ptr<Widget> parent_):
 	Menu(parent_),
-	gameList(new GUI::Widget::List(100, 200, 200, 200, boost::bind(&GUI::Menu::JoinGame::selectGame, this, _1))),
+gameList(new GUI::Widget::List(100, 200, 200, 200, std::bind(&GUI::Menu::JoinGame::selectGame, this, std::placeholders::_1))),
 	selectedId(0),
 	statusLabel(new GUI::Widget::Label("", 100, 100, 440, 100)) {
 	insert(gameList);
 	insert(statusLabel);
-	insert(new GUI::Widget::Button("Join", 400, 300, 100, 30, boost::bind(&GUI::Menu::JoinGame::joinGame, this)));
-	insert(new GUI::Widget::Button("Cancel", 400, 340, 100, 30, boost::bind(&GUI::Menu::JoinGame::closeMenu, this)));
+	insert(new GUI::Widget::Button("Join", 400, 300, 100, 30, std::bind(&GUI::Menu::JoinGame::joinGame, this)));
+	insert(new GUI::Widget::Button("Cancel", 400, 340, 100, 30, std::bind(&GUI::Menu::JoinGame::closeMenu, this)));
 }
 
 void GUI::Menu::JoinGame::updateState(sf::RenderWindow& window) {

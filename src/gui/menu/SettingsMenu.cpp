@@ -21,7 +21,7 @@
  */
 
 #include <memory>
-#include <boost/bind.hpp>
+#include <functional>
 #include <boost/format.hpp>
 #include <boost/lexical_cast.hpp>
 
@@ -41,8 +41,8 @@ GUI::Menu::SettingsMenu::SettingsMenu(std::shared_ptr<Widget> parent_, sf::Rende
 	tabManager(new GUI::Widget::TabPanel(50, 100, 200, 16)) {
 
 	insert(tabManager);
-	insert(new GUI::Widget::Button("Accept", 400, 300, 100, 30, boost::bind(&GUI::Menu::SettingsMenu::applyChanges, this, boost::ref(window))));
-	insert(new GUI::Widget::Button("Cancel", 400, 340, 100, 30, boost::bind(&GUI::Menu::SettingsMenu::closeMenu, this)));
+	insert(new GUI::Widget::Button("Accept", 400, 300, 100, 30, std::bind(&GUI::Menu::SettingsMenu::applyChanges, this, std::ref(window))));
+	insert(new GUI::Widget::Button("Cancel", 400, 340, 100, 30, std::bind(&GUI::Menu::SettingsMenu::closeMenu, this)));
 
 	buildGraphicsTab(1);
 	buildInputTab(2);
@@ -54,7 +54,7 @@ void GUI::Menu::SettingsMenu::buildGraphicsTab(const GUI::Widget::TabPanel::TabK
 	fullscreen = GUI::config.getBool("window.fullscreen", false);
 
 	//List video modes.
-	std::shared_ptr<GUI::Widget::DropDown> videoModeList(new GUI::Widget::DropDown(100, 200, 200, 25, 200, boost::bind(&GUI::Menu::SettingsMenu::setVideoMode, this, _1)));
+	std::shared_ptr<GUI::Widget::DropDown> videoModeList(new GUI::Widget::DropDown(100, 200, 200, 25, 200, std::bind(&GUI::Menu::SettingsMenu::setVideoMode, this, std::placeholders::_1)));
 	for (unsigned i = 0; i < sf::VideoMode::getFullscreenModes().size(); i++) {
 		const sf::VideoMode& mode = sf::VideoMode::getFullscreenModes().at(i);
 
@@ -86,7 +86,7 @@ void GUI::Menu::SettingsMenu::buildGraphicsTab(const GUI::Widget::TabPanel::TabK
 	//insert resolution list
 	tabManager->getTab(key)->insert(videoModeList);
 	//insert fullscreen box
-	tabManager->getTab(key)->insert(new GUI::Widget::Checkbox(100, 150, 20, 20, fullscreen, boost::bind(&GUI::Menu::SettingsMenu::setFullScreen, this, _1)));
+	tabManager->getTab(key)->insert(new GUI::Widget::Checkbox(100, 150, 20, 20, fullscreen, std::bind(&GUI::Menu::SettingsMenu::setFullScreen, this, std::placeholders::_1)));
 	tabManager->getTab(key)->insert(new GUI::Widget::Label("Fullscreen (needs restart to take effect)", 125, 150, 20));
 }
 
@@ -103,15 +103,15 @@ void GUI::Menu::SettingsMenu::buildInputTab(const GUI::Widget::TabPanel::TabKeyT
 
 	//zoomSpeed
 	tabManager->getTab(key)->insert(new GUI::Widget::Label("Zooming speed", 100, 150, 16));
-	tabManager->getTab(key)->insert(new GUI::Widget::Slider(100, 170, 200, 15, false, boost::bind(&GUI::Menu::SettingsMenu::setZoomSpeed, this, _1), 0.5f, 4.0f, zoomSpeed));
+	tabManager->getTab(key)->insert(new GUI::Widget::Slider(100, 170, 200, 15, false, std::bind(&GUI::Menu::SettingsMenu::setZoomSpeed, this, std::placeholders::_1), 0.5f, 4.0f, zoomSpeed));
 	//keyboardScrollSpeed
 	tabManager->getTab(key)->insert(new GUI::Widget::Label("Keyboard scrolling speed", 100, 200, 16));
-	tabManager->getTab(key)->insert(new GUI::Widget::Slider(100, 220, 200, 15, false, boost::bind(&GUI::Menu::SettingsMenu::setKeyboardScrollSpeed, this, _1), 0.5f, 2.0f, keyboardScrollSpeed));
+	tabManager->getTab(key)->insert(new GUI::Widget::Slider(100, 220, 200, 15, false, std::bind(&GUI::Menu::SettingsMenu::setKeyboardScrollSpeed, this, std::placeholders::_1), 0.5f, 2.0f, keyboardScrollSpeed));
 	//borderScrollSpeed
 	tabManager->getTab(key)->insert(new GUI::Widget::Label("Border scrolling speed", 100, 250, 16));
-	tabManager->getTab(key)->insert(new GUI::Widget::Slider(100, 270, 200, 15, false, boost::bind(&GUI::Menu::SettingsMenu::setBorderScrollSpeed, this, _1), 0.5f, 2.0f, borderScrollSpeed));
+	tabManager->getTab(key)->insert(new GUI::Widget::Slider(100, 270, 200, 15, false, std::bind(&GUI::Menu::SettingsMenu::setBorderScrollSpeed, this, std::placeholders::_1), 0.5f, 2.0f, borderScrollSpeed));
 	//reverseDrag
-	tabManager->getTab(key)->insert(new GUI::Widget::Checkbox(100, 300, 20, 20, fullscreen, boost::bind(&GUI::Menu::SettingsMenu::setReverseDrag, this, _1)));
+	tabManager->getTab(key)->insert(new GUI::Widget::Checkbox(100, 300, 20, 20, fullscreen, std::bind(&GUI::Menu::SettingsMenu::setReverseDrag, this, std::placeholders::_1)));
 	tabManager->getTab(key)->insert(new GUI::Widget::Label("Reverse dragging", 125, 300, 20));
 }
 

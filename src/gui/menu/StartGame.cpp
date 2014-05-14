@@ -19,7 +19,7 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <boost/bind.hpp>
+#include <functional>
 
 #include "StartGame.hpp"
 
@@ -31,7 +31,7 @@ GUI::Menu::StartGame::StartGame(std::shared_ptr<Widget> parent_, std::shared_ptr
 	Menu(parent_),
 	client(client_) {
 
-	insert(new GUI::Widget::Button("Ready", 400, 300, 100, 30, boost::bind(&Connection::Client::setReadyToInit, client)));
+	insert(new GUI::Widget::Button("Ready", 400, 300, 100, 30, std::bind(&Connection::Client::setReadyToInit, client)));
 }
 
 void GUI::Menu::StartGame::updateState(sf::RenderWindow& window) {

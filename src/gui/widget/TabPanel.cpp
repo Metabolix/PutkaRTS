@@ -19,7 +19,7 @@
  * along with PutkaRTS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <boost/bind.hpp>
+#include <functional>
 
 #include "TabPanel.hpp"
 
@@ -47,7 +47,7 @@ void GUI::Widget::TabPanel::draw(sf::RenderWindow& window) {
 
 void GUI::Widget::TabPanel::addButton(const std::string& label, const GUI::Widget::TabManager::TabKeyType& key) {
 	Button tmp;
-	tmp.button.reset(new GUI::Widget::Button(label, 0.0f, 0.0f, 1.0f, 1.0f, boost::bind(&GUI::Widget::TabManager::selectTab, this, key)));
+	tmp.button.reset(new GUI::Widget::Button(label, 0.0f, 0.0f, 1.0f, 1.0f, std::bind(&GUI::Widget::TabManager::selectTab, this, key)));
 	tmp.key = key;
 
 	buttons.push_back(tmp);
