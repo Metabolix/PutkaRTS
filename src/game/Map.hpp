@@ -6,6 +6,7 @@
 #include <memory>
 
 #include "util/Array2D.hpp"
+#include "util/Vector2.hpp"
 #include "lua/Lua.hpp"
 
 namespace Game {
