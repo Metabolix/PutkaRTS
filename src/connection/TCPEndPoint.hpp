@@ -2,8 +2,8 @@
 #define PUTKARTS_Connection_TCPEndPoint_HPP
 
 #include <vector>
+#include <string>
 #include <boost/asio.hpp>
-#include <boost/lexical_cast.hpp>
 
 #include "connection/Stream.hpp"
 
@@ -39,7 +39,7 @@ public:
 	 */
 	TCPEndPoint(const std::string& address, int port):
 		socket(service) {
-		connect(address, boost::lexical_cast<std::string>(port));
+		connect(address, std::to_string(port));
 	}
 
 	/**

@@ -1,5 +1,5 @@
 #include <memory>
-#include <boost/lexical_cast.hpp>
+#include <string>
 
 #include "Client.hpp"
 
@@ -21,7 +21,7 @@ void Connection::Client::handlePacket(std::string& data) {
 
 	// A client has left.
 	if (type == 'd') {
-		clients.erase(boost::lexical_cast<int>(data));
+		clients.erase(std::stoi(data));
 		return;
 	}
 

@@ -1,7 +1,7 @@
 #include <memory>
 #include <functional>
+#include <string>
 #include <boost/format.hpp>
-#include <boost/lexical_cast.hpp>
 
 #include "util/Path.hpp"
 
@@ -54,7 +54,7 @@ void GUI::Menu::SettingsMenu::buildGraphicsTab(const GUI::Widget::TabPanel::TabK
 
 		if (mode.width == window.getSize().x && mode.height == window.getSize().y) {
 			videoModeList->selectItem(key.str());
-			videoMode = atoi(key.str().c_str());
+			videoMode = std::stoi(key.str());
 		}
 	}
 
@@ -140,7 +140,7 @@ void GUI::Menu::SettingsMenu::setVideoMode(const GUI::Widget::List::Item& item) 
 	}
 
 	// Non-empty keys are valid.
-	videoMode = boost::lexical_cast<std::size_t>(item.key.c_str());
+	videoMode = std::stoi(item.key);
 }
 
 void GUI::Menu::SettingsMenu::setBorderScrollSpeed(float value) {

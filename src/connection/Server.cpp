@@ -2,7 +2,7 @@
 #include <mutex>
 #include <thread>
 #include <functional>
-#include <boost/lexical_cast.hpp>
+#include <string>
 
 #include "Server.hpp"
 #include "Client.hpp"
@@ -112,7 +112,7 @@ void Connection::Server::addClient(std::shared_ptr<EndPoint> connection) {
 void Connection::Server::removeClient(int id) {
 	std::lock_guard<std::recursive_mutex> lock(*this);
 	if (clients.erase(id)) {
-		sendPacket(clients, 'd' + boost::lexical_cast<std::string>(id));
+		sendPacket(clients, 'd' + std::to_string(id));
 	}
 }
 

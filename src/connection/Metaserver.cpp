@@ -1,6 +1,6 @@
 #include <functional>
+#include <string>
 #include <boost/algorithm/string.hpp>
-#include <boost/lexical_cast.hpp>
 #include <boost/format.hpp>
 #include <boost/asio.hpp>
 
@@ -165,7 +165,7 @@ bool Connection::Metaserver::http(const std::string& postData) {
 			localAddress = value;
 		}
 		if (name == "x-putkarts-ttl") {
-			ttl.reset(-boost::lexical_cast<double>(value)); // Negative; it counts towards zero then.
+			ttl.reset(-std::stod(value)); // Negative; it counts towards zero then.
 		}
 		if (name == "location") {
 			url = value;

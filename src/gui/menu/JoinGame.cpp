@@ -1,5 +1,5 @@
 #include <functional>
-#include <boost/lexical_cast.hpp>
+#include <string>
 
 #include "connection/Client.hpp"
 #include "connection/Address.hpp"
@@ -36,13 +36,13 @@ void GUI::Menu::JoinGame::updateState(sf::RenderWindow& window) {
 	typedef std::pair<const int, Connection::Metaserver::Game> PairType;
 	for (const PairType& pair: metaserver.games) {
 		const Connection::Metaserver::Game& game(pair.second);
-		gameList->insertItem(boost::lexical_cast<std::string>(game.id), game.name);
+		gameList->insertItem(std::to_string(game.id), game.name);
 	}
-	gameList->selectItem(boost::lexical_cast<std::string>(selectedId));
+	gameList->selectItem(std::to_string(selectedId));
 }
 
 void GUI::Menu::JoinGame::selectGame(const GUI::Widget::List::Item& item) {
-	selectedId = item.key.empty() ? 0 : boost::lexical_cast<int>(item.key);
+	selectedId = item.key.empty() ? 0 : std::stoi(item.key);
 }
 
 void GUI::Menu::JoinGame::joinGame() {
