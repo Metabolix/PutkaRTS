@@ -50,9 +50,6 @@ class GUI::Game::Game: public Widget::Container {
 	/** Positions where the mouse buttons went down. */
 	std::map<sf::Mouse::Button, Vector2<SIUnit::Position> > mouseDownPosition;
 
-	/** Used to break the main loop from within member functions. */
-	bool gameClosed;
-
 	/** The settings menu, if opened. */
 	std::shared_ptr<Menu::SettingsMenu> settingsMenu;
 
