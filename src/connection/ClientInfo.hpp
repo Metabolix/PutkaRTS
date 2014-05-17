@@ -6,13 +6,14 @@
 #include "game/Client.hpp"
 
 namespace Connection {
-	struct ClientInfo;
+	class ClientInfo;
 }
 
 /**
  * Information about one client.
  */
-struct Connection::ClientInfo: Game::Client {
+class Connection::ClientInfo: public Game::Client {
+public:
 	/** Is this client ready to init the game? */
 	bool readyToInit;
 

@@ -16,7 +16,8 @@ namespace Game {
  * Each person playing the game has one instance of Game::Client. As such, the
  * clients are not managed in Game::Game but in Connection::Base instead.
  */
-struct Game::Client {
+class Game::Client {
+public:
 	/** Type for client's id */
 	typedef int IdType;
 

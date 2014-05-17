@@ -13,7 +13,8 @@ namespace Game {
 /**
  * This class describes object action.
  */
-struct Game::ObjectAction {
+class Game::ObjectAction {
+public:
 	typedef std::string IdType;
 
 	/** Predefined action "delete". */

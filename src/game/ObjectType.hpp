@@ -12,7 +12,8 @@ namespace Game {
 /**
  * This class describes object type.
  */
-struct Game::ObjectType {
+class Game::ObjectType {
+public:
 	typedef std::string IdType;
 
 	/** An unique identifier for this type. */

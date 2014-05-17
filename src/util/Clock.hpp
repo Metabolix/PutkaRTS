@@ -10,7 +10,7 @@
  */
 class Clock {
 	/** Class for the actual implementation. */
-	struct ClockImpl;
+	class ClockImpl;
 
 	/** Pointer to the actual clock. */
 	std::auto_ptr<const ClockImpl> impl;

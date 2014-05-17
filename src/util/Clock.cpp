@@ -5,7 +5,9 @@
 /**
  * A clock implementation using std::chrono.
  */
-struct Clock::ClockImpl {
+class Clock::ClockImpl {
+	friend Clock;
+
 	/** Is this clock running? */
 	const bool running;
 

@@ -7,7 +7,8 @@ namespace Game {
 	class Player;
 }
 
-struct Game::Player {
+class Game::Player {
+public:
 	/** Type for player's id */
 	typedef int IdType;
 

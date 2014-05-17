@@ -16,7 +16,7 @@ namespace GUI {
  */
 class GUI::TextureCache {
 	/** Structure to hold a texture and its reference count. */
-	struct Node;
+	class Node;
 
 	/** List of currently loaded textures and their file names. */
 	static std::map<std::string, std::weak_ptr<Node> > known;

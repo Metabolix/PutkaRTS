@@ -9,7 +9,8 @@
 /**
  * Structure to hold an Texture and its reference count.
  */
-struct GUI::TextureCache::Node {
+class GUI::TextureCache::Node {
+	friend TextureCache;
 	std::string file;
 	sf::Texture texture;
 	Node(std::string file_): file(file_) {

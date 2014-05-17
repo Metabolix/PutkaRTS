@@ -13,7 +13,8 @@ namespace Game {
 /**
  * This class describes a task that some units are performing.
  */
-struct Game::Task {
+class Game::Task {
+public:
 	/** The action. */
 	std::shared_ptr<const ObjectAction> action;
 
