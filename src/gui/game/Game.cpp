@@ -1,6 +1,7 @@
 #include <algorithm>
 #include <cmath>
 #include <functional>
+#include <iterator>
 
 #include "util/Path.hpp"
 
@@ -21,7 +22,8 @@ GUI::Game::Game::Game(std::shared_ptr<Connection::Client> client_, sf::RenderWin
 	guiView(window.getDefaultView()),
 	client(client_),
 	gameView(window, sf::Vector2f(client->getGame().getMap().getSizeX(), client->getGame().getMap().getSizeY()), 32),
-	map(client->getGame().getMap(), sf::Vector2u(32, 32)) {
+	map(client->getGame().getMap(), sf::Vector2u(32, 32)),
+	messages(30) {
 	// TODO: Center at the player start position or something.
 	gameView.setCenter(
 		client->getGame().getMap().getSizeX() / 2,
@@ -31,6 +33,7 @@ GUI::Game::Game::Game(std::shared_ptr<Connection::Client> client_, sf::RenderWin
 	insert(new GUI::Widget::Button("X", window.getSize().x - 24, 0, 24, 24, std::bind(&Game::exit, this)));
 	insert(new GUI::Widget::Button("S", window.getSize().x - 48, 0, 24, 24, std::bind(&Game::openSettingsMenu, this, std::ref(window))));
 
+	client->messageCallback = std::bind(&Game::addMessage, this, std::placeholders::_1);
 	client->setReadyToStart();
 }
 
@@ -61,6 +64,39 @@ bool GUI::Game::Game::handleEvent(const sf::Event& e, const sf::RenderWindow& wi
 		}
 		return ret;
 	}
+
+	// Typing a message: Return starts and sends, Esc cancels.
+	if (typedMessage) {
+		if (e.type == sf::Event::KeyPressed && e.key.code == sf::Keyboard::Escape) {
+			typedMessage.reset();
+			return true;
+		}
+		if (e.type == sf::Event::KeyPressed && e.key.code == sf::Keyboard::Return) {
+			if (!typedMessage->isEmpty()) {
+				std::string data;
+				sf::Utf<32>::toUtf8(typedMessage->begin(), typedMessage->end(), std::back_inserter(data));
+				client->sendMessage(data);
+				addMessage(data);
+			}
+			typedMessage.reset();
+			return true;
+		}
+		if (e.type == sf::Event::TextEntered && e.text.unicode != '\r') {
+			if (e.text.unicode != '\b') {
+				typedMessage->insert(typedMessage->getSize(), e.text.unicode);
+			} else if (!typedMessage->isEmpty()) {
+				typedMessage->erase(typedMessage->getSize() - 1);
+			}
+			return true;
+		}
+	} else {
+		if (e.type == sf::Event::KeyPressed && e.key.code == sf::Keyboard::Return) {
+			typedMessage.reset(new sf::String);
+			return true;
+		}
+	}
+
+	// Esc exits the game.
 	if (e.type == sf::Event::KeyPressed && e.key.code == sf::Keyboard::Escape) {
 		exit();
 		return true;
@@ -141,6 +177,10 @@ void GUI::Game::Game::updateState(sf::RenderWindow& window) {
 		gameView.update(window);
 		mouse.update(window, gameView);
 	}
+
+	while (!messages.empty() && messages.front().first < client->getGame().getTime()) {
+		messages.pop_front();
+	}
 }
 
 void GUI::Game::Game::draw(sf::RenderWindow& window) {
@@ -152,6 +192,7 @@ void GUI::Game::Game::draw(sf::RenderWindow& window) {
 		window.setView(gameView);
 		drawGame(window);
 		window.setView(guiView);
+		drawMessages(window);
 		Container::draw(window);
 	}
 }
@@ -187,4 +228,24 @@ GUI::Game::Game::ObjectSetType GUI::Game::Game::getObjectsWithinRange(Vector2<SI
 	}
 
 	return result;
+}
+
+void GUI::Game::Game::addMessage(const std::string& message) {
+	Scalar<SIUnit::Time> dt(GUI::config.getDouble("gameUI.chatTime", 15));
+	messages.push_back(std::make_pair(client->getGame().getTime() + dt, message));
+}
+
+void GUI::Game::Game::drawMessages(sf::RenderWindow& window) {
+	int y = messages.size() + 2;
+	for (const MessageType& message: messages) {
+		GUI::Widget::Label tmp("> " + message.second, 16, window.getSize().y - 64 - y-- * 16, 16);
+		tmp.draw(window);
+	}
+	if (typedMessage) {
+		y--;
+		std::string data;
+		sf::Utf<32>::toUtf8(typedMessage->begin(), typedMessage->end(), std::back_inserter(data));
+		GUI::Widget::Label tmp("> " + data, 16, window.getSize().y - 64 - y-- * 16, 16);
+		tmp.draw(window);
+	}
 }

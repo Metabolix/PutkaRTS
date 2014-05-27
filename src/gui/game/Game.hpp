@@ -4,6 +4,7 @@
 #include <memory>
 #include <unordered_map>
 #include <unordered_set>
+#include <boost/circular_buffer.hpp>
 
 #include "gui/game/Map.hpp"
 #include "gui/game/Object.hpp"
@@ -65,6 +66,18 @@ class GUI::Game::Game: public Widget::Container {
 	/** Map to keep track of Objects. */
 	mutable ObjectMapType objects;
 
+	/** Type for the chat messages. */
+	typedef std::pair<Scalar<SIUnit::Time>, std::string> MessageType;
+
+	/** Container type for the chat messages. */
+	typedef boost::circular_buffer<MessageType> MessageContainerType;
+
+	/** List of received chat messages. */
+	MessageContainerType messages;
+
+	/** The line that is being typed, if any. */
+	std::shared_ptr<sf::String> typedMessage;
+
 	/**
 	 * Get GUI::Game::Object for the given Game::Object.
 	 *
@@ -82,6 +95,20 @@ class GUI::Game::Game: public Widget::Container {
 	 * @return The found objects, but no more than specified.
 	 */
 	ObjectSetType getObjectsWithinRange(Vector2<SIUnit::Position> position, Scalar<SIUnit::Length> range, int howMany = 0);
+
+	/**
+	 * Add a chat message.
+	 *
+	 * @param message The message.
+	 */
+	void addMessage(const std::string& message);
+
+	/**
+	 * Draw the chat messages.
+	 *
+	 * @param window The render target.
+	 */
+	void drawMessages(sf::RenderWindow& window);
 
 public:
 	/**
