@@ -9,6 +9,14 @@ void Connection::Client::handlePacket(std::string& data) {
 	char type = *data.begin();
 	data.erase(data.begin());
 
+	// A text message (broadcast).
+	if (type == 'b') {
+		if (messageCallback) {
+			messageCallback(data);
+		}
+		return;
+	}
+
 	// A client has joined.
 	if (type == 'c') {
 		ClientInfo info(data);
@@ -81,4 +89,8 @@ void Connection::Client::setReadyToInit() {
 
 void Connection::Client::setReadyToStart() {
 	connection->sendPacket("s");
+}
+
+void Connection::Client::sendMessage(const std::string& message) {
+	connection->sendPacket('b' + message);
 }

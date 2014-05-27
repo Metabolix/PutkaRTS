@@ -2,6 +2,7 @@
 #define PUTKARTS_Connection_Client_HPP
 
 #include <string>
+#include <functional>
 
 #include "util/Scalar.hpp"
 #include "connection/Base.hpp"
@@ -31,6 +32,11 @@ class Connection::Client: virtual public Connection::Base {
 	/** The greatest message timestamp before lastMessageTimestamp. */
 	Scalar<SIUnit::Time> prevMessageTimestamp;
 
+public:
+	/** Callback for receiving messages. */
+	std::function<void(const std::string&)> messageCallback;
+
+private:
 	/**
 	 * Handle a received packet.
 	 *
@@ -76,6 +82,13 @@ public:
 	 * Mark the client as ready for initialising the game ("all set, start the clock").
 	 */
 	void setReadyToStart();
+
+	/**
+	 * Send a message to all other players.
+	 *
+	 * @param message The message to send.
+	 */
+	void sendMessage(const std::string& message);
 };
 
 #endif

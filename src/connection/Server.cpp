@@ -125,6 +125,14 @@ bool Connection::Server::handlePacket(Client& client, std::string& data) {
 	char type = *data.begin();
 	data.erase(data.begin());
 
+	// A text message (broadcast).
+	if (type == 'b') {
+		ClientInfoContainerType targets = clients;
+		targets.erase(client.id);
+		sendPacket(targets, 'b' + std::to_string(client.id) + ':' + data);
+		return true;
+	}
+
 	// Game::Message.
 	if (type == 'm') {
 		if (game) {
