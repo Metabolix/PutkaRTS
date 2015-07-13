@@ -25,6 +25,14 @@ namespace GUI {
 		 * @return the string converted to sf::String.
 		 */
 		sf::String stringFromUtf8(const std::string& s);
+
+		/**
+		 * Convert sf::String to string of UTF-8 characters.
+		 *
+		 * @param s The sf::String.
+		 * @return sf::String converted to UTF-8 string.
+		 */
+		std::string utf8FromString(const sf::String& s);
 	}
 }
 
