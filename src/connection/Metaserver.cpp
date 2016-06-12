@@ -11,6 +11,26 @@
 
 const std::string Connection::Metaserver::defaultUrl = "http://putkarts.dy.fi/metaserver/metaserver.php";
 
+/**
+ * Encode url parameter. See RFC 3986. "=&%#" produces "%3D%26%25%23".
+ *
+ * @param s The string to encode.
+ * @return The encoded string.
+ */
+static std::string encodeUrlParameter(std::string s) {
+	std::string ret;
+	for (char c: s) {
+		if (('0' <= c && c <= '9') || ('A' <= c && c <= 'Z') || ('a' <= c && c <= 'z') || c == '-' || c == '_' || c == '.' || c == '~') {
+			ret += c;
+		} else {
+			ret += '%';
+			ret += "0123456789ABCDEF"[(unsigned char)c >> 4];
+			ret += "0123456789ABCDEF"[(unsigned char)c & 0xf];
+		}
+	}
+	return ret;
+}
+
 void Connection::Metaserver::luaLocation() {
 	url = get<String>(1);
 }
@@ -52,6 +72,7 @@ bool Connection::Metaserver::sendGame(const Server& server) {
 
 	// Build the POST data.
 	std::string data = "game[version]=" + ProgramInfo::version;
+	data += "&game[name]=" + encodeUrlParameter(server.name);
 	bool send = false;
 	for (Server::ListenerContainerType::iterator i = server.listeners.begin(); i != server.listeners.end(); ++i) {
 		try {
