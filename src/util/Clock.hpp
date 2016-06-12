@@ -13,7 +13,7 @@ class Clock {
 	class ClockImpl;
 
 	/** Pointer to the actual clock. */
-	std::auto_ptr<const ClockImpl> impl;
+	std::shared_ptr<const ClockImpl> impl;
 
 public:
 	/**
