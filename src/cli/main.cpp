@@ -3,6 +3,7 @@
 
 #include "ProgramInfo.hpp"
 #include "util/Path.hpp"
+#include "util/Configuration.hpp"
 #include "connection/Server.hpp"
 #include "connection/TCPListener.hpp"
 
@@ -14,7 +15,12 @@ try {
 	Path::init(argc ? argv[0] : "./bin/unknown.exe");
 	std::string title = ProgramInfo::name + " (version " + ProgramInfo::version + ", CLI)";
 	std::cout << title << std::endl;
+
+	Configuration config(Path::getConfigPath("cli.conf"));
+
 	std::shared_ptr<Connection::Server> server(new Connection::Server());
+
+	server->setName(config.getString("game.name", "Game at " + boost::asio::ip::host_name()));
 
 	int listeners = 0;
 	try {
