@@ -91,10 +91,11 @@ private:
 	 * Send a HTTP request to the metaserver and handle the response.
 	 *
 	 * @param postData The data to send using the POST method; if empty, use GET instead.
+	 * @param ipVersion 4 or 6 for IPv4 or IPv6 respectively, otherwise use the default.
 	 * @return True if the request was successfully sent, false if not.
 	 * @throw std::runtime_error Thrown if something goes wrong.
 	 */
-	bool http(const std::string& postData = "");
+	bool http(const std::string& postData = "", const int ipVersion = 0);
 
 	/**
 	 * Lua callback: Set the metaserver url.

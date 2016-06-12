@@ -61,7 +61,19 @@ bool Connection::Metaserver::sendGame(const Server& server) {
 		} catch (...) {
 		}
 	}
-	return send ? http(data) : false;
+	if (!send) {
+		return false;
+	}
+	bool ok = false;
+	try {
+		ok |= http(data, 4);
+	} catch (std::exception& e) {
+	}
+	try {
+		ok |= http(data, 6);
+	} catch (std::exception& e) {
+	}
+	return ok;
 }
 
 bool Connection::Metaserver::getGames() {
@@ -93,14 +105,20 @@ void Connection::Metaserver::extractUrlComponents(std::string& host, std::string
 	httpPath = (pos2 < url.size()) ? url.substr(pos2) : "/";
 }
 
-bool Connection::Metaserver::http(const std::string& postData) {
+bool Connection::Metaserver::http(const std::string& postData, const int ipVersion) {
 	std::string host, port, httpHost, httpPath;
 	extractUrlComponents(host, port, httpHost, httpPath);
 
 	// Connect.
 	boost::asio::ip::tcp::iostream stream;
 	stream.expires_from_now(boost::posix_time::seconds(3));
-	stream.connect(host, port);
+	if (ipVersion == 4) {
+		stream.connect(boost::asio::ip::tcp::v4(), host, port);
+	} else if (ipVersion == 6) {
+		stream.connect(boost::asio::ip::tcp::v6(), host, port);
+	} else {
+		stream.connect(host, port);
+	}
 
 	// Send the request.
 	stream << (postData.empty() ? "GET" : "POST") << " " << httpPath << " HTTP/1.1\r\n";
