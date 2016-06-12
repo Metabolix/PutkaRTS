@@ -247,3 +247,11 @@ void Connection::Server::sendPacket(const ClientInfoContainerType& clients, cons
 void Connection::Server::sendMessage(const Game::Message& msg) {
 	sendPacket(clients, 'm' + msg.serialize());
 }
+
+void Connection::Server::setName(const std::string& name_) {
+	name = name_;
+}
+
+std::string Connection::Server::getName() const {
+	return name;
+}

@@ -41,6 +41,9 @@ class Connection::Server: virtual public Connection::Base, public std::enable_sh
 	/** The clock used for timing the game. */
 	Clock clock;
 
+	/** The name of this server (or game). */
+	std::string name;
+
 	/**
 	 * Insert a new client.
 	 *
@@ -109,6 +112,20 @@ public:
 	 * @param listener The listener.
 	 */
 	void addListener(std::shared_ptr<Listener> listener);
+
+	/**
+	 * Set the server (or game) name.
+	 *
+	 * @param name The new name.
+	 */
+	void setName(const std::string& name);
+
+	/**
+	 * Get the server name.
+	 *
+	 * @return The name.
+	 */
+	std::string getName() const;
 
 	/**
 	 * Handle data from the clients, and update the game state.
