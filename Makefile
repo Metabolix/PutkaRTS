@@ -61,6 +61,7 @@ ifdef WIN32
 endif
 
 # Abstract build rules.
+.PHONY: all gui cli dirs
 all: cli gui
 gui: $(GUI_BIN)
 cli: $(CLI_BIN)
@@ -71,39 +72,40 @@ clean_deps:
 clean_html:
 	@echo [RM] $(call rm_rf,html)
 
+# Directories
+dirs: | bin/ html/ $(patsubst src/%,build/%,$(sort $(dir $(CLI_SRC) $(GUI_SRC))))
+%/:
+	@echo [MKDIR] $@
+	@$(call mkdir,$@)
+
 # Documentation build with Doxygen
-html: Doxyfile $(FILES_CPP) $(FILES_HPP)
+html: Doxyfile $(FILES_CPP) $(FILES_HPP) | html/
 	@echo [DOXYGEN]
-	@$(call mkdir,html)
 	@doxygen > html/doxygen.log
 
 # Build rules for binaries.
 $(CLI_BIN): $(patsubst src/%,build/%.o,$(CLI_SRC))
 $(GUI_BIN): $(patsubst src/%,build/%.o,$(GUI_SRC))
 
-$(GUI_BIN):
+$(GUI_BIN): | dirs
 	@echo [LINK] $@
-	@$(call mkdir,$(dir $@))
 	@$(CXX) $(LINKFLAGS) $(LIB_DIRS) -o $@ $(filter %.o,$^) $(GUI_LIBS)
 
-$(CLI_BIN):
+$(CLI_BIN): | dirs
 	@echo [LINK] $@
-	@$(call mkdir,$(dir $@))
 	@$(CXX) $(LINKFLAGS) $(LIB_DIRS) -o $@ $(filter %.o,$^) $(CLI_LIBS)
 
 # Include dependencies; generation rules are below.
 -include $(FILES_DEP)
 
 # Dependency generation.
-build/%.dep: src/%
+build/%.dep: src/% | dirs
 	@echo [DEPEND] $<
-	@$(call mkdir,$(dir $@))
 	@$(CXX) $(CXXFLAGS) $(CXXFLAGS2) $(INCLUDE_DIRS) $(CXX_VER) -MM $< -MT $@ -MP > $@
 
 # Compilation
-build/%.o: src/% build/%.dep
+build/%.o: src/% build/%.dep | dirs
 	@echo [CXX] $<
-	@$(call mkdir,$(dir $@))
 	@$(CXX) $(CXXFLAGS) $(CXXFLAGS2) $(INCLUDE_DIRS) $(CXX_VER) $< -c -o $@
 
 # Always regenerate program version string
