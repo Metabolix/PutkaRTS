@@ -1,22 +1,12 @@
 1. DEPENDENCIES
 
 This project uses the following libraries:
-	SFML 1.6  (http://www.sfml-dev.org/)
-	Boost     (http://www.boost.org/)
+	SFML 2.3 or newer (http://www.sfml-dev.org/)
+	Boost             (http://www.boost.org/)
 
 On many Linux distributions, the dependencies can be installed using the
 default package manager. On other systems, it may be necessary to
 download and install them manually.
-
-
-1.1. DEPENDENCIES UNDER Mac OS X
-
-In 64-bit version dependencies are:
-	SFML 1.6 64-bit version
-	OpenAL framework from SFML 1.6 32-bit version package
-
-In 32-bit version dependencies are:
-	SFML 1.6 32-bit version
 
 
 2. BUILDING
