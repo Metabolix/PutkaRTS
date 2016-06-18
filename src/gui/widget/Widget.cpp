@@ -1,3 +1,5 @@
+#include <iterator>
+
 #include "Widget.hpp"
 
 namespace GUI {
@@ -17,6 +19,12 @@ sf::String GUI::Widget::stringFromUtf8(const std::string& s) {
 	std::basic_string<sf::Uint32> u32(l, ' ');
 	sf::Utf<8>::toUtf32(s.begin(), s.end(), u32.begin());
 	return sf::String(u32);
+}
+
+std::string GUI::Widget::utf8FromString(const sf::String& s) {
+	std::string str8;
+	sf::Utf<32>::toUtf8(s.begin(), s.end(), std::back_inserter(str8));
+	return str8;
 }
 
 void GUI::Widget::Widget::setPosition(float x, float y, float width, float height) {
